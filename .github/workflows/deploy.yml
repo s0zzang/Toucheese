@@ -40,6 +40,6 @@ jobs:
       - name: Deploy
         run: aws deploy create-deployment
           --application-name TOUCHEESE-TEAM4
-          —deployment-config-name CodeDeployDefault.AllAtOnce
-          —deployment-group-name TOUCHEESE-TEAM4-Deploy-Group
-          —s3-location bucket=toucheese-team4-s3,bundleType=zip
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --deployment-group-name TOUCHEESE-TEAM4-Deploy-Group
+          --s3-location bucket=toucheese-team4-s3,bundleType=zip
