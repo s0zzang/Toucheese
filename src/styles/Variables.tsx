@@ -11,6 +11,9 @@ const variables = {
     primary100: '#FFECB4',
     primary50: '#FFECB4',
 
+    black: '#1E1E1E',
+    white: '#fff',
+
     gray900: '#737980',
     gray800: '#5D5D5D',
     gray700: '#717171',
@@ -20,7 +23,6 @@ const variables = {
     gray300: '#ECECEC',
     gray200: '#F4F4F4',
     gray100: '#F9F9F9',
-    white: '#fff',
   },
 
   size: {
@@ -35,6 +37,9 @@ const variables = {
 
   layoutPadding: '1.6rem',
   TransitionDuration: '0.3s',
+  borderRadius: '.8rem',
+  borderRadiusLarge: '2rem',
+  headerHeight: '4.8rem',
 };
 
 export default variables;
