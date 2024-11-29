@@ -22,7 +22,9 @@
       "@pages/*": ["pages/*"],
       "@store/*": ["store/*"],
       "@styles/*": ["styles/*"],
-      "@tests/*": ["tests/*"]
+      "@tests/*": ["tests/*"],
+      "@types/*": ["types/*"],
+      "@utils/*": ["utils/*"]
     },
 
     /* Linting */
