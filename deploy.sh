@@ -5,4 +5,4 @@ cd $REPOSITORY
 
 sudo pnpm install
 
-sudo npx pm2 reload all
+sudo pnpm exec pm2 reload all
