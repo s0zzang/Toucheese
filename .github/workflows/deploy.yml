@@ -1,9 +1,6 @@
 name: Deploy
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -44,5 +41,5 @@ jobs:
         uses: chetan/invalidate-cloudfront-action@master
         env:
           AWS_DISTRIBUTION: ${{ secrets.AWS_DISTRIBUTION_ID }}
-          PATHS: '/index.html'
+          PATHS: '/*'
         continue-on-error: true
