@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import ThemeNavigator from '../ThemeNavigator';
+import ThemeNavigator from './ThemeNavigator';
 import { render, screen, fireEvent } from '@testing-library/react';
 import variables from '@styles/Variables';
 
