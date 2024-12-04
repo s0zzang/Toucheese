@@ -8,36 +8,35 @@ const ThemeNavigator = () => {
   const themes: Theme[] = ['전체', '몽환', '내추럴', '러블리', '시크', '청순', '상큼'];
 
   return (
-    <Nav>
-      <ThemeList>
+    <NavStyle>
+      <ThemeListStyle>
         {themes.map((theme) => (
           <li key={theme}>
-            <ThemeButton isActive={activeTheme === theme} onClick={() => setActiveTheme(theme)}>
+            <ThemeButtonStyle isActive={activeTheme === theme} onClick={() => setActiveTheme(theme)}>
               {theme}
-            </ThemeButton>
+            </ThemeButtonStyle>
           </li>
         ))}
-      </ThemeList>
-    </Nav>
+      </ThemeListStyle>
+    </NavStyle>
   );
 };
 
 export default ThemeNavigator;
 //NOTE -  '전체' | '몽환' | '내추럴' | '러블리' | '시크' | '청순' | '상큼';
+//TODO -  디자인 완성되면 색상 컬러 호출하도록 변경 필요
 
-const Nav = styled.nav`
+const NavStyle = styled.nav`
   width: 100%;
 `;
 
-const ThemeList = styled.ul`
+const ThemeListStyle = styled.ul`
   display: flex;
   list-style: none;
-  padding: 0;
-  margin: 0;
 `;
 
-const ThemeButton = styled.button<{ isActive: boolean }>`
-  padding: 8px 16px;
+const ThemeButtonStyle = styled.button<{ isActive: boolean }>`
+  padding: 0.8rem 1.6rem;
   border: none;
   background: none;
   cursor: pointer;

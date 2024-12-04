@@ -1,5 +1,11 @@
+import ThemeNavigator from '@components/home/Navigator/ThemeNavigator';
+
 const Home = () => {
-  return <>Home</>;
+  return (
+    <>
+      <ThemeNavigator />
+    </>
+  );
 };
 
 export default Home;
