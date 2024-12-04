@@ -1,5 +1,13 @@
+import ThemeNavigator from '@components/Navigator/ThemeNavigator';
+import PriceRangeInput from '@components/PriceRangeInput/PriceRangeInput';
+
 const Home = () => {
-  return <div>hello 여기는 홈입니다!</div>;
+  return (
+    <>
+      {/* <ThemeNavigator /> */}
+      <PriceRangeInput />
+    </>
+  );
 };
 
 export default Home;
