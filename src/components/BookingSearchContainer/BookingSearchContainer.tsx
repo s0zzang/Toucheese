@@ -14,7 +14,7 @@ const BookingSearchContainer = () => {
         <SearchStyle
           onClick={(e) => {
             e.stopPropagation();
-            console.log('first');
+            console.log('go to search page => 지민님이 이동 시켜주세요');
           }}
         >
           <img src="/img/icon-search.svg" alt="상세 정보 검색" />
