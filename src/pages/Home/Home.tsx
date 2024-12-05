@@ -5,24 +5,22 @@ import variables from '@styles/Variables';
 import { useSearchParams } from 'react-router-dom';
 import useModal from '@hooks/useModal';
 import LocalDateSelectionModal from './LocalDateSelectionModal';
+import BookingSearchContainer from '@components/BookingSearchContainer/BookingSearchContainer';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
   const modal = useModal();
 
-
   return (
     <>
       <section>
-        <button onClick={() => modal.open()}>지역 날짜 선택 모달 열기</button>
-        
+        <BookingSearchContainer />
         <NavigatorStyle>
           <ThemeNavigator />
           <div>필터 영역</div>
         </NavigatorStyle>
-  
+
         <StudioList />
-        
       </section>
       <LocalDateSelectionModal modalId={1} />
     </>
