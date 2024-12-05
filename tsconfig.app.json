@@ -23,7 +23,7 @@
       "@store/*": ["store/*"],
       "@styles/*": ["styles/*"],
       "@tests/*": ["tests/*"],
-      "@types/*": ["types/*"],
+      "#types/*": ["/types/*"],
       "@utils/*": ["utils/*"]
     },
 

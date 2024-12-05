@@ -1,1 +1,74 @@
-// 타입 지정 - 사용하실 파일 작성 후 삭제해주세요.
+interface IPortfolio {
+  id: number;
+  studio: string;
+  vibe: string;
+  name: string;
+  url: string;
+  description: string;
+  created_at: string;
+  updated_at: null | string;
+}
+
+interface IMenus {
+  id: number;
+  studio: string;
+  name: string;
+  description: string;
+  price: number;
+  created_at: null | string;
+  updated_at: null | string;
+}
+
+export interface IStudioItem {
+  id: number;
+  vibe: string;
+  addressSi: string;
+  addressGu: string;
+  name: string;
+  description: string;
+  address: string;
+  phone: string;
+  view_count: number;
+  rating: number;
+  bookmark_count: number;
+  review_count: number;
+  latitude: null | string;
+  longitude: null | string;
+  open_time: string;
+  close_time: string;
+  subVibe: string;
+  portfolios: IPortfolio[];
+  menus: IMenus[];
+  created_at: null | string;
+  updated_at: null | string;
+  day_of_week: 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN';
+}
+
+export interface IStudioRes {
+  content: IStudioItem[];
+  pageable: {
+    pageNumber: number;
+    pageSize: number;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  size: number;
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+}
