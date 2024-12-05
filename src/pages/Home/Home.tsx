@@ -3,9 +3,13 @@ import StudioList from '@components/Studio/StudioList';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { useSearchParams } from 'react-router-dom';
+import useModal from '@hooks/useModal';
+import LocalDateSelectionModal from './LocalDateSelectionModal';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
+  const modal = useModal();
+
 
   return (
     <>
