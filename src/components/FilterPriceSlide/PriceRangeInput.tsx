@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 
+//NOTE - 호환 이슈가 발생 할 수 있어 남겨놓음
 const PriceRangeInput = () => {
   const [leftValue, setLeftValue] = useState(1);
   const [rightValue, setRightValue] = useState(20);

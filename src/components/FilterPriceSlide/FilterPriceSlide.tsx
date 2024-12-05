@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 
+/** 가격 트리거 호출 시 가격설정을 양방향으로 할 수 있는 컴포넌트 */
 const FilterPriceSlideComponent = () => {
   const fixedMinPrice = 10000; // 최소값을 1만원으로 변경
   const fixedMaxPrice = 200000; // 최대값을 20만원으로 변경
@@ -107,7 +108,7 @@ const FilterPriceRangeMin = styled.input`
     background-color: #fff8e1;
     -webkit-appearance: none;
     z-index: 99;
-    margin-top: -1.2rem; // 추가: 슬라이더의 가운데 정렬을 위해 마진 조정
+    margin-top: -1.2rem;
   }
 `;
 

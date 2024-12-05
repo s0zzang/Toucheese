@@ -1,11 +1,5 @@
-import FilterPriceSlide from '@components/PriceRangeInput/FilterPriceSlide';
-
 const Home = () => {
-  return (
-    <>
-      <FilterPriceSlide />
-    </>
-  );
+  return <></>;
 };
 
 export default Home;
