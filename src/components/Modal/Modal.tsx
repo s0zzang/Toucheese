@@ -24,8 +24,8 @@ interface ModalProp {
  *  - 모달 내 버튼 : {text: string, event: MouseEventHandler<HTMLButtonElement>}[]
  */
 const Modal = ({ modalId = 1, size = 'default', title, children, withBtn = true, buttons = [] }: ModalProp) => {
-  const { isOpen, closeModal } = useModal(modalId);
-  const handleClose = () => closeModal();
+  const { isOpen, close } = useModal(modalId);
+  const handleClose = () => close();
 
   return (
     isOpen && (
