@@ -2,10 +2,9 @@
 
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
-import { useModalStore } from '@store/useModalStore';
 import { Hidden, Title3 } from '@styles/Common';
 import variables from '@styles/Variables';
-import { MouseEventHandler, useEffect } from 'react';
+import { MouseEventHandler } from 'react';
 
 interface ModalProp {
   title: string;
