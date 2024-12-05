@@ -46,6 +46,7 @@ const FilterPriceSlideComponent = () => {
           max={fixedMaxPrice - priceGap}
           step="1000"
           value={rangeMinValue}
+          aria-label="slider1"
           onChange={(e) => {
             priceRangeMinValueHandler(e);
             twoRangeHandler();
@@ -56,6 +57,7 @@ const FilterPriceSlideComponent = () => {
           min={fixedMinPrice + priceGap}
           max={fixedMaxPrice}
           step="1000"
+          aria-label="slider2"
           value={rangeMaxValue}
           onChange={(e) => {
             priceRangeMaxValueHandler(e);
