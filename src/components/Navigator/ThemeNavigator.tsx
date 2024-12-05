@@ -30,9 +30,6 @@ const NavStyle = styled.nav`
   width: 100%;
   box-sizing: border-box;
   background-color: ${variables.colors.black};
-  position: fixed;
-  left: 0;
-  right: 0;
   padding: 1.4rem 1.2rem;
 `;
 
