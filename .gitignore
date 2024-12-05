@@ -25,3 +25,6 @@ dist-ssr
 
 # pem file
 *.pem
+
+# env file
+.env

@@ -13,10 +13,9 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2 # workflow에서 액세스할 수 있도록 저장소를 체크아웃
 
-      # - name: Create .env file
-      #   run: |
-      #     echo "VITE_API_KEY=${{ secrets.VITE_API_KEY }}" >> .env
-      #     echo "VITE_NCBI_URL=${{ secrets.VITE_NCBI_URL }}" >> .env
+      - name: Create .env file
+        run: |
+          echo "VITE_TOUCHEESE_API=${{ secrets.VITE_TOUCHEESE_API }}" >> .env
 
       - name: Install pnpm
         run: npm install -g pnpm@9.14.2
