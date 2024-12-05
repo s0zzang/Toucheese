@@ -67,13 +67,11 @@ const Button = ({
     small: css`
       font-size: small;
       height: 3rem;
-      width: fit-content;
       padding: 0 1rem;
     `,
     medium: css`
       font-size: medium;
       height: 3.6rem;
-      width: fit-content;
       padding: 0 1rem;
     `,
     large: css`
