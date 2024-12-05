@@ -8,14 +8,20 @@ const Home = () => {
   const [searchParams] = useSearchParams();
 
   return (
-    <section>
-      <NavigatorStyle>
-        <ThemeNavigator />
-        <div>필터 영역</div>
-      </NavigatorStyle>
-
-      <StudioList />
-    </section>
+    <>
+      <section>
+        <button onClick={() => modal.open()}>지역 날짜 선택 모달 열기</button>
+        
+        <NavigatorStyle>
+          <ThemeNavigator />
+          <div>필터 영역</div>
+        </NavigatorStyle>
+  
+        <StudioList />
+        
+      </section>
+      <LocalDateSelectionModal modalId={1} />
+    </>
   );
 };
 
