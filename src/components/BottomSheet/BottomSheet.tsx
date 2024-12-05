@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react';
-import useBottomSheetState from '@store/useBottomSheetState';
+import useBottomSheetState from '@store/useBottomSheetStateStroe';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
