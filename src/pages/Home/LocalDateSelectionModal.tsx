@@ -45,10 +45,10 @@ const InputBoxStyled = styled.div`
     color: ${variables.colors.gray800};
     cursor: pointer;
 
-    &:nth-child(1) {
+    &:nth-of-type(1) {
       background-image: url(/img/icon-location.svg);
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       background-image: url(/img/icon-calendar.svg);
     }
   }

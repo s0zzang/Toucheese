@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
+import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import { Hidden, Title3 } from '@styles/Common';
 import variables from '@styles/Variables';
-import { MouseEventHandler } from 'react';
 
 interface ModalProp {
   title: string;
@@ -12,7 +12,7 @@ interface ModalProp {
   modalId?: number;
   size?: string;
   withBtn?: boolean;
-  buttons?: { text: string; event: MouseEventHandler<HTMLButtonElement> }[];
+  buttons?: { text: string; event: () => void }[];
 }
 
 /**
@@ -29,78 +29,59 @@ const Modal = ({ modalId = 1, size = 'default', title, children, withBtn = true,
 
   return (
     isOpen && (
-      <ModalStyled>
-        <TitleStyled>
+      <ModalStyle>
+        <TitleStyle>
           {isOpen}
-          <CloseBtnStyled type="button" onClick={handleClose}>
+          <CloseBtnStyle type="button" onClick={handleClose}>
             <span css={Hidden}>닫기</span>
-          </CloseBtnStyled>
+          </CloseBtnStyle>
           <h2 css={Title3}>{title}</h2>
-        </TitleStyled>
+        </TitleStyle>
 
-        <ContentsStyled>{children}</ContentsStyled>
+        <ContentsStyle>{children}</ContentsStyle>
 
-        {withBtn && (
-          <ButtonBoxStyled>
-            {buttons?.map((btn) => (
-              <button key={btn.text} type="button" onClick={btn.event}>
-                {btn.text}
-              </button>
-            ))}
-          </ButtonBoxStyled>
-        )}
-      </ModalStyled>
+        {withBtn && <ButtonBoxStyle>{buttons?.map((btn) => <Button key={btn.text} variant="black" onClick={btn.event} text={btn.text} disabled={false} />)}</ButtonBoxStyle>}
+      </ModalStyle>
     )
   );
 };
 
 export default Modal;
 
-const ModalStyled = styled.section`
+const ModalStyle = styled.section`
   position: fixed;
+  z-index: 99;
   inset: 0;
   background: ${variables.colors.white};
-  padding: 0 2rem;
+  padding: 0 2rem 4.8rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
-const TitleStyled = styled.div`
+const TitleStyle = styled.div`
   padding: 1.4rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-
-  &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% + 4rem);
-    height: 2px;
-    background: ${variables.colors.gray300};
-  }
 `;
 
-const CloseBtnStyled = styled.button`
+const CloseBtnStyle = styled.button`
   width: 2.4rem;
   aspect-ratio: 1/1;
-  background: url(/img/icon-close-btn.svg) no-repeat center / 1.4rem;
+  background: url(/img/icon-arrow-gray800.svg) no-repeat center / 1.1rem 1.9rem;
   position: absolute;
   left: 0;
 `;
 
-const ContentsStyled = styled.div`
+const ContentsStyle = styled.div`
   padding: 1rem 0;
   flex-grow: 1;
   overflow-y: auto;
 `;
 
-const ButtonBoxStyled = styled.div`
+const ButtonBoxStyle = styled.div`
   padding: 1rem 0;
   display: flex;
   justify-content: space-between;
