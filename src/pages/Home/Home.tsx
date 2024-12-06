@@ -1,32 +1,21 @@
 /** @jsxImportSource @emotion/react */
+import BookingSearchContainer from '@components/BookingSearchContainer/BookingSearchContainer';
+import Button from '@components/Button/Button';
+import Filter from '@components/Filter/Filter';
 import ThemeNavigator from '@components/Navigator/ThemeNavigator';
 import StudioList from '@components/Studio/StudioList';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import useModal from '@hooks/useModal';
 import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './LocalDateSelectionModal';
-import Filter from '@components/Filter/Filter';
-import Button from '@components/Button/Button';
-import BookingSearchContainer from '@components/BookingSearchContainer/BookingSearchContainer';
-import BottomSheet from '@components/BottomSheet/BottomSheet';
-import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
-import useBottomSheetState from '@store/useBottomSheetStateStroe';
-import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
-
 
 const Home = () => {
   const [searchParams] = useSearchParams();
   const params = decodeSearchParamsToString(searchParams);
-  const modal = useModal();
-
-  const { openBottomSheet } = useBottomSheetState();
 
   return (
     <>
-      <ServiceAvailability />
       <SectionStyle>
         <BookingSearchContainer />
 
@@ -38,14 +27,6 @@ const Home = () => {
             <Filter text="가격대" />
             <Filter text="매장정보" />
           </FilterBox>
-          <div
-            css={css`
-              height: 6.6rem;
-              background-color: white;
-            `}
-          >
-            필터 영역
-          </div>
         </NavigatorStyle>
         <div>
           <StudioList mode="filter" params={params} />
