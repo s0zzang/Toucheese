@@ -4,8 +4,9 @@ import styled from '@emotion/styled';
 import { Hidden, Title2 } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
+import { IMenus, IStudioItem } from 'types/types';
 
-const StudioItem = () => {
+const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boolean; isLast: boolean }) => {
   const [hasLiked, setHasLiked] = useState<boolean>(false);
   // 북마크 설정/해제 api 호출
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -16,8 +17,19 @@ const StudioItem = () => {
     console.log('북마크 설정!');
   };
 
+  // 최저가 계산 함수
+  const getMinPrice = (menu: IMenus[]) => {
+    let minPrice = 1e9;
+
+    menu.forEach((item) => {
+      if (item.price < minPrice) minPrice = item.price;
+    });
+
+    return minPrice;
+  };
+
   return (
-    <LiStyle>
+    <DivStyle isFirst={isFirst} isLast={isLast}>
       <div
         // 이미지 슬라이더 완성되면 삭제
         css={css`
@@ -33,28 +45,28 @@ const StudioItem = () => {
 
       <ItemContentStyle>
         <ItemInfoStyle>
-          <TitleStyle css={Title2}>{`스튜디오 이름`}</TitleStyle>
+          <TitleStyle css={Title2}>{`${item.name}`}</TitleStyle>
           <InfoContainerStyle>
             <div>
               <img src="/img/icon-rating.svg" />
               <p>
-                {4.3}
-                <span>{` (157개의 평가)`}</span>
+                {item.rating}
+                <span>{` (${item.review_count}개의 평가)`}</span>
               </p>
             </div>
             <div>
               <img src="/img/icon-price.svg" />
-              <p>{`15,000 ~`}</p>
+              <p>{`${getMinPrice(item.menus)}원~`}</p>
             </div>
           </InfoContainerStyle>
           <InfoContainerStyle>
             <div>
               <img src="/img/icon-location.svg" />
-              <p>{`종로구 종로3길 17`}</p>
+              <p>{`${item.addressGu} ${item.address}`}</p>
             </div>
             <div>
               <img src="/img/icon-time.svg" />
-              <p>{`10:00 - 21:00`}</p>
+              <p>{`${item.open_time.slice(0, -3)} - ${item.close_time.slice(0, -3)}`}</p>
             </div>
           </InfoContainerStyle>
         </ItemInfoStyle>
@@ -63,25 +75,27 @@ const StudioItem = () => {
             <img src={`/img/icon-bookmark-${hasLiked ? 'active' : 'inactive'}.svg`} alt={`북마크 ${hasLiked ? '해제' : '등록'}`} />
             <span css={Hidden}>북마크 {`${hasLiked ? '해제' : '등록'}하기`}</span>
           </button>
-          <p>127</p>
+          <p>{item.bookmark_count}</p>
         </BookmarkStyle>
       </ItemContentStyle>
-    </LiStyle>
+    </DivStyle>
   );
 };
 
-const LiStyle = styled.li`
-  padding-bottom: 1.6rem;
+const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
+  padding: 1.6rem 0;
   border-bottom: 0.1rem solid ${variables.colors.gray300};
 
-  &:last-child {
-    padding-bottom: unset;
-    border-bottom: unset;
-  }
+  ${({ isLast }) =>
+    isLast &&
+    `
+      border-bottom: unset;
+  `}
 `;
 
 const ItemContentStyle = styled.div`
   display: flex;
+  gap: 1.6rem;
 `;
 
 const ItemInfoStyle = styled.div`
@@ -114,6 +128,23 @@ const InfoContainerStyle = styled.div`
       & > span {
         color: ${variables.colors.gray800};
       }
+    }
+
+    &:first-of-type {
+      flex-shrink: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      & > p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    &:last-child {
+      flex-shrink: 0;
     }
   }
 
