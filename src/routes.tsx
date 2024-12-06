@@ -1,6 +1,6 @@
 import Home from '@pages/Home/Home';
 import Search from '@pages/search/Search';
-import SearchResults from '@pages/search/SearchResults';
+import SearchResults from '@pages/search/SearchResult';
 
 import { createBrowserRouter } from 'react-router-dom';
 
