@@ -29,6 +29,20 @@ interface ButtonProps {
  * size => 버튼 자체의 크기
  */
 
+/**  버튼 컴포넌트 사용
+ * <Button
+    icon={<img src="./public/img/icon-close.svg" alt="닫기 아이콘" />} 아이콘이 필요한 경우 이렇게 불러오기
+    iconSizeWidth="1rem" 아이콘 가로사이즈
+    iconSizeHeight="1rem" 아이콘 세로사이즈
+    iconPosition="right" 아이콘의 버튼 내부 위치 ( 아이콘 없으면 non )
+    size="small" 버튼 자체의 사이즈
+    text="small button" 버튼에 들어갈 텍스트
+    width="fit" 버튼 자체의 가로값
+    variant="white" 버튼 색상
+    disabled={false} 
+    type="button"
+  /> */
+
 const Button = ({
   icon,
   iconSizeWidth = '2rem',
@@ -58,8 +72,8 @@ const Button = ({
     align-items: center;
     gap: 0.8rem;
 
-    ${iconPosition === 'left' && `flex-direction: row-reverse;`}
-    ${iconPosition === 'right' && ` flex-direction: row;`}
+    ${iconPosition === 'right' && `flex-direction: row-reverse;`}
+    ${iconPosition === 'left' && ` flex-direction: row;`}
     ${icon && `img{width:${iconSizeWidth}; height:${iconSizeHeight}}`}
   `;
 
@@ -127,21 +141,15 @@ ${variant === 'white' &&
       max-width: calc(500px - 2 * ${variables.layoutPadding});
       z-index: 1000;
     `}
+
+${type === 'reset' &&
+    `
+    width: 3rem;
+    height: 3rem;
+    border-radius: 20px;
+    `}
   `;
 
-  /**  버튼 컴포넌트 사용
- * <Button
-    icon={<img src="./public/img/icon-close.svg" alt="닫기 아이콘" />} 아이콘이 필요한 경우 이렇게 불러오기
-    iconSizeWidth="1rem" 아이콘 가로사이즈
-    iconSizeHeight="1rem" 아이콘 세로사이즈
-    iconPosition="right" 아이콘의 버튼 내부 위치 ( 아이콘 없으면 non )
-    size="small" 버튼 자체의 사이즈
-    text="small button" 버튼에 들어갈 텍스트
-    width="fit" 버튼 자체의 가로값
-    variant="white" 버튼 색상
-    disabled={false} 
-    type="button"
-  /> */
   return (
     <button type={type} css={styles} disabled={disabled} onClick={onClick}>
       <div css={iconWrapperStyles}>
