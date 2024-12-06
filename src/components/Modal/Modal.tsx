@@ -13,7 +13,7 @@ interface ModalProp {
   modalId?: number;
   size?: string;
   withBtn?: boolean;
-  buttons?: { text: string; event: MouseEventHandler<HTMLButtonElement> }[];
+  buttons?: { text: string; event: () => void }[];
 }
 
 /**
@@ -41,7 +41,7 @@ const Modal = ({ modalId = 1, size = 'default', title, children, withBtn = true,
 
         <ContentsStyled>{children}</ContentsStyled>
 
-        {withBtn && <ButtonBoxStyled>{buttons?.map((btn) => <Button key={btn.text} variant="black" onClick={btn.event} text={btn.text} />)}</ButtonBoxStyled>}
+        {withBtn && <ButtonBoxStyled>{buttons?.map((btn) => <Button key={btn.text} variant="black" onClick={btn.event} text={btn.text} disabled={false} />)}</ButtonBoxStyled>}
       </ModalStyled>
     )
   );
