@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { css } from '@emotion/react';
 import SearchBar from '@pages/search/components/SearchBar';
@@ -46,7 +46,7 @@ const mockResults = [
   },
 ];
 
-const SearchResults: React.FC = () => {
+const SearchResults = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchResults, setSearchResults] = useState<any[]>(mockResults); // 초기 빈배열[]

@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
-import React from 'react';
 
 interface StudioListProps {
   results: {
@@ -12,7 +11,7 @@ interface StudioListProps {
 
 //임시 코드
 
-const StudioList: React.FC<StudioListProps> = ({ results }) => {
+const StudioList = ({ results }: StudioListProps) => {
   return (
     <div>
       <h3>스튜디오 검색 결과</h3>

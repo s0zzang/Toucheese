@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 
@@ -7,7 +7,7 @@ interface SearchBarProps {
   onSearch: (term: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [inputValue, setInputValue] = useState('');
   const queryParams = new URLSearchParams(location.search);
   const searchTerm = queryParams.get('q') || '';

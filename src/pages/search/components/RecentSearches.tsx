@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 interface RecentSearchesProps {
   onSearch: (term: string) => void;
 }
 
-const RecentSearches: React.FC<RecentSearchesProps> = () => {
+const RecentSearches = ({ onSearch }: RecentSearchesProps) => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
   useEffect(() => {

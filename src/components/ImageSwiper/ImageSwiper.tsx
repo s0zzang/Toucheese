@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import React from 'react';
 import { css } from '@emotion/react';
 import { Swiper, SwiperSlide, SwiperProps } from 'swiper/react';
 import 'swiper/css';
@@ -9,7 +8,7 @@ interface ImageSwiperProps extends SwiperProps {
   images: string[];
 }
 
-const ImageSwiper: React.FC<ImageSwiperProps> = ({ images, modules = [Mousewheel], mousewheel = { forceToAxis: true, sensitivity: 1 }, spaceBetween = 3, slidesPerView = 4, ...props }) => {
+const ImageSwiper = ({ images, modules = [Mousewheel], mousewheel = { forceToAxis: true, sensitivity: 1 }, spaceBetween = 3, slidesPerView = 4, ...props }: ImageSwiperProps) => {
   return (
     <Swiper modules={modules} mousewheel={mousewheel} spaceBetween={spaceBetween} slidesPerView={slidesPerView} {...props}>
       {images.map((image, index) => (
