@@ -10,6 +10,7 @@ interface ButtonProps {
   text: string;
   variant?: ButtonVariant;
   disabled?: boolean;
+  active?: boolean;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
   size?: 'small' | 'medium' | 'large';
@@ -43,6 +44,7 @@ const Button = ({
   width = 'max',
   text,
   disabled = false,
+  active = false,
   onClick,
   type = 'button',
   variant = 'primary',
@@ -116,7 +118,7 @@ const Button = ({
     `}
 
 ${variant === 'white' &&
-    disabled &&
+    active &&
     ` background-color: ${variables.colors.primary50}; 
       border: solid${variables.colors.primary500}; 
       color:${variables.colors.gray900};

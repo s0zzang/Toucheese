@@ -10,7 +10,7 @@ import useBottomSheetState from '@store/useBottomSheetStateStroe';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import LocalDateSelectionModal from './LocalDateSelectionModal';
+import LocalDateSelectionModal from './components/LocalDateSelectionModal';
 import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
 import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 
