@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
+import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import { Hidden, Title3 } from '@styles/Common';
@@ -40,15 +41,7 @@ const Modal = ({ modalId = 1, size = 'default', title, children, withBtn = true,
 
         <ContentsStyled>{children}</ContentsStyled>
 
-        {withBtn && (
-          <ButtonBoxStyled>
-            {buttons?.map((btn) => (
-              <button key={btn.text} type="button" onClick={btn.event}>
-                {btn.text}
-              </button>
-            ))}
-          </ButtonBoxStyled>
-        )}
+        {withBtn && <ButtonBoxStyled>{buttons?.map((btn) => <Button key={btn.text} variant="black" onClick={btn.event} text={btn.text} />)}</ButtonBoxStyled>}
       </ModalStyled>
     )
   );
@@ -58,9 +51,10 @@ export default Modal;
 
 const ModalStyled = styled.section`
   position: fixed;
+  z-index: 99;
   inset: 0;
   background: ${variables.colors.white};
-  padding: 0 2rem;
+  padding: 0 2rem 4.8rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -72,24 +66,12 @@ const TitleStyled = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-
-  &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% + 4rem);
-    height: 2px;
-    background: ${variables.colors.gray300};
-  }
 `;
 
 const CloseBtnStyled = styled.button`
   width: 2.4rem;
   aspect-ratio: 1/1;
-  background: url(/img/icon-close-btn.svg) no-repeat center / 1.4rem;
+  background: url(/img/icon-arrow-gray800.svg) no-repeat center / 1.1rem 1.9rem;
   position: absolute;
   left: 0;
 `;
