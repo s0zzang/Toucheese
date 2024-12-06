@@ -50,8 +50,8 @@ const ulStyle = css`
 `;
 
 const liStyle = css`
-  margin-bottom: 15px;
-  font-size: 14px;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 400;
   display: flex;
   align-items: center;
