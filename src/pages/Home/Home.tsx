@@ -14,8 +14,6 @@ import FilterTextSelector from '@components/Filter/FilterTextSelector';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
-
-  const params = decodeSearchParamsToString(searchParams);
   const { openBottomSheet } = useBottomSheetState();
 
   const handleFilterByPopularity = () => {
@@ -41,12 +39,10 @@ const Home = () => {
         <NavigatorStyle>
           <ThemeNavigator />
           <FilterBox>
-
             <Button text="" type="reset" variant="gray" icon={<img src="./img/icon-reset.svg" alt="필터 초기화" />} />
             <Filter text="인기순" event={handleFilterByPopularity} />
             <Filter text="가격대" event={handleFilterByPriceRange} />
             <Filter text="매장정보" event={handleFilterByStoreInfo} />
-
           </FilterBox>
         </NavigatorStyle>
 

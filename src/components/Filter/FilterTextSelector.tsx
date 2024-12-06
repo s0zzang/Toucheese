@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import useBottomSheetState from '@store/useBottomSheetStateStroe';
 import { TypoTitleSmS } from '@styles/Common';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,12 +8,13 @@ const FilterTextSelector = () => {
   const FilterByPopularity = ['인기순', '조회순', '평점순', '리뷰 많은순'];
   const [selectedIndex, setSelectedIndex] = useState<string | null>(null);
   const navigate = useNavigate();
-  console.log(selectedIndex);
+  const { closeBottomSheet } = useBottomSheetState();
 
   const handleClick = (item: string) => {
     setSelectedIndex(item);
     const Nav = item === '인기순' ? 'POPULARITY' : '조회순' ? 'VIEW_COUNT' : '평점순' ? 'RATING' : 'REVIEW_COUNT';
     navigate(`/?sortBy=${Nav}`);
+    closeBottomSheet();
   };
 
   return (
