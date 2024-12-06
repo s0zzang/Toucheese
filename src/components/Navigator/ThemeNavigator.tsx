@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Theme = '전체' | '몽환' | '내추럴' | '러블리' | '시크' | '청순' | '상큼';
 
@@ -8,6 +8,14 @@ type Theme = '전체' | '몽환' | '내추럴' | '러블리' | '시크' | '청�
 const ThemeNavigator = () => {
   const [activeTheme, setActiveTheme] = useState<Theme>('전체');
   const themes: Theme[] = ['전체', '몽환', '내추럴', '러블리', '시크', '청순', '상큼'];
+
+  const currentParams = new URLSearchParams(window.location.search);
+
+  // activeTheme가 변경될 때마다 쿼리 파라미터 업데이트
+  useEffect(() => {
+    currentParams.set('vibeName', activeTheme); // VibeName 쿼리 파라미터 설정
+    window.history.replaceState({}, '', `${window.location.pathname}?${currentParams}`); // URL 업데이트
+  }, [activeTheme]); // activeTheme가 변경될 때마다 실행
 
   return (
     <NavStyle>
