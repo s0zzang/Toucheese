@@ -1,6 +1,11 @@
 import Button from '@components/Button/Button';
 
-const Filter = ({ text }: { text: string }) => {
+interface FilterProps {
+  text: string;
+  event: () => void;
+}
+
+const Filter = ({ text, event }: FilterProps) => {
   return (
     <Button
       type="button"
@@ -8,11 +13,12 @@ const Filter = ({ text }: { text: string }) => {
       variant="white"
       size="small"
       width="fit"
-      icon={<img src="./img/icon-select-arrow.svg" alt="닫기 아이콘" />}
+      icon={<img src="/img/icon-select-arrow.svg" alt="닫기 아이콘" />}
       iconSizeWidth="1rem"
       iconSizeHeight="0.4rem"
       iconPosition="right"
       disabled={false}
+      onClick={event}
     />
   );
 };

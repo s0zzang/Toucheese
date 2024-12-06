@@ -13,6 +13,7 @@ const FilterPriceSlideComponent = () => {
   const priceGap = 5000; // 최소-최대 값 간 간격
 
   const navigate = useNavigate();
+  // const { closeBottomSheet } = useBottomSheetState();
 
   const [rangeMinValue, setRangeMinValue] = useState(fixedMinPrice);
   const [rangeMaxValue, setRangeMaxValue] = useState(fixedMaxPrice);
@@ -31,6 +32,7 @@ const FilterPriceSlideComponent = () => {
     currentParams.set('minPrice', rangeMinValue.toString());
     currentParams.set('maxPrice', rangeMaxValue.toString());
     navigate(`?${currentParams.toString()}`);
+    // closeBottomSheet();
   };
 
   const priceRangeMaxValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
