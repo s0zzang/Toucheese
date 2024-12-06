@@ -8,6 +8,7 @@ import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './LocalDateSelectionModal';
+import BookingSearchContainer from '@components/BookingSearchContainer/BookingSearchContainer';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -17,7 +18,7 @@ const Home = () => {
   return (
     <>
       <SectionStyle>
-        <button onClick={() => modal.open()}>지역 날짜 선택 모달 열기</button>
+        <BookingSearchContainer />
 
         <NavigatorStyle>
           <ThemeNavigator />
