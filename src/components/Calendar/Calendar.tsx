@@ -2,6 +2,7 @@
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { convertToDateFormat, lessThan10Add0, useSelectDateStore } from '@store/useSelectDate';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
@@ -13,11 +14,9 @@ interface Days {
 }
 
 const Calendar = () => {
-  const lessThan10Add0 = (num: number) => (num < 10 ? `0${num}` : num);
-
+  const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
   const [currentDay, setCurrentDay] = useState(new Date());
   const [days, setDays] = useState<Days[]>();
-  const [activeDay, setActiveDay] = useState(`${currentDay.getFullYear()}-${lessThan10Add0(currentDay.getMonth() + 1)}-${lessThan10Add0(currentDay.getDate())}`);
 
   const year = currentDay.getFullYear();
   const month = currentDay.getMonth();
@@ -55,14 +54,13 @@ const Calendar = () => {
 
   const toToday = () => {
     setCurrentDay(today);
-    setActiveDay(`${today.getFullYear()}-${lessThan10Add0(today.getMonth() + 1)}-${lessThan10Add0(today.getDate())}`);
+    setActiveDay(convertToDateFormat(today));
   };
 
   const handleDayClick = (year: number, month: number, day: number) => {
     const currentMonth = currentDay.getMonth() + 1;
-    setActiveDay(`${year}-${lessThan10Add0(month)}-${lessThan10Add0(day)}`);
-
-    console.log(month, currentMonth);
+    const value = `${year}-${lessThan10Add0(month)}-${lessThan10Add0(day)}`;
+    setActiveDay(value);
 
     // 12월, 1월 예외처리
     if (month === 12 && currentMonth === 1) return changeMonth(-1);
