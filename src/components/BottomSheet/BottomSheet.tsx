@@ -55,10 +55,11 @@ const BottomSheet = () => {
 export default BottomSheet;
 
 const DimStyle = css`
-  position: absolute;
+  position: fixed;
   inset: 0;
   background-color: rgba(30, 30, 30, 0.5);
   z-index: 888;
+  min-height: 100svh;
 `;
 
 const SlideUp = keyframes`
@@ -113,4 +114,5 @@ const SheetContentStyle = (height: number) => css`
   width: 100%;
   height: ${height};
   overflow-y: auto;
+  overflow-x: hidden;
 `;
