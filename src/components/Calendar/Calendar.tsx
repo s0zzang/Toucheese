@@ -78,10 +78,10 @@ const Calendar = () => {
   }, [currentDay]);
 
   return (
-    <CalendarWrStyled>
-      <TopStyled>
-        <TodayStyled onClick={() => toToday()}>오늘</TodayStyled>
-        <TitleStyled>
+    <CalendarWrStyle>
+      <TopStyle>
+        <TodayStyle onClick={() => toToday()}>오늘</TodayStyle>
+        <TitleStyle>
           <button onClick={() => changeMonth(-1)}>
             <span css={Hidden}>이전 달로</span>
           </button>
@@ -96,10 +96,10 @@ const Calendar = () => {
           >
             <span css={Hidden}>다음 달로</span>
           </button>
-        </TitleStyled>
-      </TopStyled>
-      <CalendarStyled>
-        <DayOfWeekStyled>
+        </TitleStyle>
+      </TopStyle>
+      <CalendarStyle>
+        <DayOfWeekStyle>
           <li>일</li>
           <li>월</li>
           <li>화</li>
@@ -107,7 +107,7 @@ const Calendar = () => {
           <li>목</li>
           <li>금</li>
           <li>토</li>
-        </DayOfWeekStyled>
+        </DayOfWeekStyle>
         <ul>
           {days &&
             days.map(({ dayOfYear, day, dayOfMonth }) => (
@@ -126,25 +126,25 @@ const Calendar = () => {
               </li>
             ))}
         </ul>
-      </CalendarStyled>
-    </CalendarWrStyled>
+      </CalendarStyle>
+    </CalendarWrStyle>
   );
 };
 
 export default Calendar;
 
-const CalendarWrStyled = styled.article`
+const CalendarWrStyle = styled.article`
   max-width: 500px;
   margin: 0 auto;
 `;
 
-const TopStyled = styled.div`
+const TopStyle = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
 `;
 
-const TodayStyled = styled.button`
+const TodayStyle = styled.button`
   position: absolute;
   top: 50%;
   left: 0;
@@ -156,7 +156,7 @@ const TodayStyled = styled.button`
   text-decoration: underline;
 `;
 
-const TitleStyled = styled.div`
+const TitleStyle = styled.div`
   display: flex;
   gap: 1.2rem;
   font-size: 1.8rem;
@@ -169,7 +169,7 @@ const TitleStyled = styled.div`
   }
 `;
 
-const CalendarStyled = styled.div`
+const CalendarStyle = styled.div`
   ul {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -190,7 +190,7 @@ const CalendarStyled = styled.div`
   }
 `;
 
-const DayOfWeekStyled = styled.ul`
+const DayOfWeekStyle = styled.ul`
   li {
     font-size: 1.2rem;
     color: ${variables.colors.gray700};
