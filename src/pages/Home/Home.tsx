@@ -6,23 +6,20 @@ import { useSearchParams } from 'react-router-dom';
 import useModal from '@hooks/useModal';
 import LocalDateSelectionModal from './LocalDateSelectionModal';
 import BookingSearchContainer from '@components/BookingSearchContainer/BookingSearchContainer';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
+import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
+import useBottomSheetState from '@store/useBottomSheetStateStroe';
+import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
   const modal = useModal();
 
+  const { openBottomSheet } = useBottomSheetState();
+
   return (
     <>
-      <section>
-        <BookingSearchContainer />
-        <NavigatorStyle>
-          <ThemeNavigator />
-          <div>필터 영역</div>
-        </NavigatorStyle>
-
-        <StudioList />
-      </section>
-      <LocalDateSelectionModal modalId={1} />
+      <ServiceAvailability />
     </>
   );
 };
