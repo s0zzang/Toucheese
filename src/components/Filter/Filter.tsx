@@ -2,10 +2,10 @@ import Button from '@components/Button/Button';
 
 interface FilterProps {
   text: string;
-  event: () => void;
+  onClick: () => void;
 }
 
-const Filter = ({ text, event }: FilterProps) => {
+const Filter = ({ text, onClick }: FilterProps) => {
   return (
     <Button
       type="button"
@@ -18,7 +18,7 @@ const Filter = ({ text, event }: FilterProps) => {
       iconSizeHeight="0.4rem"
       iconPosition="right"
       disabled={false}
-      onClick={event}
+      onClick={onClick}
     />
   );
 };

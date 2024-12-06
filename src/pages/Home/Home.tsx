@@ -62,10 +62,10 @@ const Home = () => {
         <NavigatorStyle id="navigator" ref={navigatorRef} isFixed={isFixed}>
           <ThemeNavigator />
           <FilterBox>
-            <Button text="" type="reset" variant="gray" icon={<img src="./img/icon-reset.svg" alt="필터 초기화" />} />
-            <Filter text="인기순" event={handleFilterByPopularity} />
-            <Filter text="가격대" event={handleFilterByPriceRange} />
-            <Filter text="매장정보" event={handleFilterByStoreInfo} />
+            <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} />
+            <Filter text="인기순" onClick={handleFilterByPopularity} />
+            <Filter text="가격대" onClick={handleFilterByPriceRange} />
+            <Filter text="매장정보" onClick={handleFilterByStoreInfo} />
           </FilterBox>
         </NavigatorStyle>
 
