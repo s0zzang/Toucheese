@@ -52,7 +52,6 @@ const Button = ({
   const widthStyles = {
     fit: css`
       width: fit-content;
-      padding: 2rem;
     `,
     max: css`
       width: 100%;
@@ -140,6 +139,13 @@ ${type === 'reset' &&
     width: 3rem;
     height: 3rem;
     border-radius: 2rem;
+    `}
+
+
+${width === 'fit' &&
+    (size === 'medium' || size === 'large') &&
+    `
+      padding: 0 2rem;
     `}
   `;
 

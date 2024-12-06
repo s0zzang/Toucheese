@@ -56,6 +56,7 @@ const FilterBox = styled.div`
   display: flex;
   gap: 0.6rem;
   box-shadow: 0 0 2px ${variables.colors.gray500};
+  background-color: ${variables.colors.white};
 
   button:first-of-type {
     margin-right: 1rem;
