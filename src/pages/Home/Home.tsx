@@ -8,7 +8,10 @@ import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './LocalDateSelectionModal';
+import Filter from '@components/Filter/Filter';
+import Button from '@components/Button/Button';
 import BookingSearchContainer from '@components/BookingSearchContainer/BookingSearchContainer';
+
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -22,7 +25,12 @@ const Home = () => {
 
         <NavigatorStyle>
           <ThemeNavigator />
-          {/* 필터버튼 추가하면 제거! */}
+          <FilterBox>
+            <Button text="" type="reset" variant="gray" icon={<img src="./img/icon-reset.svg" alt="필터 초기화" />} />
+            <Filter text="인기순" />
+            <Filter text="가격대" />
+            <Filter text="매장정보" />
+          </FilterBox>
           <div
             css={css`
               height: 6.6rem;
@@ -53,6 +61,17 @@ const NavigatorStyle = styled.div`
   top: 0;
   margin-left: calc(-1 * ${variables.layoutPadding});
   z-index: 10;
+`;
+
+const FilterBox = styled.div`
+  padding: 1.2rem 0rem 1.2rem 1.6rem;
+  display: flex;
+  gap: 0.6rem;
+  box-shadow: 0 0 2px ${variables.colors.gray500};
+
+  button:first-of-type {
+    margin-right: 1rem;
+  }
 `;
 
 export default Home;
