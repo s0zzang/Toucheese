@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
+import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
 import styled from '@emotion/styled';
 import { Hidden, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
-import { IMenus, IStudioItem } from 'types/types';
+import { IMenus, IPortfolio, IStudioItem } from 'types/types';
 
 const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boolean; isLast: boolean }) => {
   const [hasLiked, setHasLiked] = useState<boolean>(false);
@@ -28,20 +28,21 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
     return minPrice;
   };
 
+  // 이미지 5개 불러오기
+  const getImages = (portfolio: IPortfolio[]) => {
+    let images: string[] = [];
+    const porfolios = portfolio.slice(0, 5);
+
+    porfolios.forEach((portfolio: IPortfolio) => {
+      images.push(portfolio.url);
+    });
+
+    return images;
+  };
+
   return (
     <DivStyle isFirst={isFirst} isLast={isLast}>
-      <div
-        // 이미지 슬라이더 완성되면 삭제
-        css={css`
-          box-shadow: inset 0 0 10px ${variables.colors.primary900};
-          width: calc(100% + ${variables.layoutPadding});
-          height: 11.8rem;
-          margin-right: ${variables.layoutPadding};
-          margin-bottom: 1.4rem;
-        `}
-      >
-        이미지 슬라이드
-      </div>
+      <ImageSwiper images={getImages(item.portfolios)} />
 
       <ItemContentStyle>
         <ItemInfoStyle>
@@ -62,7 +63,7 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
           <InfoContainerStyle>
             <div>
               <img src="/img/icon-location.svg" />
-              <p>{`${item.addressGu} ${item.address}`}</p>
+              <p className="location">{`${item.addressGu} ${item.address}`}</p>
             </div>
             <div>
               <img src="/img/icon-time.svg" />
@@ -94,12 +95,14 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
 `;
 
 const ItemContentStyle = styled.div`
+  width: 100%;
   display: flex;
   gap: 1.6rem;
 `;
 
 const ItemInfoStyle = styled.div`
   flex-grow: 1;
+  max-width: 30rem;
 `;
 
 const TitleStyle = styled.p`
@@ -107,6 +110,7 @@ const TitleStyle = styled.p`
 `;
 
 const InfoContainerStyle = styled.div`
+  flex-shrink: 1;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -136,7 +140,7 @@ const InfoContainerStyle = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
 
-      & > p {
+      & > .location {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

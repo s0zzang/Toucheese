@@ -9,7 +9,7 @@ const BottomSheet = () => {
   const { isOpen, children, title, closeBottomSheet } = useBottomSheetState();
   const [sheetHeight, setSheetHeight] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
-  const MAX_HEIGHT = 600;
+  const MAX_HEIGHT = 800;
 
   //바텀 시트 나오면 배경 스크롤 금지
   useEffect(() => {
