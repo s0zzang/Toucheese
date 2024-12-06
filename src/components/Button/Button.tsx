@@ -21,27 +21,19 @@ interface ButtonProps {
   iconSizeHeight?: string;
 }
 
-/** 버튼 옵션
- * icon => 아이콘 이미지 경로
- * iconSizeWidth, iconSizeHeight => 아이콘 가로 세로값
- * iconPosition => non: 아이콘 없는 버튼, left: 아이콘 왼쪽 적용 버튼, right: 아이콘 오른쪽 적용 버튼
- * width => 버튼 자체의 가로값 max: 100%, fit: content 크기만큼
- * size => 버튼 자체의 크기
- */
-
 /**  버튼 컴포넌트 사용
- * <Button
-    icon={<img src="./public/img/icon-close.svg" alt="닫기 아이콘" />} 아이콘이 필요한 경우 이렇게 불러오기
-    iconSizeWidth="1rem" 아이콘 가로사이즈
-    iconSizeHeight="1rem" 아이콘 세로사이즈
-    iconPosition="right" 아이콘의 버튼 내부 위치 ( 아이콘 없으면 non )
-    size="small" 버튼 자체의 사이즈
-    text="small button" 버튼에 들어갈 텍스트
-    width="fit" 버튼 자체의 가로값
-    variant="white" 버튼 색상
-    disabled={false} 
-    type="button"
-  /> */
+ * 
+    - iconPosition="right" 아이콘 필요시 버튼 내부 위치 ( 기본값은 non )
+    - icon={이미지 태그로 경로 지정} 아이콘 추가
+    - iconSizeWidth="1rem" 아이콘 가로사이즈
+    - iconSizeHeight="1rem" 아이콘 세로사이즈
+    - size="small" 버튼 자체의 높이 사이즈
+    - text="버튼이름" 버튼에 들어갈 텍스트
+    - width="fit" 버튼 자체의 가로값 max: 100%, fit: fit-content
+    - variant="white" 버튼 색상
+    - disabled={false} 활성화 여부
+    - type="button"
+ */
 
 const Button = ({
   icon,
@@ -50,7 +42,7 @@ const Button = ({
   iconPosition = 'non',
   width = 'max',
   text,
-  disabled = true,
+  disabled = false,
   onClick,
   type = 'button',
   variant = 'primary',
@@ -60,6 +52,7 @@ const Button = ({
   const widthStyles = {
     fit: css`
       width: fit-content;
+      padding: 2rem;
     `,
     max: css`
       width: 100%;
@@ -89,7 +82,7 @@ const Button = ({
       padding: 0 1rem;
     `,
     large: css`
-      font-size: large;
+      font-size: ${variables.size.big};
       height: 4.8rem;
     `,
   };
@@ -111,7 +104,7 @@ const Button = ({
 
     ${variant === 'primary' && `background-color: ${variables.colors.primary}`}
     ${variant === 'secondary' && `background-color: ${variables.colors.primary500}`}
-    ${variant === 'black' && `background-color: ${variables.colors.black}`}
+    ${variant === 'black' && `background-color: ${variables.colors.gray900}`}
     ${variant === 'gray' &&
     `
       background-color: ${variables.colors.gray300};
@@ -146,7 +139,7 @@ ${type === 'reset' &&
     `
     width: 3rem;
     height: 3rem;
-    border-radius: 20px;
+    border-radius: 2rem;
     `}
   `;
 
