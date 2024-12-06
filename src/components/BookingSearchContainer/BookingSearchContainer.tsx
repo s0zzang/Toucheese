@@ -2,11 +2,14 @@ import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import useModal from '@hooks/useModal';
 import LocalDateSelectionModal from '@pages/Home/LocalDateSelectionModal';
+import { useNavigate } from 'react-router-dom';
 
 /** 메인 전체 지역 예약 날짜 선택 등  */
 // button => 모달 오픈용  searchStyle => 검색용
 const BookingSearchContainer = () => {
   const modal = useModal();
+  const navigate = useNavigate();
+
   return (
     <BookingSearchContainerStyle>
       <Button onClick={() => modal.open()}>
@@ -14,7 +17,7 @@ const BookingSearchContainer = () => {
         <SearchStyle
           onClick={(e) => {
             e.stopPropagation();
-            console.log('go to search page => 지민님이 이동 시켜주세요');
+            navigate('/search');
           }}
         >
           <img src="/img/icon-search.svg" alt="상세 정보 검색" />
