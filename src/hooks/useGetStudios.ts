@@ -1,13 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { IStudioRes } from 'types/types';
 
-const fetchStudios = async (page?: String, params?: string): Promise<IStudioRes> => {
-  const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/${page}${params && `?${params}`}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
+const fetchStudios = async (pageNum: number, mode: 'filter' | 'search/result', params: string): Promise<IStudioRes> => {
+  const response = await fetch(
+    `${import.meta.env.VITE_TOUCHEESE_API}/studio${mode ? `/${mode}` : ''}?size=${import.meta.env.VITE_TOUCHEESE_STUDIO_LIMIT}${pageNum > 0 ? `&page=${pageNum}` : ''}${params && `&${params}`}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
-  });
+  );
 
   if (!response.ok) {
     console.error('Failed to fetch data');
@@ -16,8 +19,11 @@ const fetchStudios = async (page?: String, params?: string): Promise<IStudioRes>
   return response.json();
 };
 
-export const useGetStudios = (page?: String, params?: string) => {
-  return useQuery({
-    queryKey: [''],
+export const useGetStudios = (pageNum: number, mode: 'filter' | 'search/result', params: string): UseQueryResult<IStudioRes> => {
+  return useQuery<IStudioRes>({
+    queryKey: ['studios', { params, mode, pageNum }],
+    queryFn: () => fetchStudios(pageNum, mode, params),
+    staleTime: 1000 * 60 * 1,
+    refetchOnWindowFocus: false,
   });
 };
