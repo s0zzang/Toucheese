@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Hidden, Title2 } from '@styles/Common';
+import { Hidden, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { IMenus, IStudioItem } from 'types/types';
@@ -45,7 +45,7 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
 
       <ItemContentStyle>
         <ItemInfoStyle>
-          <TitleStyle css={Title2}>{`${item.name}`}</TitleStyle>
+          <TitleStyle css={TypoTitleSmS}>{`${item.name}`}</TitleStyle>
           <InfoContainerStyle>
             <div>
               <img src="/img/icon-rating.svg" />

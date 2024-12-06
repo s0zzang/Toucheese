@@ -3,7 +3,7 @@
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
-import { Hidden, Title3 } from '@styles/Common';
+import { Hidden, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 
 interface ModalProp {
@@ -35,7 +35,7 @@ const Modal = ({ modalId = 1, size = 'default', title, children, withBtn = true,
           <CloseBtnStyle type="button" onClick={handleClose}>
             <span css={Hidden}>닫기</span>
           </CloseBtnStyle>
-          <h2 css={Title3}>{title}</h2>
+          <h2 css={TypoTitleSmS}>{title}</h2>
         </TitleStyle>
 
         <ContentsStyle>{children}</ContentsStyle>

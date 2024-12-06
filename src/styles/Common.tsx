@@ -1,21 +1,47 @@
 import { css } from '@emotion/react';
 
 // title
-export const Title1 = css`
-  font-size: 2rem;
-  font-weight: 600;
-`;
-export const Title2 = css`
-  font-size: 1.8rem;
-  font-weight: 600;
-`;
-export const Title3 = css`
-  font-size: 1.6rem;
-  font-weight: 500;
-`;
-export const Title4 = css`
+export const TypoTitleXsR = css`
   font-size: 1.6rem;
   font-weight: 400;
+  line-height: 2.4rem;
+`;
+export const TypoTitleXsM = css`
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 2.4rem;
+`;
+export const TypoTitleXsB = css`
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 2.4rem;
+`;
+export const TypoTitleSmS = css`
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 2.4rem;
+`;
+
+export const TypoBodyMdR = css`
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2rem;
+`;
+export const TypoBodyMdM = css`
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 2rem;
+`;
+
+export const TypoCapXsR = css`
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+`;
+export const TypoCapSmM = css`
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.4rem;
 `;
 
 // 웹 접근성
