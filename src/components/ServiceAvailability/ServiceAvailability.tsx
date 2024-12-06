@@ -139,6 +139,7 @@ const ServiceAvailabilityContainerStyle = styled.div`
   gap: 0.8rem;
 `;
 const ButtonWrapperStyle = styled.div`
+  margin-top: 3.2rem;
   width: 100%;
   display: flex;
   gap: 0.8rem;
