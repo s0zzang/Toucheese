@@ -8,9 +8,30 @@ import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './LocalDateSelectionModal';
+import useBottomSheetState from '@store/useBottomSheetStateStroe';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
+import FilterTextSelector from '@components/Filter/FilterTextSelector';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
+
+  const params = decodeSearchParamsToString(searchParams);
+  const { openBottomSheet } = useBottomSheetState();
+
+  const handleFilterByPopularity = () => {
+    console.log('인기순 바텀시트');
+    openBottomSheet(<FilterTextSelector />, '정렬');
+  };
+
+  const handleFilterByPriceRange = () => {
+    console.log('가격대');
+    openBottomSheet(<Button text="컴포넌트 넣기" />, '가격');
+  };
+
+  const handleFilterByStoreInfo = () => {
+    console.log('매장정보');
+    openBottomSheet(<Button text="컴포넌트 넣기" />, '매장정보');
+  };
 
   return (
     <>
@@ -20,10 +41,12 @@ const Home = () => {
         <NavigatorStyle>
           <ThemeNavigator />
           <FilterBox>
-            <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} />
-            <Filter text="인기순" />
-            <Filter text="가격대" />
-            <Filter text="매장정보" />
+
+            <Button text="" type="reset" variant="gray" icon={<img src="./img/icon-reset.svg" alt="필터 초기화" />} />
+            <Filter text="인기순" event={handleFilterByPopularity} />
+            <Filter text="가격대" event={handleFilterByPriceRange} />
+            <Filter text="매장정보" event={handleFilterByStoreInfo} />
+
           </FilterBox>
         </NavigatorStyle>
 
@@ -32,6 +55,7 @@ const Home = () => {
         </ListStyle>
       </SectionStyle>
       <LocalDateSelectionModal modalId={1} />
+      <BottomSheet />
     </>
   );
 };
