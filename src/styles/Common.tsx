@@ -33,10 +33,10 @@ export const TypoBodyMdM = css`
   line-height: 2rem;
 `;
 
-export const TypoCapXsR = css`
-  font-size: 1rem;
+export const TypoCapSmR = css`
+  font-size: 1.2rem;
   font-weight: 400;
-  line-height: 1.2rem;
+  line-height: 1.4rem;
 `;
 export const TypoCapSmM = css`
   font-size: 1.2rem;
