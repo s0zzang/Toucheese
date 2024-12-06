@@ -3,8 +3,10 @@ import { useEffect, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { IStudioItem } from 'types/types';
 import StudioItem from './StudioItem';
+import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 
-const StudioList = ({ mode, params }: { mode: 'filter' | 'search/result'; params: string }) => {
+const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; searchParams: URLSearchParams }) => {
+  const params = decodeSearchParamsToString(searchParams);
   const [pageNum, setPageNum] = useState(0);
   const [items, setItems] = useState<IStudioItem[]>([]);
   const [hasMore, setHasMore] = useState(true);

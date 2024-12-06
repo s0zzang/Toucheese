@@ -6,13 +6,11 @@ import ThemeNavigator from '@components/Navigator/ThemeNavigator';
 import StudioList from '@components/Studio/StudioList';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
-import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './LocalDateSelectionModal';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
-  const params = decodeSearchParamsToString(searchParams);
 
   return (
     <>
@@ -22,33 +20,31 @@ const Home = () => {
         <NavigatorStyle>
           <ThemeNavigator />
           <FilterBox>
-            <Button text="" type="reset" variant="gray" icon={<img src="./img/icon-reset.svg" alt="필터 초기화" />} />
+            <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} />
             <Filter text="인기순" />
             <Filter text="가격대" />
             <Filter text="매장정보" />
           </FilterBox>
         </NavigatorStyle>
-        <div>
-          <StudioList mode="filter" params={params} />
-        </div>
+
+        <ListStyle>
+          <StudioList mode="filter" searchParams={searchParams} />
+        </ListStyle>
       </SectionStyle>
       <LocalDateSelectionModal modalId={1} />
     </>
   );
 };
 
-const SectionStyle = styled.section`
-  position: relative;
-  padding-bottom: -4.8rem;
-  margin-bottom: -4.8rem;
-`;
+const SectionStyle = styled.section``;
 
 const NavigatorStyle = styled.div`
-  width: calc(100% + 2 * ${variables.layoutPadding});
-  position: sticky;
-  top: 0;
-  margin-left: calc(-1 * ${variables.layoutPadding});
-  z-index: 10;
+  width: 100%;
+  position: absolute;
+  top: 11.8rem;
+  left: 0;
+  right: 0;
+  z-index: 9;
 `;
 
 const FilterBox = styled.div`
@@ -61,6 +57,10 @@ const FilterBox = styled.div`
   button:first-of-type {
     margin-right: 1rem;
   }
+`;
+
+const ListStyle = styled.div`
+  padding-top: 12rem;
 `;
 
 export default Home;

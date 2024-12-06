@@ -1,4 +1,4 @@
-interface IPortfolio {
+export interface IPortfolio {
   id: number;
   studio: string;
   vibe: string;
