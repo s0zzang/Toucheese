@@ -27,6 +27,8 @@ const Modal = ({ modalId = 1, size = 'default', title, children, withBtn = true,
   const { isOpen, close } = useModal(modalId);
   const handleClose = () => close();
 
+  console.log(size);
+
   return (
     isOpen && (
       <ModalStyle>
