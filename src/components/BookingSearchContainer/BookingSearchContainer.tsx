@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import useModal from '@hooks/useModal';
-import LocalDateSelectionModal from '@pages/Home/LocalDateSelectionModal';
+import LocalDateSelectionModal from '@pages/Home/components/LocalDateSelectionModal';
 import { useNavigate } from 'react-router-dom';
 
 /** 메인 전체 지역 예약 날짜 선택 등  */

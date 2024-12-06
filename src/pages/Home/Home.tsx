@@ -8,7 +8,7 @@ import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { useSearchParams } from 'react-router-dom';
-import LocalDateSelectionModal from './LocalDateSelectionModal';
+import LocalDateSelectionModal from './components/LocalDateSelectionModal';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
