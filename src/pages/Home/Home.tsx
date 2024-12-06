@@ -2,16 +2,17 @@ import BookingSearchContainer from '@components/BookingSearchContainer/BookingSe
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import Button from '@components/Button/Button';
 import Filter from '@components/Filter/Filter';
+import FilterTextSelector from '@components/Filter/FilterTextSelector';
 import ThemeNavigator from '@components/Navigator/ThemeNavigator';
 import StudioList from '@components/Studio/StudioList';
 import styled from '@emotion/styled';
+import useBottomSheetState from '@store/useBottomSheetStateStroe';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './LocalDateSelectionModal';
-import useBottomSheetState from '@store/useBottomSheetStateStroe';
-import BottomSheet from '@components/BottomSheet/BottomSheet';
-import FilterTextSelector from '@components/Filter/FilterTextSelector';
+import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
+import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 
 interface IFixedProps {
   isFixed: boolean;
@@ -45,12 +46,12 @@ const Home = () => {
 
   const handleFilterByPriceRange = () => {
     console.log('가격대');
-    openBottomSheet(<Button text="컴포넌트 넣기" />, '가격');
+    openBottomSheet(<FilterPriceSlideComponent />, '가격');
   };
 
   const handleFilterByStoreInfo = () => {
     console.log('매장정보');
-    openBottomSheet(<Button text="컴포넌트 넣기" />, '매장정보');
+    openBottomSheet(<ServiceAvailability />, '매장정보');
   };
 
   return (
