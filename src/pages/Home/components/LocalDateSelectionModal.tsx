@@ -1,14 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
+import BottomSheet from '@components/BottomSheet/BottomSheet';
 import Modal from '@components/Modal/Modal';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
+import useBottomSheetState from '@store/useBottomSheetStateStroe';
 import variables from '@styles/Variables';
+import LocalDateBottomSheet from './DateBottomSheet';
 
 const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
-  const handleOpenLocation = () => {};
-  const handleOpenDate = () => {};
-
+  const { openBottomSheet } = useBottomSheetState();
   const modal = useModal(modalId);
   const buttons = [
     {
@@ -19,13 +20,23 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
     },
   ];
 
+  const handleOpenLocation = () => {};
+  const handleOpenDate = () => openBottomSheet(<LocalDateBottomSheet />, '');
+
   return (
     <>
       <Modal title="지역, 날짜 선택" buttons={buttons} size="full">
-        <InputBoxStyled>
-          <input type="text" disabled value="지역 선택" onClick={handleOpenLocation} />
-          <input type="text" disabled value="예약 날짜 선택" onClick={handleOpenDate} />
-        </InputBoxStyled>
+        <>
+          <InputBoxStyled>
+            <button type="button" onClick={handleOpenLocation}>
+              지역 선택
+            </button>
+            <button type="button" onClick={handleOpenDate}>
+              예약 날짜 선택
+            </button>
+          </InputBoxStyled>
+          <BottomSheet />
+        </>
       </Modal>
     </>
   );
@@ -38,9 +49,10 @@ const InputBoxStyled = styled.div`
   flex-direction: column;
   gap: 1rem;
 
-  input {
+  button {
+    height: 4.4rem;
+    border-radius: 1rem;
     background: ${variables.colors.gray200} url() no-repeat center left 1.4rem / 1.6rem;
-    border-color: transparent;
     padding-left: 4rem;
     color: ${variables.colors.gray800};
     cursor: pointer;
