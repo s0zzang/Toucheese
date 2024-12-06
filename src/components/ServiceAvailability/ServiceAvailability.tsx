@@ -18,7 +18,6 @@ const ServiceAvailability = () => {
 
   /** "적용하기" 버튼 클릭 시 선택된 버튼의 제목을 쿼리 파라미터로 변환하여 네비게이션하는 함수 */
   const handleApplyClick = () => {
-    console.log('called');
     const queryParams = selectedButtons.map((i) => `${getButtonTitle(i)}`).join('%');
     navigate(`options=${queryParams}`); // 쿼리 파라미터를 포함한 URL로 이동
   };
