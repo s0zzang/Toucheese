@@ -62,11 +62,11 @@ const Calendar = () => {
     const currentMonth = currentDay.getMonth() + 1;
     setActiveDay(`${year}-${lessThan10Add0(month)}-${lessThan10Add0(day)}`);
 
+    console.log(month, currentMonth);
+
     // 12월, 1월 예외처리
-    if (month === 12 || month === 1) {
-      if (currentMonth === 1) return changeMonth(-1);
-      if (currentMonth === 12) return changeMonth(1);
-    }
+    if (month === 12 && currentMonth === 1) return changeMonth(-1);
+    if (month === 1 && currentMonth === 12) return changeMonth(1);
 
     // 클릭한 달과 현재 달을 비교하여 Month 변경
     if (month > currentMonth) changeMonth(1);
