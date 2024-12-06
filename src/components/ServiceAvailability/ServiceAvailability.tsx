@@ -20,8 +20,10 @@ const ServiceAvailability = () => {
 
   /** "적용하기" 버튼 클릭 시 선택된 버튼의 제목을 쿼리 파라미터로 변환하여 네비게이션하는 함수 */
   const handleApplyClick = () => {
+    const currentParams = new URLSearchParams(window.location.search); // 현재 쿼리 파라미터 가져오기
     const queryParams = selectedButtons.map((i) => `${getButtonTitle(i)}`).join('%');
-    navigate(`options=${queryParams}`); // 쿼리 파라미터를 포함한 URL로 이동
+    currentParams.set('options', queryParams); // 기존 파라미터에 새로운 값 추가
+    navigate(`?${currentParams}`); // 쿼리 파라미터를 포함한 URL로 이동
   };
 
   // 인덱스에 해당하는 버튼의 제목을 반환하는 함수

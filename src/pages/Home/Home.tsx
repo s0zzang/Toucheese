@@ -8,30 +8,16 @@ import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './LocalDateSelectionModal';
+import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
+import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 
 const Home = () => {
   const [searchParams] = useSearchParams();
 
   return (
     <>
-      <SectionStyle>
-        <BookingSearchContainer />
-
-        <NavigatorStyle>
-          <ThemeNavigator />
-          <FilterBox>
-            <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} />
-            <Filter text="인기순" />
-            <Filter text="가격대" />
-            <Filter text="매장정보" />
-          </FilterBox>
-        </NavigatorStyle>
-
-        <ListStyle>
-          <StudioList mode="filter" searchParams={searchParams} />
-        </ListStyle>
-      </SectionStyle>
-      <LocalDateSelectionModal modalId={1} />
+      <FilterPriceSlideComponent />
+      <ServiceAvailability />
     </>
   );
 };
