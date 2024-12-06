@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 
+//TODO - testcode 작성해야함
 /** 필터링 시 매장 서비스 제공 여부를 선택하는 컴포넌트 */
+
 const ServiceAvailability = () => {
   const [selectedButtons, setSelectedButtons] = useState<number[]>([]);
   const navigate = useNavigate();
