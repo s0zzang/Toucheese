@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
+import useResetState from '@hooks/useResetState';
 
 //TODO - testcode 작성해야함
 /** 필터링 시 매장 서비스 제공 여부를 선택하는 컴포넌트 */
@@ -20,8 +21,10 @@ const ServiceAvailability = () => {
 
   /** "적용하기" 버튼 클릭 시 선택된 버튼의 제목을 쿼리 파라미터로 변환하여 네비게이션하는 함수 */
   const handleApplyClick = () => {
+    const currentParams = new URLSearchParams(window.location.search); // 현재 쿼리 파라미터 가져오기
     const queryParams = selectedButtons.map((i) => `${getButtonTitle(i)}`).join('%');
-    navigate(`options=${queryParams}`); // 쿼리 파라미터를 포함한 URL로 이동
+    currentParams.set('options', queryParams); // 기존 파라미터에 새로운 값 추가
+    navigate(`?${currentParams.toString()}`); // 쿼리 파라미터를 포함한 URL로 이동
   };
 
   // 인덱스에 해당하는 버튼의 제목을 반환하는 함수
@@ -30,6 +33,11 @@ const ServiceAvailability = () => {
     return titles[index]; // 제목 배열에서 인덱스에 해당하는 제목 반환
   };
 
+  const { resetState } = useResetState(setSelectedButtons, [], null); // 최대 3개 인자
+
+  const handleResetClick = () => {
+    resetState(); // 상태를 초기화하는 함수 호출
+  };
   return (
     <>
       <ServiceAvailabilityContainerStyle>
@@ -37,7 +45,7 @@ const ServiceAvailability = () => {
           icon={<img src="img/icon-photo-edit.svg" alt="1:1보정" />}
           iconSizeWidth="2.4rem"
           iconSizeHeight="2.4rem"
-          iconPosition="right"
+          iconPosition="left"
           size="medium"
           text={`1:1 보정`}
           width="fit"
@@ -50,7 +58,7 @@ const ServiceAvailability = () => {
           icon={<img src="img/icon-original-file.svg" alt="원본 파일 제공" />}
           iconSizeWidth="2.4rem"
           iconSizeHeight="2.4rem"
-          iconPosition="right"
+          iconPosition="left"
           size="medium"
           text={`원본파일 제공`}
           width="fit"
@@ -63,7 +71,7 @@ const ServiceAvailability = () => {
           icon={<img src="img/icon-parking.svg" alt="주차" />}
           iconSizeWidth="2.4rem"
           iconSizeHeight="2.4rem"
-          iconPosition="right"
+          iconPosition="left"
           size="medium"
           text={`주차`}
           width="fit"
@@ -76,7 +84,7 @@ const ServiceAvailability = () => {
           icon={<img src="img/icon-makeup.svg" alt="헤메코" />}
           iconSizeWidth="2.4rem"
           iconSizeHeight="2.4rem"
-          iconPosition="right"
+          iconPosition="left"
           size="medium"
           text={`헤어, 메이크업 수정`}
           width="fit"
@@ -89,7 +97,7 @@ const ServiceAvailability = () => {
           icon={<img src="img/icon-suit.svg" alt="정장대여" />}
           iconSizeWidth="2.4rem"
           iconSizeHeight="2.4rem"
-          iconPosition="right"
+          iconPosition="left"
           size="medium"
           text={`정장 대여`}
           width="fit"
@@ -102,7 +110,7 @@ const ServiceAvailability = () => {
           icon={<img src="img/icon-room.svg" alt="탈의실" />}
           iconSizeWidth="2.4rem"
           iconSizeHeight="2.4rem"
-          iconPosition="right"
+          iconPosition="left"
           size="medium"
           text={`탈의실`}
           width="fit"
@@ -115,7 +123,7 @@ const ServiceAvailability = () => {
           icon={<img src="img/icon-powder.svg" alt="파우더룸" />}
           iconSizeWidth="2.4rem"
           iconSizeHeight="2.4rem"
-          iconPosition="right"
+          iconPosition="left"
           size="medium"
           text={`파우더룸`}
           width="fit"
@@ -126,7 +134,7 @@ const ServiceAvailability = () => {
         />
       </ServiceAvailabilityContainerStyle>
       <ButtonWrapperStyle>
-        <Button size="large" disabled={false} text={`초기화`} width="fit" variant="gray" onClick={handleApplyClick} type="button" />
+        <Button size="large" disabled={false} text={`초기화`} width="fit" variant="gray" onClick={handleResetClick} type="button" />
         <Button size="large" disabled={false} text={`적용하기`} width="max" variant="black" onClick={handleApplyClick} type="button" />
       </ButtonWrapperStyle>
     </>

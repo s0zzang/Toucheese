@@ -1,13 +1,18 @@
 /** @jsxImportSource @emotion/react */
+import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
+import useResetState from '@hooks/useResetState';
 import variables from '@styles/Variables';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /** 가격 트리거 호출 시 가격설정을 양방향으로 할 수 있는 컴포넌트 */
 const FilterPriceSlideComponent = () => {
   const fixedMinPrice = 10000; // 최소값을 1만원으로 변경
   const fixedMaxPrice = 200000; // 최대값을 20만원으로 변경
   const priceGap = 5000; // 최소-최대 값 간 간격
+
+  const navigate = useNavigate();
 
   const [rangeMinValue, setRangeMinValue] = useState(fixedMinPrice);
   const [rangeMaxValue, setRangeMaxValue] = useState(fixedMaxPrice);
@@ -20,6 +25,13 @@ const FilterPriceSlideComponent = () => {
       setRangeMinValue(value);
     }
   };
+  // 기존 파람스를 가져와 새로 추가하는 방식으로 업데이트
+  const handleApplyClick = () => {
+    const currentParams = new URLSearchParams(window.location.search);
+    currentParams.set('minPrice', rangeMinValue.toString());
+    currentParams.set('maxPrice', rangeMaxValue.toString());
+    navigate(`?${currentParams.toString()}`);
+  };
 
   const priceRangeMaxValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
@@ -31,6 +43,14 @@ const FilterPriceSlideComponent = () => {
   const twoRangeHandler = () => {
     setRangeMinPercent((rangeMinValue / fixedMaxPrice) * 100);
     setRangeMaxPercent((rangeMaxValue / fixedMaxPrice) * 100);
+  };
+
+  // 리셋 하는 공통 hook 호출
+  const { resetState } = useResetState(setRangeMinValue, fixedMinPrice, null);
+
+  // 상태를 초기화하는 함수 호출
+  const handleResetClick = () => {
+    resetState();
   };
 
   return (
@@ -67,7 +87,7 @@ const FilterPriceSlideComponent = () => {
         <PriceRangeTrack>
           <TrackFilled
             style={{
-              left: `${rangeMinPercent}%`,
+              left: `${rangeMinPercent + 1}%`,
               right: `${100 - rangeMaxPercent}%`,
             }}
           />
@@ -78,6 +98,10 @@ const FilterPriceSlideComponent = () => {
         <RangeDisplaySpanStyle>10만원</RangeDisplaySpanStyle>
         <RangeDisplaySpanStyle>20만원</RangeDisplaySpanStyle>
       </RangeDisplay>
+      <ButtonWrapperStyle>
+        <Button size="large" disabled={false} text={`초기화`} width="fit" variant="gray" onClick={handleResetClick} type="button" />
+        <Button size="large" disabled={false} text={`적용하기`} width="max" variant="black" onClick={handleApplyClick} type="button" />
+      </ButtonWrapperStyle>
     </>
   );
 };
@@ -155,4 +179,10 @@ const RangeDisplay = styled.div`
 const RangeDisplaySpanStyle = styled.span`
   font-size: ${variables.size.medium};
   color: ${variables.colors.gray500};
+`;
+
+const ButtonWrapperStyle = styled.div`
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 3.2rem;
 `;
