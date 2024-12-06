@@ -9,7 +9,7 @@ interface IPortfolio {
   updated_at: null | string;
 }
 
-interface IMenus {
+export interface IMenus {
   id: number;
   studio: string;
   name: string;
