@@ -11,6 +11,10 @@ import LocalDateSelectionModal from './LocalDateSelectionModal';
 import Filter from '@components/Filter/Filter';
 import Button from '@components/Button/Button';
 import BookingSearchContainer from '@components/BookingSearchContainer/BookingSearchContainer';
+import BottomSheet from '@components/BottomSheet/BottomSheet';
+import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
+import useBottomSheetState from '@store/useBottomSheetStateStroe';
+import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 
 
 const Home = () => {
@@ -18,8 +22,11 @@ const Home = () => {
   const params = decodeSearchParamsToString(searchParams);
   const modal = useModal();
 
+  const { openBottomSheet } = useBottomSheetState();
+
   return (
     <>
+      <ServiceAvailability />
       <SectionStyle>
         <BookingSearchContainer />
 
