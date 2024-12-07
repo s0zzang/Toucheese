@@ -7,58 +7,61 @@ import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 
-interface Days {
-  dayOfYear: number;
-  dayOfMonth: number;
-  day: number;
+interface Day {
+  year: number;
+  month: number;
+  date: number;
 }
 
 const Calendar = () => {
   const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
-  const [currentDay, setCurrentDay] = useState(new Date());
-  const [days, setDays] = useState<Days[]>();
+  const [baseDate, setBaseDate] = useState(new Date());
+  const [calendar, setCalendar] = useState<Day[]>();
 
-  const year = currentDay.getFullYear();
-  const month = currentDay.getMonth();
+  const baseYear = baseDate.getFullYear();
+  const baseMonth = baseDate.getMonth();
   const today = new Date();
 
-  const getDays = (startDay: Date, endDay: Date) => {
-    const current = new Date(startDay);
-    const newDays = [];
-    while (current <= endDay) {
-      newDays.push({ dayOfYear: current.getFullYear(), dayOfMonth: current.getMonth() + 1, day: current.getDate() });
-      current.setDate(current.getDate() + 1);
+  const addDateToCalendar = (startDay: Date, endDay: Date) => {
+    const standard = new Date(startDay);
+    const dates = [];
+    while (standard <= endDay) {
+      const year = standard.getFullYear();
+      const month = standard.getMonth() + 1;
+      const date = standard.getDate();
+      dates.push({ year, month, date });
+      standard.setDate(date + 1);
     }
-    return newDays;
+    return dates;
   };
 
   const createCalendar = () => {
-    // 현재 달의 첫 날
-    const firstDayOfMonth = new Date(year, month, 1);
-    // 달력 시작 날짜를 현재 달의 첫 날의 주의 일요일로 설정
+    // 기준 달의 첫 날
+    const firstDayOfMonth = new Date(baseYear, baseMonth, 1);
+    // 달력 시작 날짜 설정 : 기준 달의 첫 날의 주의 일요일
     const startDay = new Date(firstDayOfMonth);
     startDay.setDate(1 - firstDayOfMonth.getDay());
 
-    // 현재 달의 마지막 날
-    const lastDayOfMonth = new Date(year, month + 1, 0);
-    // 달력 끝 날짜를 현재 달의 마지막 날의 주의 토요일로 설정
+    // 기준 달의 마지막 날
+    const lastDayOfMonth = new Date(baseYear, baseMonth + 1, 0);
+    // 달력 끝 날짜 설정 : 기준 달의 마지막 날의 주의 토요일
     const endDay = new Date(lastDayOfMonth);
     endDay.setDate(lastDayOfMonth.getDate() + (6 - lastDayOfMonth.getDay()));
 
-    setDays(getDays(startDay, endDay));
+    setCalendar(addDateToCalendar(startDay, endDay));
   };
 
   const changeMonth = (direction: number) => {
-    setCurrentDay(new Date(currentDay.getFullYear(), currentDay.getMonth() + direction, 1));
+    setBaseDate(new Date(baseDate.getFullYear(), baseDate.getMonth() + direction, 1));
   };
 
-  const toToday = () => {
-    setCurrentDay(today);
+  const moveToToday = () => {
+    setBaseDate(today);
     setActiveDay(convertToDateFormat(today));
   };
 
-  const handleDayClick = (year: number, month: number, day: number) => {
-    const currentMonth = currentDay.getMonth() + 1;
+  const handleDateClick = (year: number, month: number, day: number) => {
+    const currentMonth = baseDate.getMonth() + 1;
     const value = `${year}-${lessThan10Add0(month)}-${lessThan10Add0(day)}`;
     setActiveDay(value);
 
@@ -73,18 +76,23 @@ const Calendar = () => {
 
   useEffect(() => {
     createCalendar();
-  }, [currentDay]);
+  }, [baseDate]);
+
+  useEffect(() => {
+    // 초기화(활성화 날짜가 오늘로 변경)했을 경우, 오늘 날짜로 이동
+    if (activeDay === convertToDateFormat(today)) moveToToday();
+  }, [activeDay]);
 
   return (
     <CalendarWrStyle>
       <TopStyle>
-        <TodayStyle onClick={() => toToday()}>오늘</TodayStyle>
+        <TodayStyle onClick={moveToToday}>오늘</TodayStyle>
         <TitleStyle>
           <button onClick={() => changeMonth(-1)}>
             <span css={Hidden}>이전 달로</span>
           </button>
           <div>
-            {year}년 {month + 1}월
+            {baseYear}년 {baseMonth + 1}월
           </div>
           <button
             css={css`
@@ -107,19 +115,19 @@ const Calendar = () => {
           <li>토</li>
         </DayOfWeekStyle>
         <ul>
-          {days &&
-            days.map(({ dayOfYear, day, dayOfMonth }) => (
+          {calendar &&
+            calendar.map(({ year, month, date }) => (
               <li
-                // 순서대로 1. 활성화 스타일, 2. 다음달인 경우 스타일, 3. 오늘보다 이전 날짜 스타 일 지정
+                // 순서대로 1. 활성화 스타일, 2. 다음 달인 경우 스타일, 3. 오늘보다 이전 날짜 스타 일 지정
                 css={css`
-                  ${activeDay === `${dayOfYear}-${lessThan10Add0(dayOfMonth)}-${lessThan10Add0(day)}` && activeStyle};
-                  ${dayOfMonth != month + 1 && nextMonthStyle};
-                  ${today > new Date(dayOfYear, dayOfMonth - 1, day + 1) && disabledStyle}
+                  ${activeDay === `${year}-${lessThan10Add0(month)}-${lessThan10Add0(date)}` && activeStyle};
+                  ${month != baseMonth + 1 && nextMonthStyle};
+                  ${today > new Date(year, month - 1, date + 1) && disabledStyle}
                 `}
-                key={`${dayOfMonth} - ${day}`}
+                key={`${month} - ${date}`}
               >
-                <button type="button" onClick={() => handleDayClick(dayOfYear, dayOfMonth, day)}>
-                  {day}
+                <button type="button" onClick={() => handleDateClick(year, month, date)}>
+                  {date}
                 </button>
               </li>
             ))}

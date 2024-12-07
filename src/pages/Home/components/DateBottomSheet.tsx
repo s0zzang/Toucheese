@@ -4,19 +4,27 @@ import styled from '@emotion/styled';
 import SelectTime from './SelectTime';
 import { convertToDateFormat, useSelectDateStore } from '@store/useSelectDate';
 import { useSelectTimeStore } from '@store/useSelectTime';
+import useBottomSheetState from '@store/useBottomSheetStateStroe';
 
-const DateBottomSheet = () => {
+interface SelectedDate {
+  date: string;
+  time: string;
+}
+
+const DateBottomSheet = ({ setSelectedDate }: { setSelectedDate: React.Dispatch<React.SetStateAction<SelectedDate>> }) => {
   const today = new Date();
+  const { closeBottomSheet } = useBottomSheetState();
   const { time, setTime } = useSelectTimeStore();
   const { date, setDate } = useSelectDateStore();
 
   const handleReset = () => {
     setDate(convertToDateFormat(today));
-    setTime('');
+    setTime('T00:00:00');
   };
 
   const handleSubmit = () => {
-    console.log(date, time);
+    setSelectedDate({ date, time });
+    closeBottomSheet();
   };
 
   return (
