@@ -78,6 +78,11 @@ const Calendar = () => {
     createCalendar();
   }, [baseDate]);
 
+  useEffect(() => {
+    // 초기화(활성화 날짜가 오늘로 변경)했을 경우, 오늘 날짜로 이동
+    if (activeDay === convertToDateFormat(today)) moveToToday();
+  }, [activeDay]);
+
   return (
     <CalendarWrStyle>
       <TopStyle>
