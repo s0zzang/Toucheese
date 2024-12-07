@@ -37,16 +37,16 @@ const Calendar = () => {
 
   const createCalendar = () => {
     // 기준 달의 첫 날
-    const firstmonth = new Date(baseYear, baseMonth, 1);
+    const firstDayOfMonth = new Date(baseYear, baseMonth, 1);
     // 달력 시작 날짜 설정 : 기준 달의 첫 날의 주의 일요일
-    const startDay = new Date(firstmonth);
-    startDay.setDate(1 - firstmonth.getDay());
+    const startDay = new Date(firstDayOfMonth);
+    startDay.setDate(1 - firstDayOfMonth.getDay());
 
     // 기준 달의 마지막 날
-    const lastmonth = new Date(baseYear, baseMonth + 1, 0);
+    const lastDayOfMonth = new Date(baseYear, baseMonth + 1, 0);
     // 달력 끝 날짜 설정 : 기준 달의 마지막 날의 주의 토요일
-    const endDay = new Date(lastmonth);
-    endDay.setDate(lastmonth.getDate() + (6 - lastmonth.getDay()));
+    const endDay = new Date(lastDayOfMonth);
+    endDay.setDate(lastDayOfMonth.getDate() + (6 - lastDayOfMonth.getDay()));
 
     setCalendar(addDateToCalendar(startDay, endDay));
   };
