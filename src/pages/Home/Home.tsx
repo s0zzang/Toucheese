@@ -3,16 +3,16 @@ import BottomSheet from '@components/BottomSheet/BottomSheet';
 import Button from '@components/Button/Button';
 import Filter from '@components/Filter/Filter';
 import FilterTextSelector from '@components/Filter/FilterTextSelector';
+import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
 import ThemeNavigator from '@components/Navigator/ThemeNavigator';
+import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 import StudioList from '@components/Studio/StudioList';
 import styled from '@emotion/styled';
 import useBottomSheetState from '@store/useBottomSheetStateStroe';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import LocalDateSelectionModal from './components/LocalDateSelectionModal';
-import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
-import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
+import LocalDateSelectionModal from './LocalDateSelectionModal';
 
 interface IFixedProps {
   isFixed: boolean;
@@ -21,15 +21,18 @@ interface IFixedProps {
 const Home = () => {
   const [searchParams] = useSearchParams();
   const [isFixed, setIsFixed] = useState(false);
-  const navigatorRef = useRef<HTMLDivElement | null>(null);
+  const homeRef = useRef<HTMLTableSectionElement | null>(null);
 
+  // 스크롤에 따라 Navigator 고정
   useEffect(() => {
     const handleScroll = () => {
-      if (navigatorRef.current) {
-        const rect = navigatorRef.current.getBoundingClientRect();
-        const initialTop = rect.top;
-        if (rect.top <= 0) setIsFixed(true);
-        else if (rect.top >= initialTop) setIsFixed(false);
+      if (homeRef.current) {
+        const rect = homeRef.current.getBoundingClientRect();
+        if (rect.top <= -78) {
+          setIsFixed(true);
+        } else {
+          setIsFixed(false);
+        }
       }
     };
 
@@ -56,10 +59,10 @@ const Home = () => {
 
   return (
     <>
-      <SectionStyle>
+      <section ref={homeRef}>
         <BookingSearchContainer />
 
-        <NavigatorStyle id="navigator" ref={navigatorRef} isFixed={isFixed}>
+        <NavigatorStyle isFixed={isFixed}>
           <ThemeNavigator />
           <FilterBox>
             <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} />
@@ -72,14 +75,12 @@ const Home = () => {
         <ListStyle>
           <StudioList mode="filter" searchParams={searchParams} />
         </ListStyle>
-      </SectionStyle>
+      </section>
       <LocalDateSelectionModal modalId={1} />
       <BottomSheet />
     </>
   );
 };
-
-const SectionStyle = styled.section``;
 
 const NavigatorStyle = styled.div<IFixedProps>`
   width: 100%;
