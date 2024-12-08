@@ -1,9 +1,9 @@
 import { useGetStudios } from '@hooks/useGetStudios';
+import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { useEffect, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { IStudioItem } from 'types/types';
 import StudioItem from './StudioItem';
-import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import EmptyMessage from '@components/Message/EmptyMessage';
 
 const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; searchParams: URLSearchParams }) => {
@@ -13,6 +13,13 @@ const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; 
   const [hasMore, setHasMore] = useState(true);
 
   const { data, isLoading, isFetching } = useGetStudios(pageNum, mode, params);
+
+  // params 변경 시 기존 리스트 초기화
+  useEffect(() => {
+    setItems([]);
+    setPageNum(0);
+    setHasMore(true);
+  }, [params]);
 
   useEffect(() => {
     if (data?.content) {
