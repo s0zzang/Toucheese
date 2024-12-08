@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import EmptyMessage from '@components/Message/EmptyMessage';
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import { useState, useEffect } from 'react';
@@ -51,20 +52,13 @@ const RecentSearches = () => {
       </div>
       <div css={searchListStyle}>
         {recentSearches.length === 0 ? (
-          <p
-            css={css`
-              margin: 0 auto;
-              font-size: 1.4rem;
-            `}
-          >
-            최근 검색어가 없습니다.
-          </p>
+          <EmptyMessage message="최근 검색어가 없습니다." />
         ) : (
           recentSearches.map((search, index) => (
             <div key={index} css={searchItemStyle}>
               <span>{search}</span>
               <button
-                onClick={(e) => {
+                onClick={() => {
                   removeSearchTerm(index);
                 }}
                 css={deleteButtonStyle}
