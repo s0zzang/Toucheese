@@ -10,7 +10,7 @@ const Search = () => {
   const navigate = useNavigate();
 
   const handleSearch = (term: string) => {
-    navigate(`/search/results?q=${encodeURIComponent(term)}`); //임시
+    navigate(`/search/results?keyword=${encodeURIComponent(term)}`); //임시
   };
 
   return (

@@ -2,6 +2,7 @@
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useResetState from '@hooks/useResetState';
+import useBottomSheetState from '@store/useBottomSheetStateStroe';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +14,7 @@ const FilterPriceSlideComponent = () => {
   const priceGap = 5000; // 최소-최대 값 간 간격
 
   const navigate = useNavigate();
-  // const { closeBottomSheet } = useBottomSheetState();
+  const { closeBottomSheet } = useBottomSheetState();
 
   const [rangeMinValue, setRangeMinValue] = useState(fixedMinPrice);
   const [rangeMaxValue, setRangeMaxValue] = useState(fixedMaxPrice);
@@ -32,7 +33,7 @@ const FilterPriceSlideComponent = () => {
     currentParams.set('minPrice', rangeMinValue.toString());
     currentParams.set('maxPrice', rangeMaxValue.toString());
     navigate(`?${currentParams.toString()}`);
-    // closeBottomSheet();
+    closeBottomSheet();
   };
 
   const priceRangeMaxValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +49,7 @@ const FilterPriceSlideComponent = () => {
   };
 
   // 리셋 하는 공통 hook 호출
-  const { resetState } = useResetState(setRangeMinValue, fixedMinPrice, null);
+  const { resetState } = useResetState(setRangeMinValue, fixedMinPrice);
 
   // 상태를 초기화하는 함수 호출
   const handleResetClick = () => {

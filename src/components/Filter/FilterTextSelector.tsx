@@ -12,7 +12,16 @@ const FilterTextSelector = () => {
 
   const handleClick = (item: string) => {
     setSelectedIndex(item);
-    const Nav = item === '인기순' ? 'POPULARITY' : '조회순' ? 'VIEW_COUNT' : '평점순' ? 'RATING' : 'REVIEW_COUNT';
+    let Nav: 'POPULARITY' | 'VIEW_COUNT' | 'RATING' | 'REVIEW_COUNT';
+    if (item === '인기순') {
+      Nav = 'POPULARITY';
+    } else if (item === '조회순') {
+      Nav = 'VIEW_COUNT';
+    } else if (item === '평점순') {
+      Nav = 'RATING';
+    } else {
+      Nav = 'REVIEW_COUNT';
+    }
     navigate(`/?sortBy=${Nav}`);
     closeBottomSheet();
   };

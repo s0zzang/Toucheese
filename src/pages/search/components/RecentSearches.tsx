@@ -3,11 +3,7 @@ import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import { useState, useEffect } from 'react';
 
-interface RecentSearchesProps {
-  onSearch: (term: string) => void;
-}
-
-const RecentSearches = ({ onSearch }: RecentSearchesProps) => {
+const RecentSearches = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
   useEffect(() => {
@@ -29,7 +25,7 @@ const RecentSearches = ({ onSearch }: RecentSearchesProps) => {
   return (
     <div
       css={css`
-        border-bottom: 1px solid;
+        border-bottom: 0.1rem solid;
         border-color: ${variables.colors.gray200};
       `}
     >
@@ -58,7 +54,7 @@ const RecentSearches = ({ onSearch }: RecentSearchesProps) => {
           <p
             css={css`
               margin: 0 auto;
-              font-size: 14px;
+              font-size: 1.4rem;
             `}
           >
             최근 검색어가 없습니다.
@@ -95,7 +91,7 @@ const allClearButtonStyle = css`
 const searchListStyle = css`
   display: flex;
   overflow-x: auto;
-  padding: 10px 0;
+  padding: 1rem 0;
   -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
@@ -105,10 +101,10 @@ const searchListStyle = css`
 
 const searchItemStyle = css`
   position: relative;
-  margin-right: 10px;
-  font-size: 14px;
-  padding: 5px 10px;
-  border: 1px solid;
+  margin-right: 1rem;
+  font-size: 1.4rem;
+  padding: 0.5rem 1rem;
+  border: 0.1rem solid;
   border-radius: ${variables.borderRadius};
   border-color: ${variables.colors.gray400};
   display: flex;
@@ -116,7 +112,7 @@ const searchItemStyle = css`
 `;
 
 const deleteButtonStyle = css`
-  margin-left: 5px;
+  margin-left: 0.5rem;
   cursor: pointer;
   color: ${variables.colors.gray500};
 `;
