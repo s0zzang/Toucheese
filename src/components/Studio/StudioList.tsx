@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { IStudioItem } from 'types/types';
 import StudioItem from './StudioItem';
-import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import EmptyMessage from '@components/Message/EmptyMessage';
 
 const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; searchParams: URLSearchParams }) => {
