@@ -2,15 +2,14 @@
 import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
+import { useNavigate } from 'react-router-dom';
 
-interface SearchBarProps {
-  onSearch: (term: string) => void;
-}
-
-const SearchBar = ({ onSearch }: SearchBarProps) => {
+const SearchBar = () => {
   const [inputValue, setInputValue] = useState('');
   const queryParams = new URLSearchParams(window.location.search);
   const searchTerm = queryParams.get('keyword') || '';
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (searchTerm) {
@@ -32,7 +31,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
 
       localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
 
-      onSearch(term);
+      navigate(`/search/results?keyword=${term}`);
       setInputValue('');
     }
   };

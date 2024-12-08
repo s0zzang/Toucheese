@@ -16,7 +16,6 @@ const TrendingStudios = () => {
 
     fetchTrendingStudios();
   }, []);
-  console.log(trending);
 
   const renderStudios = (studios: string[], startIndex: number) => (
     <ul css={ulStyle}>

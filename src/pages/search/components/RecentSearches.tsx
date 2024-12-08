@@ -27,7 +27,7 @@ const RecentSearches = () => {
   };
 
   const handleClickSearchItem = (term: string) => {
-    navigate(`/search/results?keyword=${encodeURIComponent(term)}`);
+    navigate(`/search/results?keyword=${term}`);
   };
 
   return (

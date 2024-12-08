@@ -1,11 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
-interface EmptyMessageProps {
-  message: string;
-}
-
-const EmptyMessage = ({ message }: EmptyMessageProps) => {
+const EmptyMessage = ({ message }: { message: string }) => {
   return (
     <div css={containerStyle}>
       <p css={emptyMessageStyle}>{message}</p>
