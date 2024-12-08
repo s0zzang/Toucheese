@@ -1,10 +1,14 @@
 /** @jsxImportSource @emotion/react */
+import EmptyMessage from '@components/Message/EmptyMessage';
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RecentSearches = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedSearches = localStorage.getItem('recentSearches');
@@ -20,6 +24,10 @@ const RecentSearches = () => {
   const clearAllSearchTerms = () => {
     setRecentSearches([]);
     localStorage.removeItem('recentSearches');
+  };
+
+  const handleClickSearchItem = (term: string) => {
+    navigate(`/search/results?keyword=${term}`);
   };
 
   return (
@@ -51,20 +59,19 @@ const RecentSearches = () => {
       </div>
       <div css={searchListStyle}>
         {recentSearches.length === 0 ? (
-          <p
-            css={css`
-              margin: 0 auto;
-              font-size: 1.4rem;
-            `}
-          >
-            최근 검색어가 없습니다.
-          </p>
+          <EmptyMessage message="최근 검색어가 없습니다." />
         ) : (
           recentSearches.map((search, index) => (
             <div key={index} css={searchItemStyle}>
-              <span>{search}</span>
+              <span
+                onClick={() => {
+                  handleClickSearchItem(search);
+                }}
+              >
+                {search}
+              </span>
               <button
-                onClick={(e) => {
+                onClick={() => {
                   removeSearchTerm(index);
                 }}
                 css={deleteButtonStyle}
@@ -91,6 +98,7 @@ const allClearButtonStyle = css`
 const searchListStyle = css`
   display: flex;
   overflow-x: auto;
+  cursor: pointer;
   padding: 1rem 0;
   -webkit-overflow-scrolling: touch;
 
@@ -113,6 +121,5 @@ const searchItemStyle = css`
 
 const deleteButtonStyle = css`
   margin-left: 0.5rem;
-  cursor: pointer;
   color: ${variables.colors.gray500};
 `;

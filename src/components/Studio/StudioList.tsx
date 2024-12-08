@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { IStudioItem } from 'types/types';
 import StudioItem from './StudioItem';
+import EmptyMessage from '@components/Message/EmptyMessage';
 
 const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; searchParams: URLSearchParams }) => {
   const params = decodeSearchParamsToString(searchParams);
@@ -35,16 +36,24 @@ const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; 
     }
   };
 
+  const isSearchResultEmpty = () => {
+    return mode === 'search/result' && (!data?.content || data.content.length === 0);
+  };
+
   return (
     <>
-      <Virtuoso
-        data={items}
-        useWindowScroll
-        totalCount={items.length}
-        endReached={loadMore}
-        overscan={10}
-        itemContent={(index, item) => <StudioItem key={item.id} item={item} isFirst={index === 0} isLast={index === items.length - 1} />}
-      />
+      {isSearchResultEmpty() ? (
+        <EmptyMessage message="검색 결과가 없습니다." />
+      ) : (
+        <Virtuoso
+          data={items}
+          useWindowScroll
+          totalCount={items.length}
+          endReached={loadMore}
+          overscan={10}
+          itemContent={(index, item) => <StudioItem key={item.id} item={item} isFirst={index === 0} isLast={index === items.length - 1} />}
+        />
+      )}
     </>
   );
 };

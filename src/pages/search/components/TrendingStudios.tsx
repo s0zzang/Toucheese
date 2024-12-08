@@ -1,10 +1,21 @@
 /** @jsxImportSource @emotion/react */
+import EmptyMessage from '@components/Message/EmptyMessage';
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
+import { useEffect, useState } from 'react';
 
-const TrendingStudios: React.FC = () => {
-  // 예제 데이터
-  const trending = ['동화사진', '신라 사진', '산호맨손', '찰각', '인생사진', '해피포토', '터치즈', '인생사진', '포토이즘', '그림달'];
+const TrendingStudios = () => {
+  const [trending, setTrending] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchTrendingStudios = async () => {
+      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/search`);
+      const data = await response.json();
+      setTrending(data);
+    };
+
+    fetchTrendingStudios();
+  }, []);
 
   const renderStudios = (studios: string[], startIndex: number) => (
     <ul css={ulStyle}>
@@ -21,8 +32,14 @@ const TrendingStudios: React.FC = () => {
     <div css={wrapperStyle}>
       <h3 css={titleStyle}>관심 급상승 사진관</h3>
       <div css={containerStyle}>
-        {renderStudios(trending.slice(0, 5), 1)}
-        {renderStudios(trending.slice(5), 6)}
+        {trending.length > 0 ? (
+          <>
+            {renderStudios(trending.slice(0, 5), 1)}
+            {renderStudios(trending.slice(5), 6)}
+          </>
+        ) : (
+          <EmptyMessage message="관심 급상승 사진관이 없습니다." />
+        )}
       </div>
     </div>
   );
