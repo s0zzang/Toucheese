@@ -1,11 +1,16 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, test, expect, vi } from 'vitest';
+import { describe, test, expect } from 'vitest';
 import RecentSearches from './RecentSearches';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('RecentSearches', () => {
   test('최근 검색 기록이 없을 때 빈 상태를 렌더링한다', () => {
     localStorage.setItem('recentSearches', JSON.stringify([]));
-    render(<RecentSearches onSearch={vi.fn()} />);
+    render(
+      <MemoryRouter>
+        <RecentSearches />
+      </MemoryRouter>,
+    );
 
     expect(screen.getByText('최근 검색어가 없습니다.')).toBeInTheDocument();
   });
@@ -14,7 +19,11 @@ describe('RecentSearches', () => {
     const mockSearches = ['검색1', '검색2'];
     localStorage.setItem('recentSearches', JSON.stringify(mockSearches));
 
-    render(<RecentSearches onSearch={vi.fn()} />);
+    render(
+      <MemoryRouter>
+        <RecentSearches />
+      </MemoryRouter>,
+    );
 
     mockSearches.forEach((search) => {
       expect(screen.getByText(search)).toBeInTheDocument();
@@ -25,7 +34,11 @@ describe('RecentSearches', () => {
     const mockSearches = ['검색1', '검색2'];
     localStorage.setItem('recentSearches', JSON.stringify(mockSearches));
 
-    render(<RecentSearches onSearch={vi.fn()} />);
+    render(
+      <MemoryRouter>
+        <RecentSearches />
+      </MemoryRouter>,
+    );
     const clearAllButton = screen.getByText('모두지우기');
 
     fireEvent.click(clearAllButton);
