@@ -1,10 +1,10 @@
+import EmptyMessage from '@components/Message/EmptyMessage';
 import { useGetStudios } from '@hooks/useGetStudios';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { useEffect, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { IStudioItem } from 'types/types';
 import StudioItem from './StudioItem';
-import EmptyMessage from '@components/Message/EmptyMessage';
 
 const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; searchParams: URLSearchParams }) => {
   const params = decodeSearchParamsToString(searchParams);
@@ -38,23 +38,17 @@ const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; 
 
   return (
     <>
-      {isLoading && isFetching ? (
-        <div>로딩 컴포넌트!</div>
+      {data?.content.length === 0 ? (
+        <EmptyMessage message={`${mode === 'filter' ? '스튜디오 조회' : '검색'} 결과가 없습니다.`} />
       ) : (
-        <>
-          {data?.content.length === 0 ? (
-            <EmptyMessage message={`${mode === 'filter' ? '스튜디오 조회' : '검색'} 결과가 없습니다.`} />
-          ) : (
-            <Virtuoso
-              data={items}
-              useWindowScroll
-              totalCount={items.length}
-              endReached={loadMore}
-              overscan={10}
-              itemContent={(index, item) => <StudioItem key={item.id} item={item} isFirst={index === 0} isLast={index === items.length - 1} />}
-            />
-          )}
-        </>
+        <Virtuoso
+          data={items}
+          useWindowScroll
+          totalCount={items.length}
+          endReached={loadMore}
+          overscan={10}
+          itemContent={(index, item) => <StudioItem key={item.id} item={item} isFirst={index === 0} isLast={index === items.length - 1} />}
+        />
       )}
     </>
   );
