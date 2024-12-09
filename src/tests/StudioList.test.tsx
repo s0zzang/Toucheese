@@ -432,7 +432,7 @@ const mockedMoreStudios: IStudioRes = {
   empty: false,
 };
 
-describe('StudioList Components', () => {
+describe('StudioList Component', () => {
   test('스튜디오 리스트를 출력해야 합니다.', () => {
     // useGetStudios Mock 구현
     (useGetStudios as jest.Mock).mockReturnValue({
@@ -444,8 +444,8 @@ describe('StudioList Components', () => {
     render(<StudioList mode="filter" searchParams={new URLSearchParams()} />);
 
     // findByText: 비동기적으로 동작 => 데이터가 렌더링될 때까지 대기
-    screen.findByText(/주 스튜디오/i);
-    screen.findByText(/미에르스튜디오/i);
+    expect(screen.findByText(/주 스튜디오/i));
+    expect(screen.findByText(/미에르스튜디오/i));
   });
 
   test('스크롤을 끝까지 내리면 새로운 스튜디오 리스트를 로드해야 합니다.', () => {
@@ -457,8 +457,8 @@ describe('StudioList Components', () => {
 
     render(<StudioList mode="filter" searchParams={new URLSearchParams()} />);
 
-    screen.findByText(/주 스튜디오/i);
-    screen.findByText(/미에르스튜디오/i);
+    expect(screen.findByText(/주 스튜디오/i));
+    expect(screen.findByText(/미에르스튜디오/i));
 
     // 스크롤을 끝까지 내리는 시뮬레이션 (데이터가 끝에 도달하면)
     const virtuosoContainer = screen.getByTestId('virtuoso-container');
@@ -473,8 +473,8 @@ describe('StudioList Components', () => {
       isFetching: false,
     } as UseQueryResult<IStudioRes>);
 
-    screen.findByText(/오리우스씨네페이시스/i);
-    screen.findByText(/수상한 사진관/i);
+    expect(screen.findByText(/오리우스씨네페이시스/i));
+    expect(screen.findByText(/수상한 사진관/i));
   });
 
   test('데이터를 로딩 중일 때 로딩 컴포넌트를 출력해야 합니다.', () => {
@@ -487,7 +487,7 @@ describe('StudioList Components', () => {
     render(<StudioList mode="filter" searchParams={new URLSearchParams()} />);
 
     // 로딩 메시지가 화면에 표시되는지 확인
-    screen.findByText(/로딩 컴포넌트!/i);
+    expect(screen.findByText(/로딩 컴포넌트!/i));
   });
 
   test('검색 결과가 없을 때 "EmptyMessage" 컴포넌트를 출력해야 합니다.', () => {
@@ -501,6 +501,6 @@ describe('StudioList Components', () => {
     render(<StudioList mode="filter" searchParams={new URLSearchParams()} />);
 
     // 로딩 메시지가 화면에 표시되는지 확인
-    screen.findByText(/스튜디오 조회 결과가 없습니다./i);
+    expect(screen.findByText(/스튜디오 조회 결과가 없습니다./i));
   });
 });
