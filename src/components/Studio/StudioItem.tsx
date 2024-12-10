@@ -3,18 +3,14 @@ import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
 import styled from '@emotion/styled';
 import { Hidden, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useState } from 'react';
 import { IMenus, IPortfolio, IStudioItem } from 'types/types';
 
 const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boolean; isLast: boolean }) => {
-  const [hasLiked, setHasLiked] = useState<boolean>(false);
   // 북마크 설정/해제 api 호출
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation;
 
-    setHasLiked((state) => !state);
-
-    console.log('북마크 설정!');
+    console.log(`북마크 ${item.bookmark ? '해제' : '설정'}`);
   };
 
   // 최저가 계산 함수
@@ -73,8 +69,8 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
         </ItemInfoStyle>
         <BookmarkStyle>
           <button onClick={handleClick}>
-            <img src={`/img/icon-bookmark-${hasLiked ? 'active' : 'inactive'}.svg`} alt={`북마크 ${hasLiked ? '해제' : '등록'}`} />
-            <span css={Hidden}>북마크 {`${hasLiked ? '해제' : '등록'}하기`}</span>
+            <img src={`/img/icon-bookmark-${item.bookmark ? 'active' : 'inactive'}.svg`} alt={`북마크 ${item.bookmark ? '해제' : '등록'}`} />
+            <span css={Hidden}>북마크 {`${item.bookmark ? '해제' : '등록'}하기`}</span>
           </button>
           <p>{item.bookmark_count}</p>
         </BookmarkStyle>

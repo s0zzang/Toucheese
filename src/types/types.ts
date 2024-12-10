@@ -19,6 +19,14 @@ export interface IMenus {
   updated_at: null | string;
 }
 
+export interface IOptions {
+  id: number;
+  name: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface IStudioItem {
   id: number;
   vibe: string;
@@ -39,9 +47,11 @@ export interface IStudioItem {
   subVibe: string;
   portfolios: IPortfolio[];
   menus: IMenus[];
+  options: [] | IOptions;
   created_at: null | string;
   updated_at: null | string;
   day_of_week: 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN';
+  bookmark: boolean;
 }
 
 export interface IStudioRes {
