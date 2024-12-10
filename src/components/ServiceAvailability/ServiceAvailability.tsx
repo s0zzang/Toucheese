@@ -33,7 +33,7 @@ const ServiceAvailability = () => {
     return titles[index]; // 제목 배열에서 인덱스에 해당하는 제목 반환
   };
 
-  const { resetState } = useResetState(setSelectedButtons, [], null); // 최대 3개 인자
+  const { resetState } = useResetState(setSelectedButtons, []); // 최대 3개 인자
 
   const handleResetClick = () => {
     resetState(); // 상태를 초기화하는 함수 호출
