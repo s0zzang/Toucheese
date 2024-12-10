@@ -38,17 +38,23 @@ const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; 
 
   return (
     <>
-      {data?.content.length === 0 ? (
-        <EmptyMessage message={`${mode === 'filter' ? '스튜디오 조회' : '검색'} 결과가 없습니다.`} />
+      {pageNum === 0 && isLoading ? (
+        <div>로딩중</div>
       ) : (
-        <Virtuoso
-          data={items}
-          useWindowScroll
-          totalCount={items.length}
-          endReached={loadMore}
-          overscan={10}
-          itemContent={(index, item) => <StudioItem key={item.id} item={item} isFirst={index === 0} isLast={index === items.length - 1} />}
-        />
+        <>
+          {data?.content.length === 0 ? (
+            <EmptyMessage message={`${mode === 'filter' ? '스튜디오 조회' : '검색'} 결과가 없습니다.`} />
+          ) : (
+            <Virtuoso
+              data={items}
+              useWindowScroll
+              totalCount={items.length}
+              endReached={loadMore}
+              overscan={10}
+              itemContent={(index, item) => <StudioItem key={item.id} item={item} isFirst={index === 0} isLast={index === items.length - 1} />}
+            />
+          )}
+        </>
       )}
     </>
   );
