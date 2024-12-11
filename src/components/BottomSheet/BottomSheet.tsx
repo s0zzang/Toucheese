@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react';
-import useBottomSheetState from '@store/useBottomSheetStateStroe';
+import useBottomSheetState from '@store/useBottomSheetStateStore';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
@@ -30,8 +30,6 @@ const BottomSheet = () => {
       setSheetHeight(calculatedHeight > MAX_HEIGHT ? MAX_HEIGHT : calculatedHeight);
     }
   }, [children]);
-
-  console.log(sheetHeight);
 
   return (
     isOpen && (

@@ -2,7 +2,7 @@
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useResetState from '@hooks/useResetState';
-import useBottomSheetState from '@store/useBottomSheetStateStroe';
+import useBottomSheetState from '@store/useBottomSheetStateStore';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

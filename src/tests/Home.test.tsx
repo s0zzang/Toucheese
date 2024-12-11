@@ -7,7 +7,7 @@ import { describe, expect, test, vi } from 'vitest';
 const openBottomSheetMock = vi.fn();
 
 // useBottomSheetState의 default export: useBottonSheetState를 vi.fn()으로 Mock => 내부에 openBottomSheet Action Mock
-vi.mock('@store/useBottomSheetStateStroe', () => ({
+vi.mock('@store/useBottomSheetStateStore', () => ({
   default: vi.fn(() => ({
     openBottomSheet: openBottomSheetMock,
   })),
