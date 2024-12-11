@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useResetState from '@hooks/useResetState';
-import useBottomSheetState from '@store/useBottomSheetStateStroe';
+import useBottomSheetState from '@store/useBottomSheetStateStore';
 
 /** 필터링 시 매장 서비스 제공 여부를 선택하는 컴포넌트 */
 const ServiceAvailability = () => {
