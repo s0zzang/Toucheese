@@ -12,7 +12,7 @@ const BookingSearchContainer = () => {
 
   return (
     <BookingSearchContainerStyle>
-      <Button onClick={() => modal.open()}>
+      <Button type="button" onClick={() => modal.open()}>
         <ButtonTitleStyle>전체지역</ButtonTitleStyle> <img src="/img/icon-select-arrow.svg" alt="전체 지역 탐색" />
         <SearchStyle
           onClick={(e) => {

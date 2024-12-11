@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useResetState from '@hooks/useResetState';
+import useBottomSheetState from '@store/useBottomSheetStateStroe';
 
-//TODO - testcode 작성해야함
 /** 필터링 시 매장 서비스 제공 여부를 선택하는 컴포넌트 */
-
 const ServiceAvailability = () => {
   const [selectedButtons, setSelectedButtons] = useState<number[]>([]);
   const navigate = useNavigate();
+
+  const { closeBottomSheet } = useBottomSheetState(); // 바텀 시트 닫는 함수 호출
 
   /** 버튼 클릭 시 선택된 버튼의 인덱스를 상태에 추가하거나 제거하는 함수 */
   const handleButtonClick = (index: number) => {
@@ -25,6 +26,7 @@ const ServiceAvailability = () => {
     const queryParams = selectedButtons.map((i) => `${getButtonTitle(i)}`).join('%');
     currentParams.set('options', queryParams); // 기존 파라미터에 새로운 값 추가
     navigate(`?${currentParams.toString()}`); // 쿼리 파라미터를 포함한 URL로 이동
+    closeBottomSheet();
   };
 
   // 인덱스에 해당하는 버튼의 제목을 반환하는 함수
@@ -51,6 +53,7 @@ const ServiceAvailability = () => {
           width="fit"
           variant="white"
           disabled={selectedButtons.includes(0)}
+          active={selectedButtons.includes(0)}
           onClick={() => handleButtonClick(0)}
           type="button"
         />
@@ -64,6 +67,7 @@ const ServiceAvailability = () => {
           width="fit"
           variant="white"
           disabled={selectedButtons.includes(1)}
+          active={selectedButtons.includes(1)}
           onClick={() => handleButtonClick(1)}
           type="button"
         />
@@ -77,6 +81,7 @@ const ServiceAvailability = () => {
           width="fit"
           variant="white"
           disabled={selectedButtons.includes(2)}
+          active={selectedButtons.includes(2)}
           onClick={() => handleButtonClick(2)}
           type="button"
         />
@@ -90,6 +95,7 @@ const ServiceAvailability = () => {
           width="fit"
           variant="white"
           disabled={selectedButtons.includes(3)}
+          active={selectedButtons.includes(3)}
           onClick={() => handleButtonClick(3)}
           type="button"
         />
@@ -103,6 +109,7 @@ const ServiceAvailability = () => {
           width="fit"
           variant="white"
           disabled={selectedButtons.includes(4)}
+          active={selectedButtons.includes(4)}
           onClick={() => handleButtonClick(4)}
           type="button"
         />
@@ -116,6 +123,7 @@ const ServiceAvailability = () => {
           width="fit"
           variant="white"
           disabled={selectedButtons.includes(5)}
+          active={selectedButtons.includes(5)}
           onClick={() => handleButtonClick(5)}
           type="button"
         />
@@ -129,6 +137,7 @@ const ServiceAvailability = () => {
           width="fit"
           variant="white"
           disabled={selectedButtons.includes(6)}
+          active={selectedButtons.includes(6)}
           onClick={() => handleButtonClick(6)}
           type="button"
         />
