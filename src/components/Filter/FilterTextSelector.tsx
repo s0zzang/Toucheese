@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import useBottomSheetState from '@store/useBottomSheetStateStroe';
+import useBottomSheetState from '@store/useBottomSheetStateStore';
 import { TypoTitleSmS } from '@styles/Common';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

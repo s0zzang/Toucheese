@@ -4,11 +4,11 @@ import BottomSheet from '@components/BottomSheet/BottomSheet';
 import Modal from '@components/Modal/Modal';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
-import useBottomSheetState from '@store/useBottomSheetStateStroe';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import DateBottomSheet from './DateBottomSheet';
 import { useNavigate } from 'react-router-dom';
+import useBottomSheetState from '@store/useBottomSheetStateStore';
 
 const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const [selectedDate, setSelectedDate] = useState({ date: '', time: '' });

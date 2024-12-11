@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import SelectTime from './SelectTime';
 import { convertToDateFormat, useSelectDateStore } from '@store/useSelectDate';
 import { useSelectTimeStore } from '@store/useSelectTime';
-import useBottomSheetState from '@store/useBottomSheetStateStroe';
+import useBottomSheetState from '@store/useBottomSheetStateStore';
 
 interface SelectedDate {
   date: string;
