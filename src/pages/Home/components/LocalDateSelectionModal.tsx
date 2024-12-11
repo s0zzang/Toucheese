@@ -9,9 +9,11 @@ import { useState } from 'react';
 import DateBottomSheet from './DateBottomSheet';
 import { useNavigate } from 'react-router-dom';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
+import LocationSelectionModal from './LocationSelectionModal';
 
 const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const [selectedDate, setSelectedDate] = useState({ date: '', time: '' });
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const { openBottomSheet } = useBottomSheetState();
   const navigate = useNavigate();
 
@@ -29,6 +31,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const setParams = () => {
     const currentParams = new URLSearchParams(window.location.search);
     currentParams.set('requestedDateTime', `${selectedDate.date}${selectedDate.time}`);
+    currentParams.set('requestedLocation', `${selectedDate.date}`);
     navigate(`?${currentParams.toString()}`);
   };
 
@@ -44,7 +47,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
     return `${selectedDateForUi} ${selectedTimeForUi === '00시' ? '' : selectedTimeForUi}`;
   };
 
-  const handleOpenLocation = () => {};
+  const handleOpenLocation = () => openBottomSheet(<LocationSelectionModal setSelectedLocation={setSelectedLocation} />, '지역 선택');
   const handleOpenDate = () => openBottomSheet(<DateBottomSheet setSelectedDate={setSelectedDate} />, '');
 
   return (
@@ -53,7 +56,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
         <>
           <InputBoxStyle>
             <button type="button" onClick={handleOpenLocation}>
-              지역 선택
+              {selectedLocation ? selectedLocation : '지역 선택'}
             </button>
             <button type="button" onClick={handleOpenDate}>
               {selectedDate.date ? changeformatDateForUi(selectedDate) : '예약 날짜 선택'}
