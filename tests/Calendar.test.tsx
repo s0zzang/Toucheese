@@ -1,16 +1,12 @@
 import Calendar from '@components/Calendar/Calendar';
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, test } from 'vitest';
-// import { convertToDateFormat, useSelectDateStore } from '@store/useSelectDate';
-// import userEvent from '@testing-library/user-event';
-
-// 지역과 날짜(시간)가 선택되면 메인으로 돌아가고 그것에 맞춰 리스트가 필터링되는 행동이 필요해
-// 사용자가 달력을 확인하고 달력의 기능을 사용할 수 있는지 확인할 수 있는 행동이 필요해
-// 달력을 통해 특정 날짜를 선택할 수 있는지 확인할 수 있는 행동이 필요해
+import { convertToDateFormat } from '@store/useSelectDate';
+import userEvent from '@testing-library/user-event';
 
 describe('달력 컴포넌트', () => {
   const today = new Date();
-  const todayMonth = today.getMonth();
+  const [_, todayMonth, todayDate] = convertToDateFormat(today).split('-');
 
   beforeEach(() => {
     render(<Calendar />);
@@ -21,31 +17,38 @@ describe('달력 컴포넌트', () => {
     expect(monthText).toBeInTheDocument();
   });
 
-  test('1일을 선택하면 1일이 전역 상태 값에 담긴다', () => {
-    const buttons = screen.getAllByRole('button');
-    buttons.forEach((button) => {
-      console.log(button.getAttribute('name')); // name 속성 출력
-      console.log(button.textContent); // 내부 텍스트 출력
-    });
+  test('월 변경 버튼을 클릭하면 월이 변경된다', async () => {
+    const monthText = screen.getByText(new RegExp(`${todayMonth}월`));
+    const toNextMonthButton = screen.getByText('다음 달로 이동');
+    const toPrevMonthButton = screen.getByText('이전 달로 이동');
 
-    // 전역 date 상태 초기화
-    // useSelectDateStore.setState({ date: '' });
+    // 다음 달로 이동 버튼 클릭
+    await userEvent.click(toNextMonthButton);
+    expect(monthText).toHaveTextContent(`${todayMonth !== '12' ? +todayMonth + 1 : 1}월`);
 
-    const selectedDate = screen.getByRole('button', { name: /1일/i });
-    expect(selectedDate).toBeInTheDocument;
+    // 이전 달로 이동 버튼 클릭
+    await userEvent.click(toPrevMonthButton);
+    expect(monthText).toHaveTextContent(`${todayMonth !== '12' ? +todayMonth - 1 : 12}월`);
+  });
 
-    // const { date } = useSelectDateStore.getState();
+  test('내일 날짜를 클릭하면 내일 날짜로 선택된 날짜의 값이 변경된다', async () => {
+    const selectedDate = screen.getByText(/선택된 날짜/);
 
-    // 버튼 클릭
-    // fireEvent.click(selectedDate[0]);
-    // userEvent.click(selectedDate);
+    // 선택된 버튼 : 내일 날짜 || 내일 날짜가 달력에 없는 경우, 오늘 날짜
+    const selectedButton = screen.getAllByRole('button', { name: `${+todayDate + 1} 일` })[0] || screen.getAllByRole('button', { name: `${todayDate} 일` })[0];
 
-    // 상태 검증
-    // expect(date).toBe(''); // 값이 변경되었는지 확인
+    // 내일 날짜의 버튼 클릭
+    await userEvent.click(selectedButton);
+    // 선택된 날짜가 내일 날짜로 변경되는지 확인
+    expect(selectedDate).toHaveTextContent(todayDate);
+  });
 
-    // const { setDate } = useSelectDateStore.getState();
-    // setDate('2024-12-11');
-    // 화면에 상태가 반영되었는지 확인
-    // expect(screen.getByText(/Selected Date: 2024-12-11/i)).toBeInTheDocument();
+  test('"오늘"을 클릭하면 오늘 날짜로 이동한다', async () => {
+    const selectedDate = screen.getByText(/선택된 날짜/);
+    const toTodayButton = screen.getByText(/오늘/);
+
+    // '오늘' 버튼 클릭
+    await userEvent.click(toTodayButton);
+    expect(selectedDate).toHaveTextContent(convertToDateFormat(today));
   });
 });
