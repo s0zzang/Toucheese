@@ -128,6 +128,7 @@ const Calendar = () => {
               >
                 <button type="button" onClick={() => handleDateClick(year, month, date)}>
                   {date}
+                  <span css={Hidden}>일</span>
                 </button>
               </li>
             ))}
