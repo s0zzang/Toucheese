@@ -5,10 +5,17 @@ import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 
+interface IBookmarkState {
+  isActive: boolean;
+  bookmarkCount: number;
+}
+
 const Bookmark = ({ id, count, isBookmarked }: { id: number; count: number; isBookmarked: boolean }) => {
-  const [isActive, setIsActive] = useState<boolean>(isBookmarked);
-  const [bookmarkCount, setBookmarkCount] = useState<number>(count);
-  const handleBookmark = useBookmark(isActive);
+  const [bookmark, setBookmark] = useState<IBookmarkState>({
+    isActive: isBookmarked,
+    bookmarkCount: count,
+  });
+  const handleBookmark = useBookmark(bookmark.isActive);
 
   // 북마크 설정/해제 api 호출
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -16,22 +23,20 @@ const Bookmark = ({ id, count, isBookmarked }: { id: number; count: number; isBo
 
     await handleBookmark(1, id);
 
-    setIsActive(!isActive);
-
-    if (isActive) {
-      setBookmarkCount((count) => count - 1);
-    } else {
-      setBookmarkCount((count) => count + 1);
-    }
+    setBookmark((state: IBookmarkState) => ({
+      ...state,
+      isActive: !state.isActive,
+      bookmarkCount: bookmark.isActive ? state.bookmarkCount - 1 : state.bookmarkCount + 1,
+    }));
   };
 
   return (
     <BookmarkStyle>
       <button onClick={handleClick}>
-        <img src={`/img/icon-bookmark-${isActive ? 'active' : 'inactive'}.svg`} alt={`북마크 ${isActive ? '해제' : '등록'}`} />
-        <span css={Hidden}>북마크 {`${isActive ? '해제' : '등록'}하기`}</span>
+        <img src={`/img/icon-bookmark-${bookmark.isActive ? 'active' : 'inactive'}.svg`} alt={`북마크 ${bookmark.isActive ? '해제' : '등록'}`} />
+        <span css={Hidden}>북마크 {`${bookmark.isActive ? '해제' : '등록'}하기`}</span>
       </button>
-      <p>{bookmarkCount}</p>
+      <p>{bookmark.bookmarkCount}</p>
     </BookmarkStyle>
   );
 };
