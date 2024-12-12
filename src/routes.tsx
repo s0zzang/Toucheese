@@ -1,4 +1,5 @@
 import Home from '@pages/Home/Home';
+import ReviewPage from '@pages/reviews/ReviewPage';
 import Search from '@pages/search/Search';
 import SearchResults from '@pages/search/SearchResult';
 import StudioMain from '@pages/Studio/StudioMain/StudioMain';
