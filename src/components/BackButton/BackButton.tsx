@@ -8,11 +8,15 @@ interface BackButtonProps {
   ariaLabel?: string;
 }
 
-const BackButton = ({ to = '/search', replace = true, ariaLabel = '뒤로가기' }: BackButtonProps) => {
+const BackButton = ({ to, replace = true, ariaLabel = '뒤로가기' }: BackButtonProps) => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(to, { replace });
+    if (to) {
+      navigate(to, { replace }); // 특정 경로로 이동
+    } else {
+      navigate(-1); // 이전 페이지로 이동
+    }
   };
 
   return (
