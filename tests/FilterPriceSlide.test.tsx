@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import FilterPriceSlideComponent from './FilterPriceSlide';
 import { describe, expect, test } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
+import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
 
 describe('FilterPriceSlideComponent', () => {
   test('초기값이 올바르게 렌더링되는지 확인', () => {

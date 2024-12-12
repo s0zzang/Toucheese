@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import BookingSearchContainer from './BookingSearchContainer';
+import BookingSearchContainer from '@components/BookingSearchContainer/BookingSearchContainer';
 import { describe, expect, test } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 

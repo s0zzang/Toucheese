@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import ServiceAvailability from './ServiceAvailability';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import useResetState from '@hooks/useResetState';
 import { vi } from 'vitest';
+import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 
 vi.mock('@store/useBottomSheetStateStore', () => ({
   __esModule: true,

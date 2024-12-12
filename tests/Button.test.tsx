@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { expect, it } from 'vitest';
 import '@testing-library/jest-dom';
-import Button from './Button';
+import Button from '@components/Button/Button';
 
 /**test 01 기본 props 렌더링 */
 it('render with default props', () => {
