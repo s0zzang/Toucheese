@@ -3,14 +3,21 @@ import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
 import styled from '@emotion/styled';
 import { Hidden, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
+import { useNavigate } from 'react-router-dom';
 import { IMenus, IPortfolio, IStudioItem } from 'types/types';
 
 const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boolean; isLast: boolean }) => {
+  const navigate = useNavigate();
   // 북마크 설정/해제 api 호출
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation;
+  const handleClickBookmark = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
 
     console.log(`북마크 ${item.bookmark ? '해제' : '설정'}`);
+  };
+
+  // 스튜디오 클릭 시 navigate
+  const handleClickStudio = () => {
+    navigate(`/studio/${item.id}`);
   };
 
   // 최저가 계산 함수
@@ -29,15 +36,19 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
     let images: string[] = [];
     const porfolios = portfolio.slice(0, 5);
 
-    porfolios.forEach((portfolio: IPortfolio) => {
-      images.push(portfolio.url);
-    });
+    if (porfolios.length) {
+      porfolios.forEach((portfolio: IPortfolio) => {
+        images.push(portfolio.url);
+      });
+    } else {
+      images.push('/img/img-nopic.png');
+    }
 
     return images;
   };
 
   return (
-    <DivStyle isFirst={isFirst} isLast={isLast}>
+    <DivStyle isFirst={isFirst} isLast={isLast} onClick={handleClickStudio}>
       <ImageSwiper images={getImages(item.portfolios)} />
 
       <ItemContentStyle>
@@ -68,7 +79,7 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
           </InfoContainerStyle>
         </ItemInfoStyle>
         <BookmarkStyle>
-          <button onClick={handleClick}>
+          <button onClick={handleClickBookmark}>
             <img src={`/img/icon-bookmark-${item.bookmark ? 'active' : 'inactive'}.svg`} alt={`북마크 ${item.bookmark ? '해제' : '등록'}`} />
             <span css={Hidden}>북마크 {`${item.bookmark ? '해제' : '등록'}하기`}</span>
           </button>
@@ -88,6 +99,10 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
     `
       border-bottom: unset;
   `}
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const ItemContentStyle = styled.div`
