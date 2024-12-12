@@ -76,7 +76,6 @@ const Home = () => {
           <StudioList mode="filter" searchParams={searchParams} />
         </ListStyle>
       </section>
-      <LocalDateSelectionModal modalId={1} />
       <BottomSheet />
     </>
   );
