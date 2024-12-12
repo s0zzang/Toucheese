@@ -22,7 +22,9 @@ const FilterTextSelector = () => {
     } else {
       Nav = 'REVIEW_COUNT';
     }
-    navigate(`/?sortBy=${Nav}`);
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('sortBy', Nav);
+    navigate(`/?${searchParams.toString()}`);
     closeBottomSheet();
   };
 
