@@ -56,24 +56,24 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
           <TitleStyle css={TypoTitleSmS}>{`${item.name}`}</TitleStyle>
           <InfoContainerStyle>
             <div>
-              <img src="/img/icon-rating.svg" />
+              <img src="/img/icon-rating.svg" alt="평점" />
               <p>
                 {item.rating}
                 <span>{` (${item.review_count}개의 평가)`}</span>
               </p>
             </div>
             <div>
-              <img src="/img/icon-price.svg" />
+              <img src="/img/icon-price.svg" alt="가격" />
               <p>{`${getMinPrice(item.menus)}원~`}</p>
             </div>
           </InfoContainerStyle>
           <InfoContainerStyle>
             <div>
-              <img src="/img/icon-location.svg" />
+              <img src="/img/icon-location.svg" alt="주소" />
               <p className="location">{`${item.addressGu} ${item.address}`}</p>
             </div>
             <div>
-              <img src="/img/icon-time.svg" />
+              <img src="/img/icon-time.svg" alt="영업 시간" />
               <p>{`${item.open_time.slice(0, -3)} - ${item.close_time.slice(0, -3)}`}</p>
             </div>
           </InfoContainerStyle>
