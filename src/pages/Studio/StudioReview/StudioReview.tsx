@@ -47,7 +47,7 @@ const StudioReview = () => {
       <TotalReviewStyle>
         <h1 css={TypoTitleXsM}>전체 리뷰 (1,300)</h1>
         <TotalReviewInnerStyle>
-          <img src="/img/icon-star-yellow.svg" alt="전체 평점" />
+          <img src="/img/icon-rating.svg" alt="전체 평점" />
           <p>5.0</p>
         </TotalReviewInnerStyle>
       </TotalReviewStyle>
