@@ -86,10 +86,12 @@ const Calendar = () => {
   return (
     <CalendarWrStyle>
       <TopStyle>
-        <TodayStyle onClick={moveToToday}>오늘</TodayStyle>
+        <TodayStyle onClick={moveToToday}>
+          오늘 <span css={Hidden}>날짜로 이동</span>
+        </TodayStyle>
         <TitleStyle>
           <button onClick={() => changeMonth(-1)}>
-            <span css={Hidden}>이전 달로</span>
+            <span css={Hidden}>이전 달로 이동</span>
           </button>
           <div>
             {baseYear}년 {baseMonth + 1}월
@@ -100,7 +102,7 @@ const Calendar = () => {
             `}
             onClick={() => changeMonth(1)}
           >
-            <span css={Hidden}>다음 달로</span>
+            <span css={Hidden}>다음 달로 이동</span>
           </button>
         </TitleStyle>
       </TopStyle>
@@ -133,6 +135,9 @@ const Calendar = () => {
               </li>
             ))}
         </ul>
+        <h3 css={Hidden}>
+          선택된 날짜: <span className="selected">{activeDay}</span>
+        </h3>
       </CalendarStyle>
     </CalendarWrStyle>
   );
