@@ -13,8 +13,7 @@ const LocationSelectionModal = ({
   setSelectedLocation: React.Dispatch<React.SetStateAction<LocationItem | null>>;
   initialSelectedLocation: LocationItem | null;
 }) => {
-  const leftSection: LocationItem[] = ['전체보기', '강남', '서초', '송파', '강서'];
-  const rightSection: LocationItem[] = ['마포', '영등포', '강북', '용산', '성동'];
+  const LocationItem: LocationItem[] = ['전체보기', '강남', '서초', '송파', '강서', '마포', '영등포', '강북', '용산', '성동'];
   const { closeBottomSheet } = useBottomSheetState();
   const [selectedIndex, setSelectedIndex] = useState<LocationItem | null>(null);
 
@@ -27,8 +26,8 @@ const LocationSelectionModal = ({
   };
 
   const handleReset = () => {
-    setSelectedIndex(null);
-    setSelectedLocation(null);
+    setSelectedIndex('전체보기');
+    setSelectedLocation('전체보기');
   };
 
   const handleApply = () => {
@@ -42,14 +41,7 @@ const LocationSelectionModal = ({
     <>
       <LocationBox>
         <ul>
-          {leftSection.map((v, i) => (
-            <ListItem onClick={() => handleClick(v)} isSelected={selectedIndex === v} key={i}>
-              {v}
-            </ListItem>
-          ))}
-        </ul>
-        <ul>
-          {rightSection.map((v, i) => (
+          {LocationItem.map((v, i) => (
             <ListItem onClick={() => handleClick(v)} isSelected={selectedIndex === v} key={i}>
               {v}
             </ListItem>
@@ -70,11 +62,17 @@ const ButtonBox = styled.div`
 `;
 
 const LocationBox = styled.section`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
   margin-bottom: 3.2rem;
   ${TypoTitleSmS};
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+
+    li {
+      width: 50%;
+    }
+  }
 `;
 
 const ListItem = styled.li<{ isSelected: boolean }>`
