@@ -26,7 +26,7 @@ const Bookmark = ({ id, count, isBookmarked }: { id: number; count: number; isBo
     setBookmark((state: IBookmarkState) => ({
       ...state,
       isActive: !state.isActive,
-      bookmarkCount: bookmark.isActive ? state.bookmarkCount - 1 : state.bookmarkCount + 1,
+      bookmarkCount: state.isActive ? state.bookmarkCount - 1 : state.bookmarkCount + 1,
     }));
   };
 
