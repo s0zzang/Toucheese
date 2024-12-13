@@ -3,8 +3,10 @@ import Search from '@pages/search/Search';
 import SearchResults from '@pages/search/SearchResult';
 import StudioMain from '@pages/Studio/StudioMain/StudioMain';
 import StudioMenu from '@pages/Studio/StudioMenu/StudioMenu';
+import StudioMenuDetail from '@pages/Studio/StudioMenu/StudioMenuDetail';
 import StudioPortfolio from '@pages/Studio/StudioPortfolio/StudioPortfolio';
 import StudioReview from '@pages/Studio/StudioReview/StudioReview';
+import StudioReviewPhotos from '@pages/Studio/StudioReview/StudioReviewPhotos';
 import { createBrowserRouter } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -24,9 +26,24 @@ const router = createBrowserRouter([
     path: 'studio/:_id',
     children: [
       { index: true, element: <StudioMain /> },
-      { path: 'menu', element: <StudioMenu /> },
+      {
+        path: 'menu',
+        children: [
+          { index: true, element: <StudioMenu /> },
+          { path: ':_menuId', element: <StudioMenuDetail /> },
+        ],
+      },
       { path: 'portfolio', element: <StudioPortfolio /> },
-      { path: 'review', element: <StudioReview /> },
+      {
+        path: 'review',
+        children: [
+          {
+            index: true,
+            element: <StudioReview />,
+          },
+          { path: 'photos', element: <StudioReviewPhotos /> },
+        ],
+      },
     ],
   },
 ]);
