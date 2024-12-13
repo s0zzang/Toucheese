@@ -2,7 +2,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import Button from '@components/Button/Button';
-import { TypoTitleXsM } from '@styles/Common';
+import { TypoCapSmR, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useParams } from 'react-router-dom';
 import StudioReviewImageList from './components/StudioReviewImageList';
@@ -31,7 +31,10 @@ const StudioReview = () => {
       <ForHeader>헤더 위치</ForHeader>
       <ForNavBar>네브바 위치</ForNavBar>
       <ReviewPhotosWrapperStyle>
-        <h1 css={TypoTitleXsM}>리뷰 사진 모아보기 789</h1>
+        <ReviewTitleWrapperStyle>
+          <h1 css={TypoTitleXsM}>리뷰 사진 모아보기</h1>
+          <p css={TypoCapSmR}>789개</p>
+        </ReviewTitleWrapperStyle>
         <StudioReviewImageList />
       </ReviewPhotosWrapperStyle>
 
@@ -104,5 +107,15 @@ const TotalReviewInnerStyle = styled.div`
     font-weight: 400;
     line-height: 1.5;
     padding-left: 0.5rem;
+  }
+`;
+const ReviewTitleWrapperStyle = styled.div`
+  display: flex;
+  gap: 0.8rem;
+
+  & > p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
