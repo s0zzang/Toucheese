@@ -3,7 +3,7 @@ import Search from '@pages/search/Search';
 import SearchResults from '@pages/search/SearchResult';
 import StudioMain from '@pages/Studio/StudioMain/StudioMain';
 import StudioMenu from '@pages/Studio/StudioMenu/StudioMenu';
-import StudioPortfolio from '@pages/Studio/StudioPorfolio/StudioPortfolio';
+import StudioPortfolio from '@pages/Studio/StudioPortfolio/StudioPortfolio';
 import StudioReview from '@pages/Studio/StudioReview/StudioReview';
 import { createBrowserRouter } from 'react-router-dom';
 
