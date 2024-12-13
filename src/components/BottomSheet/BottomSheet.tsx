@@ -38,7 +38,7 @@ const BottomSheet = () => {
           <div css={SheetHeadStyle}>
             <h4>{title}</h4>
             <button type="button" onClick={closeBottomSheet}>
-              <span css={Hidden}>닫기</span>
+              <span css={Hidden}>바텀시트 닫기</span>
             </button>
           </div>
           <div css={SheetContentStyle(sheetHeight)} ref={contentRef}>

@@ -27,15 +27,13 @@ const Modal = ({ modalId = 1, size = 'default', title, children, withBtn = true,
   const { isOpen, close } = useModal(modalId);
   const handleClose = () => close();
 
-  console.log(size);
-
   return (
     isOpen && (
       <ModalStyle>
         <TitleStyle>
           {isOpen}
           <CloseBtnStyle type="button" onClick={handleClose}>
-            <span css={Hidden}>닫기</span>
+            <span css={Hidden}>모달 닫기</span>
           </CloseBtnStyle>
           <h2 css={TypoTitleSmS}>{title}</h2>
         </TitleStyle>
