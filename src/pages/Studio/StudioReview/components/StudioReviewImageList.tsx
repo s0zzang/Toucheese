@@ -2,11 +2,11 @@
 import styled from '@emotion/styled';
 
 /** 이미지만 받아서 보여주는 (자식) 컴포넌트 */
-const ReviewImageList = () => {
+const StudioReviewImageList = () => {
   return <PhotoContainerStyle>이미지 리스트</PhotoContainerStyle>;
 };
 
-export default ReviewImageList;
+export default StudioReviewImageList;
 
 const PhotoContainerStyle = styled.div`
   margin-top: 0.8rem;

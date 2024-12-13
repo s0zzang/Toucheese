@@ -4,9 +4,14 @@ import { useState } from 'react';
 import Button from '@components/Button/Button';
 import { TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
-import ReviewImageList from './components/ReviewImageList';
+import { useParams } from 'react-router-dom';
+import StudioReviewImageList from './components/StudioReviewImageList';
 
+/** 리뷰 페이지 (부모) */
 const StudioReview = () => {
+  const { _id } = useParams();
+  console.log(_id);
+
   const [selectedFilter, setSelectedFilter] = useState('all');
 
   const filterButtons = [
@@ -27,7 +32,7 @@ const StudioReview = () => {
       <ForNavBar>네브바 위치</ForNavBar>
       <ReviewPhotosWrapperStyle>
         <h1 css={TypoTitleXsM}>리뷰사진 (140)</h1>
-        <ReviewImageList />
+        <StudioReviewImageList />
       </ReviewPhotosWrapperStyle>
 
       <FilterButtonContainerStyle>
@@ -72,6 +77,7 @@ const ForNavBar = styled.div`
 const FilterButtonContainerStyle = styled.div`
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   gap: 0.6rem;
   min-height: 5.4rem;
   padding: 1.2rem 0;
