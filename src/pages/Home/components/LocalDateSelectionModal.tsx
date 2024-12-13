@@ -62,7 +62,6 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
               {selectedDate.date ? changeformatDateForUi(selectedDate) : '예약 날짜 선택'}
             </button>
           </InputBoxStyle>
-          <BottomSheet />
         </>
       </Modal>
     </>
