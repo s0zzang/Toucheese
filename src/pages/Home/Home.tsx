@@ -8,11 +8,10 @@ import ThemeNavigator from '@components/Navigator/ThemeNavigator';
 import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 import StudioList from '@components/Studio/StudioList';
 import styled from '@emotion/styled';
+import useBottomSheetState from '@store/useBottomSheetStateStore';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import LocalDateSelectionModal from './components/LocalDateSelectionModal';
-import useBottomSheetState from '@store/useBottomSheetStateStore';
 
 interface IFixedProps {
   isFixed: boolean;
