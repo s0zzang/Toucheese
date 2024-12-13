@@ -12,7 +12,7 @@ const StudioReview = () => {
   const { _id } = useParams();
   console.log(_id);
 
-  const [selectedFilter, setSelectedFilter] = useState('all');
+  const [selectedFilter, setSelectedFilter] = useState<string>('all');
 
   const filterButtons = [
     { label: '전체', value: '1' },
@@ -31,7 +31,7 @@ const StudioReview = () => {
       <ForHeader>헤더 위치</ForHeader>
       <ForNavBar>네브바 위치</ForNavBar>
       <ReviewPhotosWrapperStyle>
-        <h1 css={TypoTitleXsM}>리뷰사진 (140)</h1>
+        <h1 css={TypoTitleXsM}>리뷰 사진 모아보기 789</h1>
         <StudioReviewImageList />
       </ReviewPhotosWrapperStyle>
 
