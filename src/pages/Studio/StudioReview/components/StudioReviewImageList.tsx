@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
-import { DividerStyle } from '@styles/Common';
+import { DividerStyle, TypoCapSmM } from '@styles/Common';
 import variables from '@styles/Variables';
 
 /** 이미지만 상세보기 (자식) 컴포넌트 */
@@ -8,17 +8,20 @@ const StudioReviewImageList = () => {
   return (
     <PhotoContainerStyle>
       <div>
-        <img src="/img/sample-1.png" alt="증명1" />
+        <img src="/img/sample-1.png" alt="사진1" />
       </div>
       <div>
-        <img src="/img/sample-2.png" alt="증명2" />
+        <img src="/img/sample-2.png" alt="사진2" />
       </div>
       <div>
-        <img src="/img/sample-2.png" alt="증명2" />
+        <img src="/img/sample-2.png" alt="사진3" />
       </div>
-      <div>
-        <img src="/img/sample-2.png" alt="증명2" />
-      </div>
+      <ImageListLastContentStyle>
+        <img src="/img/sample-1.png" alt="사진1" />
+        <DimOverlayStyle>
+          <span>+더보기</span>
+        </DimOverlayStyle>
+      </ImageListLastContentStyle>
     </PhotoContainerStyle>
   );
 };
@@ -42,4 +45,33 @@ const PhotoContainerStyle = styled.div`
     margin-bottom: 3rem;
   }
   ${DividerStyle}
+`;
+const ImageListLastContentStyle = styled.div`
+  position: relative;
+  width: 25%;
+  height: 100%;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const DimOverlayStyle = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 3.5rem);
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: ${variables.colors.white};
+    ${TypoCapSmM}
+  }
 `;
