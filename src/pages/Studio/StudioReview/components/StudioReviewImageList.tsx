@@ -19,7 +19,7 @@ const StudioReviewImageList = () => {
       <ImageListLastContentStyle>
         <img src="/img/sample-1.png" alt="사진1" />
         <DimOverlayStyle>
-          <span>+더보기</span>
+          <span>더보기</span>
         </DimOverlayStyle>
       </ImageListLastContentStyle>
     </PhotoContainerStyle>
