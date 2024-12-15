@@ -18,6 +18,23 @@ interface IFixedProps {
   isFixed: boolean;
 }
 
+export type SortBy = {
+  VIEW_COUNT: string;
+  POPULARITY: string;
+  RATING: string;
+  REVIEW_COUNT: string;
+};
+
+export type Options = {
+  원본: string;
+  주차: string;
+  보정: string;
+  헤메코: string;
+  정장: string;
+  탈의실: string;
+  파우더룸: string;
+};
+
 const Home = () => {
   const [searchParams] = useSearchParams();
   const [isFixed, setIsFixed] = useState(false);
@@ -57,6 +74,9 @@ const Home = () => {
     openBottomSheet(<ServiceAvailability />, '매장정보');
   };
 
+  const sortBy: SortBy = { VIEW_COUNT: '조회순', POPULARITY: '인기순', RATING: '평점순', REVIEW_COUNT: '리뷰 많은순' };
+  const options: Options = { 보정: '보정', 원본: '원본', 주차: '주차', 헤메코: '헤메코', 정장: '정장', 탈의실: '탈의실', 파우더룸: '파우더룸' };
+
   return (
     <>
       <section ref={homeRef}>
@@ -66,9 +86,9 @@ const Home = () => {
           <ThemeNavigator />
           <FilterBox>
             <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} />
-            <Filter text="인기순" onClick={handleFilterByPopularity} />
-            <Filter text="가격대" onClick={handleFilterByPriceRange} />
-            <Filter text="매장정보" onClick={handleFilterByStoreInfo} />
+            <Filter params={window.location.search} text="인기순" paramsKeyword={sortBy} paramsName="sortBy" onClick={handleFilterByPopularity} />
+            <Filter params={window.location.search} paramsName={'minPrice' || 'maxPrice'} text="가격대" onClick={handleFilterByPriceRange} />
+            <Filter params={window.location.search} text="매장정보" paramsKeyword={options} paramsName="options" onClick={handleFilterByStoreInfo} />
           </FilterBox>
         </NavigatorStyle>
 
