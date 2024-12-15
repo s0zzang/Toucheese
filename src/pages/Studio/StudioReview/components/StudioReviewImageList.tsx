@@ -2,9 +2,12 @@
 import styled from '@emotion/styled';
 import { DividerStyle, TypoCapSmM } from '@styles/Common';
 import variables from '@styles/Variables';
+import { useNavigate } from 'react-router-dom';
 
 /** 이미지만 상세보기 (자식) 컴포넌트 */
-const StudioReviewImageList = () => {
+const StudioReviewImageList = ({ PageId }: { PageId: string }) => {
+  const navigate = useNavigate();
+
   return (
     <PhotoContainerStyle>
       <div>
@@ -18,7 +21,7 @@ const StudioReviewImageList = () => {
       </div>
       <ImageListLastContentStyle>
         <img src="/img/sample-1.png" alt="사진1" />
-        <DimOverlayStyle>
+        <DimOverlayStyle onClick={() => navigate(`/studio/${PageId}/review/photos`)}>
           <span>더보기</span>
         </DimOverlayStyle>
       </ImageListLastContentStyle>
