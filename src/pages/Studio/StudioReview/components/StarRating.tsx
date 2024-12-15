@@ -25,6 +25,7 @@ export default StarRating;
 const RatingWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 0.6rem;
 `;
 
 const Star = styled.span<{ filled: boolean }>`

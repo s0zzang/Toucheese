@@ -17,14 +17,15 @@ const StudioReview = () => {
       <ReviewPhotosWrapperStyle>
         <ReviewTitleWrapperStyle>
           <h1 css={TypoTitleXsM}>리뷰 사진 모아보기</h1>
-          <p css={TypoCapSmR}>789개</p>
+          <p css={TypoCapSmR}>{789}개</p>
         </ReviewTitleWrapperStyle>
         <StudioReviewImageList PageId={_id || ''} />
       </ReviewPhotosWrapperStyle>
 
       <StudioReviewCategories />
-
-      <StudioReviewItem />
+      {Array.from({ length: 10 }, (_, index) => (
+        <StudioReviewItem key={index} />
+      ))}
     </>
   );
 };
