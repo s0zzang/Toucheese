@@ -9,7 +9,7 @@ const BottomSheet = () => {
   const { isOpen, children, title, closeBottomSheet } = useBottomSheetState();
   const [sheetHeight, setSheetHeight] = useState(0); // 바텀시트 높이
   const [translateY, setTranslateY] = useState(0); // 바텀시트 드래그 시 위치 Y값
-  const [isDragg, setIsDragg] = useState(false); //드래그 상태값값
+  const [isDrag, setIsDrag] = useState(false); //드래그 상
 
   const sheet = useRef<HTMLDivElement>(null); // 바텀시트 전체
   const content = useRef<HTMLDivElement>(null); // 바텀시트 컨텐츠
@@ -56,12 +56,12 @@ const BottomSheet = () => {
     if (sheet.current && sheet.current.contains(target)) {
       // 드래그 시작 Y위치값 저장
       startY.current = clientY;
-      setIsDragg(true);
+      setIsDrag(true);
     }
   };
 
   const handleDragMove = (e: TouchEvent | MouseEvent) => {
-    if (!isDragg || startY.current === null || !sheet.current) return;
+    if (!isDrag || startY.current === null || !sheet.current) return;
 
     //터치&마우스 이벤트 구분하는 코드
     const clientY = e instanceof TouchEvent ? e.touches[0].clientY : e.clientY;
@@ -75,7 +75,7 @@ const BottomSheet = () => {
   };
 
   const handleDragEnd = () => {
-    setIsDragg(false);
+    setIsDrag(false);
 
     // 컨텐츠 3/1 이상 드래그하면 닫기
     if (translateY > sheetHeight / 3) {
@@ -103,7 +103,7 @@ const BottomSheet = () => {
         sheet.current.removeEventListener('touchend', handleDragEnd);
       }
     };
-  }, [isDragg, translateY, sheetHeight, closeBottomSheet]);
+  }, [isDrag, translateY, sheetHeight, closeBottomSheet]);
 
   return (
     isOpen && (
