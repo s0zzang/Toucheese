@@ -1,18 +1,18 @@
-import { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 
 interface ReviewContentProps {
   content: string;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ReviewContent = ({ content }: ReviewContentProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
+const ReviewContent = ({ content, isOpen, setIsOpen }: ReviewContentProps): JSX.Element => {
   return (
     <ReviewContentWrapper>
-      <ContentText isExpanded={isExpanded}>{content}</ContentText>
-      {content.length > 100 && <MoreButton onClick={() => setIsExpanded(!isExpanded)}>{isExpanded ? '접기' : '더보기'}</MoreButton>}
+      <ContentText isExpanded={isOpen}>{content}</ContentText>
+      <MoreButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '접기' : '더보기'}</MoreButton>
     </ReviewContentWrapper>
   );
 };

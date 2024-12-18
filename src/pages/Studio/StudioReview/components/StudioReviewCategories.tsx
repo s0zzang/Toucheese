@@ -5,8 +5,13 @@ import variables from '@styles/Variables';
 import { useState } from 'react';
 import Dropdown from './DropDown';
 
+interface StudioReviewCategoriesProps {
+  avgRating: number;
+  totalReviewNum: number;
+}
+
 /** 리뷰에 대한 필터링 컴포넌트 */
-const StudioReviewCategories = () => {
+const StudioReviewCategories = ({ avgRating, totalReviewNum }: StudioReviewCategoriesProps) => {
   const FILTER_OPTIONS = ['전체리뷰', '높은 평점순', '낮은 평점순', '최신순'];
   const [selectedOption, setSelectedOption] = useState('전체리뷰');
 
@@ -18,8 +23,8 @@ const StudioReviewCategories = () => {
       </CategoryWrapper>
       <RatingWrapper>
         <RatingIcon src="/img/icon-rating.svg" alt="평점" />
-        <RatingScore>5.0</RatingScore>
-        <ReviewCount>1,234개의 리뷰</ReviewCount>
+        <RatingScore>{avgRating}</RatingScore>
+        <ReviewCount>{totalReviewNum}개의 리뷰</ReviewCount>
       </RatingWrapper>
     </Container>
   );

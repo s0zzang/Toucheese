@@ -5,7 +5,7 @@ import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 
 /** 이미지만 상세보기 (자식) 컴포넌트 */
-const StudioReviewImageList = ({ PageId }: { PageId: string }) => {
+const StudioReviewImageList = ({ PageId }: { PageId: string | undefined }) => {
   const navigate = useNavigate();
 
   return (

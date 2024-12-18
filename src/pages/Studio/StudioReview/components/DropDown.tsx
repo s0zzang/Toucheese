@@ -66,7 +66,7 @@ const OptionList = styled.ul`
   border-radius: ${variables.borderRadius};
   margin-top: 0.4rem;
   z-index: 1;
-  background-color: white;
+  background-color: ${variables.colors.white};
 `;
 
 const OptionItem = styled.li<{ isSelected: boolean }>`
