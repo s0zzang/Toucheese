@@ -2,6 +2,7 @@
 import Button from '@components/Button/Button';
 import MasonryList from '@components/Masonry/Masonry';
 import styled from '@emotion/styled';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { IReviewImages } from 'types/types';
@@ -10,33 +11,33 @@ interface IReviewImagesResponse {
   content: IReviewImages[];
   totalElements: number;
   totalPages: number;
-  // ... 기타 필요한 필드
 }
 
 const StudioReviewPhotos = () => {
   const { _id } = useParams();
-  const [reviewImages, setReviewImages] = useState<IReviewImagesResponse>({
-    content: [],
-    totalElements: 0,
-    totalPages: 0,
-  });
 
   const fetchReviewImage = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/reviewImage`);
-      if (!response.ok) {
-        throw new Error('리뷰 이미지를 불러오는데 실패했습니다');
-      }
-      const data = await response.json();
-      setReviewImages(data);
-    } catch (error) {
-      console.error('리뷰 이미지 조회 중 오류 발생:', error);
+    const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/reviewImage`);
+    if (!response.ok) {
+      throw new Error('리뷰 이미지를 불러오는데 실패했습니다');
     }
+    return response.json();
   };
 
-  useEffect(() => {
-    fetchReviewImage();
-  }, []);
+  const {
+    data: reviewImages,
+    isLoading,
+    error,
+  } = useQuery<IReviewImagesResponse>({
+    queryKey: ['reviewImages', _id],
+    queryFn: fetchReviewImage,
+    enabled: !!_id,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (error) return <div>에러가 발생했습니다</div>;
+  if (!reviewImages) return null;
 
   const handleImageClick = () => {
     console.log('이미지 클릭됨');
