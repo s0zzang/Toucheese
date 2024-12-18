@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
-import { IMenus, IPortfolio, IStudioItem } from 'types/types';
+import { IMenus, IStudioItem } from 'types/types';
 
 const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boolean; isLast: boolean }) => {
   const navigate = useNavigate();
@@ -26,25 +26,9 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
     return minPrice;
   };
 
-  // 이미지 5개 불러오기
-  const getImages = (portfolio: IPortfolio[]) => {
-    let images: string[] = [];
-    const porfolios = portfolio.slice(0, 5);
-
-    if (porfolios.length) {
-      porfolios.forEach((portfolio: IPortfolio) => {
-        images.push(portfolio.url);
-      });
-    } else {
-      images.push('/img/img-nopic.png');
-    }
-
-    return images;
-  };
-
   return (
     <DivStyle isFirst={isFirst} isLast={isLast} onClick={handleClick}>
-      <ImageSwiper images={getImages(item.portfolios)} />
+      <ImageSwiper images={item.portfolios} />
 
       <ItemContentStyle>
         <ItemInfoStyle>
