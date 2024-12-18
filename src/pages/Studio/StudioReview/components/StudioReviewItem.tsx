@@ -7,6 +7,7 @@ import ReviewContent from './ReviewContent';
 import { useState } from 'react';
 import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
 import { formatTimeAgo } from '@utils/formatTimeAgo';
+import { IReviewImages } from 'types/types';
 
 // 리뷰 데이터의 타입 정의
 interface Review {
@@ -17,7 +18,7 @@ interface Review {
   menuId: number;
   menuName?: string;
   rating: number;
-  reviewImages: string[];
+  reviewImages: IReviewImages[];
   updated_at: string;
   userId: number;
   userName: string;
@@ -35,7 +36,16 @@ const StudioReviewItem = ({ review }: { review: Review }) => {
           <SubTitle css={TypoCapSmR}>컷 추가 수정 | 포즈 추가 촬영</SubTitle>
         </TitleWrapper>
         <StarRating rating={review.rating} />
-        <ImageSwiper images={review.reviewImages} />
+        <ImageSwiper
+          images={review.reviewImages}
+          imgProps={{
+            loading: 'lazy',
+            onLoad: (e) => {
+              const img = e.target as HTMLImageElement;
+              img.setAttribute('cache-control', 'max-age=31536000');
+            },
+          }}
+        />
         <ReviewContent content={review.content} isOpen={isOpen} setIsOpen={setIsOpen} />
         <NameAndDateWrapperStyle>
           <span>{review.userName}</span>

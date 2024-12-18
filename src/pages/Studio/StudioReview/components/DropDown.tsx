@@ -65,7 +65,7 @@ const OptionList = styled.ul`
   border: 1px solid ${variables.colors.gray400};
   border-radius: ${variables.borderRadius};
   margin-top: 0.4rem;
-  z-index: 1;
+  z-index: 12;
   background-color: ${variables.colors.white};
 `;
 
@@ -85,7 +85,7 @@ const FilterDropdown = styled.div`
   align-items: center;
   justify-content: space-between;
   width: fit-content;
-  min-width: 22rem;
+  min-width: 23rem;
   height: 3.3rem;
   padding: 0.8rem 1rem;
   border: 1px solid ${variables.colors.gray400};

@@ -40,7 +40,7 @@ const Container = styled.div`
 const CategoryWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
 `;
 
 const RatingWrapper = styled.div`
