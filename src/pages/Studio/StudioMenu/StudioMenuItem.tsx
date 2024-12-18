@@ -2,21 +2,25 @@
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
+import { IMenuListRes } from 'types/types';
 
-const StudioMenuItem = ({ StudioId }: { StudioId: string | undefined }) => {
+const StudioMenuItem = ({ StudioId, data }: { StudioId: string | undefined; data: IMenuListRes | undefined }) => {
   const navigate = useNavigate();
+
   return (
     <>
-      <section css={MeunItemWrapperStyle} onClick={() => navigate(`/studio/${StudioId}/menu/1`)}>
-        <div css={MenuCoverStyle}>이미지</div>
+      <section css={MeunItemWrapperStyle} onClick={() => navigate(`/studio/${StudioId}/menu/${data?.id}`)}>
+        <div css={MenuCoverStyle}>
+          <img src={`${data?.menuImages[0].url}`} alt="메뉴 대표 사진" />
+        </div>
         <div css={MenuDescStyle}>
           <div css={MenuHeadStyle}>
-            <h4>메뉴 제목</h4>
-            <p>메뉴에 대한 간단한 설명이 들어갑니다. 최대 2줄이 들어갑니다. 글자 초과화면 더보기 누르기...</p>
+            <h4>{data?.name}</h4>
+            <p>{data?.description}</p>
           </div>
           <div css={MenuPriceReviewStyle}>
-            <p>000000원</p>
-            <span>리뷰00</span>
+            <p>{data?.price.toLocaleString('ko-KR')}원</p>
+            <span>리뷰 {data?.reviewCount}</span>
           </div>
         </div>
       </section>
@@ -32,6 +36,7 @@ const MeunItemWrapperStyle = css`
   padding: 1.4rem 0;
   box-sizing: border-box;
   border-bottom: 0.1rem solid ${variables.colors.gray300};
+  cursor: pointer;
 `;
 
 const MenuCoverStyle = css`
