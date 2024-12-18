@@ -10,7 +10,7 @@ import StudioList from '@components/Studio/StudioList';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './components/LocalDateSelectionModal';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 
@@ -39,7 +39,7 @@ const Home = () => {
   const [searchParams] = useSearchParams();
   const [isFixed, setIsFixed] = useState(false);
   const homeRef = useRef<HTMLTableSectionElement | null>(null);
-
+  const navigate = useNavigate();
   // 스크롤에 따라 Navigator 고정
   useEffect(() => {
     const handleScroll = () => {
@@ -74,6 +74,11 @@ const Home = () => {
     openBottomSheet(<ServiceAvailability />, '매장정보');
   };
 
+  const handleReset = () => {
+    console.log('reset');
+    navigate('/');
+  };
+
   const sortBy: SortBy = { VIEW_COUNT: '조회순', POPULARITY: '인기순', RATING: '평점순', REVIEW_COUNT: '리뷰 많은순' };
   const options: Options = { 보정: '보정', 원본: '원본', 주차: '주차', 헤메코: '헤메코', 정장: '정장', 탈의실: '탈의실', 파우더룸: '파우더룸' };
 
@@ -85,7 +90,7 @@ const Home = () => {
         <NavigatorStyle isFixed={isFixed}>
           <ThemeNavigator />
           <FilterBox>
-            <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} />
+            <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} onClick={handleReset} />
             <Filter params={window.location.search} text="인기순" paramsKeyword={sortBy} paramsName="sortBy" onClick={handleFilterByPopularity} />
             <Filter params={window.location.search} paramsName={'minPrice' || 'maxPrice'} text="가격대" onClick={handleFilterByPriceRange} />
             <Filter params={window.location.search} text="매장정보" paramsKeyword={options} paramsName="options" onClick={handleFilterByStoreInfo} />
