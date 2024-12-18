@@ -31,7 +31,7 @@ const Bookmark = ({ id, count: initialCount, isBookmarked: initialBookmark }: { 
 
   return (
     <BookmarkStyle>
-      <button onClick={handleClick}>
+      <button type="button" onClick={handleClick}>
         <img src={`/img/icon-bookmark-${bookmark.isActive ? 'active' : 'inactive'}.svg`} alt={`북마크 ${bookmark.isActive ? '해제' : '등록'}`} />
         <span css={Hidden}>북마크 {`${bookmark.isActive ? '해제' : '등록'}하기`}</span>
       </button>

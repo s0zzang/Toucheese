@@ -1,6 +1,7 @@
 import Home from '@pages/Home/Home';
 import Search from '@pages/search/Search';
 import SearchResults from '@pages/search/SearchResult';
+import StudioDimTest from '@pages/Studio/StudioDimTest';
 import StudioMain from '@pages/Studio/StudioMain/StudioMain';
 import StudioMenu from '@pages/Studio/StudioMenu/StudioMenu';
 import StudioMenuDetail from '@pages/Studio/StudioMenu/StudioMenuDetail';
@@ -34,6 +35,8 @@ const router = createBrowserRouter([
         ],
       },
       { path: 'portfolio', element: <StudioPortfolio /> },
+      // 추후 삭제 예정
+      { path: 'dimtest', element: <StudioDimTest /> },
       {
         path: 'review',
         children: [

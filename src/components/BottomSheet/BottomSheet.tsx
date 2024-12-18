@@ -181,7 +181,7 @@ const SheetHeadStyle = css`
 
   & button {
     display: block;
-    background-image: url('/img/icon-close.svg');
+    background-image: url('/img/icon-close-gray500.svg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: 1.5rem;

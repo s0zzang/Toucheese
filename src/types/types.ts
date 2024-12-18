@@ -9,6 +9,14 @@ export interface IPortfolio {
   updated_at: null | string;
 }
 
+export interface IReviewImages {
+  id: number;
+  reviewId: number;
+  url: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface IMenus {
   id: number;
   studio: string;
