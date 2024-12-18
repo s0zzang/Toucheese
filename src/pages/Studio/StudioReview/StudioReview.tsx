@@ -10,10 +10,17 @@ import { useEffect, useState } from 'react';
 
 // 리뷰 데이터의 타입 정의
 interface Review {
-  id: string;
   content: string;
+  created_at: string;
+  id: number;
+  imageExists: boolean;
+  menuId: number;
+  menuName: string;
   rating: number;
   reviewImages: string[];
+  updated_at: string;
+  userId: number;
+  userName: string;
 }
 
 /** 리뷰 페이지 (부모) */
@@ -63,7 +70,7 @@ const StudioReview = () => {
 
       <StudioReviewCategories avgRating={avgRating} totalReviewNum={totalReviewNum} />
       {reviewLists.map((review) => (
-        <StudioReviewItem key={review.id} />
+        <StudioReviewItem key={review.id} review={review} />
       ))}
     </>
   );

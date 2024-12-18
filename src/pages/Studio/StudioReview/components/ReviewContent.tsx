@@ -1,45 +1,62 @@
-import React from 'react';
+/** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
+import { css } from '@emotion/react';
+import { useRef, useEffect, useState } from 'react';
 
 interface ReviewContentProps {
   content: string;
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: (value: boolean) => void;
 }
 
-const ReviewContent = ({ content, isOpen, setIsOpen }: ReviewContentProps): JSX.Element => {
+const ReviewContent = ({ content, isOpen, setIsOpen }: ReviewContentProps) => {
+  const textRef = useRef<HTMLParagraphElement>(null);
+  const [isTextOverflow, setIsTextOverflow] = useState(false);
+
+  useEffect(() => {
+    if (textRef.current) {
+      const lineHeight = parseInt(getComputedStyle(textRef.current).lineHeight);
+      const height = textRef.current.scrollHeight;
+      setIsTextOverflow(height > lineHeight * 3);
+    }
+  }, [content]);
+
   return (
-    <ReviewContentWrapper>
-      <ContentText isExpanded={isOpen}>{content}</ContentText>
-      <MoreButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '접기' : '더보기'}</MoreButton>
-    </ReviewContentWrapper>
+    <ReviewContentStyle>
+      <ContentText ref={textRef} isOpen={isOpen}>
+        {content}
+      </ContentText>
+      {isTextOverflow && <MoreButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '접기' : '더보기'}</MoreButton>}
+    </ReviewContentStyle>
   );
 };
 
-const ReviewContentWrapper = styled.div`
+export default ReviewContent;
+
+const ReviewContentStyle = styled.div`
   position: relative;
-  margin-bottom: 2rem;
-  margin-top: 0.8rem;
+  margin: 1.6rem 0;
 `;
 
-const ContentText = styled.p<{ isExpanded: boolean }>`
-  font-size: 1.6rem;
-  line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: ${(props) => (props.isExpanded ? 'none' : '3')};
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+const ContentText = styled.p<{ isOpen: boolean }>`
+  ${({ isOpen }) =>
+    !isOpen &&
+    css`
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    `}
+  line-height: 1.5;
+  color: ${variables.colors.gray900};
 `;
 
 const MoreButton = styled.button`
+  color: ${variables.colors.gray600};
+  margin-top: 0.8rem;
   background: none;
   border: none;
-  color: ${variables.colors.gray600};
-  font-size: 1.4rem;
   cursor: pointer;
-  margin-top: 0.5rem;
+  padding: 0;
 `;
-
-export default ReviewContent;
