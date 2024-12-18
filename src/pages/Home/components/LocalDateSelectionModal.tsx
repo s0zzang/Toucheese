@@ -45,7 +45,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
     return `${selectedDateForUi} ${selectedTimeForUi === '00시' ? '' : selectedTimeForUi}`;
   };
 
-  const handleOpenLocation = () => openBottomSheet(<LocationSelectionModal setSelectedLocation={setSelectedLocation} initialSelectedLocation={selectedLocation} />, '지역 선택');
+  const handleOpenLocation = () => openBottomSheet(<LocationBottomSheet setSelectedLocation={setSelectedLocation} initialSelectedLocation={selectedLocation} />, '지역 선택');
   const handleOpenDate = () => openBottomSheet(<DateBottomSheet setSelectedDate={setSelectedDate} />, '');
 
   return (
