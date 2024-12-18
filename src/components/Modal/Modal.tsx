@@ -3,16 +3,28 @@
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
-import { Hidden, TypoTitleSmS } from '@styles/Common';
+import { Hidden, TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 
 interface ModalProp {
-  title: string;
+  type: 'default' | 'dimmed' | 'fullscreen';
+  title?: string;
   children: JSX.Element | string;
   modalId?: number;
-  size?: string;
   withBtn?: boolean;
   buttons?: { text: string; event: () => void }[];
+}
+
+interface IModalStyle {
+  type: 'default' | 'dimmed' | 'fullscreen';
+}
+
+interface ITitleStyle {
+  type: 'dimmed' | 'fullscreen';
+}
+
+interface ICloseBtnStyle {
+  mode: 'dimmed' | 'fullscreen';
 }
 
 /**
@@ -23,21 +35,32 @@ interface ModalProp {
  *  - 태그 전달 : `<Modal title="모달2" buttons={buttons}> <p>모달2</p> </Modal>`
  *  - 모달 내 버튼 : {text: string, event: MouseEventHandler<HTMLButtonElement>}[]
  */
-const Modal = ({ modalId = 1, size = 'default', title, children, withBtn = true, buttons = [] }: ModalProp) => {
+const Modal = ({ modalId = 1, type = 'default', title, children, withBtn = true, buttons = [] }: ModalProp) => {
   const { isOpen, close } = useModal(modalId);
   const handleClose = () => close();
 
   return (
     isOpen && (
-      <ModalStyle>
-        <TitleStyle>
-          {isOpen}
-          <CloseBtnStyle type="button" onClick={handleClose}>
-            <span css={Hidden}>모달 닫기</span>
-          </CloseBtnStyle>
-          <h2 css={TypoTitleSmS}>{title}</h2>
-        </TitleStyle>
-
+      <ModalStyle type={type}>
+        {/* FullScreen 모달 헤더 */}
+        {type === 'fullscreen' && (
+          <TitleStyle type="fullscreen">
+            {isOpen}
+            <CloseBtnStyle type="button" mode="fullscreen" onClick={handleClose}>
+              <span css={Hidden}>모달 닫기</span>
+            </CloseBtnStyle>
+            {title && <h2 css={TypoTitleSmS}>{title}</h2>}
+          </TitleStyle>
+        )}
+        {/* Dim 처리 모달 헤더 */}
+        {type === 'dimmed' && (
+          <TitleStyle type="dimmed">
+            {title && <h2 css={TypoBodyMdR}>{title}</h2>}
+            <CloseBtnStyle type="button" mode="dimmed" onClick={handleClose}>
+              <span css={Hidden}>모달 닫기</span>
+            </CloseBtnStyle>
+          </TitleStyle>
+        )}
         <ContentsStyle>{children}</ContentsStyle>
 
         {withBtn && <ButtonBoxStyle>{buttons?.map((btn) => <Button key={btn.text} variant="black" onClick={btn.event} text={btn.text} disabled={false} />)}</ButtonBoxStyle>}
@@ -48,34 +71,38 @@ const Modal = ({ modalId = 1, size = 'default', title, children, withBtn = true,
 
 export default Modal;
 
-const ModalStyle = styled.section`
+const ModalStyle = styled.section<IModalStyle>`
+  box-shadow: inset 0 0 20px white;
   position: fixed;
   z-index: 99;
   inset: 0;
-  background: ${variables.colors.white};
+  background: ${(props) => (props.type !== 'fullscreen' ? 'rgba(0,0,0,0.6)' : variables.colors.white)};
   padding: 0 2rem 4.8rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: ${(props) => (props.type !== 'fullscreen' ? '' : 'space-between')};
 `;
 
-const TitleStyle = styled.div`
-  padding: 1.4rem 0;
+const TitleStyle = styled.div<ITitleStyle>`
+  padding: ${(props) => (props.type === 'fullscreen' ? '1.4rem 0' : '1.8rem 0')};
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+  color: ${(props) => props.type === 'dimmed' && variables.colors.white};
 `;
 
-const CloseBtnStyle = styled.button`
+const CloseBtnStyle = styled.button<ICloseBtnStyle>`
   width: 2.4rem;
   aspect-ratio: 1/1;
-  background: url(/img/icon-arrow-gray800.svg) no-repeat center / 1.1rem 1.9rem;
+  background: ${(props) => (props.mode === 'fullscreen' ? 'url(/img/icon-arrow-gray800.svg) no-repeat center / 1.1rem 1.9rem' : 'url(/img/icon-close-white.svg) no-repeat center / 1.2rem')};
   position: absolute;
-  left: 0;
+  left: ${(props) => props.mode === 'fullscreen' && 0};
+  right: ${(props) => props.mode === 'dimmed' && 0};
 `;
 
 const ContentsStyle = styled.div`
+  box-shadow: inset 0 0 20px green;
   padding: 1rem 0;
   flex-grow: 1;
   overflow-y: auto;
