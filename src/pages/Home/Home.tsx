@@ -60,22 +60,18 @@ const Home = () => {
   const { openBottomSheet } = useBottomSheetState();
 
   const handleFilterByPopularity = () => {
-    console.log('인기순 바텀시트');
     openBottomSheet(<FilterTextSelector />, '정렬');
   };
 
   const handleFilterByPriceRange = () => {
-    console.log('가격대');
     openBottomSheet(<FilterPriceSlideComponent />, '가격');
   };
 
   const handleFilterByStoreInfo = () => {
-    console.log('매장정보');
     openBottomSheet(<ServiceAvailability />, '매장정보');
   };
 
   const handleReset = () => {
-    console.log('reset');
     navigate('/');
   };
 
