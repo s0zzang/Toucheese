@@ -26,8 +26,6 @@ const Filter = ({ text, onClick, params, paramsKeyword, paramsName }: FilterProp
       const keyword = paramsKeyword as SortBy;
       setActiveText(keyword[sortByResult as keyof SortBy] || text);
     } else if (paramsName === 'options') {
-      console.log(paramsName);
-      console.log('optionsResult', optionsResult);
       setActiveText(optionsResult ? `매장정보 ${optionsResult.split('%').length}개` : text);
     } else if (paramsName === 'minPrice' || 'maxPrice') {
       setActiveText(minPriceResult || maxPriceResult ? `${minPriceResult} ~ ${maxPriceResult}원` : text);
