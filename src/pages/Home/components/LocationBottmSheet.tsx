@@ -6,7 +6,7 @@ import Button from '@components/Button/Button';
 
 type LocationItem = string;
 
-const LocationSelectionModal = ({
+const LocationBottomSheet = ({
   setSelectedLocation,
   initialSelectedLocation,
 }: {
@@ -101,4 +101,4 @@ const ListItem = styled.li<{ isSelected: boolean }>`
   `}
 `;
 
-export default LocationSelectionModal;
+export default LocationBottomSheet;

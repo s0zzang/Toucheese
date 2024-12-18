@@ -8,7 +8,7 @@ interface CopyButtonProps {
   buttonLabel?: string;
 }
 
-const CopyButton = ({ text, buttonLabel = '복사' }: CopyButtonProps) => {
+const CopyButton = ({ text, buttonLabel }: CopyButtonProps) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -19,9 +19,13 @@ const CopyButton = ({ text, buttonLabel = '복사' }: CopyButtonProps) => {
 
   return (
     <div css={containerStyle}>
-      <span css={textStyle}>{text}</span>
+      <div css={contentRowStyle}>
+        <img src="/img/icon-map.svg" alt="주소 아이콘" css={iconStyle} />
+        <span css={textStyle}>{text}</span>
+      </div>
       <div css={buttonRowStyle}>
         <button css={buttonStyle} onClick={handleCopy}>
+          <img src="/img/icon-content_copy.svg" alt="주소 복사 아이콘" css={iconStyle} />
           {buttonLabel}
         </button>
         {isCopied && <span css={feedbackStyle}>복사되었습니다! 🎉</span>}
@@ -36,7 +40,26 @@ const containerStyle = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   gap: 1rem;
+  margin-top: 1rem;
+`;
+
+const contentRowStyle = css`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+`;
+
+const buttonRowStyle = css`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const iconStyle = css`
+  width: 1.6rem; /* 아이콘 크기 조정 */
+  height: 1.6rem;
 `;
 
 const textStyle = css`
@@ -44,18 +67,17 @@ const textStyle = css`
   color: ${variables.colors.gray800};
 `;
 
-const buttonRowStyle = css`
+const buttonStyle = css`
   display: flex;
   align-items: center;
-  gap: 1rem;
-`;
-
-const buttonStyle = css`
-  padding: 0.6rem 1.2rem;
+  line-height: 1;
+  font-size: 1.2rem;
+  padding: 0.7rem;
+  gap: 0.5rem;
   background-color: ${variables.colors.gray400};
-  border-radius: 0.4rem;
+  border-radius: 2rem;
   cursor: pointer;
-  max-width: 5rem;
+  max-width: 7rem;
   width: 100%;
   text-align: center;
   transition: background-color 0.3s;
