@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import variables from './Variables';
 
 // title
 export const TypoTitleXsR = css`
@@ -44,6 +45,18 @@ export const TypoCapSmM = css`
   line-height: 1.4rem;
 `;
 
+export const DividerStyle = css`
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: calc(100% + 4rem);
+    height: 1rem;
+    background-color: ${variables.colors.gray300};
+    transform: translateX(-50%);
+  }
+`;
 // 웹 접근성
 export const Hidden = css`
   position: absolute !important;
