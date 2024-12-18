@@ -54,8 +54,8 @@ export interface IStudioItem {
   bookmark: boolean;
 }
 
-export interface IStudioRes {
-  content: IStudioItem[];
+export interface IStudioRes<T> {
+  content: T[];
   pageable: {
     pageNumber: number;
     pageSize: number;
