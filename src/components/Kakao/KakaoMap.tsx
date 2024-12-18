@@ -58,7 +58,14 @@ const KakaoMap = ({ addressSi, addressGu, address }: KakaoMapProps) => {
     <>
       <div css={mapContainerStyle}>
         <Map center={position} css={mapStyle} level={3} zoomable={true} isPanto={true} onClick={handleMapClick}>
-          <MapMarker position={position} />
+          <MapMarker
+            position={position}
+            image={{
+              src: '/img/icon-map-pin.svg',
+              size: { width: 40, height: 54 },
+              options: { alt: '지도 마커 아이콘' },
+            }}
+          />
         </Map>
       </div>
       <CopyButton text={fullAddress} buttonLabel="주소복사" />
