@@ -11,7 +11,6 @@ import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import LocalDateSelectionModal from './components/LocalDateSelectionModal';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 
 interface IFixedProps {

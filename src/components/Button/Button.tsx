@@ -114,13 +114,13 @@ const Button = ({
     ${variant === 'white' &&
     ` background-color: ${variables.colors.white}; 
       color:${variables.colors.gray900};
-      border: solid${variables.colors.gray400};
+      border: 0.1rem solid${variables.colors.gray400};
     `}
 
 ${variant === 'white' &&
     active &&
     ` background-color: ${variables.colors.primary50}; 
-      border: solid${variables.colors.primary500}; 
+      border: 0.1rem solid${variables.colors.primary500}; 
       color:${variables.colors.gray900};
     `}
 
