@@ -12,7 +12,7 @@ const StarRating = ({ rating }: StarRatingProps) => {
     <RatingWrapper>
       {Array.from({ length: 5 }, (_, index) => (
         <Star key={index} filled={index < rating}>
-          {index < rating ? '★' : '★'}
+          ★
         </Star>
       ))}
       <span css={TypoCapSmR}>{rating}</span>
