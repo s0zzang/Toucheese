@@ -9,7 +9,7 @@ import { IPortfolio, IReviewImages } from 'types/types';
 interface ImageSwiperProps extends SwiperProps {
   images: IPortfolio[] | IReviewImages[];
   imageStyle?: ReturnType<typeof css>;
-  imgProps?: {
+  imgprops?: {
     loading?: string;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
   };

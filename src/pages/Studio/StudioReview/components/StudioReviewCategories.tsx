@@ -6,13 +6,14 @@ import { useState } from 'react';
 import Dropdown from './DropDown';
 
 interface StudioReviewCategoriesProps {
-  avgRating: number;
+  avgRating?: number;
   totalReviewNum: number;
+  menuNanmeList: string[];
 }
 
 /** 리뷰에 대한 필터링 컴포넌트 */
-const StudioReviewCategories = ({ avgRating, totalReviewNum }: StudioReviewCategoriesProps) => {
-  const FILTER_OPTIONS = ['전체리뷰', '높은 평점순', '낮은 평점순', '최신순'];
+const StudioReviewCategories = ({ avgRating, totalReviewNum, menuNanmeList }: StudioReviewCategoriesProps) => {
+  const FILTER_OPTIONS = ['전체리뷰', ...menuNanmeList];
   const [selectedOption, setSelectedOption] = useState('전체리뷰');
 
   return (

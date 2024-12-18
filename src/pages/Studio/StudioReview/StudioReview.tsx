@@ -47,7 +47,7 @@ const StudioReview = () => {
   if (isLoading) return <div>로딩중...</div>;
   if (error) return <div>에러가 발생했습니다</div>;
 
-  const { reviewList: reviewLists, totalImageNum, avgRating, totalReviewNum } = data;
+  const { reviewList: reviewLists, totalImageNum, avgRating, totalReviewNum, samplePhotoList, menuNanmeList } = data;
   const processedAvgRating = avgRating.toFixed(1);
 
   return (
@@ -58,10 +58,10 @@ const StudioReview = () => {
           <h1 css={TypoTitleXsM}>리뷰 사진 모아보기</h1>
           <p css={TypoCapSmR}>{totalImageNum}개</p>
         </ReviewTitleWrapperStyle>
-        <StudioReviewImageList PageId={_id} />
+        <StudioReviewImageList pageId={_id} samplePhotoList={samplePhotoList} />
       </ReviewPhotosWrapperStyle>
 
-      <StudioReviewCategories avgRating={processedAvgRating} totalReviewNum={totalReviewNum} />
+      <StudioReviewCategories avgRating={processedAvgRating} totalReviewNum={totalReviewNum} menuNanmeList={menuNanmeList} />
       {reviewLists.map((review: Review) => (
         <StudioReviewItem key={review.id} review={review} />
       ))}

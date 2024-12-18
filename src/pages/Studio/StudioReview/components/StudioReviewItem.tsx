@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import { TypoCapSmR, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
+
 import StarRating from './StarRating';
 import ReviewContent from './ReviewContent';
 import { useState } from 'react';
@@ -38,7 +39,7 @@ const StudioReviewItem = ({ review }: { review: Review }) => {
         <StarRating rating={review.rating} />
         <ImageSwiper
           images={review.reviewImages}
-          imgProps={{
+          imgprops={{
             loading: 'lazy',
             onLoad: (e) => {
               const img = e.target as HTMLImageElement;
