@@ -87,7 +87,7 @@ const Home = () => {
           <FilterBox>
             <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} onClick={handleReset} />
             <Filter params={window.location.search} text="인기순" paramsKeyword={sortBy} paramsName="sortBy" onClick={handleFilterByPopularity} />
-            <Filter params={window.location.search} paramsName={'minPrice' || 'maxPrice'} text="가격대" onClick={handleFilterByPriceRange} />
+            <Filter params={window.location.search} paramsName={'minPrice'} text="가격대" onClick={handleFilterByPriceRange} />
             <Filter params={window.location.search} text="매장정보" paramsKeyword={options} paramsName="options" onClick={handleFilterByStoreInfo} />
           </FilterBox>
         </NavigatorStyle>
