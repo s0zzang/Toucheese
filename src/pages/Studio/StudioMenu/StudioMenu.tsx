@@ -11,7 +11,7 @@ const StudioMenu = () => {
   const { _id } = useParams();
   const [data, setData] = useState<IMenuListRes[]>();
 
-  const fetchMeun = async () => {
+  const fetchMenu = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/menu`, {
       method: 'GET',
       headers: {
@@ -29,7 +29,7 @@ const StudioMenu = () => {
   };
 
   useEffect(() => {
-    fetchMeun();
+    fetchMenu();
   }, []);
 
   const StudioMenuList = data?.map((item) => <StudioMenuItem key={item.id} StudioId={_id} data={item} />);

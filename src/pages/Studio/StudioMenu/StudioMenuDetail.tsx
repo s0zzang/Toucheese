@@ -18,7 +18,7 @@ const StudioMenuDetail = () => {
   const [scrollY, setScrollY] = useState(false);
   const [totalPrice, setTotalPrice] = useState<number>(data ? data.price : 0);
 
-  const fetchMeunDetail = async () => {
+  const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
       method: 'GET',
       headers: {
@@ -36,7 +36,7 @@ const StudioMenuDetail = () => {
 
   useEffect(() => {
     const fetchAndSetData = async () => {
-      const result = await fetchMeunDetail();
+      const result = await fetchMenuDetail();
       setData(result);
       setTotalPrice(result.price);
     };
