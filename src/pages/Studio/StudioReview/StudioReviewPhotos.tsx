@@ -4,22 +4,35 @@ import Header from '@components/Header/Header';
 import MasonryList from '@components/Masonry/Masonry';
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
-
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { IReviewImages } from 'types/types';
 
 interface IReviewImagesResponse {
   totalElements: number;
   totalPages: number;
   imageDtos: IReviewImages[];
+  menuNameList: string[];
+  menuIdList: number[];
 }
 
 const StudioReviewPhotos = () => {
   const { _id } = useParams(); // 스튜디오 아이디
+  const [selectedMenuId, setSelectedMenuId] = useState<number | null>(null);
+  const [_, setSearchParams] = useSearchParams();
 
   const fetchReviewImage = async () => {
     // 리뷰사진 모아보기 조회
-    const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/reviewImage`);
+    const url = new URL(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/reviewImage`);
+
+    if (selectedMenuId) {
+      url.searchParams.append('menuId', selectedMenuId.toString());
+      setSearchParams(url.searchParams);
+    } else {
+      setSearchParams({});
+    }
+
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error('리뷰 이미지를 불러오는데 실패했습니다');
     }
@@ -31,7 +44,7 @@ const StudioReviewPhotos = () => {
     isLoading,
     error,
   } = useQuery<IReviewImagesResponse>({
-    queryKey: ['reviewImages', _id],
+    queryKey: ['reviewImages', _id, selectedMenuId],
     queryFn: fetchReviewImage,
     enabled: !!_id,
     staleTime: 1000 * 60 * 5, // 5분
@@ -43,7 +56,7 @@ const StudioReviewPhotos = () => {
   if (error) return <div>에러가 발생했습니다</div>;
   if (!reviewImages) return null;
 
-  const handleImageClick = () => {
+  const handleOpenImageModal = () => {
     console.log('이미지 클릭됨');
   };
 
@@ -52,15 +65,23 @@ const StudioReviewPhotos = () => {
       <Header title="리뷰 사진 모아보기" />
       <StudioReviewPhotosContainerStyle>
         <ButtonWrapperStyle>
-          <Button text="전체11" variant="white" active={false} size="small" width="fit" />
-          <Button text="전체12" variant="white" active={false} size="small" width="fit" />
-          <Button text="전체13" variant="white" active={false} size="small" width="fit" />
-          <Button text="전체14" variant="white" active={false} size="small" width="fit" />
+          <Button text="전체" variant="white" active={selectedMenuId === null} size="small" width="fit" onClick={() => setSelectedMenuId(null)} />
+          {reviewImages.menuNameList.map((menu, index) => (
+            <Button
+              key={menu}
+              text={menu}
+              variant="white"
+              active={selectedMenuId === reviewImages.menuIdList[index]}
+              size="small"
+              width="fit"
+              onClick={() => setSelectedMenuId(reviewImages.menuIdList[index])}
+            />
+          ))}
         </ButtonWrapperStyle>
 
         <MasonryList>
           {reviewImages.imageDtos.map(({ id, url }) => (
-            <div key={id} onClick={handleImageClick}>
+            <div key={id} onClick={handleOpenImageModal}>
               <img src={url} alt={`리뷰 이미지 ${id}`} />
             </div>
           ))}
