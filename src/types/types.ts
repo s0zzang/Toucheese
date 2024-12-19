@@ -92,36 +92,36 @@ export interface IStudioRes<T> {
 }
 
 export interface IAdditionalOptionsRes {
-  createTime: string | null;
-  description: string;
-  duration: string | null;
   id: number;
-  menu: string;
   menuId: number;
+  menu: string;
   name: string;
   price: number;
+  description: string;
+  duration: string | null;
+  createTime: string | null;
   updateTime: string | null;
 }
 
 export interface IMenuImagesRes {
-  created_at: string | null;
   id: number;
-  menu: string;
   menuId: number;
-  updated_at: string | null;
+  menu: string;
   url: string;
+  created_at: string | null;
+  updated_at: string | null;
 }
 export interface IMenuListRes {
-  additionalOptions: IAdditionalOptionsRes[];
-  menuImages: IMenuImagesRes[];
-  description: string;
-  duration: string | null;
   id: number;
-  name: string;
-  price: number;
-  reviewCount: number;
   studioId: number;
   studioName: string;
+  name: string;
+  description: string;
+  price: number;
+  duration: string | null;
+  additionalOptions: IAdditionalOptionsRes[];
+  menuImages: IPortfolio[] | IReviewImages[];
+  reviewCount: number;
   created_at: string | null;
   updated_at: string | null;
 }

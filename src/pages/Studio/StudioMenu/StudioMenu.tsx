@@ -14,6 +14,9 @@ const StudioMenu = () => {
   const fetchMeun = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/menu`, {
       method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
     if (!res.ok) {
