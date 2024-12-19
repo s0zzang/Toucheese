@@ -10,6 +10,7 @@ import { IReviewImages } from 'types/types';
 import { useStudioReviews } from '@hooks/useStudioReviews';
 import Header from '@components/Header/Header';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 // 리뷰 데이터의 타입 정의
 interface Review {
   content: string;
@@ -52,6 +53,15 @@ const StudioReview = () => {
 
   return (
     <>
+      {data && (
+        <Helmet>
+          <title>{`스튜디오 리뷰 | ${totalReviewNum}개의 리뷰`}</title>
+          <meta name="description" content={`평균 평점 ${processedAvgRating}점, ${totalReviewNum}개의 리뷰와 ${totalImageNum}개의 사진이 있는 스튜디오 리뷰입니다.`} />
+          <meta property="og:title" content={`스튜디오 리뷰 | ${totalReviewNum}개의 리뷰`} />
+          <meta property="og:description" content={`평균 평점 ${processedAvgRating}점, ${totalReviewNum}개의 리뷰와 ${totalImageNum}개의 사진이 있는 스튜디오 리뷰입니다.`} />
+        </Helmet>
+      )}
+
       <Header title="리뷰" />
       <StudioNavigator _id={_id || ''} />
       <ReviewPhotosWrapperStyle>
