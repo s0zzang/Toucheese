@@ -20,7 +20,7 @@ const CopyButton = ({ text, buttonLabel }: CopyButtonProps) => {
   return (
     <div css={containerStyle}>
       <div css={contentRowStyle}>
-        <img src="/img/icon-map.svg" alt="주소 아이콘" css={iconStyle} />
+        <img src="/img/icon-location.svg" alt="주소 아이콘" css={iconStyle} />
         <span css={textStyle}>{text}</span>
       </div>
       <div css={buttonRowStyle}>

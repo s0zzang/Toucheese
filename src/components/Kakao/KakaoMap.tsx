@@ -11,7 +11,7 @@ interface KakaoMapProps {
 }
 
 const KakaoMap = ({ addressSi, addressGu, address }: KakaoMapProps) => {
-  const apiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY;
+  const apiKey = import.meta.env.VITE_KAKAO_API_KEY;
 
   const [loading, error] = useKakaoLoader({
     appkey: apiKey,
