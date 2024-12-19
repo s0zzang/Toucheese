@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
+import { css, SerializedStyles } from '@emotion/react';
 import variables from '@styles/Variables';
 import Header from '@components/Header/Header';
 import { useParams } from 'react-router-dom';
@@ -14,6 +14,7 @@ const StudioMenuDetail = () => {
   const { _menuId } = useParams();
   const [tabMenuState, setTabMenuState] = useState('info');
   const [data, setData] = useState<IMenuListRes>();
+  const [scrollY, setScrollY] = useState(false);
 
   const fetchMeunDetil = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -35,10 +36,25 @@ const StudioMenuDetail = () => {
     fetchMeunDetil();
   }, []);
 
+  const handleScroll = () => {
+    if (window.scrollY >= 250) {
+      setScrollY(true);
+    } else {
+      setScrollY(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <Header title="프로필 A반신 촬영" />
-      {/* {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />} */}
+      <Header title="프로필 A반신 촬영" customStyle={HeaderCustomStyle(scrollY)} />
+      {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />}
       <div css={MenuDescStyle}>
         <h2>{data?.name}</h2>
         <p>{data?.description}</p>
@@ -59,6 +75,19 @@ const StudioMenuDetail = () => {
 };
 
 export default StudioMenuDetail;
+
+const HeaderCustomStyle = (scrollY: boolean): SerializedStyles => {
+  return css`
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 50;
+    padding: 1.6rem 1rem;
+    ${scrollY && 'background-color: #fff; box-shadow: 0 0.4rem .5rem rgba(0, 0, 0, 0.1);'};
+    transition: all 0.3s;
+  `;
+};
 
 const MenuDescStyle = css`
   display: flex;

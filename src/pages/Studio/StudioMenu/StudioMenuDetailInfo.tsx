@@ -7,7 +7,7 @@ import { IMenuListRes } from 'types/types';
 import { useState } from 'react';
 
 const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes | undefined }) => {
-  const [totalPrice, setTotalPrice] = useState<number>(infoItem!.price);
+  const [totalPrice, setTotalPrice] = useState<number>(infoItem ? infoItem.price : 0);
 
   const handleOptionClick = (price: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
