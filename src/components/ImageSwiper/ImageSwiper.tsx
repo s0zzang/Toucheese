@@ -2,14 +2,17 @@
 import { css } from '@emotion/react';
 import { Swiper, SwiperSlide, SwiperProps } from 'swiper/react';
 import 'swiper/css';
-import { Autoplay, Mousewheel, Pagination } from 'swiper/modules';
+import { Mousewheel, Pagination } from 'swiper/modules';
 import variables from '@styles/Variables';
 import { IPortfolio, IReviewImages } from 'types/types';
 
 interface ImageSwiperProps extends SwiperProps {
   images: IPortfolio[] | IReviewImages[];
   imageStyle?: ReturnType<typeof css>;
+
   imgprops?: {
+
+  customStyle?: ReturnType<typeof css>;
     loading?: string;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
   };
@@ -17,11 +20,12 @@ interface ImageSwiperProps extends SwiperProps {
 
 const ImageSwiper = ({
   images,
-  modules = [Mousewheel, Pagination, Autoplay],
+  modules = [Mousewheel, Pagination],
   mousewheel = { forceToAxis: true, sensitivity: 1 },
   spaceBetween = 3,
   slidesPerView = 3.6,
   imageStyle,
+  customStyle,
   ...props
 }: ImageSwiperProps) => {
   const isPaginationActive = slidesPerView === 1;
@@ -41,27 +45,41 @@ const ImageSwiper = ({
     return images;
   };
 
+  const conditionalContainerStyle = slidesPerView === 1 ? containerFullStyle : containerDefaultStyle;
+
   return (
-    <Swiper
-      css={swiperStyle}
-      modules={modules}
-      mousewheel={mousewheel}
-      spaceBetween={spaceBetween}
-      slidesPerView={slidesPerView}
-      pagination={isPaginationActive ? { clickable: true, type: 'bullets' } : undefined}
-      autoplay={isPaginationActive ? { delay: 3000, disableOnInteraction: false } : undefined}
-      {...props}
-    >
-      {getImages(images).map((image, index) => (
-        <SwiperSlide key={index}>
-          <img css={[defaultImageStyle, imageStyle]} src={image} alt={`이미지 ${index + 1}`} />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <div css={conditionalContainerStyle}>
+      <Swiper
+        css={[swiperStyle, customStyle]}
+        modules={modules}
+        mousewheel={mousewheel}
+        spaceBetween={spaceBetween}
+        slidesPerView={slidesPerView}
+        pagination={isPaginationActive ? { clickable: true, type: 'bullets' } : undefined}
+        {...props}
+      >
+        {getImages(images).map((image, index) => (
+          <SwiperSlide key={index}>
+            <img css={[defaultImageStyle, imageStyle]} src={image} alt={`이미지 ${index + 1}`} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
   );
 };
 
 export default ImageSwiper;
+
+const containerFullStyle = css`
+  width: 100vw;
+  margin-left: calc(-1 * ${variables.layoutPadding});
+  margin-right: calc(-1 * ${variables.layoutPadding});
+`;
+
+const containerDefaultStyle = css`
+  width: 100%;
+  margin-bottom: 1.4rem;
+`;
 
 const swiperStyle = css`
   width: calc(100% + ${variables.layoutPadding});
