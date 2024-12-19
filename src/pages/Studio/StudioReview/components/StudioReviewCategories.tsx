@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { useState } from 'react';
@@ -21,21 +20,15 @@ const StudioReviewCategories = ({ avgRating, totalReviewNum, menuNameList, menuI
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
 
-    if (option === '전체리뷰') {
-      onFilterChange(null);
-    } else {
-      const index = menuNameList.indexOf(option);
-      if (index !== -1) {
-        onFilterChange(menuIdList[index]);
-      }
-    }
+    const menuIndex = menuNameList.indexOf(option);
+    const selectedMenuId = option === '전체리뷰' ? null : menuIdList[menuIndex];
+    onFilterChange(selectedMenuId);
   };
 
   return (
     <Container>
       <CategoryWrapper>
         <Dropdown options={FILTER_OPTIONS} selectedOption={selectedOption} onSelect={handleOptionSelect} />
-        <Button text="사진 리뷰만 보기" variant="white" active={false} size="small" width="fit" />
       </CategoryWrapper>
       <RatingWrapper>
         <RatingIcon src="/img/icon-rating.svg" alt="평점" />
@@ -53,11 +46,7 @@ const Container = styled.div`
   padding: 1.8rem 0;
 `;
 
-const CategoryWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
+const CategoryWrapper = styled.div``;
 
 const RatingWrapper = styled.div`
   display: flex;

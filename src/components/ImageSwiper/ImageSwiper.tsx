@@ -12,6 +12,7 @@ interface ImageSwiperProps extends SwiperProps {
   imgprops?: {
     loading?: string;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
+    onClick?: () => void;
   };
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
+import { TypoCapSmR } from '@styles/Common';
 
 interface ReviewContentProps {
   content: string;
@@ -37,7 +38,8 @@ const MoreButton = styled.button`
   background: none;
   border: none;
   color: ${variables.colors.gray600};
-  font-size: 1.4rem;
+  text-decoration: underline;
+  ${TypoCapSmR}
   cursor: pointer;
   margin-top: 0.5rem;
 `;

@@ -7,6 +7,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { IReviewImages } from 'types/types';
+import DimmedModal from '@pages/Studio/components/DimmedModal';
+import { SwiperSlide } from 'swiper/react';
+import useModal from '@hooks/useModal';
 
 interface IReviewImagesResponse {
   totalElements: number;
@@ -21,8 +24,10 @@ const StudioReviewPhotos = () => {
   const [selectedMenuId, setSelectedMenuId] = useState<number | null>(null);
   const [_, setSearchParams] = useSearchParams();
 
+  const { open } = useModal(1);
   const fetchReviewImage = async () => {
     // 리뷰사진 모아보기 조회
+
     const url = new URL(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/reviewImage`);
 
     if (selectedMenuId) {
@@ -56,10 +61,6 @@ const StudioReviewPhotos = () => {
   if (error) return <div>에러가 발생했습니다</div>;
   if (!reviewImages) return null;
 
-  const handleOpenImageModal = () => {
-    console.log('이미지 클릭됨');
-  };
-
   return (
     <>
       <Header title="리뷰 사진 모아보기" />
@@ -80,12 +81,20 @@ const StudioReviewPhotos = () => {
         </ButtonWrapperStyle>
 
         <MasonryList>
-          {reviewImages.imageDtos.map(({ id, url }) => (
-            <div key={id} onClick={handleOpenImageModal}>
+          {reviewImages.imageDtos.map(({ id, url }, index) => (
+            <div key={id} onClick={() => open()}>
               <img src={url} alt={`리뷰 이미지 ${id}`} />
             </div>
           ))}
         </MasonryList>
+
+        <DimmedModal>
+          {reviewImages.imageDtos.map(({ id, url }) => (
+            <SwiperSlide key={id}>
+              <img src={url} alt={`리뷰 이미지 ${id}`} />
+            </SwiperSlide>
+          ))}
+        </DimmedModal>
       </StudioReviewPhotosContainerStyle>
     </>
   );
