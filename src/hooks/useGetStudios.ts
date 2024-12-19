@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { IStudioRes } from 'types/types';
+import { IStudioItem, IStudioRes } from 'types/types';
 
-const fetchStudios = async (pageNum: number, mode: 'filter' | 'search/result', params: string): Promise<IStudioRes> => {
+const fetchStudios = async (pageNum: number, mode: 'filter' | 'search/result', params: string): Promise<IStudioRes<IStudioItem>> => {
   const response = await fetch(
     `${import.meta.env.VITE_TOUCHEESE_API}/studio${mode ? `/${mode}` : ''}?size=${import.meta.env.VITE_TOUCHEESE_STUDIO_LIMIT}${pageNum > 0 ? `&page=${pageNum}` : ''}${params && `&${params}`}`,
     {
@@ -19,8 +19,8 @@ const fetchStudios = async (pageNum: number, mode: 'filter' | 'search/result', p
   return response.json();
 };
 
-export const useGetStudios = (pageNum: number, mode: 'filter' | 'search/result', params: string): UseQueryResult<IStudioRes> => {
-  return useQuery<IStudioRes>({
+export const useGetStudios = (pageNum: number, mode: 'filter' | 'search/result', params: string): UseQueryResult<IStudioRes<IStudioItem>> => {
+  return useQuery<IStudioRes<IStudioItem>>({
     queryKey: ['studios', { params, mode, pageNum }],
     queryFn: () => fetchStudios(pageNum, mode, params),
     staleTime: 1000 * 60 * 1,
