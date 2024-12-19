@@ -1,62 +1,45 @@
-/** @jsxImportSource @emotion/react */
+import React from 'react';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
-import { css } from '@emotion/react';
-import { useRef, useEffect, useState } from 'react';
 
 interface ReviewContentProps {
   content: string;
   isOpen: boolean;
-  setIsOpen: (value: boolean) => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ReviewContent = ({ content, isOpen, setIsOpen }: ReviewContentProps) => {
-  const textRef = useRef<HTMLParagraphElement>(null);
-  const [isTextOverflow, setIsTextOverflow] = useState(false);
-
-  useEffect(() => {
-    if (textRef.current) {
-      const lineHeight = parseInt(getComputedStyle(textRef.current).lineHeight);
-      const height = textRef.current.scrollHeight;
-      setIsTextOverflow(height > lineHeight * 3);
-    }
-  }, [content]);
-
+const ReviewContent = ({ content, isOpen, setIsOpen }: ReviewContentProps): JSX.Element => {
   return (
-    <ReviewContentStyle>
-      <ContentText ref={textRef} isOpen={isOpen}>
-        {content}
-      </ContentText>
-      {isTextOverflow && <MoreButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '접기' : '더보기'}</MoreButton>}
-    </ReviewContentStyle>
+    <ReviewContentWrapper>
+      <ContentText isExpanded={isOpen}>{content}</ContentText>
+      <MoreButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '접기' : '더보기'}</MoreButton>
+    </ReviewContentWrapper>
   );
 };
 
-export default ReviewContent;
-
-const ReviewContentStyle = styled.div`
+const ReviewContentWrapper = styled.div`
   position: relative;
-  margin: 1.6rem 0;
+  margin-bottom: 2rem;
+  margin-top: 0.8rem;
 `;
 
-const ContentText = styled.p<{ isOpen: boolean }>`
-  ${({ isOpen }) =>
-    !isOpen &&
-    css`
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    `}
-  line-height: 1.5;
-  color: ${variables.colors.gray900};
+const ContentText = styled.p<{ isExpanded: boolean }>`
+  font-size: 1.6rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: ${(props) => (props.isExpanded ? 'none' : '3')};
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const MoreButton = styled.button`
-  color: ${variables.colors.gray600};
-  margin-top: 0.8rem;
   background: none;
   border: none;
+  color: ${variables.colors.gray600};
+  font-size: 1.4rem;
   cursor: pointer;
-  padding: 0;
+  margin-top: 0.5rem;
 `;
+
+export default ReviewContent;
