@@ -96,7 +96,7 @@ const ListItem = styled.li<{ isSelected: boolean }>`
         width: 1.5rem;
         height: 1.1rem;
         background-size: contain;
-        background-image: url('/img/icon-check.svg');
+        background-image: url('/img/icon-check-cheese800.svg');
       }
   `}
 `;
