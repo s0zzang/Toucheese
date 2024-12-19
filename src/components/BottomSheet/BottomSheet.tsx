@@ -107,7 +107,7 @@ const BottomSheet = () => {
 
   return (
     isOpen && (
-      <div css={DimStyle} onClick={closeBottomSheet}>
+      <div css={DimStyle}>
         <div
           css={[SheetStyle(sheetHeight, translateY)]}
           ref={sheet}
