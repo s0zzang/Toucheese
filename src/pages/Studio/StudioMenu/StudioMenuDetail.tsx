@@ -17,6 +17,9 @@ const StudioMenuDetail = () => {
   const [data, setData] = useState<IMenuListRes>();
   const [scrollY, setScrollY] = useState(false);
   const [totalPrice, setTotalPrice] = useState<number>(data ? data.price : 0);
+  const [checkState, setCheckState] = useState<Record<number, boolean>>({});
+
+  console.log(checkState);
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -76,8 +79,9 @@ const StudioMenuDetail = () => {
           리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
         </li>
       </ul>
-      {tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} setTotalPrice={setTotalPrice} />}
+      {tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} setTotalPrice={setTotalPrice} checkState={checkState} setCheckState={setCheckState} />}
       {tabMenuState === 'review' && <StudioMenuDetailReview />}
+
       <div css={FixedBtnBoxStyle}>
         <div className="totalPrice">
           <span>총 결제금액</span>
@@ -167,6 +171,7 @@ const FixedBtnBoxStyle = css`
   background-color: ${variables.colors.white};
   padding: 1.6rem;
   border-top: 0.1rem solid ${variables.colors.gray300};
+  z-index: 30;
 
   .totalPrice {
     display: flex;

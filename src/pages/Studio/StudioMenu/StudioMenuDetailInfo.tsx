@@ -5,10 +5,21 @@ import { TypoBodyMdM, TypoBodyMdR, TypoBodyMdSb, TypoTitleXsB, TypoTitleXsM } fr
 import { IMenuListRes } from 'types/types';
 import { Dispatch, SetStateAction } from 'react';
 
-const StudioMenuDetailInfo = ({ infoItem, setTotalPrice }: { infoItem: IMenuListRes | undefined; setTotalPrice: Dispatch<SetStateAction<number>> }) => {
-  const handleOptionClick = (price: number, e: React.ChangeEvent<HTMLInputElement>) => {
+const StudioMenuDetailInfo = ({
+  infoItem,
+  setTotalPrice,
+  checkState,
+  setCheckState,
+}: {
+  infoItem: IMenuListRes | undefined;
+  setTotalPrice: Dispatch<SetStateAction<number>>;
+  checkState: Record<number, boolean>;
+  setCheckState: Dispatch<SetStateAction<Record<number, boolean>>>;
+}) => {
+  const handleOptionClick = (price: number, id: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     setTotalPrice((prev) => (isChecked ? prev + price : prev - price));
+    setCheckState((prev) => ({ ...prev, [id]: isChecked }));
   };
 
   // 추후 예약 기능시 필요
@@ -51,7 +62,7 @@ const StudioMenuDetailInfo = ({ infoItem, setTotalPrice }: { infoItem: IMenuList
           {infoItem?.additionalOptions.map((item) => (
             <fieldset key={item.id}>
               <div css={AddOptionItemStyle}>
-                <input type="checkbox" id={`${item?.price}`} name={`${item?.price}`} value="OptionPrice" onChange={(e) => handleOptionClick(item.price, e)} />
+                <input type="checkbox" id={`${item?.price}`} name={`${item?.price}`} value="OptionPrice" onChange={(e) => handleOptionClick(item.price, item.id, e)} checked={checkState[item.id]} />
                 <label htmlFor={`${item?.price}`}>
                   <span>{item.name}</span>
                 </label>
