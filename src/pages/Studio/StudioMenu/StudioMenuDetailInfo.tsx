@@ -1,23 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
-import Button from '@components/Button/Button';
-import { TypoBodyMdM, TypoBodyMdR, TypoCapSmR, TypoTitleSmS, TypoTitleXsM } from '@styles/Common';
+import { TypoBodyMdR, TypoTitleXsM } from '@styles/Common';
 import { IMenuListRes } from 'types/types';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes | undefined }) => {
-  const [totalPrice, setTotalPrice] = useState<number>(infoItem ? infoItem.price : 0);
-
+const StudioMenuDetailInfo = ({ infoItem, setTotalPrice }: { infoItem: IMenuListRes | undefined; setTotalPrice: Dispatch<SetStateAction<number>> }) => {
   const handleOptionClick = (price: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     setTotalPrice((prev) => (isChecked ? prev + price : prev - price));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('최종 결제 금액:', totalPrice);
-  };
+  // 추후 예약 기능시 필요
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   console.log('최종 결제 금액:', totalPrice);
+  // };
 
   return (
     <>
@@ -45,7 +43,8 @@ const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes | undefined
         <p>{infoItem?.price.toLocaleString('ko-KR')}원</p>
       </section>
 
-      <form css={AddOptionsWrapperStyle} onSubmit={handleSubmit}>
+      <form css={AddOptionsWrapperStyle}>
+        {/* <form css={AddOptionsWrapperStyle} onSubmit={handleSubmit} id="priceForm">/ */}
         <h3>추가 옵션</h3>
 
         <div css={AddOptionsListStyle}>
@@ -60,15 +59,6 @@ const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes | undefined
               <p>+{item?.price.toLocaleString('ko-KR')}원</p>
             </fieldset>
           ))}
-        </div>
-
-        <div css={FixedBtnBoxStyle}>
-          <div className="totalPrice">
-            <span>총 결제금액</span>
-            <p>{totalPrice?.toLocaleString('ko-KR')}원</p>
-          </div>
-
-          <Button text="예약하기" variant="black" type="submit" />
         </div>
       </form>
     </>
@@ -190,33 +180,5 @@ const AddOptionItemStyle = css`
 
   & label {
     margin-right: auto;
-  }
-`;
-
-const FixedBtnBoxStyle = css`
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: ${variables.colors.white};
-  padding: 2rem 1.6rem;
-  border-top: 0.1rem solid ${variables.colors.gray300};
-
-  .totalPrice {
-    display: flex;
-    flex-direction: column;
-    min-width: 10rem;
-
-    & span {
-      ${TypoCapSmR}
-      color:  ${variables.colors.gray600};
-    }
-
-    & p {
-      ${TypoTitleSmS}
-    }
   }
 `;

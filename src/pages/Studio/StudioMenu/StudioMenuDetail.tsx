@@ -3,20 +3,25 @@ import { css, SerializedStyles } from '@emotion/react';
 import variables from '@styles/Variables';
 import Header from '@components/Header/Header';
 import { useParams } from 'react-router-dom';
-import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
+import { TypoBodyMdM, TypoCapSmR, TypoTitleSmS } from '@styles/Common';
 import StudioMenuDetailInfo from './StudioMenuDetailInfo';
 import { useEffect, useState } from 'react';
 import StudioMenuDetailReview from './StudioMenuDetailReview';
 import { IMenuListRes } from 'types/types';
 import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
+import Button from '@components/Button/Button';
 
 const StudioMenuDetail = () => {
   const { _menuId } = useParams();
   const [tabMenuState, setTabMenuState] = useState('info');
   const [data, setData] = useState<IMenuListRes>();
   const [scrollY, setScrollY] = useState(false);
+  const [totalPrice, setTotalPrice] = useState<number>(data ? data.price : 0);
 
-  const fetchMeunDetil = async () => {
+  console.log(data);
+  console.log(data?.price);
+
+  const fetchMeunDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
       method: 'GET',
       headers: {
@@ -29,11 +34,17 @@ const StudioMenuDetail = () => {
     }
 
     const data = await res.json();
-    setData(data);
+    return data;
   };
 
   useEffect(() => {
-    fetchMeunDetil();
+    const fetchAndSetData = async () => {
+      const result = await fetchMeunDetail();
+      setData(result);
+      setTotalPrice(result.price);
+    };
+
+    fetchAndSetData();
   }, []);
 
   const handleScroll = () => {
@@ -68,8 +79,16 @@ const StudioMenuDetail = () => {
           리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
         </li>
       </ul>
-      {tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
+      {tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} setTotalPrice={setTotalPrice} />}
       {tabMenuState === 'review' && <StudioMenuDetailReview />}
+      <div css={FixedBtnBoxStyle}>
+        <div className="totalPrice">
+          <span>총 결제금액</span>
+          <p>{totalPrice?.toLocaleString('ko-KR')}원</p>
+        </div>
+
+        <Button text="예약하기" variant="black" type="submit" />
+      </div>
     </>
   );
 };
@@ -85,7 +104,7 @@ const HeaderCustomStyle = (scrollY: boolean): SerializedStyles => {
     z-index: 50;
     padding: 1.6rem 1rem;
     ${scrollY && 'background-color: #fff; box-shadow: 0 0.4rem .5rem rgba(0, 0, 0, 0.1);'};
-    transition: all 0.3s;
+    transition: all 0.1s;
   `;
 };
 
@@ -140,6 +159,30 @@ const TabMenuStyle = css`
   }
 `;
 
-const ImgaeAddStyle = css`
-  box-shadow: inset 0 0 10px blue;
+const FixedBtnBoxStyle = css`
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: ${variables.colors.white};
+  padding: 1.6rem;
+  border-top: 0.1rem solid ${variables.colors.gray300};
+
+  .totalPrice {
+    display: flex;
+    flex-direction: column;
+    min-width: 10rem;
+
+    & span {
+      ${TypoCapSmR}
+      color:  ${variables.colors.gray600};
+    }
+
+    & p {
+      ${TypoTitleSmS}
+    }
+  }
 `;
