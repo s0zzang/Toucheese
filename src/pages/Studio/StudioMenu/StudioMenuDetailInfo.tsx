@@ -3,8 +3,22 @@ import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import Button from '@components/Button/Button';
 import { TypoBodyMdM, TypoBodyMdR, TypoCapSmR, TypoTitleSmS, TypoTitleXsM } from '@styles/Common';
+import { IMenuListRes } from 'types/types';
+import { useState } from 'react';
 
-const StudioMenuDetailInfo = () => {
+const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes | undefined }) => {
+  const [totalPrice, setTotalPrice] = useState<number>(infoItem!.price);
+
+  const handleOptionClick = (price: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    setTotalPrice((prev) => (isChecked ? prev + price : prev - price));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('최종 결제 금액:', totalPrice);
+  };
+
   return (
     <>
       <section css={MenuInfoStyle}>
@@ -28,43 +42,35 @@ const StudioMenuDetailInfo = () => {
 
       <section css={TotalPriceStyle}>
         <h3>기본 가격</h3>
-        <p>900000원</p>
+        <p>{infoItem?.price.toLocaleString('ko-KR')}원</p>
       </section>
 
-      <section css={AddOptionsWrapperStyle}>
+      <form css={AddOptionsWrapperStyle} onSubmit={handleSubmit}>
         <h3>추가 옵션</h3>
 
         <div css={AddOptionsListStyle}>
-          <fieldset>
-            <div className="customCheckbox">
-              <input type="checkbox" id="20000" name="추가옵션 가격" value="addOtion" />
-            </div>
-            <label htmlFor="20000">
-              <span>컷 추가 수정</span>
-            </label>
-            <p>+30,000원</p>
-          </fieldset>
-
-          <fieldset>
-            <div className="customCheckbox">
-              <input type="checkbox" id="10000" name="추가옵션 가격" value="addOtion" />
-            </div>
-            <label htmlFor="10000">
-              <span>전체 컷 원본 파일</span>
-            </label>
-            <p>+10,000원</p>
-          </fieldset>
-        </div>
-      </section>
-
-      <div css={FixedBtnBoxStyle}>
-        <div className="totalPrice">
-          <span>총 결제금액</span>
-          <p>70,000원</p>
+          {infoItem?.additionalOptions.map((item) => (
+            <fieldset key={item.id}>
+              <div css={AddOptionItemStyle}>
+                <input type="checkbox" id={`${item?.price}`} name={`${item?.price}`} value="OptionPrice" onChange={(e) => handleOptionClick(item.price, e)} />
+                <label htmlFor={`${item?.price}`}>
+                  <span>{item.name}</span>
+                </label>
+              </div>
+              <p>+{item?.price.toLocaleString('ko-KR')}원</p>
+            </fieldset>
+          ))}
         </div>
 
-        <Button text="예약하기" variant="black" />
-      </div>
+        <div css={FixedBtnBoxStyle}>
+          <div className="totalPrice">
+            <span>총 결제금액</span>
+            <p>{totalPrice?.toLocaleString('ko-KR')}원</p>
+          </div>
+
+          <Button text="예약하기" variant="black" type="submit" />
+        </div>
+      </form>
     </>
   );
 };
@@ -91,7 +97,7 @@ const MenuInfoStyle = css`
       background-size: 1.6rem;
 
       &.time {
-        background-image: url(/img/icon-time.svg);
+        background-image: url(/img/icon-clock.svg);
       }
       &.camera {
         background-image: url(/img/icon-camera-roll.svg);
@@ -149,25 +155,41 @@ const AddOptionsListStyle = css`
 
   & fieldset {
     display: flex;
-    gap: 1rem;
     padding: 1.2rem 0;
     height: 4.4rem;
+  }
+`;
 
-    .customCheckbox {
-      width: 1.8rem;
-      height: 1.8rem;
-      border: 0.2rem solid ${variables.colors.gray600};
-      border-radius: 0.4rem;
-    }
+const AddOptionItemStyle = css`
+  width: 100%;
+  display: flex;
+  align-items: center;
 
-    label {
-      ${TypoBodyMdR}
-      margin-right: auto;
-    }
+  & > input[type='checkbox'] {
+    width: 1.8rem;
+    height: 1.8rem;
+    border: 0.2rem solid ${variables.colors.gray600};
+    border-radius: 0.2rem;
+  }
 
-    p {
-      ${TypoBodyMdM}
-    }
+  & > input[type='checkbox']:checked {
+    background-color: ${variables.colors.primary600};
+    border: none;
+    position: relative;
+  }
+  & > input[type='checkbox']:checked::before {
+    content: '';
+    display: block;
+    width: 1.8rem;
+    height: 1.8rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 1.2rem;
+    background-image: url(/img/icon-check-white.svg);
+  }
+
+  & label {
+    margin-right: auto;
   }
 `;
 

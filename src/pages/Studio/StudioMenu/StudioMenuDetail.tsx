@@ -5,19 +5,43 @@ import Header from '@components/Header/Header';
 import { useParams } from 'react-router-dom';
 import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
 import StudioMenuDetailInfo from './StudioMenuDetailInfo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import StudioMenuDetailReview from './StudioMenuDetailReview';
+import { IMenuListRes } from 'types/types';
+import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
 
 const StudioMenuDetail = () => {
   const { _menuId } = useParams();
   const [tabMenuState, setTabMenuState] = useState('info');
+  const [data, setData] = useState<IMenuListRes>();
+
+  const fetchMeunDetil = async () => {
+    const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!res.ok) {
+      console.error('Failed to fetch data');
+    }
+
+    const data = await res.json();
+    setData(data);
+  };
+
+  useEffect(() => {
+    fetchMeunDetil();
+  }, []);
 
   return (
     <>
       <Header title="프로필 A반신 촬영" />
+      {/* {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />} */}
       <div css={MenuDescStyle}>
-        <h2>사진 메뉴 이름</h2>
-        <p>사진메뉴설명입니다유유유유유유유</p>
+        <h2>{data?.name}</h2>
+        <p>{data?.description}</p>
       </div>
 
       <ul css={TabMenuStyle}>
@@ -25,10 +49,10 @@ const StudioMenuDetail = () => {
           정보
         </li>
         <li onClick={() => setTabMenuState('review')} className={`${tabMenuState === 'review' && 'active'}`}>
-          리뷰 00
+          리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
         </li>
       </ul>
-      {tabMenuState === 'info' && <StudioMenuDetailInfo />}
+      {tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
       {tabMenuState === 'review' && <StudioMenuDetailReview />}
     </>
   );
@@ -85,4 +109,8 @@ const TabMenuStyle = css`
       background-color: ${variables.colors.black};
     }
   }
+`;
+
+const ImgaeAddStyle = css`
+  box-shadow: inset 0 0 10px blue;
 `;
