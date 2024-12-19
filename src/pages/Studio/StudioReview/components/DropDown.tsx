@@ -62,6 +62,7 @@ const OptionList = styled.ul`
   top: 100%;
   left: 0;
   width: 100%;
+  box-sizing: border-box;
   border: 1px solid ${variables.colors.gray400};
   border-radius: ${variables.borderRadius};
   margin-top: 0.4rem;
@@ -72,7 +73,7 @@ const OptionList = styled.ul`
 const OptionItem = styled.li<{ isSelected: boolean }>`
   padding: 0.8rem 1rem;
   cursor: pointer;
-  background-color: ${({ isSelected }) => (isSelected ? variables.colors.gray100 : 'white')};
+  background-color: ${({ isSelected }) => (isSelected ? variables.colors.gray100 : '')};
 
   &:hover {
     background-color: ${variables.colors.gray100};
@@ -89,5 +90,5 @@ const FilterDropdown = styled.div`
   height: 3.3rem;
   padding: 0.8rem 1rem;
   border: 1px solid ${variables.colors.gray400};
-  border-radius: ${variables.borderRadius};
+  border-radius: ${variables.borderRadius} + 0.8rem;
 `;
