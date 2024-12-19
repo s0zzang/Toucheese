@@ -5,9 +5,12 @@ import Header from '@components/Header/Header';
 import { useParams } from 'react-router-dom';
 import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
 import StudioMenuDetailInfo from './StudioMenuDetailInfo';
+import { useState } from 'react';
+import StudioMenuDetailReview from './StudioMenuDetailReview';
 
 const StudioMenuDetail = () => {
   const { _menuId } = useParams();
+  const [tabMenuState, setTabMenuState] = useState('info');
 
   return (
     <>
@@ -17,12 +20,16 @@ const StudioMenuDetail = () => {
         <p>사진메뉴설명입니다유유유유유유유</p>
       </div>
 
-      <ul css={TapMenuStyle}>
-        <li className="active">정보</li>
-        <li>리뷰 00</li>
+      <ul css={TabMenuStyle}>
+        <li onClick={() => setTabMenuState('info')} className={`${tabMenuState === 'info' && 'active'}`}>
+          정보
+        </li>
+        <li onClick={() => setTabMenuState('review')} className={`${tabMenuState === 'review' && 'active'}`}>
+          리뷰 00
+        </li>
       </ul>
-
-      <StudioMenuDetailInfo />
+      {tabMenuState === 'info' && <StudioMenuDetailInfo />}
+      {tabMenuState === 'review' && <StudioMenuDetailReview />}
     </>
   );
 };
@@ -45,7 +52,7 @@ const MenuDescStyle = css`
   }
 `;
 
-const TapMenuStyle = css`
+const TabMenuStyle = css`
   color: ${variables.colors.gray800};
   display: flex;
   width: 100%;
@@ -58,6 +65,7 @@ const TapMenuStyle = css`
     padding: 1rem 0;
     text-align: center;
     flex-grow: 1;
+    transition: all 0.3s;
 
     &::before {
       content: '';
