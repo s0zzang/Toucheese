@@ -61,6 +61,7 @@ export default StudioReviewItem;
 
 const StudioReviewItemContainerStyle = styled.div<{ isOpen: boolean }>`
   width: 100%;
+
   margin-top: 1rem;
   border-bottom: 1px solid ${variables.colors.gray300};
   background-color: ${({ isOpen }) => (isOpen ? variables.colors.gray100 : 'transparent')};
@@ -68,10 +69,12 @@ const StudioReviewItemContainerStyle = styled.div<{ isOpen: boolean }>`
 `;
 
 const NameAndDateWrapperStyle = styled.div`
+  margin-bottom: 1.5rem;
   width: 100%;
   display: flex;
   gap: 1.1rem;
   align-items: center;
+  color: ${variables.colors.gray800};
 
   & p {
     font-size: 1.4rem;
@@ -83,7 +86,22 @@ const TitleWrapper = styled.div`
   margin-bottom: 0.8rem;
 `;
 
-const MainTitle = styled.h3``;
+const MainTitle = styled.h3`
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.6rem;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 1.6rem;
+    height: 1.6rem;
+    background-image: url('/img/icon-arrow-16.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+`;
 
 const SubTitle = styled.p`
   font-size: 1.4rem;

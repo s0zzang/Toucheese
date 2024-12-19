@@ -1,22 +1,24 @@
 /** @jsxImportSource @emotion/react */
 import Button from '@components/Button/Button';
+import Header from '@components/Header/Header';
 import MasonryList from '@components/Masonry/Masonry';
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+
 import { useParams } from 'react-router-dom';
 import { IReviewImages } from 'types/types';
 
 interface IReviewImagesResponse {
-  content: IReviewImages[];
   totalElements: number;
   totalPages: number;
+  imageDtos: IReviewImages[];
 }
 
 const StudioReviewPhotos = () => {
-  const { _id } = useParams();
+  const { _id } = useParams(); // 스튜디오 아이디
 
   const fetchReviewImage = async () => {
+    // 리뷰사진 모아보기 조회
     const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/reviewImage`);
     if (!response.ok) {
       throw new Error('리뷰 이미지를 불러오는데 실패했습니다');
@@ -32,7 +34,9 @@ const StudioReviewPhotos = () => {
     queryKey: ['reviewImages', _id],
     queryFn: fetchReviewImage,
     enabled: !!_id,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 5, // 5분
+    gcTime: 1000 * 60 * 30, // 30분
+    retry: 3,
   });
 
   if (isLoading) return <div>로딩 중...</div>;
@@ -45,7 +49,7 @@ const StudioReviewPhotos = () => {
 
   return (
     <>
-      <SampleHeaderStyle></SampleHeaderStyle>
+      <Header title="리뷰 사진 모아보기" />
       <StudioReviewPhotosContainerStyle>
         <ButtonWrapperStyle>
           <Button text="전체11" variant="white" active={false} size="small" width="fit" />
@@ -55,7 +59,7 @@ const StudioReviewPhotos = () => {
         </ButtonWrapperStyle>
 
         <MasonryList>
-          {reviewImages.content.map(({ id, url }) => (
+          {reviewImages.imageDtos.map(({ id, url }) => (
             <div key={id} onClick={handleImageClick}>
               <img src={url} alt={`리뷰 이미지 ${id}`} />
             </div>
@@ -67,12 +71,6 @@ const StudioReviewPhotos = () => {
 };
 
 export default StudioReviewPhotos;
-
-const SampleHeaderStyle = styled.div`
-  width: 100%;
-  height: 5.6rem;
-  box-shadow: inset 0px 0px 20px red;
-`;
 
 const StudioReviewPhotosContainerStyle = styled.div`
   width: 100%;

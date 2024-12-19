@@ -8,18 +8,33 @@ import Dropdown from './DropDown';
 interface StudioReviewCategoriesProps {
   avgRating?: number;
   totalReviewNum: number;
-  menuNanmeList: string[];
+  menuNameList: string[];
+  menuIdList: number[];
+  onFilterChange: (menuId: number | null) => void;
 }
 
 /** 리뷰에 대한 필터링 컴포넌트 */
-const StudioReviewCategories = ({ avgRating, totalReviewNum, menuNanmeList }: StudioReviewCategoriesProps) => {
-  const FILTER_OPTIONS = ['전체리뷰', ...menuNanmeList];
+const StudioReviewCategories = ({ avgRating, totalReviewNum, menuNameList, menuIdList, onFilterChange }: StudioReviewCategoriesProps) => {
+  const FILTER_OPTIONS = ['전체리뷰', ...menuNameList];
   const [selectedOption, setSelectedOption] = useState('전체리뷰');
+
+  const handleOptionSelect = (option: string) => {
+    setSelectedOption(option);
+
+    if (option === '전체리뷰') {
+      onFilterChange(null);
+    } else {
+      const index = menuNameList.indexOf(option);
+      if (index !== -1) {
+        onFilterChange(menuIdList[index]);
+      }
+    }
+  };
 
   return (
     <Container>
       <CategoryWrapper>
-        <Dropdown options={FILTER_OPTIONS} selectedOption={selectedOption} onSelect={setSelectedOption} />
+        <Dropdown options={FILTER_OPTIONS} selectedOption={selectedOption} onSelect={handleOptionSelect} />
         <Button text="사진 리뷰만 보기" variant="white" active={false} size="small" width="fit" />
       </CategoryWrapper>
       <RatingWrapper>
