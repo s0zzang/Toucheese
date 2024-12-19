@@ -38,6 +38,7 @@ const UlStyle = styled.ul`
 `;
 
 const LiStyle = styled.li`
+  width: 25%;
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: 0;

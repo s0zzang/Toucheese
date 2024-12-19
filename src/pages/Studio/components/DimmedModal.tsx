@@ -1,18 +1,30 @@
+/** @jsxImportSource @emotion/react */
 import Modal from '@components/Modal/Modal';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { Swiper } from 'swiper/react';
 
-const DimmedModal = () => {
+const DimmedModal = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Modal type="dimmed" title={`3/20`} withBtn={false}>
-        <DimmedModalStyle>모달</DimmedModalStyle>
+        <DimmedModalStyle>
+          <Swiper css={swiperStyle} slidesPerView={1}>
+            {children}
+          </Swiper>
+        </DimmedModalStyle>
       </Modal>
     </>
   );
 };
 
 const DimmedModalStyle = styled.div`
-  box-shadow: inset 0 0 10px yellow;
+  width: 100%;
+  display: flex;
+`;
+
+const swiperStyle = css`
+  color: white;
 `;
 
 export default DimmedModal;
