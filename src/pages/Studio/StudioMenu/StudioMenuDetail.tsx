@@ -18,9 +18,6 @@ const StudioMenuDetail = () => {
   const [scrollY, setScrollY] = useState(false);
   const [totalPrice, setTotalPrice] = useState<number>(data ? data.price : 0);
 
-  console.log(data);
-  console.log(data?.price);
-
   const fetchMeunDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
       method: 'GET',
@@ -64,7 +61,7 @@ const StudioMenuDetail = () => {
 
   return (
     <>
-      <Header title="프로필 A반신 촬영" customStyle={HeaderCustomStyle(scrollY)} />
+      <Header title={`${scrollY ? data?.name : ''}`} customStyle={HeaderCustomStyle(scrollY)} />
       {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />}
       <div css={MenuDescStyle}>
         <h2>{data?.name}</h2>
@@ -104,7 +101,7 @@ const HeaderCustomStyle = (scrollY: boolean): SerializedStyles => {
     z-index: 50;
     padding: 1.6rem 1rem;
     ${scrollY && 'background-color: #fff; box-shadow: 0 0.4rem .5rem rgba(0, 0, 0, 0.1);'};
-    transition: all 0.1s;
+    transition: all 0.2s;
   `;
 };
 

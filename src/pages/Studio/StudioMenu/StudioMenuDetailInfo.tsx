@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
-import { TypoBodyMdR, TypoTitleXsM } from '@styles/Common';
+import { TypoBodyMdM, TypoBodyMdR, TypoBodyMdSb, TypoTitleXsB, TypoTitleXsM } from '@styles/Common';
 import { IMenuListRes } from 'types/types';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 const StudioMenuDetailInfo = ({ infoItem, setTotalPrice }: { infoItem: IMenuListRes | undefined; setTotalPrice: Dispatch<SetStateAction<number>> }) => {
   const handleOptionClick = (price: number, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,8 +107,14 @@ const TotalPriceStyle = css`
   justify-content: space-between;
   gap: 1rem;
   padding: 1.8rem 0;
-  ${TypoTitleXsM}
   position: relative;
+
+  & h3 {
+    ${TypoTitleXsM}
+  }
+  & p {
+    ${TypoTitleXsB}
+  }
 
   &::before {
     content: '';
@@ -147,6 +153,10 @@ const AddOptionsListStyle = css`
     display: flex;
     padding: 1.2rem 0;
     height: 4.4rem;
+
+    & p {
+      ${TypoBodyMdSb}
+    }
   }
 `;
 
@@ -180,5 +190,6 @@ const AddOptionItemStyle = css`
 
   & label {
     margin-right: auto;
+    ${TypoBodyMdM}
   }
 `;
