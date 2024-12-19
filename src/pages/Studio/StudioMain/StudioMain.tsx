@@ -12,7 +12,6 @@ import { useParams } from 'react-router-dom';
 const StudioMain = () => {
   const { _id } = useParams();
   const { data, isLoading, error } = useGetStudioDetail(`${_id}`);
-  console.log(data);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -63,7 +62,7 @@ const StudioMain = () => {
               <img src="/img/icon-map.svg" alt="주소" />
             </dt>
             <dd>
-              <p>{`${data.adress}` === 'undefined' ? '주소 수집중' : `${data.adress}`}</p>
+              <p>{`${data.address}` === 'undefined' ? '주소 수집중' : `${data.address}`}</p>
             </dd>
           </div>
           <div>
