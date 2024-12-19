@@ -28,10 +28,10 @@ const ImageSwiper = ({
   // 이미지 5개 불러오기
   const getImages = (photos: IPortfolio[] | IReviewImages[]) => {
     let images: string[] = [];
-    const porfolios = photos.slice(0, 5);
+    const portfolios = photos.slice(0, 5);
 
-    if (porfolios.length) {
-      porfolios.forEach((photo: IPortfolio | IReviewImages) => {
+    if (portfolios.length) {
+      portfolios.forEach((photo: IPortfolio | IReviewImages) => {
         images.push(photo.url);
       });
     } else {

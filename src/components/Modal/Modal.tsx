@@ -27,6 +27,10 @@ interface ICloseBtnStyle {
   mode: 'dimmed' | 'fullscreen';
 }
 
+interface IContentStyle {
+  type: 'default' | 'dimmed' | 'fullscreen';
+}
+
 /**
  * * 모달 사용 방법
  * 1. import `useModal` : `const modal = useModal()`
@@ -61,7 +65,7 @@ const Modal = ({ modalId = 1, type = 'default', title, children, withBtn = true,
             </CloseBtnStyle>
           </TitleStyle>
         )}
-        <ContentsStyle>{children}</ContentsStyle>
+        <ContentsStyle type={type}>{children}</ContentsStyle>
 
         {withBtn && <ButtonBoxStyle>{buttons?.map((btn) => <Button key={btn.text} variant="black" onClick={btn.event} text={btn.text} disabled={false} />)}</ButtonBoxStyle>}
       </ModalStyle>
@@ -72,11 +76,10 @@ const Modal = ({ modalId = 1, type = 'default', title, children, withBtn = true,
 export default Modal;
 
 const ModalStyle = styled.section<IModalStyle>`
-  box-shadow: inset 0 0 20px white;
   position: fixed;
   z-index: 99;
   inset: 0;
-  background: ${(props) => (props.type !== 'fullscreen' ? 'rgba(0,0,0,0.6)' : variables.colors.white)};
+  background: ${(props) => (props.type !== 'fullscreen' ? 'rgba(0,0,0,0.9)' : variables.colors.white)};
   padding: 0 2rem 4.8rem;
   display: flex;
   flex-direction: column;
@@ -101,11 +104,11 @@ const CloseBtnStyle = styled.button<ICloseBtnStyle>`
   right: ${(props) => props.mode === 'dimmed' && 0};
 `;
 
-const ContentsStyle = styled.div`
-  box-shadow: inset 0 0 20px green;
-  padding: 1rem 0;
+const ContentsStyle = styled.div<IContentStyle>`
+  padding: ${(props) => props.type === 'fullscreen' && '1rem 0'};
   flex-grow: 1;
   overflow-y: auto;
+  display: ${(props) => props.type === 'dimmed' && 'flex'};
 `;
 
 const ButtonBoxStyle = styled.div`
