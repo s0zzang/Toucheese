@@ -16,7 +16,7 @@ const StudioMenuDetail = () => {
   const [data, setData] = useState<IMenuListRes>();
   const [scrollY, setScrollY] = useState(false);
   const [tabMenuState, setTabMenuState] = useState('info');
-  const [totalPrice, setTotalPrice] = useState<number>(data ? data.price : 0);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const [checkState, setCheckState] = useState<Record<number, boolean>>({});
 
   const fetchMenuDetail = async () => {
