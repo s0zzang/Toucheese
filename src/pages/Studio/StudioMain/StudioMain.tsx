@@ -3,17 +3,19 @@
 import Header from '@components/Header/Header';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
 import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
-import { DividerStyle, TypoBodyMdR, TypoBodyMdSb, TypoCapSmR, TypoTitleMdSb } from '@styles/Common';
+import { DividerStyle, TypoBodyMdR, TypoBodyMdSb, TypoCapSmM, TypoCapSmR, TypoTitleMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 ///studio/detail/{studioId}
 
 const StudioMain = () => {
   const { _id } = useParams();
   const { data, isLoading, error } = useGetStudioDetail(`${_id}`);
-  console.log(data?.portfolios.map((v) => v));
+  const navigate = useNavigate();
+  console.log(data?.portfolios.length);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -31,15 +33,22 @@ const StudioMain = () => {
   const placeHolderImage = '/img/img-nopic.png';
   const missingImgCount = data.portfolios.length < 5 ? 5 - data.portfolios.length : 0;
   const portfolioWithPlaceHolders = [...data.portfolios, ...Array(missingImgCount).fill({ url: placeHolderImage })];
-
+  console.log(portfolioWithPlaceHolders);
   return (
     <>
       <Header customStyle={HeaderStyle} />
       {/* 이미지 */}
       <div css={portfolioPreviewStyle}>
-        {portfolioWithPlaceHolders.slice(0, 5).map((v, i) => (
+        {portfolioWithPlaceHolders.slice(0, 4).map((v, i) => (
           <img key={i} src={v.url} alt={`Portfolio ${i}`} />
         ))}
+        <div css={portfolioPsitionStyle}>
+          <img src={portfolioWithPlaceHolders[4].url} alt="사진5" />
+          <DimOverlayStyle onClick={() => navigate(`/studio/${_id}/portfolio`)}>
+            <img src="/img/icon-morePreview.svg" alt="더보기" />
+            <span>{data?.portfolios.length >= 5 ? `+ ${data?.portfolios.length - 5}` : ''}</span>
+          </DimOverlayStyle>
+        </div>
       </div>
 
       {/* 스튜디오 정보 */}
@@ -121,13 +130,53 @@ const portfolioPreviewStyle = css`
   & > img {
     aspect-ratio: 1/1;
     object-fit: cover;
-    width: calc(100% - 0.1rem);
+    width: 100%;
+    height: 100%;
   }
 
   & > img:first-of-type {
     grid-column: span 1; /* 첫 번째 이미지는 2개의 열을 차지 */
     grid-row: span 2; /* 첫 번째 이미지는 2개의 행을 차지 */
     width: 100%;
+    height: 100%;
+  }
+`;
+
+const portfolioPsitionStyle = css`
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  & > img {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const DimOverlayStyle = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  & > img {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  & > span {
+    color: ${variables.colors.white};
+    ${TypoCapSmM}
   }
 `;
 
