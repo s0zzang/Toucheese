@@ -13,9 +13,9 @@ import Button from '@components/Button/Button';
 
 const StudioMenuDetail = () => {
   const { _menuId } = useParams();
-  const [tabMenuState, setTabMenuState] = useState('info');
   const [data, setData] = useState<IMenuListRes>();
   const [scrollY, setScrollY] = useState(false);
+  const [tabMenuState, setTabMenuState] = useState('info');
   const [totalPrice, setTotalPrice] = useState<number>(data ? data.price : 0);
   const [checkState, setCheckState] = useState<Record<number, boolean>>({});
 
@@ -77,7 +77,7 @@ const StudioMenuDetail = () => {
           리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
         </li>
       </ul>
-      {tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} setTotalPrice={setTotalPrice} checkState={checkState} setCheckState={setCheckState} />}
+      {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} setTotalPrice={setTotalPrice} checkState={checkState} setCheckState={setCheckState} />}
       {data && tabMenuState === 'review' && <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />}
 
       <div css={FixedBtnBoxStyle}>

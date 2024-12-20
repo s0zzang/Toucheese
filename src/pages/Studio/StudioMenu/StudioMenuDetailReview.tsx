@@ -13,7 +13,7 @@ const StudioMenuDetailReview = ({ reviewItem = [], rating = 0 }: { reviewItem: R
             <img src="/img/icon-rating.svg" alt="평점 아이콘" />
             <span>{Math.trunc(rating * 10) / 10}</span>
           </div>
-          <p>{reviewItem?.length}개의 리뷰</p>
+          <p>{reviewItem.length}개의 리뷰</p>
         </section>
         <section>{reviewList}</section>
       </div>

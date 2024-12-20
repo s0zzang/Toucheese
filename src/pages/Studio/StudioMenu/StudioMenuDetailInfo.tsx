@@ -11,7 +11,7 @@ const StudioMenuDetailInfo = ({
   checkState,
   setCheckState,
 }: {
-  infoItem: IMenuListRes | undefined;
+  infoItem: IMenuListRes;
   setTotalPrice: Dispatch<SetStateAction<number>>;
   checkState: Record<number, boolean>;
   setCheckState: Dispatch<SetStateAction<Record<number, boolean>>>;
@@ -51,7 +51,7 @@ const StudioMenuDetailInfo = ({
 
       <section css={TotalPriceStyle}>
         <h3>기본 가격</h3>
-        <p>{infoItem?.price.toLocaleString('ko-KR')}원</p>
+        <p>{infoItem.price.toLocaleString('ko-KR')}원</p>
       </section>
 
       <form css={AddOptionsWrapperStyle}>
@@ -59,15 +59,15 @@ const StudioMenuDetailInfo = ({
         <h3>추가 옵션</h3>
 
         <div css={AddOptionsListStyle}>
-          {infoItem?.additionalOptions.map((item) => (
+          {infoItem.additionalOptions.map((item) => (
             <fieldset key={item.id}>
               <div css={AddOptionItemStyle}>
-                <input type="checkbox" id={`${item?.price}`} name={`${item?.price}`} value="OptionPrice" onChange={(e) => handleOptionClick(item.price, item.id, e)} checked={checkState[item.id]} />
-                <label htmlFor={`${item?.price}`}>
+                <input type="checkbox" id={`${item.price}`} name={`${item.price}`} value="OptionPrice" onChange={(e) => handleOptionClick(item.price, item.id, e)} checked={checkState[item.id]} />
+                <label htmlFor={`${item.price}`}>
                   <span>{item.name}</span>
                 </label>
               </div>
-              <p>+{item?.price.toLocaleString('ko-KR')}원</p>
+              <p>+{item.price.toLocaleString('ko-KR')}원</p>
             </fieldset>
           ))}
         </div>
