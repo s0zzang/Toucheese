@@ -30,59 +30,67 @@ const StudioMenuDetailInfo = ({
 
   return (
     <>
-      <section css={MenuInfoStyle}>
-        <div className="menuInfoItem">
-          <h4 className="time">예상 소요 시간</h4>
-          <p>약 60분</p>
-        </div>
-        <div className="menuInfoItem">
-          <h4 className="camera">기본 촬영 수</h4>
-          <p>70-80컷</p>
-        </div>
-        <div className="menuInfoItem">
-          <h4 className="crop">인화 사이즈</h4>
-          <p>4x6in</p>
-        </div>
-        <div className="menuInfoItem">
-          <h4 className="folder">기본 제공 파일</h4>
-          <p>3포즈 리터칭 JPG파일</p>
-        </div>
-      </section>
+      <div css={MenuInfoWrapperStyle}>
+        <section css={MenuInfoStyle}>
+          <div className="menuInfoItem">
+            <h4 className="time">예상 소요 시간</h4>
+            <p>약 60분</p>
+          </div>
+          <div className="menuInfoItem">
+            <h4 className="camera">기본 촬영 수</h4>
+            <p>70-80컷</p>
+          </div>
+          <div className="menuInfoItem">
+            <h4 className="crop">인화 사이즈</h4>
+            <p>4x6in</p>
+          </div>
+          <div className="menuInfoItem">
+            <h4 className="folder">기본 제공 파일</h4>
+            <p>3포즈 리터칭 JPG파일</p>
+          </div>
+        </section>
 
-      <section css={TotalPriceStyle}>
-        <h3>기본 가격</h3>
-        <p>{infoItem.price.toLocaleString('ko-KR')}원</p>
-      </section>
+        <section css={TotalPriceStyle}>
+          <h3>기본 가격</h3>
+          <p>{infoItem.price.toLocaleString('ko-KR')}원</p>
+        </section>
 
-      <form css={AddOptionsWrapperStyle}>
-        {/* <form css={AddOptionsWrapperStyle} onSubmit={handleSubmit} id="priceForm">/ */}
-        <h3>추가 옵션</h3>
+        <form css={AddOptionsWrapperStyle}>
+          {/* <form css={AddOptionsWrapperStyle} onSubmit={handleSubmit} id="priceForm">/ */}
+          <h3>추가 옵션</h3>
 
-        <div css={AddOptionsListStyle}>
-          {infoItem.additionalOptions.map((item) => (
-            <fieldset key={item.id}>
-              <div css={AddOptionItemStyle}>
-                <input type="checkbox" id={`${item.price}`} name={`${item.price}`} value="OptionPrice" onChange={(e) => handleOptionClick(item.price, item.id, e)} checked={checkState[item.id]} />
-                <label htmlFor={`${item.price}`}>
-                  <span>{item.name}</span>
-                </label>
-              </div>
-              <p>+{item.price.toLocaleString('ko-KR')}원</p>
-            </fieldset>
-          ))}
-        </div>
-      </form>
+          <div css={AddOptionsListStyle}>
+            {infoItem.additionalOptions.map((item) => (
+              <fieldset key={item.id}>
+                <div css={AddOptionItemStyle}>
+                  <input type="checkbox" id={`${item.price}`} name={`${item.price}`} value="OptionPrice" onChange={(e) => handleOptionClick(item.price, item.id, e)} checked={checkState[item.id]} />
+                  <label htmlFor={`${item.price}`}>
+                    <span>{item.name}</span>
+                  </label>
+                </div>
+                <p>+{item.price.toLocaleString('ko-KR')}원</p>
+              </fieldset>
+            ))}
+          </div>
+        </form>
+      </div>
     </>
   );
 };
 
 export default StudioMenuDetailInfo;
 
+const MenuInfoWrapperStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.8rem 0;
+`;
+
 const MenuInfoStyle = css`
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 1.4rem 0;
 
   .menuInfoItem {
     display: flex;
@@ -162,7 +170,6 @@ const AddOptionsListStyle = css`
 
   & fieldset {
     display: flex;
-    padding: 1.2rem 0;
     height: 4.4rem;
 
     & p {
