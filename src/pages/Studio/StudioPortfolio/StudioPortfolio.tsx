@@ -38,7 +38,7 @@ const StudioPortfolio = () => {
 
   return (
     <>
-      <Header title={studioName} backTo="/home" />
+      <Header title={studioName} />
       <StudioNavigator _id={_id} />
 
       <FilterBoxStyle>
