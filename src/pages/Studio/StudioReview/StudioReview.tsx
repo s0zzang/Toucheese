@@ -55,7 +55,7 @@ const StudioReview = () => {
     <>
       {data && (
         <Helmet>
-          <title>{`스튜디오 리뷰 | ${totalReviewNum}개의 리뷰`}</title>
+          <title>{`스튜디오 리뷰 - ${totalReviewNum}개의 리뷰`}</title>
           <meta name="description" content={`평균 평점 ${processedAvgRating}점, ${totalReviewNum}개의 리뷰와 ${totalImageNum}개의 사진이 있는 스튜디오 리뷰입니다.`} />
           <meta property="og:title" content={`스튜디오 리뷰 | ${totalReviewNum}개의 리뷰`} />
           <meta property="og:description" content={`평균 평점 ${processedAvgRating}점, ${totalReviewNum}개의 리뷰와 ${totalImageNum}개의 사진이 있는 스튜디오 리뷰입니다.`} />

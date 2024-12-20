@@ -10,6 +10,7 @@ import { IReviewImages } from 'types/types';
 import DimmedModal from '@pages/Studio/components/DimmedModal';
 import { SwiperSlide } from 'swiper/react';
 import useModal from '@hooks/useModal';
+import { Helmet } from 'react-helmet-async';
 
 interface IReviewImagesResponse {
   totalElements: number;
@@ -62,6 +63,13 @@ const StudioReviewPhotos = () => {
 
   return (
     <>
+      {reviewImages && (
+        <Helmet>
+          <title>{`리뷰 사진모아보기 - ${reviewImages.totalElements}개`}</title>
+          <meta property="og:title" content={`스튜디오 리뷰 사진모아보기`} />
+        </Helmet>
+      )}
+
       <Header title="리뷰 사진 모아보기" />
       <StudioReviewPhotosContainerStyle>
         <ButtonWrapperStyle>

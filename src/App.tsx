@@ -17,7 +17,7 @@ function App() {
         <Global styles={GlobalStyles} />
         <QueryClientProvider client={queryClient}>
           <ErrorBoundary fallback={<div>문제가 발생했습니다.</div>}>
-            <Suspense fallback={<div>로딩 중...~~~~딩 중...~~~~딩 중...~~~~딩 중...~~~~</div>}>
+            <Suspense fallback={<div>로딩 중.. 서스펜스 버전</div>}>
               <RouterProvider router={router} />
             </Suspense>
           </ErrorBoundary>
