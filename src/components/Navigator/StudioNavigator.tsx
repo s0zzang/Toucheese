@@ -59,7 +59,7 @@ const NavLinkStyle = styled(NavLink)`
     line-height: 2.4rem;
   }
 
-  &::after {
+  &::before {
     content: '';
     position: absolute;
     background-color: ${variables.colors.gray300};

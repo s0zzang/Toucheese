@@ -9,12 +9,10 @@ import { IPortfolio, IReviewImages } from 'types/types';
 interface ImageSwiperProps extends SwiperProps {
   images: IPortfolio[] | IReviewImages[];
   imageStyle?: ReturnType<typeof css>;
-
   imgprops?: {
     customStyle?: ReturnType<typeof css>;
     loading?: string;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
-    onClick?: () => void;
   };
 }
 
@@ -71,9 +69,7 @@ const ImageSwiper = ({
 export default ImageSwiper;
 
 const containerFullStyle = css`
-  width: 100vw;
   margin-left: calc(-1 * ${variables.layoutPadding});
-  margin-right: calc(-1 * ${variables.layoutPadding});
 `;
 
 const containerDefaultStyle = css`
