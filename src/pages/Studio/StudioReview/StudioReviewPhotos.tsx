@@ -46,7 +46,7 @@ const StudioReviewPhotos = () => {
 
   const {
     data: reviewImages,
-    isLoading,
+
     error,
   } = useQuery<IReviewImagesResponse>({
     queryKey: ['reviewImages', _id, selectedMenuId],
@@ -57,7 +57,6 @@ const StudioReviewPhotos = () => {
     retry: 3,
   });
 
-  if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>에러가 발생했습니다</div>;
   if (!reviewImages) return null;
 
@@ -81,7 +80,7 @@ const StudioReviewPhotos = () => {
         </ButtonWrapperStyle>
 
         <MasonryList>
-          {reviewImages.imageDtos.map(({ id, url }, index) => (
+          {reviewImages.imageDtos.map(({ id, url }) => (
             <div key={id} onClick={() => open()}>
               <img src={url} alt={`리뷰 이미지 ${id}`} />
             </div>
