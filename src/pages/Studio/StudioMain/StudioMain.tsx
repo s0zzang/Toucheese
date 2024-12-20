@@ -13,13 +13,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const StudioMain = () => {
   const { _id } = useParams();
-  const { data, isLoading, error } = useGetStudioDetail(`${_id}`);
+  const { data, error } = useGetStudioDetail(`${_id}`);
   const navigate = useNavigate();
-  console.log(data?.portfolios.length);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   if (error instanceof Error) {
     return <div>Error: {error.message}</div>;
@@ -33,7 +28,7 @@ const StudioMain = () => {
   const placeHolderImage = '/img/img-nopic.png';
   const missingImgCount = data.portfolios.length < 5 ? 5 - data.portfolios.length : 0;
   const portfolioWithPlaceHolders = [...data.portfolios, ...Array(missingImgCount).fill({ url: placeHolderImage })];
-  console.log(portfolioWithPlaceHolders);
+
   return (
     <>
       <Header customStyle={HeaderStyle} />
