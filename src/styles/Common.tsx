@@ -58,6 +58,7 @@ export const TypoCapSmM = css`
 `;
 
 export const DividerStyle = css`
+  padding-bottom: calc(2rem + 1rem);
   &::after {
     content: '';
     position: absolute;
