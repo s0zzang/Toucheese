@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import BackButton from '@components/BackButton/BackButton';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
 import StudioMenuItem from './StudioMenuItem';
 import { useParams } from 'react-router-dom';
@@ -40,8 +39,8 @@ const StudioMenu = () => {
   const StudioMenuList = data?.map((item) => <StudioMenuItem key={item.id} StudioId={_id} data={item} />);
   return (
     <>
-      <Header title={`${data && data[0].studioName}`} />
-      <StudioNavigator _id={String(_id)} />
+      <Header title={`${data ? data[0].studioName : ''}`} />
+      <StudioNavigator _id={_id || ''} />
       <div css={ItemLIstStyle}>{StudioMenuList}</div>
     </>
   );

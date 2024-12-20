@@ -112,9 +112,12 @@ export interface IMenuListRes {
   name: string;
   description: string;
   price: number;
-  duration: string | null;
   additionalOptions: IAdditionalOptionsRes[];
   menuImages: IPortfolio[] | IReviewImages[];
+  duration: string | null; //소요시간
+  offerFile: string | null; //기본 제공 파일
+  pictureNum: string | null; //촬영 수
+  pictureSize: string | null; //인화 사이즈
   avgScore: number;
   reviews: { content: Review[] };
   reviewCount: number;

@@ -16,6 +16,9 @@ const StudioMenuDetailInfo = ({
   checkState: Record<number, boolean>;
   setCheckState: Dispatch<SetStateAction<Record<number, boolean>>>;
 }) => {
+  const [hours, minutes, seconds] = infoItem.duration ? infoItem.duration.split(':').map(Number) : [0, 0, 0];
+  const totalMinutes = hours * 60 + minutes + seconds / 60;
+
   const handleOptionClick = (price: number, id: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     setTotalPrice((prev) => (isChecked ? prev + price : prev - price));
@@ -28,25 +31,27 @@ const StudioMenuDetailInfo = ({
   //   console.log('최종 결제 금액:', totalPrice);
   // };
 
+  console.log(infoItem);
+
   return (
     <>
       <div css={MenuInfoWrapperStyle}>
         <section css={MenuInfoStyle}>
           <div className="menuInfoItem">
             <h4 className="time">예상 소요 시간</h4>
-            <p>약 60분</p>
+            <p>약 {infoItem.duration ? totalMinutes : 60}분</p>
           </div>
           <div className="menuInfoItem">
             <h4 className="camera">기본 촬영 수</h4>
-            <p>70-80컷</p>
+            <p>{infoItem.pictureNum ? infoItem.pictureNum : `70-80컷`}</p>
           </div>
           <div className="menuInfoItem">
             <h4 className="crop">인화 사이즈</h4>
-            <p>4x6in</p>
+            <p>{infoItem.pictureSize ? infoItem.pictureSize : '4x6in'}</p>
           </div>
           <div className="menuInfoItem">
             <h4 className="folder">기본 제공 파일</h4>
-            <p>3포즈 리터칭 JPG파일</p>
+            <p>{infoItem.offerFile ? infoItem.offerFile : '3포즈 리터칭 JPG파일'}</p>
           </div>
         </section>
 
