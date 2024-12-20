@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
+import { TypoBodyMdM, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import React from 'react';
 
@@ -73,17 +74,17 @@ const Button = ({
 
   const sizeStyles = {
     small: css`
-      font-size: small;
+      font-size: ${TypoCapSmM};
       height: 3rem;
       padding: 0 1rem;
     `,
     medium: css`
-      font-size: medium;
+      font-size: ${TypoBodyMdM};
       height: 3.6rem;
       padding: 0 1rem;
     `,
     large: css`
-      font-size: ${variables.size.big};
+      font-size: ${TypoTitleXsM};
       height: 4.8rem;
     `,
   };

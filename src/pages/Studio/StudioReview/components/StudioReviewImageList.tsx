@@ -5,23 +5,19 @@ import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 
 /** 이미지만 상세보기 (자식) 컴포넌트 */
-const StudioReviewImageList = ({ PageId }: { PageId: string | undefined }) => {
+const StudioReviewImageList = ({ samplePhotoList, pageId }: { samplePhotoList: string[]; pageId: string | undefined }) => {
   const navigate = useNavigate();
 
   return (
     <PhotoContainerStyle>
-      <div>
-        <img src="/img/sample-1.png" alt="사진1" />
-      </div>
-      <div>
-        <img src="/img/sample-2.png" alt="사진2" />
-      </div>
-      <div>
-        <img src="/img/sample-2.png" alt="사진3" />
-      </div>
+      {samplePhotoList.slice(0, 3).map((photo, index) => (
+        <div key={index}>
+          <img src={photo} alt={`사진${index + 1}`} />
+        </div>
+      ))}
       <ImageListLastContentStyle>
-        <img src="/img/sample-1.png" alt="사진1" />
-        <DimOverlayStyle onClick={() => navigate(`/studio/${PageId}/review/photos`)}>
+        <img src={samplePhotoList[3]} alt="사진4" />
+        <DimOverlayStyle onClick={() => navigate(`/studio/${pageId}/review/photos`)}>
           <span>더보기</span>
         </DimOverlayStyle>
       </ImageListLastContentStyle>
@@ -44,8 +40,8 @@ const PhotoContainerStyle = styled.div`
 
   & > div > img {
     width: 100%;
-    object-fit: cover;
-    margin-bottom: 3rem;
+    aspect-ratio: 94 / 118;
+    object-fit: contain;
   }
   ${DividerStyle}
 `;
@@ -67,7 +63,7 @@ const DimOverlayStyle = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% - 3.5rem);
+  height: calc(100% - 0.3rem);
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;

@@ -17,10 +17,12 @@ const fetchStudioDetail = async (studioId: string): Promise<IStudioItem> => {
 
 export const useGetStudioDetail = (studioId: string) => {
   return useQuery<IStudioItem | undefined>({
-    queryKey: ['studioDetail'],
+    queryKey: ['studioDetail', studioId],
     queryFn: () => fetchStudioDetail(studioId),
     staleTime: 1000 * 60 * 60 * 2,
     refetchOnWindowFocus: false,
+    gcTime: 5 * 60 * 1000,
+    enabled: !!studioId,
     // placeholderData: true,
   });
 };

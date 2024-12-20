@@ -1,21 +1,20 @@
 /** @jsxImportSource @emotion/react */
-import BackButton from '@components/BackButton/BackButton';
+
+import Header from '@components/Header/Header';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
 import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
-import { TypoBodyMdR, TypoBodyMdSb, TypoCapSmR, TypoTitleMdSb } from '@styles/Common';
+import { DividerStyle, TypoBodyMdR, TypoBodyMdSb, TypoCapSmM, TypoCapSmR, TypoTitleMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 ///studio/detail/{studioId}
 
 const StudioMain = () => {
   const { _id } = useParams();
-  const { data, isLoading, error } = useGetStudioDetail(`${_id}`);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const { data, error } = useGetStudioDetail(`${_id}`);
+  const navigate = useNavigate();
 
   if (error instanceof Error) {
     return <div>Error: {error.message}</div>;
@@ -24,18 +23,35 @@ const StudioMain = () => {
   if (!data) {
     return <div>로딩</div>;
   }
+
+  /**이미지 5개 이하일때 대체할 이미지 */
+  const placeHolderImage = '/img/img-nopic.png';
+  const missingImgCount = data.portfolios.length < 5 ? 5 - data.portfolios.length : 0;
+  const portfolioWithPlaceHolders = [...data.portfolios, ...Array(missingImgCount).fill({ url: placeHolderImage })];
+
   return (
     <>
-      <BackButton />
-      {/* 이미지 들어갈자리 */}
-      <div>이미지</div>
+      <Header customStyle={HeaderStyle} />
+      {/* 이미지 */}
+      <div css={portfolioPreviewStyle}>
+        {portfolioWithPlaceHolders.slice(0, 4).map((v, i) => (
+          <img key={i} src={v.url} alt={`Portfolio ${i}`} />
+        ))}
+        <div css={portfolioPsitionStyle}>
+          <img src={portfolioWithPlaceHolders[4].url} alt="사진5" />
+          <DimOverlayStyle onClick={() => navigate(`/studio/${_id}/portfolio`)}>
+            <img src="/img/icon-morePreview.svg" alt="더보기" />
+            <span>{data?.portfolios.length >= 5 ? `+ ${data?.portfolios.length - 5}` : ''}</span>
+          </DimOverlayStyle>
+        </div>
+      </div>
 
       {/* 스튜디오 정보 */}
       <div css={StudioInfoTitleStyle}>
         <div>
           <h2>{`${data.name}`}</h2>
           <div>
-            <img src="/img/icon-star-yellow.svg" alt="리뷰 평점" />
+            <img src="/img/icon-rating.svg" alt="리뷰 평점" />
             <p>{`${data.rating}`}</p>
             <p>{`(${data.review_count}개의 평가)`}</p>
           </div>
@@ -59,7 +75,7 @@ const StudioMain = () => {
           </div>
           <div>
             <dt>
-              <img src="/img/icon-map.svg" alt="주소" />
+              <img src="/img/icon-location.svg" alt="주소" />
             </dt>
             <dd>
               <p>{`${data.address}` === 'undefined' ? '주소 수집중' : `${data.address}`}</p>
@@ -77,6 +93,7 @@ const StudioMain = () => {
       </div>
 
       {/* gray 여백 들어갈 자리 */}
+
       {/* 네비게이션 바 */}
       <StudioNavigator _id={_id || ''} />
       {/* 홈 기본 정보 */}
@@ -90,12 +107,80 @@ const StudioMain = () => {
 
 export default StudioMain;
 
+const HeaderStyle = css`
+  position: absolute;
+  z-index: 1;
+  padding-top: 1.8rem;
+`;
+
+const portfolioPreviewStyle = css`
+  display: grid;
+  gap: 0.2rem;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  width: calc(100% + 3.2rem);
+  margin-left: -1.6rem;
+  margin-bottom: 2rem;
+
+  & > img {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  & > img:first-of-type {
+    grid-column: span 1; /* 첫 번째 이미지는 2개의 열을 차지 */
+    grid-row: span 2; /* 첫 번째 이미지는 2개의 행을 차지 */
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const portfolioPsitionStyle = css`
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  & > img {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const DimOverlayStyle = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  & > img {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  & > span {
+    color: ${variables.colors.white};
+    ${TypoCapSmM}
+  }
+`;
+
 const StudioInfoTitleStyle = css`
   display: flex;
   justify-content: space-between;
 
   & > div {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     & > h2 {
       ${TypoTitleMdSb}
       margin-bottom: 0.4rem;
@@ -103,12 +188,11 @@ const StudioInfoTitleStyle = css`
 
     & > div {
       display: flex;
+      align-items: center;
       & > img {
-        align-items: center;
-        justify-content: center;
         margin-right: 0.4rem;
-        width: 2rem;
-        height: 2rem;
+        width: 1.6rem;
+        height: 1.6rem;
       }
 
       & > p + p {
@@ -120,6 +204,7 @@ const StudioInfoTitleStyle = css`
 `;
 
 const StudioInfoStyle = css`
+  position: relative;
   dl {
     display: flex;
     flex-direction: column;
@@ -132,9 +217,10 @@ const StudioInfoStyle = css`
       dt {
         display: flex;
         margin-right: 1rem;
+
         img {
-          width: 2rem;
-          height: 2rem;
+          width: 1.7rem;
+          height: 1.7rem;
         }
       }
 
@@ -149,6 +235,7 @@ const StudioInfoStyle = css`
         }
       }
     }
+    ${DividerStyle}
   }
 `;
 

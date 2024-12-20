@@ -6,14 +6,18 @@ import StudioMenuItem from './StudioMenuItem';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { IMenuListRes } from 'types/types';
+import Header from '@components/Header/Header';
 
 const StudioMenu = () => {
   const { _id } = useParams();
   const [data, setData] = useState<IMenuListRes[]>();
 
-  const fetchMeun = async () => {
+  const fetchMenu = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/menu`, {
       method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
     if (!res.ok) {
@@ -21,18 +25,22 @@ const StudioMenu = () => {
     }
 
     const data = await res.json();
-
-    setData(data);
+    return data;
   };
 
   useEffect(() => {
-    fetchMeun();
+    const fetchAndSetData = async () => {
+      const result = await fetchMenu();
+      setData(result);
+    };
+
+    fetchAndSetData();
   }, []);
 
   const StudioMenuList = data?.map((item) => <StudioMenuItem key={item.id} StudioId={_id} data={item} />);
   return (
     <>
-      <BackButton ariaLabel="스튜디오 이름" />
+      <Header title={`${data && data[0].studioName}`} />
       <StudioNavigator _id={String(_id)} />
       <div css={ItemLIstStyle}>{StudioMenuList}</div>
     </>

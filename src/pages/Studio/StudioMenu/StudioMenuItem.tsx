@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { TypoBodyMdM, TypoBodyMdSb, TypoCapSmR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 import { IMenuListRes } from 'types/types';
@@ -9,7 +10,7 @@ const StudioMenuItem = ({ StudioId, data }: { StudioId: string | undefined; data
 
   return (
     <>
-      <section css={MeunItemWrapperStyle} onClick={() => navigate(`/studio/${StudioId}/menu/${data?.id}`)}>
+      <section css={MenuItemWrapperStyle} onClick={() => navigate(`/studio/${StudioId}/menu/${data?.id}`)}>
         <div css={MenuCoverStyle}>
           <img src={`${data?.menuImages[0].url}`} alt="메뉴 대표 사진" />
         </div>
@@ -20,7 +21,7 @@ const StudioMenuItem = ({ StudioId, data }: { StudioId: string | undefined; data
           </div>
           <div css={MenuPriceReviewStyle}>
             <p>{data?.price.toLocaleString('ko-KR')}원</p>
-            <span>리뷰 {data?.reviewCount}</span>
+            <span>리뷰 {data?.reviewCount}개</span>
           </div>
         </div>
       </section>
@@ -30,7 +31,7 @@ const StudioMenuItem = ({ StudioId, data }: { StudioId: string | undefined; data
 
 export default StudioMenuItem;
 
-const MeunItemWrapperStyle = css`
+const MenuItemWrapperStyle = css`
   display: flex;
   gap: 1.4rem;
   padding: 1.4rem 0;
@@ -49,13 +50,13 @@ const MenuCoverStyle = css`
 const MenuDescStyle = css`
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
+  gap: 1rem;
+  justify-content: space-between;
 `;
 
 const MenuHeadStyle = css`
   & h4 {
-    font-size: ${variables.size.medium};
-    font-weight: 500;
+    ${TypoBodyMdM}
     display: flex;
     align-items: center;
     margin-bottom: 0.4rem;
@@ -76,20 +77,19 @@ const MenuHeadStyle = css`
     -webkit-box-orient: vertical;
     overflow: hidden;
     -webkit-line-clamp: 2;
-    font-size: 1.2rem;
-    font-weight: 300;
+    ${TypoCapSmR}
     color: ${variables.colors.gray800};
   }
 `;
 
 const MenuPriceReviewStyle = css`
   & p {
-    font-size: 1.4rem;
-    font-weight: 700;
+    ${TypoBodyMdSb}
+    margin-bottom:.4rem;
   }
 
   & span {
-    font-size: 1rem;
+    ${TypoCapSmR}
     color: ${variables.colors.gray700};
   }
 `;
