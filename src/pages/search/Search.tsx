@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import TrendingStudios from '@pages/search/components/TrendingStudios';
 import RecentSearches from '@pages/search/components/RecentSearches';
 import SearchBar from '@pages/search/components/SearchBar';
-import BackButton from './components/BackButton';
+import BackButton from '@components/BackButton/BackButton';
 
 const Search = () => {
   return (

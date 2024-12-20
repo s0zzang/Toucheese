@@ -2,7 +2,7 @@ import StudioList from '@components/Studio/StudioList';
 import { useGetStudios } from '@hooks/useGetStudios';
 import { UseQueryResult } from '@tanstack/react-query';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { IStudioRes } from 'types/types';
+import { IStudioItem, IStudioRes } from 'types/types';
 import { describe, test, vi } from 'vitest';
 
 // Virtuoso - Mock 처리
@@ -30,7 +30,7 @@ vi.mock('@hooks/useGetStudios', () => ({
   useGetStudios: vi.fn(),
 }));
 
-const mockedStudios: IStudioRes = {
+const mockedStudios: IStudioRes<IStudioItem> = {
   content: [
     {
       id: 146,
@@ -231,7 +231,7 @@ const mockedStudios: IStudioRes = {
   empty: false,
 };
 
-const mockedMoreStudios: IStudioRes = {
+const mockedMoreStudios: IStudioRes<IStudioItem> = {
   content: [
     {
       id: 147,
@@ -439,7 +439,7 @@ describe('StudioList Component', () => {
       data: mockedStudios,
       isLoading: false,
       isFetching: false,
-    } as UseQueryResult<IStudioRes>);
+    } as UseQueryResult<IStudioRes<IStudioItem>>);
 
     render(<StudioList mode="filter" searchParams={new URLSearchParams()} />);
 
@@ -453,7 +453,7 @@ describe('StudioList Component', () => {
       data: mockedStudios,
       isLoading: false,
       isFetching: false,
-    } as UseQueryResult<IStudioRes>);
+    } as UseQueryResult<IStudioRes<IStudioItem>>);
 
     render(<StudioList mode="filter" searchParams={new URLSearchParams()} />);
 
@@ -471,7 +471,7 @@ describe('StudioList Component', () => {
       data: mockedMoreStudios,
       isLoading: false,
       isFetching: false,
-    } as UseQueryResult<IStudioRes>);
+    } as UseQueryResult<IStudioRes<IStudioItem>>);
 
     expect(screen.findByText(/오리우스씨네페이시스/i));
     expect(screen.findByText(/수상한 사진관/i));
@@ -482,7 +482,7 @@ describe('StudioList Component', () => {
     (useGetStudios as jest.Mock).mockReturnValueOnce({
       isLoading: true,
       isFetching: true,
-    } as UseQueryResult<IStudioRes | null>);
+    } as UseQueryResult<IStudioRes<IStudioItem> | null>);
 
     render(<StudioList mode="filter" searchParams={new URLSearchParams()} />);
 
@@ -496,7 +496,7 @@ describe('StudioList Component', () => {
       data: null,
       isLoading: false,
       isFetching: false,
-    } as UseQueryResult<IStudioRes | null>);
+    } as UseQueryResult<IStudioRes<IStudioItem> | null>);
 
     render(<StudioList mode="filter" searchParams={new URLSearchParams()} />);
 

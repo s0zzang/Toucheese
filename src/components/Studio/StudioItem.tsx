@@ -1,16 +1,18 @@
 /** @jsxImportSource @emotion/react */
+import Bookmark from '@components/Bookmark/Bookmark';
 import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
 import styled from '@emotion/styled';
-import { Hidden, TypoTitleSmS } from '@styles/Common';
+import { TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
-import { IMenus, IPortfolio, IStudioItem } from 'types/types';
+import { useNavigate } from 'react-router-dom';
+import { IMenus, IStudioItem } from 'types/types';
 
 const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boolean; isLast: boolean }) => {
-  // 북마크 설정/해제 api 호출
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation;
+  const navigate = useNavigate();
 
-    console.log(`북마크 ${item.bookmark ? '해제' : '설정'}`);
+  // 스튜디오 클릭 시 navigate
+  const handleClick = () => {
+    navigate(`/studio/${item.id}`);
   };
 
   // 최저가 계산 함수
@@ -24,55 +26,39 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
     return minPrice;
   };
 
-  // 이미지 5개 불러오기
-  const getImages = (portfolio: IPortfolio[]) => {
-    let images: string[] = [];
-    const porfolios = portfolio.slice(0, 5);
-
-    porfolios.forEach((portfolio: IPortfolio) => {
-      images.push(portfolio.url);
-    });
-
-    return images;
-  };
-
   return (
-    <DivStyle isFirst={isFirst} isLast={isLast}>
-      <ImageSwiper images={getImages(item.portfolios)} />
+    <DivStyle isFirst={isFirst} isLast={isLast} onClick={handleClick}>
+      <ImageSwiper images={item.portfolios} />
 
       <ItemContentStyle>
         <ItemInfoStyle>
           <TitleStyle css={TypoTitleSmS}>{`${item.name}`}</TitleStyle>
           <InfoContainerStyle>
             <div>
-              <img src="/img/icon-rating.svg" />
+              <img src="/img/icon-rating.svg" alt="평점" />
               <p>
                 {item.rating}
                 <span>{` (${item.review_count}개의 평가)`}</span>
               </p>
             </div>
             <div>
-              <img src="/img/icon-price.svg" />
+              <img className="price" src="/img/icon-price.svg" alt="가격" />
               <p>{`${getMinPrice(item.menus)}원~`}</p>
             </div>
           </InfoContainerStyle>
           <InfoContainerStyle>
             <div>
-              <img src="/img/icon-location.svg" />
+              <img className="location" src="/img/icon-location.svg" alt="주소" />
               <p className="location">{`${item.addressGu} ${item.address}`}</p>
             </div>
             <div>
-              <img src="/img/icon-time.svg" />
+              <img src="/img/icon-clock.svg" alt="영업 시간" />
               <p>{`${item.open_time.slice(0, -3)} - ${item.close_time.slice(0, -3)}`}</p>
             </div>
           </InfoContainerStyle>
         </ItemInfoStyle>
         <BookmarkStyle>
-          <button onClick={handleClick}>
-            <img src={`/img/icon-bookmark-${item.bookmark ? 'active' : 'inactive'}.svg`} alt={`북마크 ${item.bookmark ? '해제' : '등록'}`} />
-            <span css={Hidden}>북마크 {`${item.bookmark ? '해제' : '등록'}하기`}</span>
-          </button>
-          <p>{item.bookmark_count}</p>
+          <Bookmark id={item.id} count={item.bookmark_count} isBookmarked={item.bookmark} />
         </BookmarkStyle>
       </ItemContentStyle>
     </DivStyle>
@@ -88,6 +74,10 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
     `
       border-bottom: unset;
   `}
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const ItemContentStyle = styled.div`
@@ -120,6 +110,16 @@ const InfoContainerStyle = styled.div`
     & > img {
       width: 1.3rem;
       height: 1.3rem;
+
+      &.price {
+        width: 1.3rem;
+        height: 1.1rem;
+      }
+
+      &.location {
+        width: 1.1rem;
+        height: 1.3rem;
+      }
     }
 
     & > p {

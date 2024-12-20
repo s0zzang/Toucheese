@@ -2,8 +2,8 @@
 import { useLocation } from 'react-router-dom';
 import { css } from '@emotion/react';
 import SearchBar from '@pages/search/components/SearchBar';
-import BackButton from './components/BackButton';
 import StudioList from '@components/Studio/StudioList';
+import BackButton from '@components/BackButton/BackButton';
 
 const SearchResults = () => {
   const location = useLocation();

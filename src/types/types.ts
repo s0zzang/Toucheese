@@ -1,3 +1,5 @@
+import { Review } from '@pages/Studio/StudioReview/components/StudioReviewItem';
+
 export interface IPortfolio {
   id: number;
   studio: string;
@@ -7,6 +9,14 @@ export interface IPortfolio {
   description: string;
   created_at: string;
   updated_at: null | string;
+}
+
+export interface IReviewImages {
+  id: number;
+  reviewId: number;
+  url: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface IMenus {
@@ -54,8 +64,8 @@ export interface IStudioItem {
   bookmark: boolean;
 }
 
-export interface IStudioRes {
-  content: IStudioItem[];
+export interface IStudioRes<T> {
+  content: T[];
   pageable: {
     pageNumber: number;
     pageSize: number;
@@ -81,4 +91,36 @@ export interface IStudioRes {
   numberOfElements: number;
   first: boolean;
   empty: boolean;
+}
+
+export interface IAdditionalOptionsRes {
+  id: number;
+  menuId: number;
+  menu: string;
+  name: string;
+  price: number;
+  description: string;
+  duration: string | null;
+  createTime: string | null;
+  updateTime: string | null;
+}
+
+export interface IMenuListRes {
+  id: number;
+  studioId: number;
+  studioName: string;
+  name: string;
+  description: string;
+  price: number;
+  additionalOptions: IAdditionalOptionsRes[];
+  menuImages: IPortfolio[] | IReviewImages[];
+  duration: string | null; //소요시간
+  offerFile: string | null; //기본 제공 파일
+  pictureNum: string | null; //촬영 수
+  pictureSize: string | null; //인화 사이즈
+  avgScore: number;
+  reviews: { content: Review[] };
+  reviewCount: number;
+  created_at: string | null;
+  updated_at: string | null;
 }

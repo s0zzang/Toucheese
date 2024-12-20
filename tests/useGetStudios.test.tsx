@@ -1,11 +1,11 @@
 import { useGetStudios } from '@hooks/useGetStudios';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, renderHook, waitFor } from '@testing-library/react';
-import { IStudioRes } from 'types/types';
+import { IStudioItem, IStudioRes } from 'types/types';
 import { describe, test, vi } from 'vitest';
 
 // Response - Mock 처리
-const mockedStudios: IStudioRes = {
+const mockedStudios: IStudioRes<IStudioItem> = {
   content: [
     {
       id: 146,

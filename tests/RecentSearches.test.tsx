@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, test, expect } from 'vitest';
-import RecentSearches from './RecentSearches';
 import { MemoryRouter } from 'react-router-dom';
+import RecentSearches from '@pages/search/components/RecentSearches';
 
 describe('RecentSearches', () => {
   test('최근 검색 기록이 없을 때 빈 상태를 렌더링한다', () => {

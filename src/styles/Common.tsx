@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import variables from './Variables';
 
 // title
 export const TypoTitleXsR = css`
@@ -22,9 +23,21 @@ export const TypoTitleSmS = css`
   line-height: 2.4rem;
 `;
 
+export const TypoTitleMdSb = css`
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 2.4rem;
+`;
+
 export const TypoBodyMdR = css`
   font-size: 1.4rem;
   font-weight: 400;
+  line-height: 2rem;
+`;
+
+export const TypoBodyMdSb = css`
+  font-size: 1.4rem;
+  font-weight: 700;
   line-height: 2rem;
 `;
 export const TypoBodyMdM = css`
@@ -44,6 +57,19 @@ export const TypoCapSmM = css`
   line-height: 1.4rem;
 `;
 
+export const DividerStyle = css`
+  padding-bottom: calc(2rem + 1rem);
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: calc(100% + 4rem);
+    height: 1rem;
+    background-color: ${variables.colors.gray300};
+    transform: translateX(-50%);
+  }
+`;
 // 웹 접근성
 export const Hidden = css`
   position: absolute !important;

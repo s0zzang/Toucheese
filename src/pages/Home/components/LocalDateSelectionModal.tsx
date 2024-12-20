@@ -1,17 +1,17 @@
 /** @jsxImportSource @emotion/react */
-
-import BottomSheet from '@components/BottomSheet/BottomSheet';
 import Modal from '@components/Modal/Modal';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
+import useBottomSheetState from '@store/useBottomSheetStateStore';
 import variables from '@styles/Variables';
 import { useState } from 'react';
-import DateBottomSheet from './DateBottomSheet';
 import { useNavigate } from 'react-router-dom';
-import useBottomSheetState from '@store/useBottomSheetStateStore';
+import DateBottomSheet from './DateBottomSheet';
+import LocationBottomSheet from './LocationBottomSheet';
 
 const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const [selectedDate, setSelectedDate] = useState({ date: '', time: '' });
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const { openBottomSheet } = useBottomSheetState();
   const navigate = useNavigate();
 
@@ -29,6 +29,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const setParams = () => {
     const currentParams = new URLSearchParams(window.location.search);
     currentParams.set('requestedDateTime', `${selectedDate.date}${selectedDate.time}`);
+    currentParams.set('requestedLocation', `${selectedDate.date}`);
     navigate(`?${currentParams.toString()}`);
   };
 
@@ -44,22 +45,21 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
     return `${selectedDateForUi} ${selectedTimeForUi === '00시' ? '' : selectedTimeForUi}`;
   };
 
-  const handleOpenLocation = () => {};
+  const handleOpenLocation = () => openBottomSheet(<LocationBottomSheet setSelectedLocation={setSelectedLocation} initialSelectedLocation={selectedLocation} />, '지역 선택');
   const handleOpenDate = () => openBottomSheet(<DateBottomSheet setSelectedDate={setSelectedDate} />, '');
 
   return (
     <>
-      <Modal title="지역, 날짜 선택" buttons={buttons} size="full">
+      <Modal title="지역, 날짜 선택" buttons={buttons} type="fullscreen">
         <>
           <InputBoxStyle>
             <button type="button" onClick={handleOpenLocation}>
-              지역 선택
+              {selectedLocation ? selectedLocation : '지역 선택'}
             </button>
             <button type="button" onClick={handleOpenDate}>
               {selectedDate.date ? changeformatDateForUi(selectedDate) : '예약 날짜 선택'}
             </button>
           </InputBoxStyle>
-          <BottomSheet />
         </>
       </Modal>
     </>

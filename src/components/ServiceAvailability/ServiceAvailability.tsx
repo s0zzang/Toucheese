@@ -31,7 +31,7 @@ const ServiceAvailability = () => {
 
   // 인덱스에 해당하는 버튼의 제목을 반환하는 함수
   const getButtonTitle = (index: number) => {
-    const titles = ['보정', '원본', '주차', '헤메코', '정장대여', '탈의실', '파우더룸'];
+    const titles = ['보정', '원본', '주차', '헤메코', '정장', '탈의실', '파우더룸'];
     return titles[index]; // 제목 배열에서 인덱스에 해당하는 제목 반환
   };
 
