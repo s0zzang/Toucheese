@@ -66,11 +66,12 @@ const StudioReviewItem = ({ review }: { review: Review }) => {
 export default StudioReviewItem;
 
 const StudioReviewItemContainerStyle = styled.div<{ isOpen: boolean }>`
-  width: 100%;
-
-  margin-top: 1rem;
+  width: 100vw;
+  margin-left: calc(-1 * ${variables.layoutPadding});
+  padding: 0 ${variables.layoutPadding};
+  padding-top: 1rem;
   border-bottom: 1px solid ${variables.colors.gray300};
-  background-color: ${({ isOpen }) => (isOpen ? variables.colors.gray100 : 'transparent')};
+  background-color: ${({ isOpen }) => (isOpen ? variables.colors.gray200 : 'transparent')};
   transition: background-color 0.2s ease;
 `;
 

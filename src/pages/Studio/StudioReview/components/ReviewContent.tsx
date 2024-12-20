@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { TypoCapSmR } from '@styles/Common';
@@ -10,10 +10,26 @@ interface ReviewContentProps {
 }
 
 const ReviewContent = ({ content, isOpen, setIsOpen }: ReviewContentProps): JSX.Element => {
+  const [isTextOverflow, setIsTextOverflow] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const element = textRef.current;
+    if (element) {
+      // 실제 콘텐츠 높이와 표시되는 라인 수를 비교
+      const lineHeight = parseInt(window.getComputedStyle(element).lineHeight);
+      const height = element.scrollHeight;
+      const lines = height / lineHeight;
+      setIsTextOverflow(lines > 3);
+    }
+  }, [content]);
+
   return (
     <ReviewContentWrapper>
-      <ContentText isExpanded={isOpen}>{content}</ContentText>
-      <MoreButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '접기' : '더보기'}</MoreButton>
+      <ContentText ref={textRef} isExpanded={isOpen}>
+        {content + content + content}
+      </ContentText>
+      {isTextOverflow && <MoreButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '접기' : '더보기'}</MoreButton>}
     </ReviewContentWrapper>
   );
 };
