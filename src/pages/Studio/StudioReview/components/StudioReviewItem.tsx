@@ -11,7 +11,7 @@ import { formatTimeAgo } from '@utils/formatTimeAgo';
 import { IReviewImages } from 'types/types';
 
 // 리뷰 데이터의 타입 정의
-interface Review {
+export interface Review {
   content: string;
   created_at: string;
   id: number;

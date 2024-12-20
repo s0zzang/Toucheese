@@ -10,7 +10,7 @@ const StudioMenuItem = ({ StudioId, data }: { StudioId: string | undefined; data
 
   return (
     <>
-      <section css={MeunItemWrapperStyle} onClick={() => navigate(`/studio/${StudioId}/menu/${data?.id}`)}>
+      <section css={MenuItemWrapperStyle} onClick={() => navigate(`/studio/${StudioId}/menu/${data?.id}`)}>
         <div css={MenuCoverStyle}>
           <img src={`${data?.menuImages[0].url}`} alt="메뉴 대표 사진" />
         </div>
@@ -31,7 +31,7 @@ const StudioMenuItem = ({ StudioId, data }: { StudioId: string | undefined; data
 
 export default StudioMenuItem;
 
-const MeunItemWrapperStyle = css`
+const MenuItemWrapperStyle = css`
   display: flex;
   gap: 1.4rem;
   padding: 1.4rem 0;

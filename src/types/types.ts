@@ -1,3 +1,5 @@
+import { Review } from '@pages/Studio/StudioReview/components/StudioReviewItem';
+
 export interface IPortfolio {
   id: number;
   studio: string;
@@ -103,14 +105,6 @@ export interface IAdditionalOptionsRes {
   updateTime: string | null;
 }
 
-export interface IMenuImagesRes {
-  id: number;
-  menuId: number;
-  menu: string;
-  url: string;
-  created_at: string | null;
-  updated_at: string | null;
-}
 export interface IMenuListRes {
   id: number;
   studioId: number;
@@ -121,6 +115,8 @@ export interface IMenuListRes {
   duration: string | null;
   additionalOptions: IAdditionalOptionsRes[];
   menuImages: IPortfolio[] | IReviewImages[];
+  avgScore: number;
+  reviews: { content: Review[] };
   reviewCount: number;
   created_at: string | null;
   updated_at: string | null;
