@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import KakaoShareButton from '@components/Kakao/KakaoShare';
+import KakaoShareButton from '@components/Kakao/KaKaoShare';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -35,12 +35,8 @@ const ShareOptions = ({ title, description, imageUrl, webUrl }: ShareProps) => {
           <img src="/img/icon-copy-link.svg" alt="링크 복사" />
         </div>
         <span css={textStyle}>링크복사</span>
-        {/* 피드백 메시지를 포털을 통해 바텀시트 외부로 렌더링 */}
-        {isCopied &&
-          createPortal(
-            <div css={feedbackStyle}>Copied! 🎉</div>,
-            document.body, // 바텀시트 밖에 메시지를 렌더링
-          )}
+
+        {isCopied && createPortal(<div css={feedbackStyle}>Copied! 🎉</div>, document.body)}
       </div>
     </div>
   );

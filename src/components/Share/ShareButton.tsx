@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { css, SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import ShareOptions from '@components/Share/ShareOptions';
@@ -35,12 +35,3 @@ const containerStyle = css`
   width: auto;
   height: auto;
 `;
-
-/* 사용예시
-<ShareButton
-  title="공유할 스튜디오 이름"
-  description="공유할 스튜디오 설명"
-  imageUrl="https://i.imgur.com/BMDwLgQ.jpeg" //보여질 이미지
-  webUrl="http://toucheese.store/search/results?keyword=그믐달" //이동url
-/> 
-*/
