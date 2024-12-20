@@ -15,6 +15,7 @@ interface ImageSwiperProps extends SwiperProps {
   customStyle?: ReturnType<typeof css>;
     loading?: string;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
+    onClick?: () => void;
   };
 }
 

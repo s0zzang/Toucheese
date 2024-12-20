@@ -9,7 +9,7 @@ import { useState } from 'react';
 import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
 import { formatTimeAgo } from '@utils/formatTimeAgo';
 import { IReviewImages } from 'types/types';
-
+import { css } from '@emotion/react';
 // 리뷰 데이터의 타입 정의
 export interface Review {
   content: string;
@@ -37,7 +37,13 @@ const StudioReviewItem = ({ review }: { review: Review }) => {
           <SubTitle css={TypoCapSmR}>컷 추가 수정 | 포즈 추가 촬영</SubTitle>
         </TitleWrapper>
         <StarRating rating={review.rating} />
+
         <ImageSwiper
+          imageStyle={css`
+            width: 100%;
+            aspect-ratio: 94 / 118;
+            object-fit: cover;
+          `}
           images={review.reviewImages}
           imgprops={{
             loading: 'lazy',

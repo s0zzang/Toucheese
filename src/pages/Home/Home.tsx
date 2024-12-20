@@ -34,6 +34,9 @@ export type Options = {
   파우더룸: string;
 };
 
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+console.log('접속한 기기:', isMobile ? '모바일' : '데스크톱');
+
 const Home = () => {
   const [searchParams] = useSearchParams();
   const [isFixed, setIsFixed] = useState(false);
