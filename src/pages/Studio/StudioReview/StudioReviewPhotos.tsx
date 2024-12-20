@@ -28,7 +28,7 @@ const StudioReviewPhotos = () => {
   const { open } = useModal(1);
   const fetchReviewImage = async () => {
     // 리뷰사진 모아보기 조회
-
+    //
     const url = new URL(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/reviewImage`);
 
     if (selectedMenuId) {

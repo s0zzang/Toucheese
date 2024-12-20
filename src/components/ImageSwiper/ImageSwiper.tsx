@@ -9,14 +9,12 @@ import { IPortfolio, IReviewImages } from 'types/types';
 interface ImageSwiperProps extends SwiperProps {
   images: IPortfolio[] | IReviewImages[];
   imageStyle?: ReturnType<typeof css>;
-  customStyle?: ReturnType<typeof css>;
   imgprops?: {
     customStyle?: ReturnType<typeof css>;
     loading?: string;
     onLoad?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
   };
 }
-
 const ImageSwiper = ({
   images,
   modules = [Mousewheel, Pagination],
@@ -24,7 +22,6 @@ const ImageSwiper = ({
   spaceBetween = 3,
   slidesPerView = 3.6,
   imageStyle,
-  customStyle,
   ...props
 }: ImageSwiperProps) => {
   const isPaginationActive = slidesPerView === 1;
@@ -49,7 +46,7 @@ const ImageSwiper = ({
   return (
     <div css={conditionalContainerStyle}>
       <Swiper
-        css={[swiperStyle, customStyle]}
+        css={swiperStyle}
         modules={modules}
         mousewheel={mousewheel}
         spaceBetween={spaceBetween}
