@@ -47,7 +47,7 @@ export interface IOpeningHours {
   studioName: string;
 }
 
-export interface IHolydays {
+export interface IHolidays {
   dayOfWeek: string;
   id: number;
   studioId: number;
@@ -73,7 +73,7 @@ export interface IStudioItem {
   subVibe: string;
   portfolios: IPortfolio[];
   options: [];
-  holydays: IHolydays[];
+  holydays: IHolidays[];
 }
 
 export interface IStudioRes<T> {
