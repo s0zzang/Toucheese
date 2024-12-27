@@ -2,15 +2,16 @@
 import styled from '@emotion/styled';
 import { TypoCapSmR, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
+
 import StarRating from './StarRating';
 import ReviewContent from './ReviewContent';
 import { useState } from 'react';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { formatTimeAgo } from '@utils/formatTimeAgo';
 import { IReviewImages } from 'types/types';
-
+import { css } from '@emotion/react';
 // 리뷰 데이터의 타입 정의
-interface Review {
+export interface Review {
   content: string;
   created_at: string;
   id: number;
@@ -36,9 +37,15 @@ const StudioReviewItem = ({ review }: { review: Review }) => {
           <SubTitle css={TypoCapSmR}>컷 추가 수정 | 포즈 추가 촬영</SubTitle>
         </TitleWrapper>
         <StarRating rating={review.rating} />
+
         <ImageSwiper
+          imageStyle={css`
+            width: 100%;
+            aspect-ratio: 94 / 118;
+            object-fit: cover;
+          `}
           images={review.reviewImages}
-          imgProps={{
+          imgprops={{
             loading: 'lazy',
             onLoad: (e) => {
               const img = e.target as HTMLImageElement;
@@ -59,18 +66,22 @@ const StudioReviewItem = ({ review }: { review: Review }) => {
 export default StudioReviewItem;
 
 const StudioReviewItemContainerStyle = styled.div<{ isOpen: boolean }>`
-  width: 100%;
-  margin-top: 1rem;
+  width: 100vw;
+  margin-left: calc(-1 * ${variables.layoutPadding});
+  padding: 0 ${variables.layoutPadding};
+  padding-top: 1rem;
   border-bottom: 1px solid ${variables.colors.gray300};
-  background-color: ${({ isOpen }) => (isOpen ? variables.colors.gray100 : 'transparent')};
+  background-color: ${({ isOpen }) => (isOpen ? variables.colors.gray200 : 'transparent')};
   transition: background-color 0.2s ease;
 `;
 
 const NameAndDateWrapperStyle = styled.div`
+  margin-bottom: 1.5rem;
   width: 100%;
   display: flex;
   gap: 1.1rem;
   align-items: center;
+  color: ${variables.colors.gray800};
 
   & p {
     font-size: 1.4rem;
@@ -82,7 +93,22 @@ const TitleWrapper = styled.div`
   margin-bottom: 0.8rem;
 `;
 
-const MainTitle = styled.h3``;
+const MainTitle = styled.h3`
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.6rem;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 1.6rem;
+    height: 1.6rem;
+    background-image: url('/img/icon-arrow-16.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+`;
 
 const SubTitle = styled.p`
   font-size: 1.4rem;

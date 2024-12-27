@@ -1,62 +1,63 @@
-/** @jsxImportSource @emotion/react */
+import React, { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
-import { css } from '@emotion/react';
-import { useRef, useEffect, useState } from 'react';
+import { TypoCapSmR } from '@styles/Common';
 
 interface ReviewContentProps {
   content: string;
   isOpen: boolean;
-  setIsOpen: (value: boolean) => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ReviewContent = ({ content, isOpen, setIsOpen }: ReviewContentProps) => {
-  const textRef = useRef<HTMLParagraphElement>(null);
+const ReviewContent = ({ content, isOpen, setIsOpen }: ReviewContentProps): JSX.Element => {
   const [isTextOverflow, setIsTextOverflow] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-    if (textRef.current) {
-      const lineHeight = parseInt(getComputedStyle(textRef.current).lineHeight);
-      const height = textRef.current.scrollHeight;
-      setIsTextOverflow(height > lineHeight * 3);
+    const element = textRef.current;
+    if (element) {
+      // 실제 콘텐츠 높이와 표시되는 라인 수를 비교
+      const lineHeight = parseInt(window.getComputedStyle(element).lineHeight);
+      const height = element.scrollHeight;
+      const lines = height / lineHeight;
+      setIsTextOverflow(lines > 3);
     }
   }, [content]);
 
   return (
-    <ReviewContentStyle>
-      <ContentText ref={textRef} isOpen={isOpen}>
-        {content}
+    <ReviewContentWrapper>
+      <ContentText ref={textRef} isExpanded={isOpen}>
+        {content + content + content}
       </ContentText>
       {isTextOverflow && <MoreButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '접기' : '더보기'}</MoreButton>}
-    </ReviewContentStyle>
+    </ReviewContentWrapper>
   );
 };
 
-export default ReviewContent;
-
-const ReviewContentStyle = styled.div`
+const ReviewContentWrapper = styled.div`
   position: relative;
-  margin: 1.6rem 0;
+  margin-bottom: 2rem;
+  margin-top: 0.8rem;
 `;
 
-const ContentText = styled.p<{ isOpen: boolean }>`
-  ${({ isOpen }) =>
-    !isOpen &&
-    css`
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    `}
-  line-height: 1.5;
-  color: ${variables.colors.gray900};
+const ContentText = styled.p<{ isExpanded: boolean }>`
+  font-size: 1.6rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: ${(props) => (props.isExpanded ? 'none' : '3')};
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const MoreButton = styled.button`
-  color: ${variables.colors.gray600};
-  margin-top: 0.8rem;
   background: none;
   border: none;
+  color: ${variables.colors.gray600};
+  text-decoration: underline;
+  ${TypoCapSmR}
   cursor: pointer;
-  padding: 0;
+  margin-top: 0.5rem;
 `;
+
+export default ReviewContent;

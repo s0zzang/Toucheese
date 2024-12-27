@@ -1,3 +1,5 @@
+import { Review } from '@pages/Studio/StudioReview/components/StudioReviewItem';
+
 export interface IPortfolio {
   id: number;
   studio: string;
@@ -36,7 +38,25 @@ export interface IOptions {
   updated_at: string;
 }
 
-export interface IStudioItem {
+export interface IOpeningHours {
+  closeTime: string;
+  closed: false;
+  dayOfWeek: string;
+  id: number;
+  openTime: string;
+  studioId: number;
+  studioName: string;
+}
+
+export interface IHolidays {
+  dayOfWeek: string;
+  id: number;
+  studioId: number;
+  studioName: string;
+  weekOfMonth: number;
+}
+
+interface IStudioInfo {
   id: number;
   vibe: string;
   addressSi: string;
@@ -49,18 +69,28 @@ export interface IStudioItem {
   rating: number;
   bookmark_count: number;
   review_count: number;
-  latitude: null | string;
-  longitude: null | string;
-  open_time: string;
-  close_time: string;
+  latitude: null | number;
+  longitude: null | number;
   subVibe: string;
   portfolios: IPortfolio[];
+}
+
+export interface IStudioItem extends IStudioInfo {
+  options: IOptions[];
+  open_time: string;
+  close_time: string;
   menus: IMenus[];
-  options: [] | IOptions;
-  created_at: null | string;
-  updated_at: null | string;
-  day_of_week: 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN';
+  created_at: string;
+  updated_at: string;
+  day_of_week: string;
   bookmark: boolean;
+}
+
+export interface IStudioDetail extends IStudioInfo {
+  options: ('CHANGING_ROOM' | 'DRESSING_ROOM' | 'HAIR_MAKEUP' | 'INDIVIDUAL_EDITING' | 'SUIT_RENTAL_FREE' | 'ORIGINAL_FILES' | 'PARKING_AREA')[];
+  openingHours: IOpeningHours[];
+  holidays: IHolidays[];
+  open: false;
 }
 
 export interface IStudioRes<T> {
@@ -93,36 +123,33 @@ export interface IStudioRes<T> {
 }
 
 export interface IAdditionalOptionsRes {
-  createTime: string | null;
-  description: string;
-  duration: string | null;
   id: number;
-  menu: string;
   menuId: number;
+  menu: string;
   name: string;
   price: number;
+  description: string;
+  duration: string | null;
+  createTime: string | null;
   updateTime: string | null;
 }
 
-export interface IMenuImagesRes {
-  created_at: string | null;
-  id: number;
-  menu: string;
-  menuId: number;
-  updated_at: string | null;
-  url: string;
-}
 export interface IMenuListRes {
-  additionalOptions: IAdditionalOptionsRes[];
-  menuImages: IMenuImagesRes[];
-  description: string;
-  duration: string | null;
   id: number;
-  name: string;
-  price: number;
-  reviewCount: number;
   studioId: number;
   studioName: string;
+  name: string;
+  description: string;
+  price: number;
+  additionalOptions: IAdditionalOptionsRes[];
+  menuImages: IPortfolio[] | IReviewImages[];
+  duration: string | null; //소요시간
+  offerFile: string | null; //기본 제공 파일
+  pictureNum: string | null; //촬영 수
+  pictureSize: string | null; //인화 사이즈
+  avgScore: number;
+  reviews: { content: Review[] };
+  reviewCount: number;
   created_at: string | null;
   updated_at: string | null;
 }

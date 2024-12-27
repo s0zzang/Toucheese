@@ -42,17 +42,17 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
               </p>
             </div>
             <div>
-              <img src="/img/icon-price.svg" alt="가격" />
+              <img className="price" src="/img/icon-price.svg" alt="가격" />
               <p>{`${getMinPrice(item.menus)}원~`}</p>
             </div>
           </InfoContainerStyle>
           <InfoContainerStyle>
             <div>
-              <img src="/img/icon-location.svg" alt="주소" />
+              <img className="location" src="/img/icon-location.svg" alt="주소" />
               <p className="location">{`${item.addressGu} ${item.address}`}</p>
             </div>
             <div>
-              <img src="/img/icon-time.svg" alt="영업 시간" />
+              <img src="/img/icon-clock.svg" alt="영업 시간" />
               <p>{`${item.open_time.slice(0, -3)} - ${item.close_time.slice(0, -3)}`}</p>
             </div>
           </InfoContainerStyle>
@@ -110,6 +110,16 @@ const InfoContainerStyle = styled.div`
     & > img {
       width: 1.3rem;
       height: 1.3rem;
+
+      &.price {
+        width: 1.3rem;
+        height: 1.1rem;
+      }
+
+      &.location {
+        width: 1.1rem;
+        height: 1.3rem;
+      }
     }
 
     & > p {

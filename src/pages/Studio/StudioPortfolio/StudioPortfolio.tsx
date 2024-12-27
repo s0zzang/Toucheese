@@ -52,7 +52,7 @@ const StudioPortfolio = () => {
 
   return (
     <>
-      <Header title={studioName} backTo="/" />
+      <Header title={studioName} />
       <StudioNavigator _id={_id} />
 
       <FilterBoxStyle>

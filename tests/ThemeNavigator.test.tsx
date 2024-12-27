@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import ThemeNavigator from './ThemeNavigator';
 import { render, screen, fireEvent } from '@testing-library/react';
 import variables from '@styles/Variables';
 import { MemoryRouter } from 'react-router-dom';
+import ThemeNavigator from '@components/Navigator/ThemeNavigator';
 
 describe('ThemeNavigator', () => {
   test('renders all themes', () => {

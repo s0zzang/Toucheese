@@ -1,25 +1,34 @@
 /** @jsxImportSource @emotion/react */
-import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import Dropdown from './DropDown';
 
 interface StudioReviewCategoriesProps {
-  avgRating: number;
+  avgRating?: number;
   totalReviewNum: number;
+  menuNameList: string[];
+  menuIdList: number[];
+  onFilterChange: (menuId: number | null) => void;
 }
 
 /** 리뷰에 대한 필터링 컴포넌트 */
-const StudioReviewCategories = ({ avgRating, totalReviewNum }: StudioReviewCategoriesProps) => {
-  const FILTER_OPTIONS = ['전체리뷰', '높은 평점순', '낮은 평점순', '최신순'];
+const StudioReviewCategories = ({ avgRating, totalReviewNum, menuNameList, menuIdList, onFilterChange }: StudioReviewCategoriesProps) => {
+  const FILTER_OPTIONS = ['전체리뷰', ...menuNameList];
   const [selectedOption, setSelectedOption] = useState('전체리뷰');
+
+  const handleOptionSelect = (option: string) => {
+    setSelectedOption(option);
+
+    const menuIndex = menuNameList.indexOf(option);
+    const selectedMenuId = option === '전체리뷰' ? null : menuIdList[menuIndex];
+    onFilterChange(selectedMenuId);
+  };
 
   return (
     <Container>
       <CategoryWrapper>
-        <Dropdown options={FILTER_OPTIONS} selectedOption={selectedOption} onSelect={setSelectedOption} />
-        <Button text="사진 리뷰만 보기" variant="white" active={false} size="small" width="fit" />
+        <Dropdown options={FILTER_OPTIONS} selectedOption={selectedOption} onSelect={handleOptionSelect} />
       </CategoryWrapper>
       <RatingWrapper>
         <RatingIcon src="/img/icon-rating.svg" alt="평점" />
@@ -37,11 +46,7 @@ const Container = styled.div`
   padding: 1.8rem 0;
 `;
 
-const CategoryWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
+const CategoryWrapper = styled.div``;
 
 const RatingWrapper = styled.div`
   display: flex;

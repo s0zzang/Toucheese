@@ -7,7 +7,7 @@ import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DateBottomSheet from './DateBottomSheet';
-import LocationSelectionModal from './LocationSelectionModal';
+import LocationBottomSheet from './LocationBottomSheet';
 
 const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const [selectedDate, setSelectedDate] = useState({ date: '', time: '' });

@@ -23,9 +23,21 @@ export const TypoTitleSmS = css`
   line-height: 2.4rem;
 `;
 
+export const TypoTitleMdSb = css`
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 2.4rem;
+`;
+
 export const TypoBodyMdR = css`
   font-size: 1.4rem;
   font-weight: 400;
+  line-height: 2rem;
+`;
+
+export const TypoBodyMdSb = css`
+  font-size: 1.4rem;
+  font-weight: 700;
   line-height: 2rem;
 `;
 export const TypoBodyMdM = css`
@@ -46,6 +58,7 @@ export const TypoCapSmM = css`
 `;
 
 export const DividerStyle = css`
+  padding-bottom: calc(2rem + 1rem);
   &::after {
     content: '';
     position: absolute;
