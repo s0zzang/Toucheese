@@ -5,7 +5,7 @@ import Button from '@components/Button/Button';
 import Header from '@components/Header/Header';
 import KakaoMap from '@components/Kakao/KakaoMap';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
-import Share from '@components/Share/Share';
+import ShareButton from '@components/Share/ShareButton';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
@@ -81,7 +81,7 @@ const StudioMain = () => {
           </div>
         </div>
         <div css={SocialActionsStyle}>
-          <Share title={data.name} description={data.description} imageUrl={data.portfolios[0].url} webUrl={window.location.href} />
+          <ShareButton title={data.name} description={data.description} imageUrl={data.portfolios[0].url} webUrl={window.location.href} />
           <Bookmark id={+!_id} count={data.bookmark_count} isBookmarked={false} />
         </div>
       </div>
