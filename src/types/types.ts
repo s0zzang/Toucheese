@@ -55,25 +55,41 @@ export interface IHolidays {
   weekOfMonth: number;
 }
 
-export interface IStudioItem {
+interface IStudioInfo {
   id: number;
   vibe: string;
-  address: string;
   addressSi: string;
   addressGu: string;
   name: string;
   description: string;
+  address: string;
   phone: string;
+  view_count: number;
   rating: number;
   bookmark_count: number;
   review_count: number;
-  latitude: null | string;
-  longitude: null | string;
-  openingHours: IOpeningHours[];
+  latitude: null | number;
+  longitude: null | number;
   subVibe: string;
   portfolios: IPortfolio[];
-  options: [];
-  holydays: IHolidays[];
+}
+
+export interface IStudioItem extends IStudioInfo {
+  options: IOptions[];
+  open_time: string;
+  close_time: string;
+  menus: IMenus[];
+  created_at: string;
+  updated_at: string;
+  day_of_week: string;
+  bookmark: boolean;
+}
+
+export interface IStudioDetail extends IStudioInfo {
+  options: ('CHANGING_ROOM' | 'DRESSING_ROOM' | 'HAIR_MAKEUP' | 'INDIVIDUAL_EDITING' | 'SUIT_RENTAL_FREE' | 'ORIGINAL_FILES' | 'PARKING_AREA')[];
+  openingHours: IOpeningHours[];
+  holidays: IHolidays[];
+  open: false;
 }
 
 export interface IStudioRes<T> {
