@@ -37,31 +37,43 @@ export interface IOptions {
   updated_at: string;
 }
 
+export interface IOpeningHours {
+  closeTime: string;
+  closed: false;
+  dayOfWeek: string;
+  id: number;
+  openTime: string;
+  studioId: number;
+  studioName: string;
+}
+
+export interface IHolidays {
+  dayOfWeek: string;
+  id: number;
+  studioId: number;
+  studioName: string;
+  weekOfMonth: number;
+}
+
 export interface IStudioItem {
   id: number;
   vibe: string;
+  address: string;
   addressSi: string;
   addressGu: string;
   name: string;
   description: string;
-  address: string;
   phone: string;
-  view_count: number;
   rating: number;
   bookmark_count: number;
   review_count: number;
   latitude: null | string;
   longitude: null | string;
-  open_time: string;
-  close_time: string;
+  openingHours: IOpeningHours[];
   subVibe: string;
   portfolios: IPortfolio[];
-  menus: IMenus[];
-  options: [] | IOptions;
-  created_at: null | string;
-  updated_at: null | string;
-  day_of_week: 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN';
-  bookmark: boolean;
+  options: [];
+  holydays: IHolidays[];
 }
 
 export interface IStudioRes<T> {
