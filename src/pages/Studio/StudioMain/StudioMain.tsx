@@ -20,6 +20,7 @@ const StudioMain = () => {
   const navigate = useNavigate();
   const [isOpened, setIsOpened] = useState(false);
   let today = new Date();
+
   /**주차 구하기 */
   // const getWeek = (date: Date) => {
   //   const currentDate = date.getDate();
@@ -66,14 +67,14 @@ const StudioMain = () => {
 
       {/* 이미지 */}
       <div css={portfolioPreviewStyle}>
-        {portfolioWithPlaceHolders.slice(0, 4).map((v, i) => (
-          <img key={i} src={v.url} alt={`Portfolio ${i}`} />
+        {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, i) => (
+          <img key={i} src={portfolioImg.url} alt={`포트폴리오 이미지 : ${portfolioImg}`} />
         ))}
         <div css={portfolioPsitionStyle}>
           <img src={portfolioWithPlaceHolders[4].url} alt="사진5" />
           <DimOverlayStyle onClick={() => navigate(`/studio/${_id}/portfolio`)}>
             <img src="/img/icon-morePreview.svg" alt="더보기" />
-            <span>{data?.portfolios.length >= 5 ? `+ ${data?.portfolios.length - 5}` : ''}</span>
+            <span>{data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}</span>
           </DimOverlayStyle>
         </div>
       </div>
@@ -90,7 +91,7 @@ const StudioMain = () => {
         </div>
         <div css={SocialActionsStyle}>
           <ShareButton title={data.name} description={data.description} imageUrl={data.portfolios[0]?.url} webUrl={window.location.href} />
-          <Bookmark id={+!_id} count={data.bookmark_count} isBookmarked={false} />
+          <Bookmark id={Number(_id)} count={data.bookmark_count} isBookmarked={false} />
         </div>
       </div>
 
@@ -102,17 +103,15 @@ const StudioMain = () => {
             </dt>
             <dd>
               <div className="openStatus">
-                {data?.open === true ? (
+                {data && data.open ? (
                   <>
                     <p>영업중</p>
                     <time>
-                      {data?.openingHours[today.getDay() - 1].openTime.slice(0, 5)} - {data?.openingHours[today.getDay() - 1].closeTime.slice(0, 5)}
+                      {data.openingHours[today.getDay() - 1].openTime.slice(0, 5)} - {data.openingHours[today.getDay() - 1].closeTime.slice(0, 5)}
                     </time>
                   </>
-                ) : data?.open === false ? (
-                  <p>영업 종료</p>
                 ) : (
-                  <p>알 수 없음</p>
+                  <p>영업 종료</p>
                 )}
               </div>
             </dd>
@@ -152,20 +151,21 @@ const StudioMain = () => {
       {/* 홈 기본 정보  - 영업 정보 */}
       <div css={openingHoursStyle}>
         <p className="openingHoursTitle">영업 정보</p>
-        {data?.openingHours.length === 0 ? (
+        {data && data.openingHours.length === 0 ? (
           <p>수집중</p>
         ) : (
-          data?.openingHours.map((v, i) => (
-            <dl key={i}>
-              <dt>{day[v.dayOfWeek as keyof typeof day]}</dt>
+          data &&
+          data.openingHours.map((openingHour) => (
+            <dl key={openingHour.id}>
+              <dt>{day[openingHour.dayOfWeek as keyof typeof day]}</dt>
               <dd>
-                {v.closed ? (
+                {openingHour.closed ? (
                   <p>정기 휴무</p>
                 ) : (
                   <>
-                    <time>{v.openTime.slice(0, 5)}</time>
+                    <time>{openingHour.openTime.slice(0, 5)}</time>
                     <span>-</span>
-                    <time>{v.closeTime.slice(0, 5)}</time>
+                    <time>{openingHour.closeTime.slice(0, 5)}</time>
                   </>
                 )}
               </dd>
@@ -176,9 +176,9 @@ const StudioMain = () => {
         <div css={holidayStyle}>
           {data.openingHours.length !== 0 ? <p className="holidayTitle"> 정기휴무</p> : ''}
           <div className="holidayMonth">
-            {data.holidays.map((v, i) => (
-              <p key={i}>
-                {v.weekOfMonth === 1 ? '첫' : v.weekOfMonth === 2 ? '둘' : v.weekOfMonth === 3 ? '셋' : '넷'}째 주 {day[v.dayOfWeek as keyof typeof day]}
+            {data.holidays.map((holiday) => (
+              <p key={holiday.id}>
+                {holiday.weekOfMonth === 1 ? '첫' : holiday.weekOfMonth === 2 ? '둘' : holiday.weekOfMonth === 3 ? '셋' : '넷'}째 주 {day[holiday.dayOfWeek as keyof typeof day]}
               </p>
             ))}
           </div>
@@ -197,7 +197,9 @@ const StudioMain = () => {
         <div>
           {data.options.length === 0
             ? '수집중'
-            : data.options.map((v, i) => <Button key={i} text={option[v]} size="small" width="fit" variant="white" icon={<img src={optionIcon[v]} alt="필터 초기화" />} />)}
+            : data.options.map((optionItem) => (
+                <Button key={optionItem} text={option[optionItem]} size="small" width="fit" variant="white" icon={<img src={optionIcon[optionItem]} alt="필터 초기화" />} />
+              ))}
         </div>
       </div>
 
