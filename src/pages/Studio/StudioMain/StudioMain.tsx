@@ -67,8 +67,8 @@ const StudioMain = () => {
 
       {/* 이미지 */}
       <div css={portfolioPreviewStyle}>
-        {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, i) => (
-          <img key={i} src={portfolioImg.url} alt={`포트폴리오 이미지 : ${portfolioImg}`} />
+        {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
+          <img key={idx} src={portfolioImg.url} alt={`포트폴리오 이미지 : ${portfolioImg}`} />
         ))}
         <div css={portfolioPsitionStyle}>
           <img src={portfolioWithPlaceHolders[4].url} alt="사진5" />
