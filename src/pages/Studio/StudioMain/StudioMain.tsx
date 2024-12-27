@@ -16,11 +16,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const StudioMain = () => {
   const { _id } = useParams();
-  console.log(_id);
   const { data, error } = useGetStudioDetail(`${_id}`);
   const navigate = useNavigate();
   const [isOpened, setIsOpened] = useState(false);
-  console.log(data);
 
   if (error instanceof Error) {
     return <div>Error: {error.message}</div>;
@@ -249,7 +247,6 @@ const DimOverlayStyle = styled.div`
 const StudioInfoTitleStyle = css`
   display: flex;
   justify-content: space-between;
-  background-color: red;
 
   & > div {
     margin-bottom: 2rem;
@@ -261,7 +258,6 @@ const StudioInfoTitleStyle = css`
     & > div {
       display: flex;
       align-items: center;
-      background-color: wheat;
       & > img {
         margin-right: 0.4rem;
         width: 1.6rem;
