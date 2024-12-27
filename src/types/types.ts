@@ -4,6 +4,7 @@ export interface IPortfolio {
   vibe: string;
   name: string;
   url: string;
+  menuId: number;
   description: string;
   created_at: string;
   updated_at: null | string;
