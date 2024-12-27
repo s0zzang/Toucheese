@@ -9,7 +9,7 @@ import ShareButton from '@components/Share/ShareButton';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
-import { DividerStyle, TypoBodyMdR, TypoBodyMdSb, TypoCapSmM, TypoCapSmR, TypoTitleMdSb, TypoTitleXsM } from '@styles/Common';
+import { DividerStyle, TypoBodyMdM, TypoBodyMdR, TypoBodyMdSb, TypoCapSmM, TypoCapSmR, TypoTitleMdSb, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -19,6 +19,14 @@ const StudioMain = () => {
   const { data, error } = useGetStudioDetail(`${_id}`);
   const navigate = useNavigate();
   const [isOpened, setIsOpened] = useState(false);
+  let today = new Date();
+  /**주차 구하기 */
+  // const getWeek = (date: Date) => {
+  //   const currentDate = date.getDate();
+  //   const firstDay = new Date(date.setDate(1)).getDay();
+  //   return Math.ceil((currentDate + firstDay) / 7);
+  // };
+  // const week = getWeek(new Date(today));
 
   if (error instanceof Error) {
     return <div>Error: {error.message}</div>;
@@ -74,14 +82,14 @@ const StudioMain = () => {
       <div css={StudioInfoTitleStyle}>
         <div>
           <h2>{`${data.name}`}</h2>
-          <div>
+          <div className="rating">
             <img src="/img/icon-rating.svg" alt="리뷰 평점" />
             <p>{`${data.rating}`}</p>
             <p>{`(${data.review_count}개의 평가)`}</p>
           </div>
         </div>
         <div css={SocialActionsStyle}>
-          <ShareButton title={data.name} description={data.description} imageUrl={data.portfolios[0].url} webUrl={window.location.href} />
+          <ShareButton title={data.name} description={data.description} imageUrl={data.portfolios[0]?.url} webUrl={window.location.href} />
           <Bookmark id={+!_id} count={data.bookmark_count} isBookmarked={false} />
         </div>
       </div>
@@ -93,10 +101,23 @@ const StudioMain = () => {
               <img src="/img/icon-clock.svg" alt="영업시간" />
             </dt>
             <dd>
-              <p className="highlight">영업중</p>
-              {/* <p>{`${data.open_time} - ${data.close_time}`}</p> */}
+              <div className="openStatus">
+                {data?.open === true ? (
+                  <>
+                    <p>영업중</p>
+                    <time>
+                      {data?.openingHours[today.getDay() - 1].openTime.slice(0, 5)} - {data?.openingHours[today.getDay() - 1].closeTime.slice(0, 5)}
+                    </time>
+                  </>
+                ) : data?.open === false ? (
+                  <p>영업 종료</p>
+                ) : (
+                  <p>알 수 없음</p>
+                )}
+              </div>
             </dd>
           </div>
+
           <div>
             <dt>
               <img src="/img/icon-location.svg" alt="주소" />
@@ -131,24 +152,39 @@ const StudioMain = () => {
       {/* 홈 기본 정보  - 영업 정보 */}
       <div css={openingHoursStyle}>
         <p className="openingHoursTitle">영업 정보</p>
-        {data?.openingHours.length === 0
-          ? '알 수 없음'
-          : data?.openingHours.map((v, i) => (
-              <dl key={i}>
-                <dt>{day[v.dayOfWeek as keyof typeof day]}</dt>
-                <dd>
-                  {v.closed ? (
-                    <p>정기 휴무</p>
-                  ) : (
-                    <>
-                      <time>{v.openTime.slice(0, 5)}</time>
-                      <span>-</span>
-                      <time>{v.closeTime.slice(0, 5)}</time>
-                    </>
-                  )}
-                </dd>
-              </dl>
+        {data?.openingHours.length === 0 ? (
+          <p>수집중</p>
+        ) : (
+          data?.openingHours.map((v, i) => (
+            <dl key={i}>
+              <dt>{day[v.dayOfWeek as keyof typeof day]}</dt>
+              <dd>
+                {v.closed ? (
+                  <p>정기 휴무</p>
+                ) : (
+                  <>
+                    <time>{v.openTime.slice(0, 5)}</time>
+                    <span>-</span>
+                    <time>{v.closeTime.slice(0, 5)}</time>
+                  </>
+                )}
+              </dd>
+            </dl>
+          ))
+        )}
+
+        <div css={holidayStyle}>
+          {data.openingHours.length !== 0 ? <p className="holidayTitle"> 정기휴무</p> : ''}
+          <div className="holidayMonth">
+            {data.holidays.map((v, i) => (
+              <>
+                <p key={i}>
+                  {v.weekOfMonth === 1 ? '첫' : v.weekOfMonth === 2 ? '둘' : v.weekOfMonth === 3 ? '셋' : '넷'}째 주 {day[v.dayOfWeek as keyof typeof day]}
+                </p>
+              </>
             ))}
+          </div>
+        </div>
       </div>
 
       {/* 홈 기본정보 - 위치 정보 */}
@@ -162,7 +198,7 @@ const StudioMain = () => {
         <p>매장 정보</p>
         <div>
           {data.options.length === 0
-            ? '없음'
+            ? '수집중'
             : data.options.map((v, i) => <Button key={i} text={option[v]} size="small" width="fit" variant="white" icon={<img src={optionIcon[v]} alt="필터 초기화" />} />)}
         </div>
       </div>
@@ -255,7 +291,7 @@ const StudioInfoTitleStyle = css`
       margin-bottom: 0.4rem;
     }
 
-    & > div {
+    & > .rating {
       display: flex;
       align-items: center;
       & > img {
@@ -274,6 +310,7 @@ const StudioInfoTitleStyle = css`
 
 const StudioInfoStyle = css`
   position: relative;
+
   dl {
     display: flex;
     flex-direction: column;
@@ -298,9 +335,17 @@ const StudioInfoStyle = css`
         align-items: center;
         ${TypoBodyMdR}
 
-        .highlight {
-          ${TypoBodyMdSb}
-          margin-right: 0.4rem;
+        & > .openStatus {
+          display: flex;
+
+          & > p {
+            ${TypoBodyMdSb}
+            margin-right: 0.8rem;
+          }
+
+          & > time {
+            ${TypoBodyMdR}
+          }
         }
       }
     }
@@ -361,9 +406,14 @@ const openingHoursStyle = css`
     display: flex;
     gap: 3rem;
 
+    & > dt {
+      ${TypoBodyMdM}
+    }
+
     & > dd {
       display: flex;
       gap: 0.8rem;
+      ${TypoBodyMdR}
 
       & > time {
         display: flex;
@@ -380,6 +430,24 @@ const openingHoursStyle = css`
         margin-right: 0.2rem;
       }
     }
+  }
+`;
+
+const holidayStyle = css`
+  display: flex;
+  padding-top: 1.8rem;
+  padding-left: 0.8rem;
+  gap: 1.8rem;
+
+  & > .holidayTitle {
+    ${TypoBodyMdM}
+  }
+
+  & > .holidayMonth {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    ${TypoBodyMdR}
   }
 `;
 
