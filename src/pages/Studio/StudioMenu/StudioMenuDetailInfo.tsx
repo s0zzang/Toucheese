@@ -3,35 +3,17 @@ import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import { TypoBodyMdM, TypoBodyMdR, TypoBodyMdSb, TypoTitleXsB, TypoTitleXsM } from '@styles/Common';
 import { IMenuListRes } from 'types/types';
-import { Dispatch, SetStateAction } from 'react';
+import useReservationStore, { ReservationOption } from '@store/useReservationStore';
 
-const StudioMenuDetailInfo = ({
-  infoItem,
-  setTotalPrice,
-  checkState,
-  setCheckState,
-}: {
-  infoItem: IMenuListRes;
-  setTotalPrice: Dispatch<SetStateAction<number>>;
-  checkState: Record<number, boolean>;
-  setCheckState: Dispatch<SetStateAction<Record<number, boolean>>>;
-}) => {
+const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes }) => {
   const [hours, minutes, seconds] = infoItem.duration ? infoItem.duration.split(':').map(Number) : [0, 0, 0];
   const totalMinutes = hours * 60 + minutes + seconds / 60;
+  const { addOptionPrice, options } = useReservationStore();
 
-  const handleOptionClick = (price: number, id: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOptionClick = (option: ReservationOption, e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
-    setTotalPrice((prev) => (isChecked ? prev + price : prev - price));
-    setCheckState((prev) => ({ ...prev, [id]: isChecked }));
+    addOptionPrice(option, isChecked);
   };
-
-  // 추후 예약 기능시 필요
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   console.log('최종 결제 금액:', totalPrice);
-  // };
-
-  console.log(infoItem);
 
   return (
     <>
@@ -60,15 +42,21 @@ const StudioMenuDetailInfo = ({
           <p>{infoItem.price.toLocaleString('ko-KR')}원</p>
         </section>
 
-        <form css={AddOptionsWrapperStyle}>
-          {/* <form css={AddOptionsWrapperStyle} onSubmit={handleSubmit} id="priceForm">/ */}
+        <section css={AddOptionsWrapperStyle}>
           <h3>추가 옵션</h3>
 
           <div css={AddOptionsListStyle}>
             {infoItem.additionalOptions.map((item) => (
               <fieldset key={item.id}>
                 <div css={AddOptionItemStyle}>
-                  <input type="checkbox" id={`${item.price}`} name={`${item.price}`} value="OptionPrice" onChange={(e) => handleOptionClick(item.price, item.id, e)} checked={checkState[item.id]} />
+                  <input
+                    type="checkbox"
+                    id={`${item.price}`}
+                    name={`${item.price}`}
+                    value="OptionPrice"
+                    onChange={(e) => handleOptionClick({ option_id: item.id, optionPrice: item.price, optionName: item.name }, e)}
+                    checked={options.some((opt) => opt.option_id === item.id)}
+                  />
                   <label htmlFor={`${item.price}`}>
                     <span>{item.name}</span>
                   </label>
@@ -77,7 +65,7 @@ const StudioMenuDetailInfo = ({
               </fieldset>
             ))}
           </div>
-        </form>
+        </section>
       </div>
     </>
   );
