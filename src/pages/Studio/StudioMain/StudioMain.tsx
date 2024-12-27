@@ -177,11 +177,9 @@ const StudioMain = () => {
           {data.openingHours.length !== 0 ? <p className="holidayTitle"> 정기휴무</p> : ''}
           <div className="holidayMonth">
             {data.holidays.map((v, i) => (
-              <>
-                <p key={i}>
-                  {v.weekOfMonth === 1 ? '첫' : v.weekOfMonth === 2 ? '둘' : v.weekOfMonth === 3 ? '셋' : '넷'}째 주 {day[v.dayOfWeek as keyof typeof day]}
-                </p>
-              </>
+              <p key={i}>
+                {v.weekOfMonth === 1 ? '첫' : v.weekOfMonth === 2 ? '둘' : v.weekOfMonth === 3 ? '셋' : '넷'}째 주 {day[v.dayOfWeek as keyof typeof day]}
+              </p>
             ))}
           </div>
         </div>
