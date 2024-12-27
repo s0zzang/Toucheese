@@ -1,9 +1,10 @@
+import Header from '@components/Header/Header';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
   return (
     <>
-      로그인 페이지
+      <Header title="로그인/회원가입" />
       <Link to="/user/signup">회원가입</Link>
     </>
   );
