@@ -3,6 +3,7 @@
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
+import { useModalStore } from '@store/useModalStore';
 import { Hidden, TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 
@@ -40,7 +41,9 @@ interface IContentStyle {
  *  - 모달 내 버튼 : {text: string, event: MouseEventHandler<HTMLButtonElement>}[]
  */
 const Modal = ({ modalId = 1, type = 'default', title, children, withBtn = true, buttons = [] }: ModalProp) => {
-  const { isOpen, close } = useModal(modalId);
+  const modals = useModalStore((state) => state.modals);
+  const isOpen = modals[modalId];
+  const { close } = useModal(modalId);
   const handleClose = () => close();
 
   return (
