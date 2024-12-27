@@ -1,3 +1,6 @@
+import Login from '@pages/User/Login';
+import MyPage from '@pages/User/MyPage';
+import SignUp from '@pages/User/Signup';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -15,6 +18,23 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
+  },
+  {
+    path: 'user',
+    children: [
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'signup',
+        element: <SignUp />,
+      },
+      {
+        path: 'mypage',
+        element: <MyPage />,
+      },
+    ],
   },
   {
     path: 'search',
