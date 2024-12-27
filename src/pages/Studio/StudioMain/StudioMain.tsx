@@ -141,9 +141,9 @@ const StudioMain = () => {
                     <p>정기 휴무</p>
                   ) : (
                     <>
-                      <p>{v.openTime.slice(0, 5)}</p>
-                      <div>-</div>
-                      <p>{v.closeTime.slice(0, 5)}</p>
+                      <time>{v.openTime.slice(0, 5)}</time>
+                      <span>-</span>
+                      <time>{v.closeTime.slice(0, 5)}</time>
                     </>
                   )}
                 </dd>
@@ -365,18 +365,18 @@ const openingHoursStyle = css`
       display: flex;
       gap: 0.8rem;
 
-      & > p {
+      & > time {
         display: flex;
         justify-content: left;
       }
 
-      & > p:first-of-type {
+      & > time:first-of-type {
         min-width: 4rem;
         display: flex;
         justify-content: left;
       }
 
-      & > div {
+      & > span {
         margin-right: 0.2rem;
       }
     }
