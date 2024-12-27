@@ -5,7 +5,7 @@ import variables from '@styles/Variables';
 import StarRating from './StarRating';
 import ReviewContent from './ReviewContent';
 import { useState } from 'react';
-import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
+import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { formatTimeAgo } from '@utils/formatTimeAgo';
 import { IReviewImages } from 'types/types';
 

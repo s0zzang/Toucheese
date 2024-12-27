@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import Bookmark from '@components/Bookmark/Bookmark';
-import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
+import ImageSwiper from '@components/Swiper/ImageSwiper';
 import styled from '@emotion/styled';
 import { TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
