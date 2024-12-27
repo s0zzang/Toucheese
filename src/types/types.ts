@@ -89,7 +89,7 @@ export interface IStudioDetail extends IStudioInfo {
   options: ('CHANGING_ROOM' | 'DRESSING_ROOM' | 'HAIR_MAKEUP' | 'INDIVIDUAL_EDITING' | 'SUIT_RENTAL_FREE' | 'ORIGINAL_FILES' | 'PARKING_AREA')[];
   openingHours: IOpeningHours[];
   holidays: IHolidays[];
-  open: false;
+  open: boolean;
 }
 
 export interface IStudioRes<T> {
