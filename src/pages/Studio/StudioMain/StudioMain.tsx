@@ -198,7 +198,16 @@ const StudioMain = () => {
           {data.options.length === 0
             ? '수집중'
             : data.options.map((optionItem) => (
-                <Button key={optionItem} text={option[optionItem]} size="small" width="fit" variant="white" icon={<img src={optionIcon[optionItem]} alt="필터 초기화" />} />
+                <Button
+                  key={optionItem}
+                  text={option[optionItem]}
+                  size="xsmall"
+                  width="fit"
+                  variant="white"
+                  iconSizeWidth="1.5rem"
+                  iconSizeHeight="1.5rem"
+                  icon={<img src={optionIcon[optionItem]} alt="매장정보" />}
+                />
               ))}
         </div>
       </div>
