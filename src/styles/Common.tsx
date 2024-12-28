@@ -12,6 +12,11 @@ export const TypoTitleXsM = css`
   font-weight: 500;
   line-height: 2.4rem;
 `;
+export const TypoTitleXsSB = css`
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 2.4rem;
+`;
 export const TypoTitleXsB = css`
   font-size: 1.6rem;
   font-weight: 700;
@@ -27,6 +32,18 @@ export const TypoTitleMdSb = css`
   font-size: 2.2rem;
   font-weight: 700;
   line-height: 2.4rem;
+`;
+
+export const TypoBodySmM = css`
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.8rem;
+`;
+
+export const TypoBodySmR = css`
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.8rem;
 `;
 
 export const TypoBodyMdR = css`
