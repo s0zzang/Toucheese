@@ -14,7 +14,7 @@ interface ButtonProps {
   active?: boolean;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
-  size?: 'small' | 'medium' | 'large';
+  size?: 'xsmall' | 'small' | 'medium' | 'large';
   fixed?: boolean;
   width?: 'fit' | 'max';
   iconPosition?: 'non' | 'left' | 'right';
@@ -54,7 +54,8 @@ const Button = ({
 }: ButtonProps) => {
   const widthStyles = {
     fit: css`
-      width: fit-content;
+      min-width: fit-content;
+      max-width: fit-content;
     `,
     max: css`
       width: 100%;
@@ -73,14 +74,20 @@ const Button = ({
   `;
 
   const sizeStyles = {
-    small: css`
+    xsmall: css`
       font-size: ${TypoCapSmM};
-      height: 3rem;
+      height: 2.8rem;
+      padding: 0 1rem;
+    `,
+
+    small: css`
+      font-size: ${TypoBodyMdM};
+      height: 2.8rem;
       padding: 0 1rem;
     `,
     medium: css`
       font-size: ${TypoBodyMdM};
-      height: 3.6rem;
+      height: 3.4rem;
       padding: 0 1rem;
     `,
     large: css`
@@ -148,7 +155,7 @@ ${type === 'reset' &&
 ${width === 'fit' &&
     (size === 'medium' || size === 'large') &&
     `
-      padding: 0 2rem;
+      padding: 0 1.4rem;
     `}
   `;
 
