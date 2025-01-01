@@ -1,11 +1,14 @@
+/** @jsxImportSource @emotion/react */
+
 import { useDimSwiperStore } from '@store/useDimSwiper';
-import { Dispatch, ReactNode, SetStateAction, useEffect, useLayoutEffect, useState } from 'react';
-import { Navigation, Pagination, Virtual } from 'swiper/modules';
+import { Dispatch, ReactNode, SetStateAction, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { Navigation, Virtual } from 'swiper/modules';
 import { Swiper, SwiperClass } from 'swiper/react';
 import { IPortfolio } from 'types/types';
 
 import 'swiper/css';
-import 'swiper/css/pagination';
+import { TypoBodyMdR } from '@styles/Common';
+import { css } from '@emotion/react';
 
 interface IDimSwiper {
   children: ReactNode;
@@ -13,32 +16,22 @@ interface IDimSwiper {
   setSlideSet: Dispatch<SetStateAction<IPortfolio[]>>;
 }
 
-/*
-1. 첫번째, 마지막 요소에선 handleChange 이벤트 금지
-- 첫번째에선 prev 금지
-- 마지막에선 next 금지
-
--> 첫번째 마지막 요소인지 어떻게 알지? 
-- data[0].id와 seletedId 비교 : seletedId가 바로 반영되지 않아서 제대로 바뀌지 않음
-- 첫번째, 마지막 요소 : 아이디가 스튜디오마다 아이디가 다르기 때문에 데이터 0번과 비교해야 함
-- 현재 요소 : seletedId (반영 제대로 안됨), 클릭된 그 요소 (상위, 상위 파일에서 작업해야 함)
-- firstSlide : 얘도 클릭한 후에 반영돼서 사용 불가
-
-2. 첫번째 슬라이드 예외 처리 
-- 첫번째 슬라이드를 클릭한 경우 initial Slide 0번째 요소 활성화
-- 첫번째 슬라이드로 이벤트가 발생한 경우 : slideTo 0번째 요소
-
-3. 페이지네이션 
-*/
-
 const DimSwiper = ({ children, data, setSlideSet }: IDimSwiper) => {
-  const [swiperRef, setSwiperRef] = useState<SwiperClass>();
   const { selectedId, setSelectedId } = useDimSwiperStore();
+  const [swiperRef, setSwiperRef] = useState<SwiperClass>();
   const [firstSlide, setFirstSlide] = useState<number>();
   const [lastSlide, setLastSlide] = useState<number>();
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const slideIndexMap = useMemo(() => new Map(), []);
 
   const getNewSlideSet = (clickedId: number) => {
     return data.filter(({ id }: { id: number }) => id === clickedId || id === clickedId - 1 || id === clickedId + 1);
+  };
+
+  const setIndexByPortfolioId = () => {
+    for (let i = 0; i < data.length; i++) {
+      slideIndexMap.set(data[i].id, i + 1);
+    }
   };
 
   const handleChange = () => {
@@ -62,16 +55,17 @@ const DimSwiper = ({ children, data, setSlideSet }: IDimSwiper) => {
   };
 
   const swiperOption = {
-    modules: [Virtual, Pagination, Navigation],
+    modules: [Virtual, Navigation],
     onSwiper: (e: SwiperClass) => setSwiperRef(e),
     onTransitionEnd: handleChange,
     slidesPerView: 1,
     initialSlide: selectedId === firstSlide ? 0 : 1,
-    pagination: { type: 'fraction' as 'fraction' },
     centeredSlides: true,
+    spaceBetween: 20,
   };
 
   useEffect(() => {
+    setIndexByPortfolioId();
     if (data) {
       setFirstSlide(data[0].id);
       setLastSlide(data[data.length - 1].id);
@@ -80,9 +74,39 @@ const DimSwiper = ({ children, data, setSlideSet }: IDimSwiper) => {
 
   useLayoutEffect(() => {
     setSlideSet(getNewSlideSet(selectedId));
+    setActiveIndex(slideIndexMap.get(selectedId));
   }, [selectedId]);
 
-  return firstSlide && <Swiper {...swiperOption}>{children}</Swiper>;
+  return (
+    firstSlide && (
+      <>
+        <h2 css={[TypoBodyMdR, TitleStyle]}>
+          {activeIndex} / {data.length}
+        </h2>
+        <Swiper {...swiperOption}>{children}</Swiper>
+      </>
+    )
+  );
 };
 
 export default DimSwiper;
+
+const TitleStyle = css`
+  padding: 1.8rem 0;
+  text-align: center;
+  position: absolute;
+  inset: 0;
+  bottom: auto;
+`;
+
+export const SlideImgBox = css`
+  background: #0f0f0f;
+  padding: 1rem;
+  border-radius: 0.6rem;
+  margin-bottom: 1rem;
+
+  img {
+    aspect-ratio: 308/340;
+    object-fit: scale-down;
+  }
+`;
