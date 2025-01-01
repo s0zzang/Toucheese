@@ -40,6 +40,7 @@ const StudioPortfolio = () => {
       const data = await response.json();
       setData(data.portfolioDtos.content);
       setMenuNames(data.menuNameList);
+      setStudioName(data.studioName);
     } catch (err) {
       console.error('Failed to fetch data');
     }
@@ -47,7 +48,6 @@ const StudioPortfolio = () => {
 
   useEffect(() => {
     fetchPortfolio();
-    if (data.length) setStudioName(data[0].studio);
   }, []);
 
   return (
