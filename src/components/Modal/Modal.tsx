@@ -105,6 +105,7 @@ const CloseBtnStyle = styled.button<ICloseBtnStyle>`
   position: absolute;
   left: ${(props) => props.mode === 'fullscreen' && 0};
   right: ${(props) => props.mode === 'dimmed' && 0};
+  z-index: 9;
 `;
 
 const ContentsStyle = styled.div<IContentStyle>`
