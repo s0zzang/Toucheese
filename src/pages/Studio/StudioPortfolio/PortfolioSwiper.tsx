@@ -13,12 +13,12 @@ const PortfolioSwiper = ({ data, studioName }: { data: IPortfolio[]; studioName:
   return (
     <DimSwiper data={data} setSlideSet={setSlideSet}>
       {slideSet &&
-        slideSet.map(({ id, url, description }) => (
+        slideSet.map(({ id, url, menuName }) => (
           <SwiperSlide key={id} virtualIndex={id}>
             <div css={[SlideImgBox, portfolioSlide]}>
               <img src={url} alt={`${studioName}-${id}`} />
             </div>
-            <p css={TypoBodyMdR}>{description}</p>
+            <p css={TypoBodyMdR}>{menuName}</p>
           </SwiperSlide>
         ))}
     </DimSwiper>
