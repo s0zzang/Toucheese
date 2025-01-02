@@ -82,7 +82,7 @@ const ModalStyle = styled.section<IModalStyle>`
   position: fixed;
   z-index: 99;
   inset: 0;
-  background: ${(props) => (props.type !== 'fullscreen' ? 'rgba(0,0,0,0.9)' : variables.colors.white)};
+  background: ${(props) => (props.type !== 'fullscreen' ? 'rgba(0,0,0,0.85)' : variables.colors.white)};
   padding: 0 2rem 4.8rem;
   display: flex;
   flex-direction: column;
@@ -90,7 +90,7 @@ const ModalStyle = styled.section<IModalStyle>`
 `;
 
 const TitleStyle = styled.div<ITitleStyle>`
-  padding: ${(props) => (props.type === 'fullscreen' ? '1.4rem 0' : '1.8rem 0')};
+  padding: ${(props) => (props.type === 'fullscreen' ? '1.4rem 0' : '2.8rem 0')};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -105,13 +105,13 @@ const CloseBtnStyle = styled.button<ICloseBtnStyle>`
   position: absolute;
   left: ${(props) => props.mode === 'fullscreen' && 0};
   right: ${(props) => props.mode === 'dimmed' && 0};
+  z-index: 9;
 `;
 
 const ContentsStyle = styled.div<IContentStyle>`
   padding: ${(props) => props.type === 'fullscreen' && '1rem 0'};
   flex-grow: 1;
   overflow-y: auto;
-  display: ${(props) => props.type === 'dimmed' && 'flex'};
 `;
 
 const ButtonBoxStyle = styled.div`
