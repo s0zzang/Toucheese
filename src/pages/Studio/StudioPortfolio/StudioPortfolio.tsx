@@ -9,7 +9,7 @@ import { css } from '@emotion/react';
 import useModal from '@hooks/useModal';
 import { useDimSwiperStore } from '@store/useDimSwiper';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { IPortfolio, IStudioRes } from 'types/types';
 import DimmedModal from '../components/DimmedModal';
 import PortfolioSwiper from './PortfolioSwiper';
@@ -23,6 +23,7 @@ interface IPortfolioResponse {
 
 const StudioPortfolio = () => {
   const { _id } = useParams() as { _id: string };
+  const [params, setSearchParams] = useSearchParams();
   const { open } = useModal(1);
 
   const setSelectedId = useDimSwiperStore((state) => state.setSelectedId);
@@ -32,9 +33,17 @@ const StudioPortfolio = () => {
     open();
   };
 
+  const changeParams = (param: string | number) => {
+    if (param === 'all') setSearchParams({});
+    else setSearchParams({ menuId: `${param}` });
+  };
+
   const fetchPortfolio = async () => {
+    const base = `${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/portfolio`;
+    const finalURL = `${base}${params ? `?${params.toString()}` : ''}`;
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/portfolio`, {
+      const response = await fetch(finalURL, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -46,34 +55,48 @@ const StudioPortfolio = () => {
     }
   };
 
-  const { data, isSuccess } = useQuery<IPortfolioResponse>({
-    queryKey: ['portfolio', _id],
+  const { data: portfolios, isSuccess } = useQuery<IPortfolioResponse>({
+    queryKey: ['portfolio', _id, params.toString()],
     queryFn: fetchPortfolio,
     staleTime: 1000 * 60 * 10, // 10분
   });
 
   return (
     <>
-      <Header title={isSuccess ? data.studioName : ''} />
+      <Header title={isSuccess ? portfolios.studioName : ''} />
       <StudioNavigator _id={_id} />
 
-      <ul css={FilterBoxStyle}>
+      <ul css={filterBoxStyle}>
         <li>
-          <Button text="전체" width="fit" size="small" variant="white" />
+          <Button
+            text="전체"
+            width="fit"
+            size="small"
+            variant="white"
+            active={!params.size}
+            onClick={() => changeParams('all')}
+          />
         </li>
         {isSuccess &&
-          data.menuNameList.map((menu) => (
+          portfolios.menuNameList.map((menu, idx) => (
             <li key={menu}>
-              <Button text={menu} width="fit" size="small" variant="white" />
+              <Button
+                text={menu}
+                width="fit"
+                size="small"
+                variant="white"
+                active={params.toString().includes(`${portfolios.menuIdList[idx]}`)}
+                onClick={() => changeParams(portfolios.menuIdList[idx])}
+              />
             </li>
           ))}
       </ul>
 
-      <div css={ListStyle}>
+      <div css={listStyle}>
         {isSuccess ? (
-          data.portfolioDtos.content.length ? (
+          portfolios.portfolioDtos.content.length ? (
             <MasonryList>
-              {data.portfolioDtos.content.map(({ url, studio, id }) => (
+              {portfolios.portfolioDtos.content.map(({ url, studio, id }) => (
                 <div key={`${studio}-${id}`} onClick={() => handleClick(id)}>
                   <img src={url} alt={`${studio}-${id}`} />
                 </div>
@@ -87,19 +110,28 @@ const StudioPortfolio = () => {
         )}
       </div>
 
-      {<DimmedModal>{isSuccess && <PortfolioSwiper data={data.portfolioDtos.content} studioName={data.studioName} />}</DimmedModal>}
+      {
+        <DimmedModal>
+          {isSuccess && (
+            <PortfolioSwiper
+              data={portfolios.portfolioDtos.content}
+              studioName={portfolios.studioName}
+            />
+          )}
+        </DimmedModal>
+      }
     </>
   );
 };
 
 export default StudioPortfolio;
 
-const FilterBoxStyle = css`
+const filterBoxStyle = css`
   display: flex;
   gap: 0.6rem;
   margin: 1.2rem 0;
 `;
 
-const ListStyle = css`
+const listStyle = css`
   min-height: 50vh;
 `;
