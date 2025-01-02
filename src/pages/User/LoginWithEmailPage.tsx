@@ -4,8 +4,18 @@ import Input from '@components/Input/Input';
 // import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 import { TypoTitleSmS } from '@styles/Common';
+import variables from '@styles/Variables';
+import { useForm } from 'react-hook-form';
 
 const LoginWithEmailPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: any) => console.log(data);
+
   return (
     <>
       <div
@@ -21,8 +31,63 @@ const LoginWithEmailPage = () => {
         <p>내 인생 사진관 찾고 예약까지!</p>
       </div>
 
-      <Input labelName="이메일(아이디)" type="email" placeholder="toucheese.gmail.com" />
-      <Input labelName="비밀번호" type="password" placeholder="8자 이상의 비밀번호" />
+      <form
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+        css={css`
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        `}
+      >
+        <Input
+          labelName="이메일(아이디)"
+          type="email"
+          placeholder="toucheese@gmail.com"
+          register={register('email', {
+            required: '이메일을 입력해주세요',
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: '올바른 이메일 주소를 입력해주세요.',
+            },
+          })}
+          error={errors.email?.message?.toString()}
+        />
+        <Input
+          labelName="비밀번호"
+          type="password"
+          placeholder="8자 이상의 비밀번호"
+          register={register('password', {
+            required: '비밀번호를 입력해주세요',
+            minLength: {
+              value: 8,
+              message: '아이디와 비밀번호를 확인해주세요.',
+            },
+            pattern: {
+              value: /[!@#$%^&*(),.?":{}|<>]/,
+              message: '특수문자를 하나 이상 포함해야 합니다',
+            },
+          })}
+          error={errors.password?.message?.toString()}
+        />
+        <button
+          type="submit"
+          css={css`
+            width: 100%;
+            background-color: ${variables.colors.gray900};
+            color: ${variables.colors.white};
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.8rem;
+            margin-top: 4.8rem;
+            height: 4.8rem;
+            padding: 12 0px;
+          `}
+        >
+          로그인
+        </button>
+      </form>
     </>
   );
 };
