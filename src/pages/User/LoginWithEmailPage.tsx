@@ -75,7 +75,7 @@ const LoginWithEmailPage = () => {
           css={css`
             width: 100%;
             background-color: ${variables.colors.gray900};
-            color: #fff;
+            color: ${variables.colors.white};
             display: flex;
             justify-content: center;
             align-items: center;

@@ -4,22 +4,50 @@ import { css } from '@emotion/react';
 import { TypoBodySmM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { UseFormRegisterReturn } from 'react-hook-form';
+import React, { useState } from 'react';
 
 interface InputProps {
   labelName: string;
   type: string;
   placeholder: string;
   error?: string;
-  register: UseFormRegisterReturn;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  register?: UseFormRegisterReturn;
 }
 
 const Input = ({ labelName, type, placeholder, error, register }: InputProps) => {
+  const [inputValue, setInputValue] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    register?.onChange?.(e);
+  };
+
+  const handleClear = () => {
+    setInputValue('');
+    if (register?.onChange) {
+      const event = { target: { value: '' } } as React.ChangeEvent<HTMLInputElement>;
+      register.onChange(event);
+    }
+  };
+
   return (
     <label css={labelStyle}>
       {labelName}
-      <input css={[inputStyle(error)]} type={type} placeholder={placeholder} {...register} />
+      <div css={inputWrapperStyle}>
+        <input
+          css={[inputStyle(error)]}
+          type={type}
+          placeholder={placeholder}
+          {...register}
+          onChange={handleChange}
+          value={inputValue}
+        />
+        {inputValue.length > 0 && (
+          <button type="button" css={iconButtonStyle} onClick={handleClear}>
+            <img src="/img/icon-cancel.svg" alt="입력 취소" css={iconStyle} />
+          </button>
+        )}
+      </div>
       {error && (
         <div css={errorContainerStyle}>
           <img src="/img/icon-error.svg" alt="error" css={errorIconStyle} />
@@ -70,4 +98,29 @@ const errorIconStyle = css`
 
 const errorStyle = css`
   color: red;
+`;
+
+const inputWrapperStyle = css`
+  position: relative;
+  width: 100%;
+`;
+
+const iconButtonStyle = css`
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const iconStyle = css`
+  width: 2rem;
+  height: 2rem;
+  object-fit: cover;
 `;
