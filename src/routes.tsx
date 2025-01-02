@@ -1,5 +1,3 @@
-
-import ReservationCheck from '@pages/Reservation/ReservationCheck';
 import Auth from '@pages/User/Auth';
 import LoginWithEmailPage from '@pages/User/LoginWithEmailPage';
 
