@@ -1,3 +1,4 @@
+import ReservationCheck from '@pages/Reservation/ReservationCheck';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
           },
           { path: 'photos', element: <StudioReviewPhotos /> },
         ],
+      },
+      {
+        path: 'reserve',
+        element: <ReservationCheck />,
       },
     ],
   },
