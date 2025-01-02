@@ -5,7 +5,7 @@ import LoginTypeButton from './components/LoginTypeButton';
 import { Link } from 'react-router-dom';
 import variables from '@styles/Variables';
 
-const Login = () => {
+const Auth = () => {
   return (
     <>
       <div
@@ -49,7 +49,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Auth;
 
 const LoginPageDesStyle = css`
   h1 {

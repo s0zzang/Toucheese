@@ -1,5 +1,6 @@
 import ReservationCheck from '@pages/Reservation/ReservationCheck';
-import Login from '@pages/User/Login';
+import Auth from '@pages/User/Auth';
+import LoginWithEmailPage from '@pages/User/LoginWithEmailPage';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -24,9 +25,10 @@ const router = createBrowserRouter([
     path: 'user',
     children: [
       {
-        path: 'login',
-        element: <Login />,
+        path: 'auth',
+        element: <Auth />,
       },
+
       {
         path: 'signup',
         element: <SignUp />,
@@ -36,6 +38,10 @@ const router = createBrowserRouter([
         element: <MyPage />,
       },
     ],
+  },
+  {
+    path: 'login',
+    element: <LoginWithEmailPage />,
   },
   {
     path: 'search',
