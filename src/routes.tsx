@@ -1,4 +1,3 @@
-import ReservationCheck from '@pages/Reservation/ReservationCheck';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -14,6 +13,9 @@ const StudioReviewPhotos = lazy(() => import('@pages/Studio/StudioReview/StudioR
 const Login = lazy(() => import('@pages/User/Login'));
 const SignUp = lazy(() => import('@pages/User/SignUp'));
 const MyPage = lazy(() => import('@pages/User/MyPage'));
+const ReservationSchedule = lazy(() => import('@pages/Reservation/ReservationSchedule'));
+const ReservationCheck = lazy(() => import('@pages/Reservation/ReservationCheck'));
+const ReservationComplete = lazy(() => import('@pages/Reservation/ReservationComplete'));
 
 const router = createBrowserRouter([
   {
@@ -68,8 +70,21 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: 'reserve',
-        element: <ReservationCheck />,
+        path: 'reservation',
+        children: [
+          {
+            index: true,
+            element: <ReservationSchedule />,
+          },
+          {
+            path: 'payment',
+            element: <ReservationCheck />,
+          },
+          {
+            path: 'complete',
+            element: <ReservationComplete />,
+          },
+        ],
       },
     ],
   },
