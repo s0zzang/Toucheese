@@ -40,7 +40,7 @@ const BookingSearchContainer = () => {
         className="user"
         onClick={(e) => {
           e.stopPropagation();
-          navigate(`/user/${user ? 'mypage' : 'login'}`);
+          navigate(`/user/${user ? 'mypage' : 'auth'}`);
         }}
       >
         <span css={Hidden}>{user ? '마이페이지' : '로그인'}</span>
