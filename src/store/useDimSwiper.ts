@@ -7,5 +7,5 @@ interface DimSwiperState {
 
 export const useDimSwiperStore = create<DimSwiperState>((set) => ({
   selectedId: 0,
-  setSelectedId: (id, direction) => set((state) => ({ selectedId: (id || state.selectedId) + (direction || 1) })),
+  setSelectedId: (id, direction) => set(() => ({ selectedId: id + (direction || 0) })),
 }));

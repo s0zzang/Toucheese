@@ -7,6 +7,7 @@ export interface IPortfolio {
   name: string;
   url: string;
   menuId: number;
+  menuName: string;
   description: string;
   created_at: string;
   updated_at: null | string;
