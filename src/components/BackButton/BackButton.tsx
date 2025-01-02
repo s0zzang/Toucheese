@@ -15,7 +15,11 @@ const BackButton = ({ to, replace = true, ariaLabel = '뒤로가기' }: BackButt
     if (to) {
       navigate(to, { replace }); // 특정 경로로 이동
     } else {
-      navigate(-1); // 이전 페이지로 이동
+      if (window.history.length > 1) {
+        navigate(-1); // 이전 스택으로 이동
+      } else {
+        navigate('/'); // 이전 스택이 없으면 기본 경로로 이동
+      }
     }
   };
 
