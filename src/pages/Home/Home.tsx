@@ -121,6 +121,7 @@ const FilterBox = styled.div`
   gap: 0.6rem;
   box-shadow: 0 0 2px ${variables.colors.gray500};
   position: relative;
+  background-color: ${variables.colors.white};
 
   & ::before {
     content: '';
@@ -156,6 +157,20 @@ const FilterBox = styled.div`
   .filterScroll {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE, Edge */
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 4.8rem;
+    bottom: 0;
+    z-index: 1;
+    height: 80%;
+    width: 0.6rem;
+    box-shadow: 0.4rem 0 0.2rem rgba(255, 255, 255, 10);
+
+    background-color: ${variables.colors.white};
   }
 `;
 
