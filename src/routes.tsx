@@ -1,4 +1,5 @@
 import ReservationCheck from '@pages/Reservation/ReservationCheck';
+import Login from '@pages/User/Login';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -11,7 +12,6 @@ const StudioMenuDetail = lazy(() => import('@pages/Studio/StudioMenu/StudioMenuD
 const StudioPortfolio = lazy(() => import('@pages/Studio/StudioPortfolio/StudioPortfolio'));
 const StudioReview = lazy(() => import('@pages/Studio/StudioReview/StudioReview'));
 const StudioReviewPhotos = lazy(() => import('@pages/Studio/StudioReview/StudioReviewPhotos'));
-const Login = lazy(() => import('@pages/User/Login'));
 const SignUp = lazy(() => import('@pages/User/SignUp'));
 const MyPage = lazy(() => import('@pages/User/MyPage'));
 

@@ -1,16 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
-// import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
-import { TypoTitleSmS } from '@styles/Common';
-import Input from '@components/Input/Input';
+import LoginTypeButton from './components/LoginTypeButton';
+import { Link } from 'react-router-dom';
+import variables from '@styles/Variables';
 
 const Login = () => {
   return (
     <>
       <div
         css={css`
-          margin-bottom: 3rem;
+          margin-bottom: 5.3rem;
         `}
       >
         <Header title="로그인/회원가입" />
@@ -21,8 +21,30 @@ const Login = () => {
         <p>내 인생 사진관 찾고 예약까지!</p>
       </div>
 
-      <Input labelName="이메일(아이디)" type="email" placeholder="toucheese.gmail.com" />
-      <Input labelName="비밀번호" type="password" placeholder="8자 이상의 비밀번호" />
+      <div css={LoginTypeButtonWrapper}>
+        <LoginTypeButton type="kakao" />
+        <LoginTypeButton type="google" />
+        <LoginTypeButton type="email" />
+      </div>
+
+      <Link to="/login">
+        <div css={LoginLinkStyle}>
+          <span
+            css={css`
+              color: ${variables.colors.gray700};
+            `}
+          >
+            이미 가입하셨나요?
+          </span>
+          <span
+            css={css`
+              color: ${variables.colors.black};
+            `}
+          >
+            로그인 하기
+          </span>
+        </div>
+      </Link>
     </>
   );
 };
@@ -31,10 +53,27 @@ export default Login;
 
 const LoginPageDesStyle = css`
   h1 {
-    ${TypoTitleSmS}
+    font-size: 2.2rem;
+    font-weight: 700;
   }
   p {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
   }
-  margin-bottom: 3.4rem;
+  margin-bottom: 10.2rem;
+`;
+
+const LoginTypeButtonWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 40%;
+`;
+const LoginLinkStyle = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 6rem;
+  left: 0;
+  right: 0;
 `;

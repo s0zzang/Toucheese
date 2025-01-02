@@ -32,5 +32,9 @@ const inputStyle = css`
     padding: 1rem;
     border: 1px solid ${variables.colors.gray300};
     border-radius: 0.6rem;
+    font-size: 1.4rem;
+  }
+  &:focus {
+    outline: 1px solid ${variables.colors.primary};
   }
 `;
