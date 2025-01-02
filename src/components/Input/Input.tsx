@@ -14,8 +14,9 @@ interface InputProps {
   register?: UseFormRegisterReturn;
 }
 
-const Input = ({ labelName, type, placeholder, error, register }: InputProps) => {
+const Input = ({ labelName, type: initialType, placeholder, error, register }: InputProps) => {
   const [inputValue, setInputValue] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -30,6 +31,12 @@ const Input = ({ labelName, type, placeholder, error, register }: InputProps) =>
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const type = initialType === 'password' ? (showPassword ? 'text' : 'password') : initialType;
+
   return (
     <label css={labelStyle}>
       {labelName}
@@ -42,11 +49,22 @@ const Input = ({ labelName, type, placeholder, error, register }: InputProps) =>
           onChange={handleChange}
           value={inputValue}
         />
-        {inputValue.length > 0 && (
-          <button type="button" css={iconButtonStyle} onClick={handleClear}>
-            <img src="/img/icon-cancel.svg" alt="입력 취소" css={iconStyle} />
-          </button>
-        )}
+        <div css={buttonGroupStyle}>
+          {inputValue.length > 1 && (
+            <button type="button" css={iconButtonStyle} onClick={handleClear}>
+              <img src="/img/icon-cancel.svg" alt="입력 취소" css={iconStyle} />
+            </button>
+          )}
+          {initialType === 'password' && (
+            <button type="button" css={iconButtonStyle} onClick={togglePasswordVisibility}>
+              <img
+                src={showPassword ? '/img/icon-eye-off.svg' : '/img/icon-eye.svg'}
+                alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+                css={iconStyle}
+              />
+            </button>
+          )}
+        </div>
       </div>
       {error && (
         <div css={errorContainerStyle}>
@@ -105,11 +123,16 @@ const inputWrapperStyle = css`
   width: 100%;
 `;
 
-const iconButtonStyle = css`
+const buttonGroupStyle = css`
   position: absolute;
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
+  display: flex;
+  gap: 0.8rem;
+`;
+
+const iconButtonStyle = css`
   background: none;
   border: none;
   padding: 0;
