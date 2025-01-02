@@ -89,9 +89,11 @@ const Home = () => {
           <ThemeNavigator />
           <FilterBox>
             <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} onClick={handleReset} />
-            <Filter params={window.location.search} text="인기순" paramsKeyword={sortBy} paramsName="sortBy" onClick={handleFilterByPopularity} />
-            <Filter params={window.location.search} paramsName={'minPrice'} text="가격대" onClick={handleFilterByPriceRange} />
-            <Filter params={window.location.search} text="매장정보" paramsKeyword={options} paramsName="options" onClick={handleFilterByStoreInfo} />
+            <div className="filterScroll">
+              <Filter params={window.location.search} text="인기순" paramsKeyword={sortBy} paramsName="sortBy" onClick={handleFilterByPopularity} />
+              <Filter params={window.location.search} paramsName={'minPrice'} text="가격대" onClick={handleFilterByPriceRange} />
+              <Filter params={window.location.search} text="매장정보" paramsKeyword={options} paramsName="options" onClick={handleFilterByStoreInfo} />
+            </div>
           </FilterBox>
         </NavigatorStyle>
 
@@ -105,7 +107,6 @@ const Home = () => {
 };
 
 const NavigatorStyle = styled.div<IFixedProps>`
-  width: 100%;
   position: ${(props) => (props.isFixed ? 'fixed' : 'absolute')};
   top: ${(props) => (props.isFixed ? '0' : '11.8rem')};
   left: 0;
@@ -114,14 +115,47 @@ const NavigatorStyle = styled.div<IFixedProps>`
 `;
 
 const FilterBox = styled.div`
+  width: 100%;
   padding: 1.2rem 0rem 1.2rem 1.6rem;
   display: flex;
   gap: 0.6rem;
   box-shadow: 0 0 2px ${variables.colors.gray500};
-  background-color: ${variables.colors.white};
+  position: relative;
 
-  button:first-of-type {
-    margin-right: 1rem;
+  & ::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  & > Button {
+    flex-shrink: 0;
+    margin: auto 0;
+  }
+
+  .filterScroll {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* 모바일 스크롤 */
+    scrollbar-width: thin; /* 크롬, 파이어폭스에서 스크롤바 스타일 */
+    white-space: nowrap;
+    display: flex;
+    gap: 0.8rem;
+    position: relative;
+  }
+
+  /* 크롬, 사파리 */
+  .filterScroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filterScroll {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE, Edge */
   }
 `;
 

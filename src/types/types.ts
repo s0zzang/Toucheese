@@ -6,6 +6,8 @@ export interface IPortfolio {
   vibe: string;
   name: string;
   url: string;
+  menuId: number;
+  menuName: string;
   description: string;
   created_at: string;
   updated_at: null | string;
@@ -37,7 +39,25 @@ export interface IOptions {
   updated_at: string;
 }
 
-export interface IStudioItem {
+export interface IOpeningHours {
+  closeTime: string;
+  closed: false;
+  dayOfWeek: string;
+  id: number;
+  openTime: string;
+  studioId: number;
+  studioName: string;
+}
+
+export interface IHolidays {
+  dayOfWeek: string;
+  id: number;
+  studioId: number;
+  studioName: string;
+  weekOfMonth: number;
+}
+
+interface IStudioInfo {
   id: number;
   vibe: string;
   addressSi: string;
@@ -50,18 +70,28 @@ export interface IStudioItem {
   rating: number;
   bookmark_count: number;
   review_count: number;
-  latitude: null | string;
-  longitude: null | string;
-  open_time: string;
-  close_time: string;
+  latitude: null | number;
+  longitude: null | number;
   subVibe: string;
   portfolios: IPortfolio[];
+}
+
+export interface IStudioItem extends IStudioInfo {
+  options: IOptions[];
+  open_time: string;
+  close_time: string;
   menus: IMenus[];
-  options: [] | IOptions;
-  created_at: null | string;
-  updated_at: null | string;
-  day_of_week: 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN';
+  created_at: string;
+  updated_at: string;
+  day_of_week: string;
   bookmark: boolean;
+}
+
+export interface IStudioDetail extends IStudioInfo {
+  options: ('CHANGING_ROOM' | 'DRESSING_ROOM' | 'HAIR_MAKEUP' | 'INDIVIDUAL_EDITING' | 'SUIT_RENTAL_FREE' | 'ORIGINAL_FILES' | 'PARKING_AREA')[];
+  openingHours: IOpeningHours[];
+  holidays: IHolidays[];
+  open: boolean;
 }
 
 export interface IStudioRes<T> {

@@ -8,7 +8,7 @@ import StudioMenuDetailInfo from './StudioMenuDetailInfo';
 import { useEffect, useState } from 'react';
 import StudioMenuDetailReview from './StudioMenuDetailReview';
 import { IMenuListRes } from 'types/types';
-import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
+import ImageSwiper from '@components/Swiper/ImageSwiper';
 import Button from '@components/Button/Button';
 
 const StudioMenuDetail = () => {

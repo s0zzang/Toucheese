@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { IStudioItem } from 'types/types';
+import { IStudioDetail } from 'types/types';
 
-const fetchStudioDetail = async (studioId: string): Promise<IStudioItem> => {
+const fetchStudioDetail = async (studioId: string): Promise<IStudioDetail> => {
   const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${studioId}`, {
     method: 'GET',
     headers: {
@@ -16,7 +16,7 @@ const fetchStudioDetail = async (studioId: string): Promise<IStudioItem> => {
 };
 
 export const useGetStudioDetail = (studioId: string) => {
-  return useQuery<IStudioItem | undefined>({
+  return useQuery<IStudioDetail | undefined>({
     queryKey: ['studioDetail', studioId],
     queryFn: () => fetchStudioDetail(studioId),
     staleTime: 1000 * 60 * 60 * 2,
