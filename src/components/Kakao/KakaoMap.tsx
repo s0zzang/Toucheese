@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import CopyLocation from '@components/CopyButton/CopyLocation';
 import { css } from '@emotion/react';
+import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 import { Map, MapMarker, useKakaoLoader } from 'react-kakao-maps-sdk';
 
@@ -42,8 +43,8 @@ const KakaoMap = ({ addressSi, addressGu, address }: KakaoMapProps) => {
   }, [loading, error, fullAddress]);
 
   const handleMapClick = () => {
-    const naverMapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(fullAddress)}`;
-    window.open(naverMapUrl, '_blank');
+    const kakaoMapUrl = `https://map.kakao.com/link/search/${encodeURIComponent(fullAddress)}`;
+    window.open(kakaoMapUrl, '_blank');
   };
 
   if (loading || isSearching) {
@@ -57,7 +58,7 @@ const KakaoMap = ({ addressSi, addressGu, address }: KakaoMapProps) => {
   return (
     <>
       <div css={mapContainerStyle}>
-        <Map center={position} css={mapStyle} level={3} zoomable={true} isPanto={true} onClick={handleMapClick}>
+        <Map center={position} css={mapStyle} level={3} zoomable={true} isPanto={true}>
           <MapMarker
             position={position}
             image={{
@@ -67,6 +68,9 @@ const KakaoMap = ({ addressSi, addressGu, address }: KakaoMapProps) => {
             }}
           />
         </Map>
+        <button css={viewMapButtonStyle} onClick={handleMapClick}>
+          지도보기
+        </button>
       </div>
       <CopyLocation text={fullAddress} buttonLabel="주소복사" />
     </>
@@ -76,8 +80,28 @@ const KakaoMap = ({ addressSi, addressGu, address }: KakaoMapProps) => {
 export default KakaoMap;
 
 const mapContainerStyle = css`
+  position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
+`;
+
+const viewMapButtonStyle = css`
+  position: absolute;
+  bottom: 1.6rem;
+  right: 1.6rem;
+  z-index: 1;
+  padding: 0.4rem 1rem;
+  font-size: 1.2rem;
+  color: ${variables.colors.white};
+  background-color: ${variables.colors.gray800};
+  border-radius: 0.4rem;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${variables.colors.gray900};
+  }
 `;
 
 const mapStyle = css`
