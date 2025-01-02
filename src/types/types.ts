@@ -6,10 +6,10 @@ export interface IPortfolio {
   vibe: string;
   name: string;
   url: string;
-  menuId: number;
-  menuName: string;
+  menuId: null | number;
+  menuName: null | string;
   description: string;
-  created_at: string;
+  created_at: null | string;
   updated_at: null | string;
 }
 
@@ -81,8 +81,8 @@ export interface IStudioItem extends IStudioInfo {
   open_time: string;
   close_time: string;
   menus: IMenus[];
-  created_at: string;
-  updated_at: string;
+  created_at: null | string;
+  updated_at: null | string;
   day_of_week: string;
   bookmark: boolean;
 }
