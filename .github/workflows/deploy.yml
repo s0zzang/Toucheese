@@ -17,6 +17,7 @@ jobs:
         run: |
           echo "VITE_TOUCHEESE_API=${{ secrets.VITE_TOUCHEESE_API }}" >> .env
           echo "VITE_TOUCHEESE_STUDIO_LIMIT=${{ secrets.VITE_TOUCHEESE_STUDIO_LIMIT }}" >> .env
+          echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
 
       - name: Install pnpm
         run: npm install -g pnpm@9.14.2
