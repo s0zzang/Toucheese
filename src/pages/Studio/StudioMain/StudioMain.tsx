@@ -80,7 +80,6 @@ const StudioMain = () => {
 
   return (
     <>
-      <Header customStyle={HeaderStyle} />
       <Helmet>
         <title>{`${data.name} - 상세정보`}</title>
         <meta property="og:site_name" content="toucheese" />
@@ -88,6 +87,8 @@ const StudioMain = () => {
         <meta property="og:url" content={`${window.location.href}`} />
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />
       </Helmet>
+
+      <Header customStyle={HeaderStyle} />
 
       {/* 이미지 */}
       <div css={portfolioPreviewStyle}>
