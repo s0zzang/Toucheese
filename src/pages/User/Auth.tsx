@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { Helmet } from 'react-helmet-async';
 import Header from '@components/Header/Header';
 import { css } from '@emotion/react';
 import LoginTypeButton from './components/LoginTypeButton';
@@ -8,6 +9,16 @@ import variables from '@styles/Variables';
 const Auth = () => {
   return (
     <>
+      <Helmet>
+        <title>터치즈 - 로그인/회원가입</title>
+        <meta name="description" content="터치즈에서 간편하게 내 인생 사진관을 찾고 예약하세요!" />
+        <meta property="og:title" content="터치즈 - 로그인/회원가입" />
+        <meta
+          property="og:description"
+          content="터치즈에서 간편하게 내 인생 사진관을 찾고 예약하세요!"
+        />
+      </Helmet>
+
       <div
         css={css`
           margin-bottom: 5.3rem;
