@@ -12,6 +12,7 @@ import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
 import { DividerStyle, TypoBodyMdM, TypoBodyMdR, TypoBodyMdSb, TypoCapSmM, TypoCapSmR, TypoTitleMdSb, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const StudioMain = () => {
@@ -80,16 +81,23 @@ const StudioMain = () => {
   return (
     <>
       <Header customStyle={HeaderStyle} />
+      <Helmet>
+        <title>{`${data.name} - 상세정보`}</title>
+        <meta property="og:site_name" content="toucheese" />
+        <meta property="og:title" content="스튜디오 상세정보" />
+        <meta property="og:url" content={`${window.location.href}`} />
+        <meta property="og:description" content="스튜디오의 영업시간과 정보" />
+      </Helmet>
 
       {/* 이미지 */}
       <div css={portfolioPreviewStyle}>
         {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
-          <img key={idx} src={getImageUrl(portfolioImg.url)} alt={`포트폴리오 이미지 : ${portfolioImg.url}`} loading="lazy" />
+          <img key={idx} src={getImageUrl(portfolioImg.url)} alt={`포트폴리오 이미지 : ${portfolioImg.url}`} />
         ))}
         <div css={portfolioPsitionStyle}>
-          <img src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')} alt="사진5" loading="lazy" />
+          <img src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')} alt="사진5" />
           <DimOverlayStyle onClick={() => navigate(`/studio/${_id}/portfolio`)}>
-            <img src="/img/icon-morePreview.svg" alt="더보기" loading="lazy" />
+            <img src="/img/icon-morePreview.svg" alt="더보기" />
             <span>{data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}</span>
           </DimOverlayStyle>
         </div>
