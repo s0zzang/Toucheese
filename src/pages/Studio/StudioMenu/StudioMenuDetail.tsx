@@ -8,9 +8,9 @@ import StudioMenuDetailInfo from './StudioMenuDetailInfo';
 import { useEffect, useState } from 'react';
 import StudioMenuDetailReview from './StudioMenuDetailReview';
 import { IMenuListRes } from 'types/types';
-import ImageSwiper from '@components/ImageSwiper/ImageSwiper';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import useReservationStore from '@store/useReservationStore';
+import ImageSwiper from '@components/Swiper/ImageSwiper';
 
 const StudioMenuDetail = () => {
   const { _menuId, _id } = useParams();
