@@ -5,7 +5,14 @@ import Button from '@components/Button/Button';
 import { TypoCapSmR, TypoTitleSmS } from '@styles/Common';
 import useReservationStore from '@store/useReservationStore';
 
-const ReservationFooter = () => {
+interface IReservationButton {
+  text: string;
+  type: 'button' | 'submit';
+  onClick: () => void;
+  disabled?: boolean;
+}
+
+const ReservationFooter = ({ text, type, onClick, disabled }: IReservationButton) => {
   const totalPrice = useReservationStore((state) => state.totalPrice);
 
   return (
@@ -15,7 +22,7 @@ const ReservationFooter = () => {
         <p>{totalPrice?.toLocaleString('ko-KR')}원</p>
       </div>
 
-      <Button text="예약하기" variant="black" type="submit" />
+      <Button text={text} variant="black" type={type} onClick={onClick} disabled={disabled} />
     </div>
   );
 };

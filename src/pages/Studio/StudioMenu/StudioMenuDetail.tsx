@@ -2,7 +2,7 @@
 import { css, SerializedStyles } from '@emotion/react';
 import variables from '@styles/Variables';
 import Header from '@components/Header/Header';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
 import StudioMenuDetailInfo from './StudioMenuDetailInfo';
 import { useEffect, useState } from 'react';
@@ -13,11 +13,13 @@ import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import useReservationStore from '@store/useReservationStore';
 
 const StudioMenuDetail = () => {
-  const { _menuId } = useParams();
+  const { _menuId, _id } = useParams();
+  const navigate = useNavigate();
   const [data, setData] = useState<IMenuListRes>();
   const [scrollY, setScrollY] = useState(false);
   const [tabMenuState, setTabMenuState] = useState('info');
   const setBasicPrice = useReservationStore((state) => state.setBasicPrice);
+  const saveReservationDetails = useReservationStore((state) => state.saveReservationDetails);
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -61,6 +63,17 @@ const StudioMenuDetail = () => {
     };
   }, []);
 
+  const handleReservartionNext = () => {
+    const saveData = {
+      studioId: data?.studioId,
+      studioName: data?.studioName,
+      menuName: data?.name,
+    };
+
+    saveReservationDetails(saveData);
+    navigate(`/studio/${_id}/reservation`);
+  };
+
   return (
     <>
       <Header title={`${scrollY ? data?.name : ''}`} customStyle={HeaderCustomStyle(scrollY)} />
@@ -81,7 +94,7 @@ const StudioMenuDetail = () => {
       {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
       {data && tabMenuState === 'review' && <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />}
 
-      <ReservationFooter />
+      <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
     </>
   );
 };

@@ -1,15 +1,20 @@
 import { create } from 'zustand';
 
+export interface StudioInfo {
+  studioId: number;
+  studioName: string;
+  menuName: string;
+}
+
 export interface ReservationOption {
   option_id: number;
   optionPrice: number;
   optionName: string;
 }
 
-interface ReservationInfo {
-  studioId: number;
-  studioName: string;
-  menuName: string;
+interface ReservationSave extends Partial<StudioInfo> {}
+
+interface ReservationInfo extends StudioInfo {
   totalPrice: number;
   options: ReservationOption[];
 }
@@ -17,7 +22,7 @@ interface ReservationInfo {
 interface ReservationInfoAction {
   setBasicPrice: (basicPrice: number) => void;
   addOptionPrice: (options: ReservationOption, isChecked: boolean) => void;
-  saveReservationDetails: (data: ReservationInfo) => void;
+  saveReservationDetails: (saveData: ReservationSave) => void;
 }
 
 const initialState: ReservationInfo = {
@@ -45,7 +50,9 @@ const useReservationStore = create<ReservationInfo & ReservationInfoAction>()((s
   saveReservationDetails: (data) =>
     set((state) => ({
       ...state,
-      data,
+      studioId: data.studioId,
+      studioName: data.studioName,
+      menuName: data.menuName,
     })),
 }));
 
