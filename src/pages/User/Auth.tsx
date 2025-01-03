@@ -3,10 +3,12 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@components/Header/Header';
 import { css } from '@emotion/react';
 import LoginTypeButton from './components/LoginTypeButton';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import variables from '@styles/Variables';
 
 const Auth = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Helmet>
@@ -35,7 +37,7 @@ const Auth = () => {
       <div css={LoginTypeButtonWrapper}>
         <LoginTypeButton type="kakao" />
         <LoginTypeButton type="google" />
-        <LoginTypeButton type="email" />
+        <LoginTypeButton type="email" onClick={() => navigate('/user/signup')} />
       </div>
 
       <Link to="/login">
