@@ -6,6 +6,7 @@ import { css } from '@emotion/react';
 import { TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useForm } from 'react-hook-form';
+import { Helmet } from 'react-helmet-async';
 
 const LoginWithEmailPage = () => {
   const {
@@ -18,6 +19,19 @@ const LoginWithEmailPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>이메일로 로그인 - 터치즈</title>
+        <meta
+          name="description"
+          content="터치즈에서 이메일로 로그인하세요. 내 인생 사진관을 찾고 예약까지 한 번에!"
+        />
+        <meta property="og:title" content="이메일로 로그인 - 터치즈" />
+        <meta
+          property="og:description"
+          content="터치즈에서 이메일로 로그인하세요. 내 인생 사진관을 찾고 예약까지 한 번에!"
+        />
+      </Helmet>
+
       <div
         css={css`
           margin-bottom: 4rem;
@@ -69,6 +83,17 @@ const LoginWithEmailPage = () => {
             },
           })}
           error={errors.password?.message?.toString()}
+        />
+        <Input
+          labelName="아이디"
+          type="text"
+          placeholder="아이디를 입력하세요"
+          hasCheckButton
+          onCheck={() => {
+            // 중복확인 로직
+          }}
+          checkButtonText="중복확인"
+          {...register('username')}
         />
         <button
           type="submit"

@@ -27,9 +27,11 @@ const ReviewContent = ({ content, isOpen, setIsOpen }: ReviewContentProps): JSX.
   return (
     <ReviewContentWrapper>
       <ContentText ref={textRef} isExpanded={isOpen}>
-        {content + content + content}
+        {content}
       </ContentText>
-      {isTextOverflow && <MoreButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '접기' : '더보기'}</MoreButton>}
+      {isTextOverflow && (
+        <MoreButton onClick={() => setIsOpen(!isOpen)}>{isOpen ? '접기' : '더보기'}</MoreButton>
+      )}
     </ReviewContentWrapper>
   );
 };
