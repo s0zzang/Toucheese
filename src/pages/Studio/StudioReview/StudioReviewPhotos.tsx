@@ -115,6 +115,6 @@ const StudioReviewPhotosContainerStyle = styled.div`
 const ButtonWrapperStyle = styled.div`
   display: flex;
   gap: 0.8rem;
-  padding: 1.2rem;
+  padding: 1.2rem 0;
   width: 100%;
 `;

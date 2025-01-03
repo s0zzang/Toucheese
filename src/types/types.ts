@@ -6,8 +6,10 @@ export interface IPortfolio {
   vibe: string;
   name: string;
   url: string;
+  menuId: null | number;
+  menuName: null | string;
   description: string;
-  created_at: string;
+  created_at: null | string;
   updated_at: null | string;
 }
 
@@ -79,8 +81,8 @@ export interface IStudioItem extends IStudioInfo {
   open_time: string;
   close_time: string;
   menus: IMenus[];
-  created_at: string;
-  updated_at: string;
+  created_at: null | string;
+  updated_at: null | string;
   day_of_week: string;
   bookmark: boolean;
 }
@@ -89,7 +91,7 @@ export interface IStudioDetail extends IStudioInfo {
   options: ('CHANGING_ROOM' | 'DRESSING_ROOM' | 'HAIR_MAKEUP' | 'INDIVIDUAL_EDITING' | 'SUIT_RENTAL_FREE' | 'ORIGINAL_FILES' | 'PARKING_AREA')[];
   openingHours: IOpeningHours[];
   holidays: IHolidays[];
-  open: false;
+  open: boolean;
 }
 
 export interface IStudioRes<T> {

@@ -37,7 +37,7 @@ const Filter = ({ text, onClick, params, paramsKeyword, paramsName }: FilterProp
       type="button"
       text={activeText}
       variant="white"
-      size="small"
+      size="xsmall"
       width="fit"
       icon={<img src="/img/icon-select-arrow.svg" alt="닫기 아이콘" />}
       iconSizeWidth="1rem"
