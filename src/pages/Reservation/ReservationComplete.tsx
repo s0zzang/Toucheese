@@ -34,7 +34,6 @@ const ReservationComplete = () => {
       <Header backTo="/" customStyle={headerStyle} />
       <SectionStyle>
         <MessageStyle>
-          <img src="/img/icon-complete-cheese500.svg" alt="예약 신청 완료" />
           <h2 css={TypoTitleMdSb}>예약이 신청되었습니다.</h2>
           <p css={TypoBodyMdR}>
             매장에서 예약 가능 여부를 확인중이에요.
@@ -64,9 +63,6 @@ const ReservationComplete = () => {
         </ProgressStyle>
         <ReservationInfoStyle>
           <div className="title-style">
-            <div className="title-icon">
-              <img src="/img/icon-calendar-black.svg" alt="예약 정보" />
-            </div>
             <h3 css={TypoBodyMdSb}>예약 정보</h3>
           </div>
 
@@ -116,11 +112,18 @@ const SectionStyle = styled.section`
 const MessageStyle = styled.div`
   padding: 1rem 0;
   text-align: center;
+  position: relative;
 
-  & > img {
+  &::before {
+    content: '';
+    display: block;
     width: 3.6rem;
     aspect-ratio: 1/1;
+    margin: 0 auto;
     margin-bottom: 2rem;
+    background: url('/img/icon-complete-cheese500.svg') no-repeat;
+    background-size: contain;
+    background-position: center;
   }
 
   & > h2 {
@@ -205,13 +208,13 @@ const ReservationInfoStyle = styled.div`
     align-items: center;
     margin-bottom: 1rem;
 
-    & > .title-icon {
+    &::before {
+      content: '';
       width: 1.6rem;
       height: 1.6rem;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: url('/img/icon-calendar-black.svg') no-repeat;
+      background-position: center;
+      background-size: contain;
     }
   }
 
