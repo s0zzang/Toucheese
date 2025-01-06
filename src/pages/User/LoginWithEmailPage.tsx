@@ -84,17 +84,7 @@ const LoginWithEmailPage = () => {
           })}
           error={errors.password?.message?.toString()}
         />
-        <Input
-          labelName="아이디"
-          type="text"
-          placeholder="아이디를 입력하세요"
-          hasCheckButton
-          onCheck={() => {
-            // 중복확인 로직
-          }}
-          checkButtonText="중복확인"
-          {...register('username')}
-        />
+
         <button
           type="submit"
           css={css`

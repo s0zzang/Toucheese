@@ -5,7 +5,6 @@ import { TypoBodySmM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import React, { useState } from 'react';
-import Button from '@components/Button/Button';
 
 interface InputProps {
   labelName: string;
@@ -32,6 +31,7 @@ const Input = ({
 }: InputProps) => {
   const [inputValue, setInputValue] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -52,6 +52,14 @@ const Input = ({
 
   const type = initialType === 'password' ? (showPassword ? 'text' : 'password') : initialType;
 
+  const handleFocus = () => {
+    setIsActive(true);
+  };
+
+  const handleBlur = () => {
+    setIsActive(false);
+  };
+
   return (
     <div css={containerStyle}>
       <label css={[labelStyle, { width: inputWidth }]}>
@@ -65,6 +73,8 @@ const Input = ({
               {...register}
               onChange={handleChange}
               value={inputValue}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
             />
             <div css={buttonGroupStyle}>
               {inputValue.length > 1 && (
@@ -84,14 +94,9 @@ const Input = ({
             </div>
           </div>
           {hasCheckButton && (
-            <Button
-              text={checkButtonText}
-              type="button"
-              onClick={onCheck}
-              width="fit"
-              size="large"
-              variant="white"
-            />
+            <button css={isActive ? buttonActive : buttonUnActive} onClick={onCheck}>
+              {checkButtonText}
+            </button>
           )}
         </div>
         {error && (
@@ -119,7 +124,7 @@ const inputStyle = (error?: string) => css`
     margin-top: 0.4rem;
     margin-bottom: 0.4rem;
     width: 100%;
-    height: 6.4rem;
+    height: 5.6rem;
     box-sizing: border-box;
     padding: 1rem;
     border: 1px solid ${error ? 'red' : variables.colors.gray300};
@@ -201,4 +206,26 @@ const inputContainerStyle = css`
 
 const containerStyle = css`
   width: 100%;
+`;
+
+const buttonUnActive = css`
+  height: 5.6rem;
+  background-color: ${variables.colors.gray200};
+  border: solid 0.1rem ${variables.colors.gray400};
+  border-radius: 0.6rem;
+  padding: 0 1.6rem 0 1.6rem;
+  color: ${variables.colors.gray600};
+  ${TypoBodySmM}
+  box-sizing: border-box;
+`;
+
+const buttonActive = css`
+  height: 5.6rem;
+  background-color: ${variables.colors.primary50};
+  border: solid 0.1rem ${variables.colors.primary500};
+  border-radius: 0.6rem;
+  padding: 0 1.6rem 0 1.6rem;
+  color: ${variables.colors.gray900};
+  ${TypoBodySmM}
+  box-sizing: border-box;
 `;
