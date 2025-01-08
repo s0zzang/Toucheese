@@ -14,8 +14,31 @@ const SignUp = () => {
     formState: { errors },
     watch,
   } = useForm();
+
   const onSubmit = (data: any) => console.log(data);
-  const handleClick = () => console.log('click');
+
+  /** 간편 본인인증 실행 함수 */
+  const handleAuth = () => {
+    const { IMP } = window;
+    IMP.init('imp29272276');
+
+    IMP.certification(
+      {
+        channelKey: 'channel-key-5130c33b-27ed-4b00-b62a-47c0045ceb94',
+        merchant_uid: 'test_m550ze1s',
+        m_redirect_url: 'http://localhost:5173',
+      },
+      async (res: { success: boolean; imp_uid: string; merchant_uid: string; pg_provider: 'inicis_unified'; pg_type: 'certification'; error_code: string; error_msg: string }) => {
+        try {
+          if (res.success) {
+            console.log(res);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      },
+    );
+  };
 
   return (
     <>
@@ -34,7 +57,7 @@ const SignUp = () => {
               required: '이메일을 입력해주세요',
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: '올바른 이메일 주소를 입력해주세요.',
+                message: '올바른 이메일 형식이 아닙니다.',
               },
             })}
             error={errors.email?.message?.toString()}
@@ -47,13 +70,24 @@ const SignUp = () => {
             placeholder="8자 이상의 비밀번호"
             register={register('password', {
               required: '비밀번호를 입력해주세요',
-              minLength: {
-                value: 8,
-                message: '비밀번호는 8자 이상 입력되어야 합니다.',
-              },
-              pattern: {
-                value: /[!@#$%^&*(),.?":{}|<>]/,
-                message: '특수문자를 하나 이상 포함해야 합니다',
+              validate: (value) => {
+                const email = watch('email') || '';
+                const usernameFromEmail = email.match(/^[^@]+/)?.[0] || '';
+
+                if (value.includes(email) || value.includes(usernameFromEmail)) {
+                  return '비밀번호에 이메일 주소를 포함할 수 없습니다';
+                }
+
+                const username = watch('name') || '';
+                if (username && value.includes(username)) {
+                  return '비밀번호에 이름을 포함할 수 없습니다';
+                }
+
+                if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/.test(value)) {
+                  return '8~20자 영문/숫자 조합으로 입력해주세요.';
+                }
+
+                return true;
               },
             })}
             error={errors.password?.message?.toString()}
@@ -64,19 +98,11 @@ const SignUp = () => {
             labelName="비밀번호 확인"
             type="password"
             placeholder="비밀번호를 재입력하세요"
-            register={register('password confirm', {
+            register={register('passwordConfirm', {
               required: '비밀번호를 재입력하세요',
               validate: (value) => value === watch('password') || '비밀번호가 일치하지 않습니다',
-              minLength: {
-                value: 8,
-                message: '비밀번호는 8자 이상 입력되어야 합니다.',
-              },
-              pattern: {
-                value: /[!@#$%^&*(),.?":{}|<>]/,
-                message: '특수문자를 하나 이상 포함해야 합니다',
-              },
             })}
-            error={errors.password?.message?.toString()}
+            error={errors.passwordConfirm?.message?.toString()}
           />
 
           {/* 이름 */}
@@ -99,7 +125,7 @@ const SignUp = () => {
             labelName="휴대폰 번호"
             type="phone"
             placeholder="‘-’구분없이 입력하세요"
-            onCheck={handleClick}
+            onCheck={handleAuth}
             hasCheckButton
             checkButtonText="인증하기"
             register={register('phone', {
