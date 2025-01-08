@@ -30,8 +30,23 @@ const Auth = () => {
       </div>
 
       <div css={LoginPageDesStyle}>
-        <h1>터치즈에서 간편하게</h1>
-        <p>내 인생 사진관 찾고 예약까지!</p>
+        <h1
+          css={css`
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in forwards;
+          `}
+        >
+          터치즈에서 간편하게
+        </h1>
+        <p
+          css={css`
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in forwards;
+            animation-delay: 0.5s;
+          `}
+        >
+          내 인생 사진관 찾고 예약까지!
+        </p>
       </div>
 
       <div css={LoginTypeButtonWrapper}>
@@ -73,6 +88,17 @@ const LoginPageDesStyle = css`
     font-size: 2.2rem;
   }
   margin-bottom: 10.2rem;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const LoginTypeButtonWrapper = css`
