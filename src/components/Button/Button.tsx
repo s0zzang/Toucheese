@@ -120,6 +120,12 @@ const Button = ({
       color:${variables.colors.gray800};
       `}
 
+${variant === 'gray' &&
+    `
+      background-color: ${variables.colors.gray300};
+      color:${variables.colors.gray800};
+      `}
+
     ${variant === 'deepGray' &&
     `
       background-color: ${variables.colors.gray500};
@@ -132,12 +138,13 @@ const Button = ({
       border: 0.1rem solid${variables.colors.gray400};
     `}
 
-${variant === 'white' &&
+  ${variant === 'white' &&
     active &&
     ` background-color: ${variables.colors.primary50}; 
       border: 0.1rem solid${variables.colors.primary500}; 
       color:${variables.colors.gray900};
     `}
+
 
 
     ${fixed &&
