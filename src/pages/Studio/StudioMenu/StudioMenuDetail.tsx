@@ -20,6 +20,7 @@ const StudioMenuDetail = () => {
   const [tabMenuState, setTabMenuState] = useState('info');
   const setBasicPrice = useReservationStore((state) => state.setBasicPrice);
   const saveReservationDetails = useReservationStore((state) => state.saveReservationDetails);
+  const [user, setUser] = useState(false); // 추후 로그인 기능 완료되면 교체 예정
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -69,9 +70,13 @@ const StudioMenuDetail = () => {
       studioName: data?.studioName,
       menuName: data?.name,
     };
-
     saveReservationDetails(saveData);
-    navigate(`/studio/${_id}/reservation`);
+
+    if (user) {
+      navigate(`/studio/${_id}/reservation`);
+    } else {
+      navigate('/user/auth');
+    }
   };
 
   return (
@@ -84,15 +89,23 @@ const StudioMenuDetail = () => {
       </div>
 
       <ul css={TabMenuStyle}>
-        <li onClick={() => setTabMenuState('info')} className={`${tabMenuState === 'info' && 'active'}`}>
+        <li
+          onClick={() => setTabMenuState('info')}
+          className={`${tabMenuState === 'info' && 'active'}`}
+        >
           정보
         </li>
-        <li onClick={() => setTabMenuState('review')} className={`${tabMenuState === 'review' && 'active'}`}>
+        <li
+          onClick={() => setTabMenuState('review')}
+          className={`${tabMenuState === 'review' && 'active'}`}
+        >
           리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
         </li>
       </ul>
       {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
-      {data && tabMenuState === 'review' && <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />}
+      {data && tabMenuState === 'review' && (
+        <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />
+      )}
 
       <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
     </>
