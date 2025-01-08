@@ -6,9 +6,9 @@ import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import { TypoTitleMdSb } from '@styles/Common';
 import { useForm } from 'react-hook-form';
+
+const IMPCode = import.meta.env.VITE_AUTH_IMP_CODE;
 const channelKey = import.meta.env.VITE_AUTH_CHANNEL_KEY;
-const userId = import.meta.env.VITE_AUTH_USER_CODE;
-const redirectUrl = import.meta.env.VITE_AUTH_REDIRECT_URL;
 
 const SignUp = () => {
   const {
@@ -23,13 +23,13 @@ const SignUp = () => {
   /** 간편 본인인증 실행 함수 */
   const handleAuth = () => {
     const { IMP } = window;
-    IMP.init('imp29272276');
+    IMP.init(IMPCode);
 
     IMP.certification(
       {
         channelKey: channelKey,
-        merchant_uid: userId,
-        m_redirect_url: redirectUrl,
+        merchant_uid: 'test_m5nmk62j',
+        m_redirect_url: 'http://localhost:5173',
       },
       async (res: { success: boolean; imp_uid: string; merchant_uid: string; pg_provider: 'inicis_unified'; pg_type: 'certification'; error_code: string; error_msg: string }) => {
         try {
