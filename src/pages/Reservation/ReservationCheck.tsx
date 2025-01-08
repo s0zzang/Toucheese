@@ -209,11 +209,11 @@ const ReservationCheck = () => {
         <div css={[TypoTitleXsR, radioGroupStyle]}>
           <label css={radioLabelStyle}>
             <input type="radio" name="paymentMethod" value="kakaoPay" onChange={(e) => setPaymentMethod(e.target.value)} defaultChecked />
-            <span>카카오페이</span>
+            <img src="/img/icon-kakaoPay.svg" alt="카카오페이 로고" />
           </label>
           <label css={radioLabelStyle}>
             <input type="radio" name="paymentMethod" onChange={(e) => setPaymentMethod(e.target.value)} value="naverPay" />
-            <span>네이버페이</span>
+            <img src="/img/icon-naverPay.svg" alt="네이버페이 로고" />
           </label>
           <label css={radioLabelStyle}>
             <input type="radio" name="paymentMethod" onChange={(e) => setPaymentMethod(e.target.value)} value="creditCard" />
@@ -423,7 +423,7 @@ const totalPriceStyle = css`
 const radioGroupStyle = css`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1.2rem;
 `;
 const radioLabelStyle = css`
   display: flex;
@@ -444,6 +444,9 @@ const radioLabelStyle = css`
       border: 0.6rem solid ${variables.colors.primary600};
       background-color: white;
     }
+  }
+  img {
+    width: 7rem;
   }
 `;
 
