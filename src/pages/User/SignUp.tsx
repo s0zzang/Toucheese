@@ -15,18 +15,20 @@ const SignUp = () => {
     watch,
   } = useForm();
   const onSubmit = (data: any) => console.log(data);
+  const handleClick = () => console.log('click');
 
   return (
     <>
-      <div css={containerStyle}>
-        <BackButton />
-        <h2 css={pageTitleStyle}>회원가입</h2>
-        <form noValidate onSubmit={handleSubmit(onSubmit)} css={formStyle}>
-          {/* 이메일 */}
-
+      <BackButton />
+      <h2 css={pageTitleStyle}>회원가입</h2>
+      <form noValidate onSubmit={handleSubmit(onSubmit)} css={formStyle}>
+        {/* 이메일 */}
+        <div css={containerStyle}>
           <Input
             labelName="아이디 (이메일)"
             type="email"
+            hasCheckButton
+            checkButtonText="중복확인"
             placeholder="이메일 주소를 입력하세요"
             register={register('email', {
               required: '이메일을 입력해주세요',
@@ -93,11 +95,13 @@ const SignUp = () => {
           />
 
           {/* 휴대폰 번호 */}
-
           <Input
             labelName="휴대폰 번호"
             type="phone"
             placeholder="‘-’구분없이 입력하세요"
+            onCheck={handleClick}
+            hasCheckButton
+            checkButtonText="인증하기"
             register={register('phone', {
               required: '휴대폰 번호는 필수입니다.',
               minLength: {
@@ -107,11 +111,12 @@ const SignUp = () => {
             })}
             error={errors.phone?.message?.toString()}
           />
-        </form>
-      </div>
-      <div css={buttonStyle}>
-        <Button type="submit" text="가입하기" size="large" variant="deepGray" />
-      </div>
+        </div>
+
+        <div css={buttonStyle}>
+          <Button type="submit" text="가입하기" size="large" variant="deepGray" />
+        </div>
+      </form>
     </>
   );
 };
@@ -119,11 +124,13 @@ const SignUp = () => {
 export default SignUp;
 
 const containerStyle = css`
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 const buttonStyle = css`
-  position: absolute;
+  position: fixed;
   bottom: 3rem;
   width: calc(100% - 3.2rem);
 `;
@@ -136,5 +143,6 @@ const pageTitleStyle = css`
 const formStyle = css`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  justify-content: space-between;
+  gap: 3rem;
 `;
