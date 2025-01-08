@@ -6,6 +6,9 @@ import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import { TypoTitleMdSb } from '@styles/Common';
 import { useForm } from 'react-hook-form';
+const channelKey = import.meta.env.VITE_AUTH_CHANNEL_KEY;
+const userId = import.meta.env.VITE_AUTH_USER_CODE;
+const redirectUrl = import.meta.env.VITE_AUTH_REDIRECT_URL;
 
 const SignUp = () => {
   const {
@@ -24,9 +27,9 @@ const SignUp = () => {
 
     IMP.certification(
       {
-        channelKey: 'channel-key-5130c33b-27ed-4b00-b62a-47c0045ceb94',
-        merchant_uid: 'test_m550ze1s',
-        m_redirect_url: 'http://localhost:5173',
+        channelKey: channelKey,
+        merchant_uid: userId,
+        m_redirect_url: redirectUrl,
       },
       async (res: { success: boolean; imp_uid: string; merchant_uid: string; pg_provider: 'inicis_unified'; pg_type: 'certification'; error_code: string; error_msg: string }) => {
         try {
