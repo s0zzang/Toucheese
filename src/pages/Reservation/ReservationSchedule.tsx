@@ -8,11 +8,15 @@ import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import { getDay, useSelectDateStore } from '@store/useSelectDate';
 import { useSelectTimeStore } from '@store/useSelectTime';
+import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ReservationSchedule = () => {
   const { time } = useSelectTimeStore();
   const { date } = useSelectDateStore();
   const [_, month, day] = date.split('-');
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -29,10 +33,16 @@ const ReservationSchedule = () => {
           </dl>
           <dl className="timeBox">
             <dt css={Hidden}>시간</dt>
-            <dd>{time.size ? time : '시간을 선택해주세요'}</dd>
+            <dd>{time.size ? time : <span>시간을 선택해주세요</span>}</dd>
           </dl>
         </div>
-        예약하기 버튼이 들어갈 자리
+
+        <ReservationFooter
+          text="다음"
+          type="button"
+          onClick={() => navigate(`${pathname}/payment`)}
+          disabled={!(time.size > 0)}
+        />
       </div>
     </>
   );
@@ -44,8 +54,9 @@ const fixedBox = css`
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 8.1rem;
   border-top: 1px solid ${variables.colors.gray300};
+  background: #fff;
 `;
 
 const finalDate = css`
@@ -72,6 +83,12 @@ const finalDate = css`
         width: 1px;
         height: 1.8rem;
         background: ${variables.colors.gray300};
+      }
+    }
+
+    dd {
+      span {
+        color: ${variables.colors.gray600};
       }
     }
   }
