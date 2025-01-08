@@ -120,12 +120,6 @@ const Button = ({
       color:${variables.colors.gray800};
       `}
 
-${variant === 'gray' &&
-    `
-      background-color: ${variables.colors.gray300};
-      color:${variables.colors.gray800};
-      `}
-
     ${variant === 'deepGray' &&
     `
       background-color: ${variables.colors.gray500};
