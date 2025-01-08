@@ -1,10 +1,11 @@
 import variables from '@styles/Variables';
 
-type LoginButtonProps = {
+interface LoginButtonProps {
   type: 'kakao' | 'google' | 'email';
-};
+  onClick?: () => void;
+}
 
-const LoginTypeButton = ({ type }: LoginButtonProps) => {
+const LoginTypeButton = ({ type, onClick }: LoginButtonProps) => {
   const buttonStyle = {
     kakao: {
       backgroundColor: '#FEE500',
@@ -34,6 +35,7 @@ const LoginTypeButton = ({ type }: LoginButtonProps) => {
 
   return (
     <button
+      onClick={onClick}
       style={{
         width: '100%',
         height: '4.8rem',

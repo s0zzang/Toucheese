@@ -30,8 +30,8 @@ export const TypoTitleSmS = css`
 
 export const TypoTitleMdSb = css`
   font-size: 2.2rem;
-  font-weight: 700;
-  line-height: 2.4rem;
+  font-weight: 600;
+  line-height: 2.8rem;
 `;
 
 export const TypoBodySmM = css`

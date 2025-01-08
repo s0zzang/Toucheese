@@ -2,22 +2,24 @@
 import { css, SerializedStyles } from '@emotion/react';
 import variables from '@styles/Variables';
 import Header from '@components/Header/Header';
-import { useParams } from 'react-router-dom';
-import { TypoBodyMdM, TypoCapSmR, TypoTitleSmS } from '@styles/Common';
+import { useNavigate, useParams } from 'react-router-dom';
+import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
 import StudioMenuDetailInfo from './StudioMenuDetailInfo';
 import { useEffect, useState } from 'react';
 import StudioMenuDetailReview from './StudioMenuDetailReview';
 import { IMenuListRes } from 'types/types';
+import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
+import useReservationStore from '@store/useReservationStore';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
-import Button from '@components/Button/Button';
 
 const StudioMenuDetail = () => {
-  const { _menuId } = useParams();
+  const { _menuId, _id } = useParams();
+  const navigate = useNavigate();
   const [data, setData] = useState<IMenuListRes>();
   const [scrollY, setScrollY] = useState(false);
   const [tabMenuState, setTabMenuState] = useState('info');
-  const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [checkState, setCheckState] = useState<Record<number, boolean>>({});
+  const setBasicPrice = useReservationStore((state) => state.setBasicPrice);
+  const saveReservationDetails = useReservationStore((state) => state.saveReservationDetails);
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -32,6 +34,7 @@ const StudioMenuDetail = () => {
     }
 
     const data = await res.json();
+
     return data;
   };
 
@@ -39,7 +42,7 @@ const StudioMenuDetail = () => {
     const fetchAndSetData = async () => {
       const result = await fetchMenuDetail();
       setData(result);
-      setTotalPrice(result.price);
+      setBasicPrice(result.price);
     };
 
     fetchAndSetData();
@@ -60,6 +63,17 @@ const StudioMenuDetail = () => {
     };
   }, []);
 
+  const handleReservartionNext = () => {
+    const saveData = {
+      studioId: data?.studioId,
+      studioName: data?.studioName,
+      menuName: data?.name,
+    };
+
+    saveReservationDetails(saveData);
+    navigate(`/studio/${_id}/reservation`);
+  };
+
   return (
     <>
       <Header title={`${scrollY ? data?.name : ''}`} customStyle={HeaderCustomStyle(scrollY)} />
@@ -77,17 +91,10 @@ const StudioMenuDetail = () => {
           리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
         </li>
       </ul>
-      {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} setTotalPrice={setTotalPrice} checkState={checkState} setCheckState={setCheckState} />}
+      {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
       {data && tabMenuState === 'review' && <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />}
 
-      <div css={FixedBtnBoxStyle}>
-        <div className="totalPrice">
-          <span>총 결제금액</span>
-          <p>{totalPrice?.toLocaleString('ko-KR')}원</p>
-        </div>
-
-        <Button text="예약하기" variant="black" type="submit" />
-      </div>
+      <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
     </>
   );
 };
@@ -154,35 +161,6 @@ const TabMenuStyle = css`
 
     &.active::before {
       background-color: ${variables.colors.black};
-    }
-  }
-`;
-
-const FixedBtnBoxStyle = css`
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: ${variables.colors.white};
-  padding: 1.6rem;
-  border-top: 0.1rem solid ${variables.colors.gray300};
-  z-index: 30;
-
-  .totalPrice {
-    display: flex;
-    flex-direction: column;
-    min-width: 10rem;
-
-    & span {
-      ${TypoCapSmR}
-      color:  ${variables.colors.gray600};
-    }
-
-    & p {
-      ${TypoTitleSmS}
     }
   }
 `;

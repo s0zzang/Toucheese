@@ -38,7 +38,15 @@ const StudioReview = () => {
   if (error) return <div>에러가 발생했습니다</div>;
   if (!data) return null;
 
-  const { reviewList: reviewLists, totalImageNum, avgRating, totalReviewNum, samplePhotoList, menuNameList, menuIdList } = data;
+  const {
+    reviewList: reviewLists,
+    totalImageNum,
+    avgRating,
+    totalReviewNum,
+    samplePhotoList,
+    menuNameList,
+    menuIdList,
+  } = data;
   const processedAvgRating = avgRating.toFixed(1);
 
   /** 드랍다운에서 선택된 요소에 따라 메뉴 아이디 바꾸는 함수 */
@@ -56,9 +64,15 @@ const StudioReview = () => {
       {data && (
         <Helmet>
           <title>{`스튜디오 리뷰 - ${totalReviewNum}개의 리뷰`}</title>
-          <meta name="description" content={`평균 평점 ${processedAvgRating}점, ${totalReviewNum}개의 리뷰와 ${totalImageNum}개의 사진이 있는 스튜디오 리뷰입니다.`} />
+          <meta
+            name="description"
+            content={`평균 평점 ${processedAvgRating}점, ${totalReviewNum}개의 리뷰와 ${totalImageNum}개의 사진이 있는 스튜디오 리뷰입니다.`}
+          />
           <meta property="og:title" content={`스튜디오 리뷰 | ${totalReviewNum}개의 리뷰`} />
-          <meta property="og:description" content={`평균 평점 ${processedAvgRating}점, ${totalReviewNum}개의 리뷰와 ${totalImageNum}개의 사진이 있는 스튜디오 리뷰입니다.`} />
+          <meta
+            property="og:description"
+            content={`평균 평점 ${processedAvgRating}점, ${totalReviewNum}개의 리뷰와 ${totalImageNum}개의 사진이 있는 스튜디오 리뷰입니다.`}
+          />
         </Helmet>
       )}
 
@@ -72,7 +86,13 @@ const StudioReview = () => {
         <StudioReviewImageList pageId={_id} samplePhotoList={samplePhotoList} />
       </ReviewPhotosWrapperStyle>
 
-      <StudioReviewCategories avgRating={Number(processedAvgRating)} totalReviewNum={totalReviewNum} menuNameList={menuNameList} menuIdList={menuIdList || []} onFilterChange={handleFilterChange} />
+      <StudioReviewCategories
+        avgRating={Number(processedAvgRating)}
+        totalReviewNum={totalReviewNum}
+        menuNameList={menuNameList}
+        menuIdList={menuIdList || []}
+        onFilterChange={handleFilterChange}
+      />
       {reviewLists.map((review: Review) => (
         <StudioReviewItem key={review.id} review={review} />
       ))}
