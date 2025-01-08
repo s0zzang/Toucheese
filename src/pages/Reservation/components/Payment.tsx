@@ -112,6 +112,51 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
   };
 
   const requestKakaoPay = () => {
+    window.IMP.request_pay(
+      {
+        channelKey: import.meta.env.VITE_PORTONE_KAKAO_CHANNEL_KEY,
+        pay_method: 'EASY_PAY',
+        merchant_uid: 'order_no_0001',
+        name: '주문명:결제테스트',
+        amount: 1,
+        buyer_email: 'test@portone.io',
+        buyer_name: '박지뚱',
+        buyer_tel: '010-1234-5678',
+        buyer_addr: '서울특별시 강남구 삼성동',
+        buyer_postcode: '123-456',
+        m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}',
+      },
+      (rsp: PaymentResponse) => {
+        if (rsp.success) {
+          console.log('결제 성공:', rsp);
+
+          // 서버에 결제 검증 요청 (임시)
+          fetch('/api/verify-payment', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              imp_uid: rsp.imp_uid, // 포트원 결제 고유 ID
+              merchant_uid: rsp.merchant_uid, // 상점에서 생성한 주문번호
+            }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                console.log('결제 검증 성공');
+              } else {
+                console.error('결제 검증 실패');
+              }
+            })
+            .catch((error) => {
+              console.error('결제 검증 요청 중 오류 발생:', error);
+            });
+        } else {
+          console.error('결제 실패:', rsp.error_msg);
+        }
+      },
+    );
+
     return;
   };
 
