@@ -29,7 +29,7 @@ export const changeformatDateForUi = ({ date, time }: { date: string; time: Set<
       ? `${[...sortedTimes][0]} 외 ${sortedTimes.length - 1}개`
       : [...sortedTimes][0];
 
-  return `${selectedDateForUi} / ${selectedTimeForUi}`;
+  return `${selectedDateForUi}${time.size ? ` / ${selectedTimeForUi}` : ''}`;
 };
 
 export const useSelectDateStore = create<DateState>((set) => ({

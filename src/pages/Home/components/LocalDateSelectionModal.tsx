@@ -15,6 +15,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const { time } = useSelectTimeStore();
   const { date } = useSelectDateStore();
 
+  const [isSelectedDate, setIsSelectedDate] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const { openBottomSheet } = useBottomSheetState();
   const navigate = useNavigate();
@@ -57,15 +58,13 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
               {selectedLocation ? selectedLocation : '지역 선택'}
             </button>
             <button type="button" onClick={handleOpenDate}>
-              {time.size
-                ? changeformatDateForUi({ date, time: [...time].join('') })
-                : '예약 날짜 선택'}
+              {isSelectedDate ? changeformatDateForUi({ date, time }) : '예약 날짜 선택'}
             </button>
           </InputBoxStyle>
         </>
       </Modal>
 
-      <DateBottomSheet />
+      <DateBottomSheet setIsSelectedDate={setIsSelectedDate} />
     </>
   );
 };

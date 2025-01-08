@@ -5,8 +5,13 @@ import { useSelectTimeStore } from '@store/useSelectTime';
 import { convertToDateFormat, today, useSelectDateStore } from '@store/useSelectDate';
 import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
+import { Dispatch, SetStateAction } from 'react';
 
-const DateBottomSheet = () => {
+const DateBottomSheet = ({
+  setIsSelectedDate,
+}: {
+  setIsSelectedDate: Dispatch<SetStateAction<boolean>>;
+}) => {
   const dateTimeModal = useModal(2);
   const { setTime } = useSelectTimeStore();
   const { setDate } = useSelectDateStore();
@@ -23,7 +28,10 @@ const DateBottomSheet = () => {
     },
     {
       text: '적용하기',
-      event: () => dateTimeModal.close(),
+      event: () => {
+        setIsSelectedDate(true);
+        dateTimeModal.close();
+      },
     },
   ];
   return (
