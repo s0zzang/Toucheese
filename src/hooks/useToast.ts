@@ -12,13 +12,9 @@ const useToast = () => {
 
     setToast(newToast);
 
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       removeToast(newToast.id);
     }, 3000);
-
-    return () => {
-      clearTimeout(timer);
-    };
   };
 
   return openToast;
