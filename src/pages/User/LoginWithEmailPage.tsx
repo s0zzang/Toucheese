@@ -15,7 +15,10 @@ const LoginWithEmailPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) => {
+    console.log('해시된 로그인 데이터:', data);
+    // TODO: API 호출 로직 추가
+  };
 
   return (
     <>
