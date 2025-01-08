@@ -75,6 +75,10 @@ const SelectTime = ({ type }: ITimeProp) => {
             ))}
           </ul>
         </article>
+
+        <h3 css={Hidden}>
+          선택된 시간: <span className="selected">{[...selectedTime].join(',')}</span>
+        </h3>
       </section>
     </>
   );
