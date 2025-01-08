@@ -99,12 +99,12 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
 const ItemContentStyle = styled.div`
   width: 100%;
   display: flex;
-  gap: 1.6rem;
+  gap: 3rem;
 `;
 
 const ItemInfoStyle = styled.div`
+  min-width: 0;
   flex-grow: 1;
-  max-width: 30rem;
 `;
 
 const TitleStyle = styled.p`
@@ -124,6 +124,7 @@ const InfoContainerStyle = styled.div`
     gap: 0.3rem;
 
     & > img {
+      flex-shrink: 0;
       width: 1.3rem;
       height: 1.3rem;
 
