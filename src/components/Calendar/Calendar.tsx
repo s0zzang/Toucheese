@@ -1,11 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
-import { css } from '@emotion/react';
+import { css, CSSObject } from '@emotion/react';
 import styled from '@emotion/styled';
 import { convertToDateFormat, lessThan10Add0, useSelectDateStore } from '@store/useSelectDate';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
+
+interface CalendarProp {
+  style?: CSSObject;
+}
 
 interface Day {
   year: number;
@@ -13,7 +17,7 @@ interface Day {
   date: number;
 }
 
-const Calendar = () => {
+const Calendar = ({ style }: CalendarProp) => {
   const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
   const [baseDate, setBaseDate] = useState(new Date());
   const [calendar, setCalendar] = useState<Day[]>();
@@ -84,7 +88,7 @@ const Calendar = () => {
   }, [activeDay]);
 
   return (
-    <CalendarWrStyle>
+    <CalendarWrStyle css={style}>
       <TopStyle>
         <TodayStyle onClick={moveToToday}>
           오늘 <span css={Hidden}>날짜로 이동</span>
@@ -122,7 +126,8 @@ const Calendar = () => {
               <li
                 // 순서대로 1. 활성화 스타일, 2. 다음 달인 경우 스타일, 3. 오늘보다 이전 날짜 스타 일 지정
                 css={css`
-                  ${activeDay === `${year}-${lessThan10Add0(month)}-${lessThan10Add0(date)}` && activeStyle};
+                  ${activeDay === `${year}-${lessThan10Add0(month)}-${lessThan10Add0(date)}` &&
+                  activeStyle};
                   ${month != baseMonth + 1 && nextMonthStyle};
                   ${today > new Date(year, month - 1, date + 1) && disabledStyle}
                 `}
