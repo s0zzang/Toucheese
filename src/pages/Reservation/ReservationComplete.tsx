@@ -1,9 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import Button from '@components/Button/Button';
-import Header from '@components/Header/Header';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { TypoBodyMdM, TypoBodyMdR, TypoBodyMdSb, TypoBodySmR, TypoTitleMdSb, TypoTitleXsM } from '@styles/Common';
+import {
+  TypoBodyMdM,
+  TypoBodyMdR,
+  TypoBodyMdSb,
+  TypoBodySmR,
+  TypoTitleMdSb,
+  TypoTitleXsM,
+} from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,7 +36,6 @@ const ReservationComplete = () => {
 
   return (
     <>
-      <Header backTo="/" customStyle={headerStyle} />
       <SectionStyle>
         <MessageStyle>
           <h2 css={TypoTitleMdSb}>예약이 신청되었습니다.</h2>
@@ -98,7 +102,12 @@ const ReservationComplete = () => {
         </ReservationInfoStyle>
       </SectionStyle>
       <FooterButtonStyle>
-        <Button text="예약 상세" variant="gray" active={true} onClick={() => console.log('예약 상세 페이지는 아직 개발 중!')} />
+        <Button
+          text="예약 상세"
+          variant="gray"
+          active={true}
+          onClick={() => console.log('예약 상세 페이지는 아직 개발 중!')}
+        />
         <Button text="홈으로" variant="black" active={true} onClick={() => navigate('/')} />
       </FooterButtonStyle>
     </>
@@ -106,11 +115,13 @@ const ReservationComplete = () => {
 };
 
 const SectionStyle = styled.section`
-  padding-top: 5.6rem;
+  padding-top: 3.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 const MessageStyle = styled.div`
-  padding: 1rem 0;
   text-align: center;
   position: relative;
 
@@ -140,8 +151,7 @@ const MessageStyle = styled.div`
 `;
 
 const ProgressStyle = styled.ul`
-  margin-top: 2.3rem;
-  margin-bottom: 2.7rem;
+  /* margin: 2rem 0; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -182,7 +192,8 @@ const StepStyle = styled.li<IStepStyle>`
     margin-bottom: 0.6rem;
     width: 3.2rem;
     height: 3.2rem;
-    background-color: ${(props) => (props.type === 'active' ? variables.colors.primary500 : variables.colors.gray400)};
+    background-color: ${(props) =>
+      props.type === 'active' ? variables.colors.primary500 : variables.colors.gray400};
     color: ${variables.colors.white};
     border-radius: 50%;
     border: 0.4rem solid ${variables.colors.white};
@@ -193,7 +204,8 @@ const StepStyle = styled.li<IStepStyle>`
   }
 
   & > p {
-    color: ${(props) => (props.type === 'active' ? variables.colors.primary800 : variables.colors.black)};
+    color: ${(props) =>
+      props.type === 'active' ? variables.colors.primary800 : variables.colors.black};
   }
 `;
 
@@ -307,16 +319,6 @@ const FooterButtonStyle = styled.div`
     left: 0;
     right: 0;
   }
-`;
-
-const headerStyle = css`
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 4rem;
-  display: flex;
-  align-items: center;
-  padding: ${variables.layoutPadding};
 `;
 
 export default ReservationComplete;
