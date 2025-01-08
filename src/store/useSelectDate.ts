@@ -23,7 +23,7 @@ export const changeformatDateForUi = ({ date, time }: { date: string; time: Set<
   const sortedTimes = [...time].sort();
 
   // UI를 위한 포맷 변경
-  const selectedDateForUi = `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
+  const selectedDateForUi = `${year}. ${+month}. ${+day} (${dayOfWeek})`;
   const selectedTimeForUi =
     sortedTimes.length > 1
       ? `${[...sortedTimes][0]} 외 ${sortedTimes.length - 1}개`
