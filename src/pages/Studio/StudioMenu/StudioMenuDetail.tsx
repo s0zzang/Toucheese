@@ -20,8 +20,9 @@ const StudioMenuDetail = () => {
   const [tabMenuState, setTabMenuState] = useState('info');
   const setBasicReservation = useReservationStore((state) => state.setBasicReservation);
   const saveReservationDetails = useReservationStore((state) => state.saveReservationDetails);
-  const { studioName, menuName, totalPrice, options, studioId } = useReservationStore();
+  const { totalPrice, options, studioId } = useReservationStore();
   const [user, setUser] = useState(false); // 추후 로그인 기능 완료되면 교체 예정
+  console.log(setUser); //베포에러로인한 콘솔 추후 로그인 기능 완료후 제거
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
