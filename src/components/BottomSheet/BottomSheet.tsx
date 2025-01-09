@@ -17,10 +17,7 @@ const BottomSheet = () => {
 
   //바텀 시트 나오면 배경 스크롤 금지
   useEffect(() => {
-    document.body.style.overflowY = isOpen ? 'scroll' : '';
-    document.body.style.position = isOpen ? 'fixed' : '';
-    document.body.style.left = isOpen ? '0' : '';
-    document.body.style.right = isOpen ? '0' : '';
+    document.documentElement.style.overscrollBehavior = isOpen ? 'none' : '';
 
     //바텀시트 닫을때 이전 드래그 Y위치값이 저장되어 다음에 열릴 때 초기 위치에서 시작하도록 하는 코드
     if (!isOpen) {
@@ -28,10 +25,7 @@ const BottomSheet = () => {
     }
 
     return () => {
-      document.body.style.overflowY = '';
-      document.body.style.position = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
+      document.documentElement.style.overscrollBehavior = '';
     };
   }, [isOpen]);
 
