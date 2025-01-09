@@ -1,4 +1,5 @@
 import Auth from '@pages/User/Auth';
+import KakaoCallback from '@pages/User/KakaoCallback';
 import LoginWithEmailPage from '@pages/User/LoginWithEmailPage';
 
 import { lazy } from 'react';
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
         path: 'auth',
         element: <Auth />,
       },
+      {
+        path: 'auth/kakao/callback',
+        element: <KakaoCallback />,
+      },
 
       {
         path: 'signup',
@@ -43,7 +48,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: 'login',
+    path: '/login',
     element: <LoginWithEmailPage />,
   },
   {

@@ -9,6 +9,12 @@ import variables from '@styles/Variables';
 const Auth = () => {
   const navigate = useNavigate();
 
+  const handleKakaoLogin = () => {
+    const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
+    const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  };
+
   return (
     <>
       <Helmet>
@@ -50,7 +56,7 @@ const Auth = () => {
       </div>
 
       <div css={LoginTypeButtonWrapper}>
-        <LoginTypeButton type="kakao" />
+        <LoginTypeButton type="kakao" onClick={handleKakaoLogin} />
         <LoginTypeButton type="google" />
         <LoginTypeButton type="email" onClick={() => navigate('/user/signup')} />
       </div>
