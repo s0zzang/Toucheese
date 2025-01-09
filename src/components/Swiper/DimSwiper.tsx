@@ -1,31 +1,40 @@
 /** @jsxImportSource @emotion/react */
 
 import { useDimSwiperStore } from '@store/useDimSwiper';
-import { Dispatch, ReactNode, SetStateAction, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Navigation, Virtual } from 'swiper/modules';
 import { Swiper, SwiperClass } from 'swiper/react';
-import { IPortfolio } from 'types/types';
 
-import 'swiper/css';
-import { TypoBodyMdR } from '@styles/Common';
 import { css } from '@emotion/react';
+import { TypoBodyMdR } from '@styles/Common';
+import 'swiper/css';
 
-interface IDimSwiper {
+interface IDimSwiper<T extends { id: number }> {
   children: ReactNode;
-  data: IPortfolio[];
-  setSlideSet: Dispatch<SetStateAction<IPortfolio[]>>;
+  data: T[];
+  setSlideSet: Dispatch<SetStateAction<T[]>>;
 }
 
-const DimSwiper = ({ children, data, setSlideSet }: IDimSwiper) => {
+const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: IDimSwiper<T>) => {
   const { selectedId, setSelectedId } = useDimSwiperStore();
   const [swiperRef, setSwiperRef] = useState<SwiperClass>();
   const [firstSlide, setFirstSlide] = useState<number>();
   const [lastSlide, setLastSlide] = useState<number>();
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [activeIndex, setActiveIndex] = useState<number>(1);
   const slideIndexMap = useMemo(() => new Map(), []);
 
   const getNewSlideSet = (clickedId: number) => {
-    return data.filter(({ id }: { id: number }) => id === clickedId || id === clickedId - 1 || id === clickedId + 1);
+    return data.filter(
+      ({ id }: { id: number }) => id === clickedId || id === clickedId - 1 || id === clickedId + 1,
+    );
   };
 
   const setIndexByPortfolioId = () => {
