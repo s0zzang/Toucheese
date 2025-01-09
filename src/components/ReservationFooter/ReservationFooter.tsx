@@ -27,7 +27,13 @@ const ReservationFooter = ({
         <p>{totalPrice?.toLocaleString('ko-KR')}원</p>
       </div>
 
-      <Button text={text} variant="black" type={type} onClick={onClick} disabled={disabled} />
+      <Button
+        text={text}
+        variant={`${disabled ? 'deepGray' : 'black'}`}
+        type={type}
+        onClick={onClick}
+        disabled={disabled}
+      />
     </div>
   );
 };
