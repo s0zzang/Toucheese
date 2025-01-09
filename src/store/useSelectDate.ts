@@ -17,15 +17,19 @@ export const getDay = (date: Date) => {
   return week[date.getDay()];
 };
 
-export const changeformatDateForUi = ({ date, time }: { date: string; time: string }) => {
+export const changeformatDateForUi = ({ date, time }: { date: string; time: Set<string> }) => {
   const [year, month, day] = date.split('-');
   const dayOfWeek = getDay(new Date(date));
+  const sortedTimes = [...time].sort();
 
   // UI를 위한 포맷 변경
-  const selectedDateForUi = `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
-  const selectedTimeForUi = `${time.split(':')[0]}시`;
+  const selectedDateForUi = `${year}. ${+month}. ${+day} (${dayOfWeek})`;
+  const selectedTimeForUi =
+    sortedTimes.length > 1
+      ? `${[...sortedTimes][0]} 외 ${sortedTimes.length - 1}개`
+      : sortedTimes[0];
 
-  return `${selectedDateForUi} ${selectedTimeForUi === '00시' ? '' : selectedTimeForUi}`;
+  return `${selectedDateForUi}${time.size ? ` / ${selectedTimeForUi}` : ''}`;
 };
 
 export const useSelectDateStore = create<DateState>((set) => ({
