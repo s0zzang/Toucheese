@@ -15,9 +15,25 @@ const LoginWithEmailPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => {
-    console.log('해시된 로그인 데이터:', data);
-    // TODO: API 호출 로직 추가
+  const handleLogin = async (data: any) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('로그인에 실패했습니다');
+      }
+      const result = await response.json();
+      console.log('로그인 성공:', result);
+    } catch (error) {
+      console.error('로그인 에러:', error);
+      alert('로그인에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
@@ -50,7 +66,7 @@ const LoginWithEmailPage = () => {
 
       <form
         noValidate
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleLogin)}
         css={css`
           display: flex;
           flex-direction: column;
@@ -63,10 +79,10 @@ const LoginWithEmailPage = () => {
           placeholder="toucheese@gmail.com"
           register={register('email', {
             required: '이메일을 입력해주세요',
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: '올바른 이메일 주소를 입력해주세요.',
-            },
+            // pattern: {
+            //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            //   message: '올바른 이메일 주소를 입력해주세요.',
+            // },
           })}
           error={errors.email?.message?.toString()}
         />
@@ -80,10 +96,10 @@ const LoginWithEmailPage = () => {
               value: 8,
               message: '아이디와 비밀번호를 확인해주세요.',
             },
-            pattern: {
-              value: /[!@#$%^&*(),.?":{}|<>]/,
-              message: '특수문자를 하나 이상 포함해야 합니다',
-            },
+            // pattern: {
+            //   value: /[!@#$%^&*(),.?":{}|<>]/,
+            //   message: '특수문자를 하나 이상 포함해야 합니다',
+            // },
           })}
           error={errors.password?.message?.toString()}
         />
