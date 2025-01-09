@@ -33,14 +33,13 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   ];
 
   const setParams = () => {
-    const currentParams = new URLSearchParams(window.location.search);
-    currentParams.set('date', date);
-    currentParams.set('times', '1');
-    // currentParams.set(
-    //   'times',
-    //   [...time].map((item, idx) => (idx === 0 ? item : `&times=${item}`)),
-    // );
-    navigate(`?${currentParams.toString()}`);
+    // 시간을 다중 선택한 경우, times=시간17times=시간2 형태로 데이터 요청
+    const timesToParams = [...time].map((time) => `times=${time}`).join('&');
+
+    const params = new URLSearchParams(
+      `date=${date}&addressGu=${selectedLocation}&${timesToParams}`,
+    );
+    navigate(`?${params.toString()}`);
   };
 
   const handleOpenLocation = () =>
