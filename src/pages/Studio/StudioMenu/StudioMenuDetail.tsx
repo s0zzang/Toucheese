@@ -18,8 +18,9 @@ const StudioMenuDetail = () => {
   const [data, setData] = useState<IMenuListRes>();
   const [scrollY, setScrollY] = useState(false);
   const [tabMenuState, setTabMenuState] = useState('info');
-  const setBasicPrice = useReservationStore((state) => state.setBasicPrice);
+  const setBasicReservation = useReservationStore((state) => state.setBasicReservation);
   const saveReservationDetails = useReservationStore((state) => state.saveReservationDetails);
+  const { studioName, menuName, totalPrice, options, studioId } = useReservationStore();
   const [user, setUser] = useState(false); // 추후 로그인 기능 완료되면 교체 예정
 
   const fetchMenuDetail = async () => {
@@ -43,11 +44,13 @@ const StudioMenuDetail = () => {
     const fetchAndSetData = async () => {
       const result = await fetchMenuDetail();
       setData(result);
-      setBasicPrice(result.price);
+      if (studioId !== result.id) {
+        setBasicReservation(result.price, result.id);
+      }
     };
 
     fetchAndSetData();
-  }, []);
+  }, [_menuId]);
 
   const handleScroll = () => {
     if (window.scrollY >= 250) {
@@ -69,6 +72,8 @@ const StudioMenuDetail = () => {
       studioId: data?.studioId,
       studioName: data?.studioName,
       menuName: data?.name,
+      totalPrice,
+      options,
     };
     saveReservationDetails(saveData);
 
