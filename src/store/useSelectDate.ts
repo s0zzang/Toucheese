@@ -27,7 +27,7 @@ export const changeformatDateForUi = ({ date, time }: { date: string; time: Set<
   const selectedTimeForUi =
     sortedTimes.length > 1
       ? `${[...sortedTimes][0]} 외 ${sortedTimes.length - 1}개`
-      : [...sortedTimes][0];
+      : sortedTimes[0];
 
   return `${selectedDateForUi}${time.size ? ` / ${selectedTimeForUi}` : ''}`;
 };
