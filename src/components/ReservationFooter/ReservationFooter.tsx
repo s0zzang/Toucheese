@@ -12,8 +12,13 @@ interface IReservationButton {
   disabled?: boolean;
 }
 
-const ReservationFooter = ({ text, type, onClick, disabled }: IReservationButton) => {
-  const totalPrice = useReservationStore((state) => state.totalPrice);
+const ReservationFooter = ({
+  text = '예약하기',
+  type = 'button',
+  onClick,
+  disabled = false,
+}: IReservationButton) => {
+  const { totalPrice } = useReservationStore();
 
   return (
     <div css={FixedBtnBoxStyle}>
@@ -22,7 +27,13 @@ const ReservationFooter = ({ text, type, onClick, disabled }: IReservationButton
         <p>{totalPrice?.toLocaleString('ko-KR')}원</p>
       </div>
 
-      <Button text={text} variant="black" type={type} onClick={onClick} disabled={disabled} />
+      <Button
+        text={text}
+        variant={`${disabled ? 'deepGray' : 'black'}`}
+        type={type}
+        onClick={onClick}
+        disabled={disabled}
+      />
     </div>
   );
 };
