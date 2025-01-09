@@ -34,8 +34,12 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
 
   const setParams = () => {
     const currentParams = new URLSearchParams(window.location.search);
-    // currentParams.set('requestedDateTime', `${selectedDate.date}${selectedDate.time}`);
-    // currentParams.set('requestedLocation', `${selectedDate.date}`);
+    currentParams.set('date', date);
+    currentParams.set('times', '1');
+    // currentParams.set(
+    //   'times',
+    //   [...time].map((item, idx) => (idx === 0 ? item : `&times=${item}`)),
+    // );
     navigate(`?${currentParams.toString()}`);
   };
 
