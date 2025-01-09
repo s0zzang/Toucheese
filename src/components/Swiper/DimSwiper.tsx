@@ -1,15 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { useDimSwiperStore } from '@store/useDimSwiper';
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { Dispatch, ReactNode, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { Navigation, Virtual } from 'swiper/modules';
 import { Swiper, SwiperClass } from 'swiper/react';
 
@@ -81,7 +73,7 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
     }
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setSlideSet(getNewSlideSet(selectedId));
     setActiveIndex(slideIndexMap.get(selectedId));
   }, [selectedId]);
