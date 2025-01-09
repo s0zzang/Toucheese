@@ -30,8 +30,17 @@ const SignUp = () => {
         channelKey: channelKey,
         merchant_uid: 'test_m5nmk62j',
         m_redirect_url: 'http://localhost:5173',
+        popup: true,
       },
-      async (res: { success: boolean; imp_uid: string; merchant_uid: string; pg_provider: 'inicis_unified'; pg_type: 'certification'; error_code: string; error_msg: string }) => {
+      async (res: {
+        success: boolean;
+        imp_uid: string;
+        merchant_uid: string;
+        pg_provider: 'inicis_unified';
+        pg_type: 'certification';
+        error_code: string;
+        error_msg: string;
+      }) => {
         try {
           if (res.success) {
             console.log(res);
