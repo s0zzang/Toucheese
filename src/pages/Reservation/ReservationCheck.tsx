@@ -8,6 +8,8 @@ import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Payment from './components/Payment';
+import { useSelectTimeStore } from '@store/useSelectTime';
+import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDate';
 
 interface FormValues {
   visitorName: string;
@@ -25,6 +27,9 @@ const ReservationCheck = () => {
   };
 
   const options = ['전체 컷 원본 파일', '전체 컷 원본 파일', '옵션 선택1', '옵션 선택2', '옵션 선택3'];
+
+  const { time } = useSelectTimeStore();
+  const { date } = useSelectDateStore();
 
   const [isDifferentVisitor, setIsDifferentVisitor] = useState(false);
 
@@ -85,7 +90,7 @@ const ReservationCheck = () => {
           >
             A 스튜디오
           </h4>
-          <p css={TypoTitleXsM}>2024. 12. 6 (금) 오후 1:00</p>
+          <p css={TypoTitleXsM}>{changeformatDateForUi({ date, time })}</p>
           <hr css={hrStyle} />
           <div css={flexRow}>
             <div>
