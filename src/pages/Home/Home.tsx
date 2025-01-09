@@ -77,8 +77,22 @@ const Home = () => {
     navigate('/');
   };
 
-  const sortBy: SortBy = { VIEW_COUNT: '조회순', POPULARITY: '인기순', RATING: '평점순', REVIEW_COUNT: '리뷰 많은순' };
-  const options: Options = { 보정: '보정', 원본: '원본', 주차: '주차', 헤메코: '헤메코', 정장: '정장', 탈의실: '탈의실', 파우더룸: '파우더룸' };
+  const sortBy: SortBy = {
+    VIEW_COUNT: '조회순',
+    POPULARITY: '인기순',
+    RATING: '평점순',
+    REVIEW_COUNT: '리뷰 많은순',
+  };
+
+  const options: Options = {
+    보정: '보정',
+    원본: '원본',
+    주차: '주차',
+    헤메코: '헤메코',
+    정장: '정장',
+    탈의실: '탈의실',
+    파우더룸: '파우더룸',
+  };
 
   return (
     <>
@@ -88,11 +102,34 @@ const Home = () => {
         <NavigatorStyle isFixed={isFixed}>
           <ThemeNavigator />
           <FilterBox>
-            <Button text="" type="reset" variant="gray" icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />} onClick={handleReset} />
+            <Button
+              text=""
+              type="reset"
+              variant="gray"
+              icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />}
+              onClick={handleReset}
+            />
             <div className="filterScroll">
-              <Filter params={window.location.search} text="인기순" paramsKeyword={sortBy} paramsName="sortBy" onClick={handleFilterByPopularity} />
-              <Filter params={window.location.search} paramsName={'minPrice'} text="가격대" onClick={handleFilterByPriceRange} />
-              <Filter params={window.location.search} text="매장정보" paramsKeyword={options} paramsName="options" onClick={handleFilterByStoreInfo} />
+              <Filter
+                params={window.location.search}
+                text="인기순"
+                paramsKeyword={sortBy}
+                paramsName="sortBy"
+                onClick={handleFilterByPopularity}
+              />
+              <Filter
+                params={window.location.search}
+                paramsName={'minPrice'}
+                text="가격대"
+                onClick={handleFilterByPriceRange}
+              />
+              <Filter
+                params={window.location.search}
+                text="매장정보"
+                paramsKeyword={options}
+                paramsName="options"
+                onClick={handleFilterByStoreInfo}
+              />
             </div>
           </FilterBox>
         </NavigatorStyle>
@@ -121,6 +158,7 @@ const FilterBox = styled.div`
   gap: 0.6rem;
   box-shadow: 0 0 2px ${variables.colors.gray500};
   position: relative;
+  background-color: ${variables.colors.white};
 
   & ::before {
     content: '';
@@ -156,6 +194,20 @@ const FilterBox = styled.div`
   .filterScroll {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE, Edge */
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 4.8rem;
+    bottom: 0;
+    z-index: 1;
+    height: 80%;
+    width: 0.6rem;
+    box-shadow: 0.4rem 0 0.2rem rgba(255, 255, 255, 10);
+
+    background-color: ${variables.colors.white};
   }
 `;
 

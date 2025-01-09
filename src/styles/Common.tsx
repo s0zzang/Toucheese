@@ -30,8 +30,8 @@ export const TypoTitleSmS = css`
 
 export const TypoTitleMdSb = css`
   font-size: 2.2rem;
-  font-weight: 700;
-  line-height: 2.4rem;
+  font-weight: 600;
+  line-height: 2.8rem;
 `;
 
 export const TypoBodySmM = css`
@@ -75,13 +75,14 @@ export const TypoCapSmM = css`
 `;
 
 export const DividerStyle = css`
+  position: relative;
   padding-bottom: calc(2rem + 1rem);
   &::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 50%;
-    width: calc(100% + 4rem);
+    width: 100vw;
     height: 1rem;
     background-color: ${variables.colors.gray300};
     transform: translateX(-50%);

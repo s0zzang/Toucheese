@@ -208,12 +208,8 @@ const GlobalStyles = css`
     padding: unset;
   }
 
-  select,
   input[type='text'],
-  input[type='email'],
-  input[type='password'],
-  input[type='search'],
-  input[type='tel'] {
+  input[type='search'] {
     height: 4rem;
     width: 100%;
     font-size: ${variables.size.medium};
@@ -235,8 +231,6 @@ const GlobalStyles = css`
   input[type='email']:focus,
   input[type='password']:focus,
   input[type='tel']:focus {
-    border-color: ${variables.colors.primary};
-    outline-color: ${variables.colors.primary};
   }
 
   select:focus-visible {

@@ -24,6 +24,9 @@ const variables = {
     gray300: '#ECECEC',
     gray200: '#F4F4F4',
     gray100: '#F9F9F9',
+
+    red: '#F80100',
+    green: '#20B757',
   },
 
   size: {

@@ -1,13 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import Bookmark from '@components/Bookmark/Bookmark';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 import { IMenus, IStudioItem } from 'types/types';
 
-const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boolean; isLast: boolean }) => {
+const StudioItem = ({
+  item,
+  isFirst,
+  isLast,
+}: {
+  item: IStudioItem;
+  isFirst: boolean;
+  isLast: boolean;
+}) => {
   const navigate = useNavigate();
 
   // 스튜디오 클릭 시 navigate
@@ -28,7 +37,14 @@ const StudioItem = ({ item, isFirst, isLast }: { item: IStudioItem; isFirst: boo
 
   return (
     <DivStyle isFirst={isFirst} isLast={isLast} onClick={handleClick}>
-      <ImageSwiper images={item.portfolios} />
+      <ImageSwiper
+        images={item.portfolios}
+        imageStyle={css`
+          width: 100%;
+          aspect-ratio: 94 / 118;
+          object-fit: cover;
+        `}
+      />
 
       <ItemContentStyle>
         <ItemInfoStyle>
@@ -83,12 +99,12 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
 const ItemContentStyle = styled.div`
   width: 100%;
   display: flex;
-  gap: 1.6rem;
+  gap: 3rem;
 `;
 
 const ItemInfoStyle = styled.div`
+  min-width: 0;
   flex-grow: 1;
-  max-width: 30rem;
 `;
 
 const TitleStyle = styled.p`
@@ -108,6 +124,7 @@ const InfoContainerStyle = styled.div`
     gap: 0.3rem;
 
     & > img {
+      flex-shrink: 0;
       width: 1.3rem;
       height: 1.3rem;
 

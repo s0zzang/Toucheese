@@ -3,18 +3,27 @@ import Header from '@components/Header/Header';
 import { css } from '@emotion/react';
 import useModal from '@hooks/useModal';
 import PolicyModal from '@pages/Reservation/components/PolicyModal';
-import { TypoBodyMdSb, TypoBodySmR, TypoCapSmM, TypoTitleXsM, TypoTitleXsR, TypoTitleXsSB } from '@styles/Common';
+import { TypoBodyMdR, TypoBodyMdSb, TypoBodySmR, TypoCapSmM, TypoTitleXsM, TypoTitleXsR, TypoTitleXsSB } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Payment from './components/Payment';
 
 interface FormValues {
   visitorName: string;
   visitorContact: string;
   requests?: string;
+  agree?: boolean;
 }
 
 const ReservationCheck = () => {
+  const [paymentMethod, setPaymentMethod] = useState('kakaoPay');
+  const [isAgreed, setIsAgreed] = useState(false);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsAgreed(e.target.checked);
+  };
+
   const options = ['전체 컷 원본 파일', '전체 컷 원본 파일', '옵션 선택1', '옵션 선택2', '옵션 선택3'];
 
   const [isDifferentVisitor, setIsDifferentVisitor] = useState(false);
@@ -22,13 +31,36 @@ const ReservationCheck = () => {
   const {
     register,
     getValues,
+    setFocus,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
     trigger,
   } = useForm<FormValues>({ mode: 'onChange' });
 
-  const handlePayment = async () => {
+  const [visitorName, visitorContact] = watch(['visitorName', 'visitorContact']);
+
+  const handleSubmitForm = async () => {
     const isValid = await trigger();
+
+    if (!isValid) {
+      if (errors.visitorName) {
+        setFocus('visitorName');
+        return;
+      }
+
+      if (errors.visitorContact) {
+        setFocus('visitorContact');
+        return;
+      }
+
+      if (!isAgreed) {
+        setFocus('agree');
+        return;
+      }
+    }
+
     if (isValid) {
       const formData = getValues();
       console.log('데이터', formData);
@@ -83,26 +115,46 @@ const ReservationCheck = () => {
         </div>
       </section>
 
-      <form onSubmit={handleSubmit(handlePayment)}>
+      <form onSubmit={handleSubmit(handleSubmitForm)}>
         {/* 방문자가 다를 경우 */}
         {isDifferentVisitor && (
           <section>
             <h2 css={TypoBodyMdSb}>실제 방문하실 분의 정보를 입력하세요.</h2>
             <div css={visitorFormStyle}>
-              <input type="text" placeholder="방문자 이름" {...register('visitorName', { required: '방문자 이름을 입력해주세요.' })} />
+              <label css={TypoBodySmR} htmlFor="visitorName">
+                방문자 이름
+              </label>
+              <div css={visitorInputStyle}>
+                <input type="text" placeholder="방문자 이름을 입력하세요." id="visitorName" {...register('visitorName', { required: '방문자 이름을 입력해주세요.' })} />
+                {visitorName && (
+                  <button type="button" onClick={() => setValue('visitorName', '')}>
+                    <img src="/img/icon-cancel.svg" alt="입력창 삭제 버튼" />
+                  </button>
+                )}
+              </div>
               {errors.visitorName?.message && <p>{errors.visitorName.message}</p>}
+              <label css={TypoBodySmR} htmlFor="visitorName">
+                휴대폰 번호 (-제외)
+              </label>
+              <div css={visitorInputStyle}>
+                <input
+                  type="text"
+                  placeholder="'-'구분없이 휴대폰 번호를 입력하세요."
+                  {...register('visitorContact', {
+                    required: '방문자 연락처를 입력해주세요.',
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: '숫자만 입력해주세요.',
+                    },
+                  })}
+                />
+                {visitorContact && (
+                  <button type="button" onClick={() => setValue('visitorContact', '')}>
+                    <img src="/img/icon-cancel.svg" alt="입력창 삭제 버튼" />
+                  </button>
+                )}
+              </div>
 
-              <input
-                type="text"
-                placeholder="휴대폰 번호 (-제외)"
-                {...register('visitorContact', {
-                  required: '방문자 연락처를 입력해주세요.',
-                  pattern: {
-                    value: /^[0-9]+$/,
-                    message: '숫자만 입력해주세요.',
-                  },
-                })}
-              />
               {errors.visitorContact?.message && <p>{errors.visitorContact.message}</p>}
             </div>
           </section>
@@ -112,6 +164,7 @@ const ReservationCheck = () => {
           <textarea
             css={textRequestsStyle}
             placeholder="방문 전 요청하실 내용을 적어주세요.&#10;원하는 스타일을 작가님에게 전달할 수 있습니다."
+            {...register('requests')}
           />
         </section>
       </form>
@@ -155,15 +208,15 @@ const ReservationCheck = () => {
         <h2 css={[TypoTitleXsSB, titleAlignStyle]}>결제수단</h2>
         <div css={[TypoTitleXsR, radioGroupStyle]}>
           <label css={radioLabelStyle}>
-            <input type="radio" name="paymentMethod" value="kakaoPay" defaultChecked />
-            <span>카카오페이</span>
+            <input type="radio" name="paymentMethod" value="kakaoPay" onChange={(e) => setPaymentMethod(e.target.value)} defaultChecked />
+            <img src="/img/icon-kakaoPay.svg" alt="카카오페이 로고" />
           </label>
           <label css={radioLabelStyle}>
-            <input type="radio" name="paymentMethod" value="naverPay" />
-            <span>네이버페이</span>
+            <input type="radio" name="paymentMethod" onChange={(e) => setPaymentMethod(e.target.value)} value="naverPay" />
+            <img src="/img/icon-naverPay.svg" alt="네이버페이 로고" />
           </label>
           <label css={radioLabelStyle}>
-            <input type="radio" name="paymentMethod" value="creditCard" />
+            <input type="radio" name="paymentMethod" onChange={(e) => setPaymentMethod(e.target.value)} value="creditCard" />
             <span>일반신용카드</span>
           </label>
         </div>
@@ -172,13 +225,14 @@ const ReservationCheck = () => {
       {/* 개인정보 동의 */}
       <div css={termsContainerStyle}>
         <div css={termsCheckStyle}>
-          <input type="checkbox" id="agree" />
-          <label htmlFor="agree" css={termsCheckBoxStyle}>
+          <input type="checkbox" id="agree" onChange={handleCheckboxChange} />
+          <label htmlFor="agree" css={termsCheckBoxStyle(isAgreed)}>
             <img src="/img/icon-checkbox-empty.svg" alt="빈 체크박스" />
             <img src="/img/icon-checkbox-done.svg" alt="체크된 체크박스" />
           </label>
           <span>결제 내용을 확인했으며, 아래 내용에 모두 동의합니다.</span>
         </div>
+        {!isAgreed && <p>결제 진행을 위해 동의가 필요합니다.</p>}
         <div css={PrivacyPolicyTitleStyle}>
           <h3 css={TypoBodyMdSb}>개인정보 수집, 제공</h3>
           <button
@@ -205,11 +259,7 @@ const ReservationCheck = () => {
           </div>
         </div>
       </div>
-
-      {/* 결제하기 버튼 - 임시 */}
-      <button onClick={handlePayment} type="submit">
-        결제하기
-      </button>
+      <Payment onClick={handleSubmitForm} trigger={trigger} paymentMethod={paymentMethod} isAgreed={isAgreed} />
     </>
   );
 };
@@ -310,10 +360,25 @@ const visitorFormStyle = css`
       outline: none;
       border-color: ${variables.colors.primary600};
     }
+
+    &::placeholder {
+      ${TypoBodyMdR};
+      color: ${variables.colors.gray600};
+    }
   }
   p {
     color: #f80100;
     font-size: 1.2rem;
+  }
+`;
+
+const visitorInputStyle = css`
+  position: relative;
+
+  button {
+    position: absolute;
+    right: 1rem;
+    bottom: 1.4rem;
   }
 `;
 
@@ -327,6 +392,10 @@ const textRequestsStyle = css`
   &:focus {
     outline: none;
     border-color: ${variables.colors.primary600};
+  }
+  &::placeholder {
+    ${TypoBodyMdR};
+    color: ${variables.colors.gray600};
   }
 `;
 
@@ -354,7 +423,7 @@ const totalPriceStyle = css`
 const radioGroupStyle = css`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1.2rem;
 `;
 const radioLabelStyle = css`
   display: flex;
@@ -376,6 +445,9 @@ const radioLabelStyle = css`
       background-color: white;
     }
   }
+  img {
+    width: 7rem;
+  }
 `;
 
 //동의,약관,규정
@@ -384,6 +456,10 @@ const termsContainerStyle = css`
   h3 {
     height: 3.6rem;
     line-height: 3.6rem;
+  }
+  p {
+    color: #f80100;
+    font-size: 1.2rem;
   }
 `;
 
@@ -397,24 +473,16 @@ const termsCheckStyle = css`
   }
 `;
 
-const termsCheckBoxStyle = css`
+const termsCheckBoxStyle = (isAgreed: boolean) => css`
   cursor: pointer;
   margin-right: 0.8rem;
 
   img:first-of-type {
-    display: block;
+    display: ${isAgreed ? 'none' : 'block'};
   }
 
   img:nth-of-type(2) {
-    display: none;
-  }
-
-  input:checked + & img:first-of-type {
-    display: none;
-  }
-
-  input:checked + & img:nth-of-type(2) {
-    display: block;
+    display: ${isAgreed ? 'block' : 'none'};
   }
 `;
 

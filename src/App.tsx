@@ -7,6 +7,7 @@ import router from './routes.tsx';
 import { HelmetProvider } from 'react-helmet-async';
 import ErrorBoundary from '@components/Error/ErrorBoundary.tsx';
 import { Suspense } from 'react';
+import Toast from '@components/Toast/Toast.tsx';
 
 const queryClient = new QueryClient();
 
@@ -17,8 +18,9 @@ function App() {
         <Global styles={GlobalStyles} />
         <QueryClientProvider client={queryClient}>
           <ErrorBoundary fallback={<div>문제가 발생했습니다.</div>}>
-            <Suspense fallback={<div>로딩 중.. 서스펜스 버전</div>}>
+            <Suspense fallback={<div></div>}>
               <RouterProvider router={router} />
+              <Toast />
             </Suspense>
           </ErrorBoundary>
         </QueryClientProvider>

@@ -9,25 +9,45 @@ import ShareButton from '@components/Share/ShareButton';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
-import { DividerStyle, TypoBodyMdM, TypoBodyMdR, TypoBodyMdSb, TypoCapSmM, TypoCapSmR, TypoTitleMdSb, TypoTitleXsM } from '@styles/Common';
+import {
+  DividerStyle,
+  TypoBodyMdM,
+  TypoBodyMdR,
+  TypoBodyMdSb,
+  TypoCapSmM,
+  TypoCapSmR,
+  TypoTitleMdSb,
+  TypoTitleXsM,
+} from '@styles/Common';
 import variables from '@styles/Variables';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const StudioMain = () => {
   const { _id } = useParams();
   const { data, error } = useGetStudioDetail(`${_id}`);
-  const navigate = useNavigate();
   const [isOpened, setIsOpened] = useState(false);
-  let today = new Date();
+  const [isWebPSupported, setIsWebPSupported] = useState(false);
+  const navigate = useNavigate();
 
-  /**주차 구하기 */
-  // const getWeek = (date: Date) => {
-  //   const currentDate = date.getDate();
-  //   const firstDay = new Date(date.setDate(1)).getDay();
-  //   return Math.ceil((currentDate + firstDay) / 7);
-  // };
-  // const week = getWeek(new Date(today));
+  /** webP 지원 여부 확인 후 상태값 저장 */
+  useEffect(() => {
+    supportsWebP().then(setIsWebPSupported);
+  }, []);
+
+  /** webP 형식을 지원하고 렌더링 할 수 있는 지 확인 */
+  const supportsWebP = () => {
+    if (!window.createImageBitmap) return Promise.resolve(false);
+    const webpData = 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=';
+    return fetch(webpData)
+      .then((response) => response.blob())
+      .then((blob) => createImageBitmap(blob))
+      .then(
+        () => true,
+        () => false,
+      );
+  };
 
   if (error instanceof Error) {
     return <div>Error: {error.message}</div>;
@@ -39,8 +59,25 @@ const StudioMain = () => {
   /**이미지 5개 이하일때 대체할 이미지 */
   const placeHolderImage = '/img/img-nopic.png';
   const missingImgCount = data.portfolios.length < 5 ? 5 - data.portfolios.length : 0;
-  const portfolioWithPlaceHolders = [...data.portfolios, ...Array(missingImgCount).fill({ url: placeHolderImage })];
-  const day = { MONDAY: '월요일', TUESDAY: '화요일', WEDNESDAY: '수요일', THURSDAY: '목요일', FRIDAY: '금요일', SATURDAY: '토요일', SUNDAY: '일요일' };
+  const portfolioWithPlaceHolders = [
+    ...data.portfolios,
+    ...Array(missingImgCount).fill({ url: placeHolderImage }),
+  ];
+
+  /** 환경별 이미지 조건부 렌더링 */
+  const getImageUrl = (url: string) => (isWebPSupported ? url.replace(/\.jpeg$/, '.webp') : url);
+
+  let today = new Date();
+  const day = {
+    MONDAY: '월요일',
+    TUESDAY: '화요일',
+    WEDNESDAY: '수요일',
+    THURSDAY: '목요일',
+    FRIDAY: '금요일',
+    SATURDAY: '토요일',
+    SUNDAY: '일요일',
+  };
+
   const option = {
     CHANGING_ROOM: '탈의실',
     DRESSING_ROOM: '파우더룸',
@@ -63,18 +100,32 @@ const StudioMain = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`${data.name} - 상세정보`}</title>
+        <meta property="og:site_name" content="toucheese" />
+        <meta property="og:title" content="스튜디오 상세정보" />
+        <meta property="og:url" content={`${window.location.href}`} />
+        <meta property="og:description" content="스튜디오의 영업시간과 정보" />
+      </Helmet>
+
       <Header customStyle={HeaderStyle} />
 
       {/* 이미지 */}
       <div css={portfolioPreviewStyle}>
         {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
-          <img key={idx} src={portfolioImg.url} alt={`포트폴리오 이미지 : ${portfolioImg}`} />
+          <img
+            key={idx}
+            src={getImageUrl(portfolioImg.url)}
+            alt={`포트폴리오 이미지 : ${portfolioImg.url}`}
+          />
         ))}
         <div css={portfolioPsitionStyle}>
-          <img src={portfolioWithPlaceHolders[4].url} alt="사진5" />
+          <img src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')} alt="사진5" />
           <DimOverlayStyle onClick={() => navigate(`/studio/${_id}/portfolio`)}>
             <img src="/img/icon-morePreview.svg" alt="더보기" />
-            <span>{data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}</span>
+            <span>
+              {data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}
+            </span>
           </DimOverlayStyle>
         </div>
       </div>
@@ -90,7 +141,12 @@ const StudioMain = () => {
           </div>
         </div>
         <div css={SocialActionsStyle}>
-          <ShareButton title={data.name} description={data.description} imageUrl={data.portfolios[0]?.url} webUrl={window.location.href} />
+          <ShareButton
+            title={data.name}
+            description={data.description}
+            imageUrl={data.portfolios[0]?.url}
+            webUrl={window.location.href}
+          />
           <Bookmark id={Number(_id)} count={data.bookmark_count} isBookmarked={false} />
         </div>
       </div>
@@ -107,7 +163,8 @@ const StudioMain = () => {
                   <>
                     <p>영업중</p>
                     <time>
-                      {data.openingHours[today.getDay() - 1].openTime.slice(0, 5)} - {data.openingHours[today.getDay() - 1].closeTime.slice(0, 5)}
+                      {data.openingHours[today.getDay() - 1].openTime.slice(0, 5)} -{' '}
+                      {data.openingHours[today.getDay() - 1].closeTime.slice(0, 5)}
                     </time>
                   </>
                 ) : (
@@ -122,7 +179,11 @@ const StudioMain = () => {
               <img src="/img/icon-location.svg" alt="주소" />
             </dt>
             <dd>
-              <p>{`${data.address}` === 'undefined' ? '주소 수집중' : `${data.addressSi} ${data.addressGu} ${data.address}`}</p>
+              <p>
+                {`${data.address}` === 'undefined'
+                  ? '주소 수집중'
+                  : `${data.addressSi} ${data.addressGu} ${data.address}`}
+              </p>
             </dd>
           </div>
           <div>
@@ -178,7 +239,14 @@ const StudioMain = () => {
           <div className="holidayMonth">
             {data.holidays.map((holiday) => (
               <p key={holiday.id}>
-                {holiday.weekOfMonth === 1 ? '첫' : holiday.weekOfMonth === 2 ? '둘' : holiday.weekOfMonth === 3 ? '셋' : '넷'}째 주 {day[holiday.dayOfWeek as keyof typeof day]}
+                {holiday.weekOfMonth === 1
+                  ? '첫'
+                  : holiday.weekOfMonth === 2
+                    ? '둘'
+                    : holiday.weekOfMonth === 3
+                      ? '셋'
+                      : '넷'}
+                째 주 {day[holiday.dayOfWeek as keyof typeof day]}
               </p>
             ))}
           </div>

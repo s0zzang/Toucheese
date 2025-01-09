@@ -5,7 +5,7 @@ import { TypoBodyMdM, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import React from 'react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'gray' | 'black' | 'white';
+type ButtonVariant = 'primary' | 'secondary' | 'gray' | 'black' | 'white' | 'deepGray';
 
 interface ButtonProps {
   text: string;
@@ -119,18 +119,26 @@ const Button = ({
       background-color: ${variables.colors.gray300};
       color:${variables.colors.gray800};
       `}
+
+    ${variant === 'deepGray' &&
+    `
+      background-color: ${variables.colors.gray500};
+      color:${variables.colors.white};
+      `}
+
     ${variant === 'white' &&
     ` background-color: ${variables.colors.white}; 
       color:${variables.colors.gray900};
       border: 0.1rem solid${variables.colors.gray400};
     `}
 
-${variant === 'white' &&
+  ${variant === 'white' &&
     active &&
     ` background-color: ${variables.colors.primary50}; 
       border: 0.1rem solid${variables.colors.primary500}; 
       color:${variables.colors.gray900};
     `}
+
 
 
     ${fixed &&

@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
 import styled from '@emotion/styled';
-import variables from '@styles/Variables';
 import useModal from '@hooks/useModal';
 import LocalDateSelectionModal from '@pages/Home/components/LocalDateSelectionModal';
-import { useNavigate } from 'react-router-dom';
 import { Hidden } from '@styles/Common';
+import variables from '@styles/Variables';
+import { useNavigate } from 'react-router-dom';
 
 /** 메인 전체 지역 예약 날짜 선택 등  */
 // button => 모달 오픈용  searchStyle => 검색용
@@ -20,7 +20,8 @@ const BookingSearchContainer = () => {
     <BookingSearchContainerStyle>
       <div>
         <Button type="button" onClick={() => modal.open()}>
-          <ButtonTitleStyle>전체지역</ButtonTitleStyle> <img src="/img/icon-select-arrow.svg" alt="전체 지역 탐색" />
+          <ButtonTitleStyle>전체지역</ButtonTitleStyle>{' '}
+          <img src="/img/icon-select-arrow.svg" alt="전체 지역 탐색" />
         </Button>
         <ButtonTitleDes>예약 날짜와 시간을 선택해주세요.</ButtonTitleDes>
       </div>
@@ -40,7 +41,7 @@ const BookingSearchContainer = () => {
         className="user"
         onClick={(e) => {
           e.stopPropagation();
-          navigate(`/user/${user ? 'mypage' : 'login'}`);
+          navigate(`/user/${user ? 'mypage' : 'auth'}`);
         }}
       >
         <span css={Hidden}>{user ? '마이페이지' : '로그인'}</span>
