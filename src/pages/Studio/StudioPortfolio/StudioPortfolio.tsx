@@ -26,6 +26,7 @@ interface IPortfolioResponse {
 const StudioPortfolio = () => {
   const { _id } = useParams() as { _id: string };
   const [params, setSearchParams] = useSearchParams();
+  const selectedMenu = params.get('menuId');
   const { open } = useModal(1);
 
   const setSelectedId = useDimSwiperStore((state) => state.setSelectedId);
@@ -75,9 +76,12 @@ const StudioPortfolio = () => {
       )}
 
       <Header title={isSuccess ? portfolios.studioName : ''} />
-      <h2 css={Hidden}>포트폴리오</h2>
-      <h3 css={Hidden}>총 {portfolios?.portfolioDtos.content.length}개</h3>
       <StudioNavigator _id={_id} />
+
+      <h2 css={Hidden}>
+        포트폴리오 - {selectedMenu ? portfolios?.menuNameList[+selectedMenu - 1] : '전체'} 보기
+      </h2>
+      <h3 css={Hidden}>총 {portfolios?.portfolioDtos.content.length}개</h3>
 
       <ul css={filterBoxStyle}>
         <li>
