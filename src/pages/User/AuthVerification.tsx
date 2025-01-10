@@ -10,8 +10,19 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
+interface AuthVerificationType {
+  success: boolean;
+  imp_uid: string;
+  merchant_uid: string;
+  pg_provider: 'inicis_unified';
+  pg_type: 'certification';
+  error_code: string;
+  error_msg: string;
+}
+
 const IMPCode = import.meta.env.VITE_AUTH_IMP_CODE;
 const channelKey = import.meta.env.VITE_AUTH_CHANNEL_KEY;
+const AuthRedirectURI = import.meta.env.VITE_AUTH_REDIRECT_URI;
 
 const AuthVerification = () => {
   /** zustand 스토어에 데이터 저장 */
@@ -20,9 +31,7 @@ const AuthVerification = () => {
 
   const handleSave = (data: any) => {
     setSignupData(data);
-    console.log('데이터 저장완료', phone, name);
-    console.log('현재상태', useSignupStore.getState());
-    // window.location.href = '/user/signup';
+    console.log('현재상태 :', useSignupStore.getState(), '데이터 저장 완료 :', phone, name);
   };
 
   /** 간편 본인인증 실행 함수 */
@@ -34,17 +43,9 @@ const AuthVerification = () => {
       {
         channelKey: channelKey,
         merchant_uid: 'test_m5nmk62j',
-        m_redirect_url: 'http://localhost:5173/user/AuthVerification',
+        m_redirect_url: AuthRedirectURI,
       },
-      async (res: {
-        success: boolean;
-        imp_uid: string;
-        merchant_uid: string;
-        pg_provider: 'inicis_unified';
-        pg_type: 'certification';
-        error_code: string;
-        error_msg: string;
-      }) => {
+      async (res: AuthVerificationType) => {
         try {
           if (res.success) {
             console.log(res);
