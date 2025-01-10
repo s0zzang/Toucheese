@@ -6,7 +6,9 @@ import { IMenuListRes } from 'types/types';
 import useReservationStore, { ReservationOption } from '@store/useReservationStore';
 
 const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes }) => {
-  const [hours, minutes, seconds] = infoItem.duration ? infoItem.duration.split(':').map(Number) : [0, 0, 0];
+  const [hours, minutes, seconds] = infoItem.duration
+    ? infoItem.duration.split(':').map(Number)
+    : [0, 0, 0];
   const totalMinutes = hours * 60 + minutes + seconds / 60;
   const { addOptionPrice, options } = useReservationStore();
 
@@ -54,7 +56,12 @@ const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes }) => {
                     id={`${item.price}`}
                     name={`${item.price}`}
                     value="OptionPrice"
-                    onChange={(e) => handleOptionClick({ option_id: item.id, optionPrice: item.price, optionName: item.name }, e)}
+                    onChange={(e) =>
+                      handleOptionClick(
+                        { option_id: item.id, optionPrice: item.price, optionName: item.name },
+                        e,
+                      )
+                    }
                     checked={options.some((opt) => opt.option_id === item.id)}
                   />
                   <label htmlFor={`${item.price}`}>

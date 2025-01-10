@@ -1,9 +1,12 @@
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
-export interface StudioInfo {
+interface StudioInfo {
   studioId?: number;
   studioName?: string;
   menuName?: string;
+  basicPrice?: number;
+  menuImage?: string;
 }
 
 export interface ReservationOption {
@@ -18,39 +21,53 @@ interface ReservationInfo extends StudioInfo {
 }
 
 interface ReservationInfoAction {
-  setBasicReservation: (basicPrice: number, id: number) => void;
+  setBasicReservation: (price: number, id: number) => void;
   addOptionPrice: (options: ReservationOption, isChecked: boolean) => void;
   saveReservationDetails: (saveData: ReservationInfo) => void;
+  clearReservationInfo: () => void;
 }
 
 const initialState: ReservationInfo = {
   studioId: 0,
   studioName: '',
   menuName: '',
+  basicPrice: 0,
   totalPrice: 0,
   options: [],
+  menuImage: '',
 };
 
-const useReservationStore = create<ReservationInfo & ReservationInfoAction>()((set) => ({
-  ...initialState,
-  setBasicReservation: (basicPrice, id) =>
-    set((state) => ({ ...state, totalPrice: basicPrice, studioId: id, options: [] })),
-  addOptionPrice: (options, isChecked) =>
-    set((state) => {
-      const updatedOptions = isChecked
-        ? [...state.options, options]
-        : state.options.filter((opt) => opt.option_id !== options.option_id);
+const useReservationStore = create(
+  persist<ReservationInfo & ReservationInfoAction>(
+    (set) => ({
+      ...initialState,
+      setBasicReservation: (price, id) =>
+        set((state) => ({ ...state, totalPrice: price, studioId: id, options: [] })),
+      addOptionPrice: (options, isChecked) =>
+        set((state) => {
+          const updatedOptions = isChecked
+            ? [...state.options, options]
+            : state.options.filter((opt) => opt.option_id !== options.option_id);
 
-      const updatedPrice = isChecked
-        ? state.totalPrice + options.optionPrice
-        : state.totalPrice - options.optionPrice;
+          const updatedPrice = isChecked
+            ? state.totalPrice + options.optionPrice
+            : state.totalPrice - options.optionPrice;
 
-      return {
-        options: updatedOptions,
-        totalPrice: updatedPrice,
-      };
+          return {
+            options: updatedOptions,
+            totalPrice: updatedPrice,
+          };
+        }),
+      saveReservationDetails: (data) => set((state) => ({ ...state, ...data })),
+      clearReservationInfo: () => {
+        sessionStorage.removeItem('reservation-storage');
+      },
     }),
-  saveReservationDetails: (data) => set((state) => ({ ...state, ...data })),
-}));
+    {
+      name: 'reservation-storage',
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
+);
 
 export default useReservationStore;

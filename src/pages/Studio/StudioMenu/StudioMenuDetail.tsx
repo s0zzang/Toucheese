@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 import StudioMenuDetailReview from './StudioMenuDetailReview';
 import { IMenuListRes } from 'types/types';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
-import useReservationStore from '@store/useReservationStore';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
+import useReservationStore from '@store/useReservationStore';
 
 const StudioMenuDetail = () => {
   const { _menuId, _id } = useParams();
@@ -73,6 +73,8 @@ const StudioMenuDetail = () => {
       studioId: data?.studioId,
       studioName: data?.studioName,
       menuName: data?.name,
+      menuImage: data?.menuImages[0].url,
+      basicPrice: data?.price,
       totalPrice,
       options,
     };
