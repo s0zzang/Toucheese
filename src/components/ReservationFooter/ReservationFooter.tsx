@@ -22,10 +22,10 @@ const ReservationFooter = ({
 
   return (
     <div css={FixedBtnBoxStyle}>
-      <div className="totalPrice">
+      <h2 className="totalPrice">
         <span>총 결제금액</span>
         <p>{totalPrice?.toLocaleString('ko-KR')}원</p>
-      </div>
+      </h2>
 
       <Button
         text={text}

@@ -15,6 +15,7 @@ const LoginWithEmailPage = () => {
     formState: { errors },
   } = useForm();
 
+  //TODO - 리액트 쿼리 뮤테이트로 변경 해야함
   const handleLogin = async (data: any) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/auth/login`, {
@@ -26,7 +27,7 @@ const LoginWithEmailPage = () => {
       });
 
       if (!response.ok) {
-        throw new Error('로그인에 실패했습니다');
+        throw new Error(response.statusText);
       }
       const result = await response.json();
       console.log('로그인 성공:', result);

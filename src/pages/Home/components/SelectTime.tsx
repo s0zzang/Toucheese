@@ -36,7 +36,7 @@ const SelectTime = ({ type }: ITimeProp) => {
   return (
     <>
       <section css={SelectTimeStyle}>
-        <h2 css={Hidden}>예약 가능한 날짜</h2>
+        <h2 css={Hidden}>시간 선택</h2>
 
         <article>
           <h3 css={timeZoneTitle}>오전</h3>
@@ -52,6 +52,7 @@ const SelectTime = ({ type }: ITimeProp) => {
                   active={selectedTime.has(time)}
                   onClick={() => handleTImeClick(time)}
                 />
+                <h4 css={Hidden}>{time}</h4>
               </li>
             ))}
           </ul>
@@ -71,6 +72,7 @@ const SelectTime = ({ type }: ITimeProp) => {
                   active={selectedTime.has(time)}
                   onClick={() => handleTImeClick(time)}
                 />
+                <h4 css={Hidden}>{time}</h4>
               </li>
             ))}
           </ul>

@@ -5,18 +5,27 @@ import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 import { IMenuListRes } from 'types/types';
 
-const StudioMenuItem = ({ StudioId, data }: { StudioId: string | undefined; data: IMenuListRes | undefined }) => {
+const StudioMenuItem = ({
+  StudioId,
+  data,
+}: {
+  StudioId: string | undefined;
+  data: IMenuListRes | undefined;
+}) => {
   const navigate = useNavigate();
 
   return (
     <>
-      <section css={MenuItemWrapperStyle} onClick={() => navigate(`/studio/${StudioId}/menu/${data?.id}`)}>
+      <section
+        css={MenuItemWrapperStyle}
+        onClick={() => navigate(`/studio/${StudioId}/menu/${data?.id}`)}
+      >
         <div css={MenuCoverStyle}>
           <img src={`${data?.menuImages[0].url}`} alt="메뉴 대표 사진" />
         </div>
         <div css={MenuDescStyle}>
           <div css={MenuHeadStyle}>
-            <h4>{data?.name}</h4>
+            <h2>{data?.name}</h2>
             <p>{data?.description}</p>
           </div>
           <div css={MenuPriceReviewStyle}>
@@ -55,7 +64,7 @@ const MenuDescStyle = css`
 `;
 
 const MenuHeadStyle = css`
-  & h4 {
+  & h2 {
     ${TypoBodyMdM}
     display: flex;
     align-items: center;
