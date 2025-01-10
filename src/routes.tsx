@@ -1,4 +1,5 @@
 import Auth from '@pages/User/Auth';
+import AuthVerification from '@pages/User/AuthVerification';
 import KakaoCallback from '@pages/User/KakaoCallback';
 import LoginWithEmailPage from '@pages/User/LoginWithEmailPage';
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: 'auth',
         element: <Auth />,
+      },
+      {
+        path: 'AuthVerification',
+        element: <AuthVerification />,
       },
       // {
       //   path: 'auth/kakao/callback',
