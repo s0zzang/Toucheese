@@ -10,6 +10,7 @@ import { getDay, useSelectDateStore } from '@store/useSelectDate';
 import { useSelectTimeStore } from '@store/useSelectTime';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const ReservationSchedule = () => {
   const { time } = useSelectTimeStore();
@@ -20,6 +21,13 @@ const ReservationSchedule = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`터치즈 - 예약하기`}</title>
+        <meta property="og:title" content="터치즈 - 예약하기" />
+        <meta property="og:url" content={`${window.location.href}`} />
+        <meta property="og:description" content="터치즈 - 예약하기" />
+      </Helmet>
+
       <Header title="예약하기" />
 
       <Calendar style={DividerStyle} />
