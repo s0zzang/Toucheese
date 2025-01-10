@@ -35,7 +35,6 @@ const StudioReviewPhotos = () => {
   const { open } = useModal(1);
   const fetchReviewImage = async () => {
     // 리뷰사진 모아보기 조회
-    //
     const url = new URL(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/${_id}/reviewImage`);
 
     if (selectedMenuId) {
@@ -52,11 +51,7 @@ const StudioReviewPhotos = () => {
     return response.json();
   };
 
-  const {
-    data: reviewImages,
-
-    error,
-  } = useQuery<IReviewImagesResponse>({
+  const { data: reviewImages, error } = useQuery<IReviewImagesResponse>({
     queryKey: ['reviewImages', _id, selectedMenuId],
     queryFn: fetchReviewImage,
     enabled: !!_id,
