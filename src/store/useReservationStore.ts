@@ -24,7 +24,7 @@ interface ReservationInfoAction {
   setBasicReservation: (price: number, id: number) => void;
   addOptionPrice: (options: ReservationOption, isChecked: boolean) => void;
   saveReservationDetails: (saveData: ReservationInfo) => void;
-  clearLocalStorage: () => void;
+  clearReservationInfo: () => void;
 }
 
 const initialState: ReservationInfo = {
@@ -59,7 +59,7 @@ const useReservationStore = create(
           };
         }),
       saveReservationDetails: (data) => set((state) => ({ ...state, ...data })),
-      clearLocalStorage: () => {
+      clearReservationInfo: () => {
         sessionStorage.removeItem('reservation-storage');
       },
     }),
