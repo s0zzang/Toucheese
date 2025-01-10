@@ -1,4 +1,5 @@
 import Auth from '@pages/User/Auth';
+import AuthVerification from '@pages/User/AuthVerification';
 import LoginWithEmailPage from '@pages/User/LoginWithEmailPage';
 
 import { lazy } from 'react';
@@ -31,7 +32,10 @@ const router = createBrowserRouter([
         path: 'auth',
         element: <Auth />,
       },
-
+      {
+        path: 'AuthVerification',
+        element: <AuthVerification />,
+      },
       {
         path: 'signup',
         element: <SignUp />,
