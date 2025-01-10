@@ -41,8 +41,6 @@ const StudioMenu = () => {
     <StudioMenuItem key={item.id} StudioId={_id} data={item} />
   ));
 
-  console.log(data);
-
   return (
     <>
       {data && (
