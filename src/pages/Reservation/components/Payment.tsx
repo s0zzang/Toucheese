@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 declare global {
   interface Window {
     IMP?: any;
+    Naver: any;
   }
 }
 
@@ -21,6 +23,11 @@ interface PaymentProps {
 }
 
 const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) => {
+  const { _id } = useParams<{ _id: string }>();
+
+  const baseUrl = process.env.NODE_ENV === 'production' ? 'https://toucheese.store' : 'http://localhost:5173';
+  const returnUrl = `${baseUrl}/studio/${_id}/reservation/complete`;
+
   useEffect(() => {
     if (typeof window !== 'undefined' && window.IMP) {
       const merchantId = import.meta.env.VITE_PORTONE_CODE;
@@ -34,6 +41,21 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
     } else {
       console.error('포트원 스크립트가 로드되지 않았습니다.');
     }
+  }, []);
+
+  useEffect(() => {
+    // 네이버페이 SDK 로드
+    const script = document.createElement('script');
+    script.src = 'https://nsp.pay.naver.com/sdk/js/naverpay.min.js';
+    script.async = true;
+    script.onload = () => {
+      console.log('네이버페이 SDK 로드 완료');
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
 
   const handlePayment = async () => {
@@ -77,7 +99,7 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
         buyer_email: 'iamport@siot.do', // 구매자 이메일
         buyer_name: '박지똥', // 구매자 이름
         buyer_tel: '02-1234-1234', // 구매자 연락처
-        m_redirect_url: 'http://localhost:5173/studio/146/reservation/complete', // 모바일 결제 완료 후 리다이렉트 URL
+        m_redirect_url: returnUrl,
       },
       (rsp: PaymentResponse) => {
         if (rsp.success) {
@@ -124,7 +146,7 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
         buyer_tel: '010-1234-5678',
         buyer_addr: '서울특별시 강남구 삼성동',
         buyer_postcode: '123-456',
-        m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}',
+        m_redirect_url: returnUrl,
       },
       (rsp: PaymentResponse) => {
         if (rsp.success) {
@@ -161,7 +183,26 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
   };
 
   const requestNaverPay = () => {
-    return;
+    if (!window.Naver || !window.Naver.Pay) {
+      console.error('네이버페이 SDK가 로드되지 않았습니다.');
+      return;
+    }
+
+    const oPay = window.Naver.Pay.create({
+      mode: 'development', //  또는 "production"
+      clientId: import.meta.env.VITE_NAVERPAY_CLIENT_ID,
+      chainId: import.meta.env.VITE_NAVERPAY_CHAIN_ID,
+    });
+
+    oPay.open({
+      merchantUserKey: 'unique_user_key_1234', // 사용자 고유 키
+      merchantPayKey: 'order_' + new Date().getTime(),
+      productName: '테스트 상품', // 상품명
+      totalPayAmount: 1000, // 결제 금액
+      taxScopeAmount: 1000,
+      taxExScopeAmount: 0,
+      returnUrl,
+    });
   };
 
   return (

@@ -76,7 +76,12 @@ const SelectTime = ({ type }: ITimeProp) => {
           </ul>
         </article>
 
-        {type === 'filter' && <p css={infoText}>중복 선택이 가능합니다.</p>}
+        {type === 'filter' && (
+          <>
+            <p css={infoText}>중복 선택이 가능합니다.</p>
+            <p css={infoText}>선택하지 않으면 전체 시간이 조회됩니다.</p>
+          </>
+        )}
 
         <h3 css={Hidden}>
           선택된 시간: <span className="selected">{[...selectedTime].join(',')}</span>
@@ -121,8 +126,12 @@ const timeZone = css`
 `;
 
 const infoText = css`
-  margin-top: 2rem;
+  margin-top: 0.8rem;
   padding-left: 2rem;
   ${TypoBodySmR}
-  background: url(/img/icon-info.svg) no-repeat center left;
+  background: url(/img/icon-info-gray600.svg) no-repeat center left;
+
+  &:first-of-type {
+    margin-top: 2rem;
+  }
 `;

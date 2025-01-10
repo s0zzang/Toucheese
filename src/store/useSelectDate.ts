@@ -18,6 +18,7 @@ export const getDay = (date: Date) => {
 };
 
 export const changeformatDateForUi = ({ date, time }: { date: string; time: Set<string> }) => {
+  if (!date) return null;
   const [year, month, day] = date.split('-');
   const dayOfWeek = getDay(new Date(date));
   const sortedTimes = [...time].sort();

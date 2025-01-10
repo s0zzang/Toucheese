@@ -11,7 +11,7 @@ const PortfolioSwiper = ({ data, studioName }: { data: IPortfolio[]; studioName:
   const [slideSet, setSlideSet] = useState<IPortfolio[]>([]);
 
   return (
-    <DimSwiper data={data} setSlideSet={setSlideSet}>
+    <DimSwiper<IPortfolio> data={data} setSlideSet={setSlideSet}>
       {slideSet &&
         slideSet.map(({ id, url, menuName }) => (
           <SwiperSlide key={id} virtualIndex={id}>

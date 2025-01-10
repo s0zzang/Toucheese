@@ -182,7 +182,6 @@ const GlobalStyles = css`
   select {
     color: inherit;
     appearance: none;
-    background: url(/img/icon-select-arrow.svg) no-repeat center right 1rem / 1.2rem;
     padding-right: 3.2rem;
   }
 
