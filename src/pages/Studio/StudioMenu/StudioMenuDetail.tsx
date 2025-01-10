@@ -11,6 +11,7 @@ import { IMenuListRes } from 'types/types';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import useReservationStore from '@store/useReservationStore';
+import { Helmet } from 'react-helmet-async';
 
 const StudioMenuDetail = () => {
   const { _menuId, _id } = useParams();
@@ -89,6 +90,19 @@ const StudioMenuDetail = () => {
 
   return (
     <>
+      {data && (
+        <Helmet>
+          <title>
+            {data?.studioName} - {data.name}
+          </title>
+          <meta property="og:title" content={`${data?.studioName} - ${data.name}`} />
+          <meta property="og:url" content={`${window.location.href}`} />
+          <meta
+            property="og:description"
+            content={`스튜디오 메뉴에 대한 상세 설명과 ${data?.reviews.content}개의 리뷰를 제공하는 페이지입니다.`}
+          />
+        </Helmet>
+      )}
       <Header title={`${scrollY ? data?.name : ''}`} customStyle={HeaderCustomStyle(scrollY)} />
       {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />}
       <div css={MenuDescStyle}>
