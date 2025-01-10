@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { IMenuListRes } from 'types/types';
 import Header from '@components/Header/Header';
+import { Helmet } from 'react-helmet-async';
 
 const StudioMenu = () => {
   const { _id } = useParams();
@@ -36,9 +37,22 @@ const StudioMenu = () => {
     fetchAndSetData();
   }, []);
 
-  const StudioMenuList = data?.map((item) => <StudioMenuItem key={item.id} StudioId={_id} data={item} />);
+  const StudioMenuList = data?.map((item) => (
+    <StudioMenuItem key={item.id} StudioId={_id} data={item} />
+  ));
+
+  console.log(data);
+
   return (
     <>
+      {data && (
+        <Helmet>
+          <title>{data[0]?.studioName} - 메뉴</title>
+          <meta property="og:title" content={`${data[0]?.studioName} - 메뉴`} />
+          <meta property="og:url" content={`${window.location.href}`} />
+          <meta property="og:description" content="스튜디오 메뉴 목록" />
+        </Helmet>
+      )}
       <Header title={`${data ? data[0].studioName : ''}`} />
       <StudioNavigator _id={_id || ''} />
       <div css={ItemLIstStyle}>{StudioMenuList}</div>
