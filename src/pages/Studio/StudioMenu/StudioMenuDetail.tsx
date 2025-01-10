@@ -88,8 +88,6 @@ const StudioMenuDetail = () => {
     }
   };
 
-  console.log(data);
-
   return (
     <>
       {data && (
