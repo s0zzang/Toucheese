@@ -13,6 +13,8 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { IPortfolio, IStudioRes } from 'types/types';
 import DimmedModal from '../components/DimmedModal';
 import PortfolioSwiper from './PortfolioSwiper';
+import { Hidden } from '@styles/Common';
+import { Helmet } from 'react-helmet-async';
 
 interface IPortfolioResponse {
   menuIdList: number[];
@@ -63,7 +65,18 @@ const StudioPortfolio = () => {
 
   return (
     <>
+      {isSuccess && (
+        <Helmet>
+          <title>{`${portfolios.studioName} - 포트폴리오`}</title>
+          <meta property="og:title" content={`${portfolios.studioName} 포트폴리오`} />
+          <meta property="og:url" content={`${window.location.href}`} />
+          <meta property="og:description" content={`${portfolios.studioName} 포트폴리오`} />
+        </Helmet>
+      )}
+
       <Header title={isSuccess ? portfolios.studioName : ''} />
+      <h2 css={Hidden}>포트폴리오</h2>
+      <h3 css={Hidden}>총 {portfolios?.portfolioDtos.content.length}개</h3>
       <StudioNavigator _id={_id} />
 
       <ul css={filterBoxStyle}>
