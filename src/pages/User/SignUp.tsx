@@ -17,21 +17,16 @@ const SignUp = () => {
     watch,
   } = useForm();
 
-  /** 버튼 클릭시 작동 테스트 콘솔 */
-  // const onSubmit = (data: any) => console.log(data);
-
   /** zustand 스토어에 데이터 저장 */
-  const { setSignupData, phone, name } = useSignupStore();
+  // 이후 사용될 Phone, name 추가 호출 필요
+  const { setSignupData } = useSignupStore();
 
   const handleVerifyComplete = () => {
-    console.log('본인인증 완료:', { phone, name });
+    console.log('본인인증 완료');
   };
 
   const onSubmit = (data: any) => {
     setSignupData(data);
-    console.log('데이터 저장완료', phone, name);
-    console.log('현재상태', useSignupStore.getState());
-    // window.location.href = '/user/signup';
   };
 
   /** local storage에 저장된 전화번호, 이름 불러오기 */
@@ -39,13 +34,11 @@ const SignUp = () => {
     /** key에 해당하는 데이터 호출 */
     const localData = localStorage.getItem(key);
     if (!localData) {
-      console.log('데이터 없음', key);
       return null;
     }
     /** 문자열로 저장된 데이터 객체로 변환 */
     try {
       const parsedData = JSON.parse(localData);
-      console.log('data', parsedData);
       return parsedData;
     } catch (error) {
       console.error('JSON 파싱 오류', error);
