@@ -11,11 +11,12 @@ const KakaoCallback = () => {
 
     if (code) {
       // 백엔드 서버에 인가 코드를 전송하여 토큰을 받아옵니다
-      fetch(`${import.meta.env.VITE_TOUCHEESE_API}/user/auth/kakao/callback?code=${code}`, {
+      fetch(`${import.meta.env.VITE_TOUCHEESE_API}/user/auth/kakao/callback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ code: code }),
       })
         .then((response) => response.json())
         .then((data) => {
