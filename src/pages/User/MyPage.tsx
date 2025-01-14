@@ -1,10 +1,13 @@
 import { useUserStore } from '@store/useUserStore';
+import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
-  const logout = useUserStore((state) => state.removeUser);
+  const logout = useUserStore((state) => state.resetUser);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     logout();
+    navigate('/');
   };
 
   return (
