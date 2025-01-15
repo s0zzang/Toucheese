@@ -16,19 +16,4 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- 마이페이지 -->
-  <url>
-    <loc>https://toucheese.store/mypage</loc>
-    <lastmod>2025-01-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- 예약 페이지 -->
-  <url>
-    <loc>https://toucheese.store/reservation</loc>
-    <lastmod>2025-01-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
 </urlset>
