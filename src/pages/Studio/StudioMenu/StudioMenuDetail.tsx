@@ -11,6 +11,7 @@ import { IMenuListRes } from 'types/types';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import useReservationStore from '@store/useReservationStore';
+import { Helmet } from 'react-helmet-async';
 
 const StudioMenuDetail = () => {
   const { _menuId, _id } = useParams();
@@ -21,7 +22,7 @@ const StudioMenuDetail = () => {
   const setBasicReservation = useReservationStore((state) => state.setBasicReservation);
   const saveReservationDetails = useReservationStore((state) => state.saveReservationDetails);
   const { totalPrice, options, studioId } = useReservationStore();
-  const [user, setUser] = useState(false); // 추후 로그인 기능 완료되면 교체 예정
+  const [user, setUser] = useState(true); // 추후 로그인 기능 완료되면 교체 예정
   console.log(setUser); //베포에러로인한 콘솔 추후 로그인 기능 완료후 제거
 
   const fetchMenuDetail = async () => {
@@ -89,6 +90,19 @@ const StudioMenuDetail = () => {
 
   return (
     <>
+      {data && (
+        <Helmet>
+          <title>
+            {data?.studioName} - {data.name}
+          </title>
+          <meta property="og:title" content={`${data?.studioName} - ${data.name}`} />
+          <meta property="og:url" content={`${window.location.href}`} />
+          <meta
+            property="og:description"
+            content={`스튜디오 메뉴에 대한 상세 설명과 ${data?.reviews.content}개의 리뷰를 제공하는 페이지입니다.`}
+          />
+        </Helmet>
+      )}
       <Header title={`${scrollY ? data?.name : ''}`} customStyle={HeaderCustomStyle(scrollY)} />
       {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />}
       <div css={MenuDescStyle}>
@@ -97,23 +111,15 @@ const StudioMenuDetail = () => {
       </div>
 
       <ul css={TabMenuStyle}>
-        <li
-          onClick={() => setTabMenuState('info')}
-          className={`${tabMenuState === 'info' && 'active'}`}
-        >
+        <li onClick={() => setTabMenuState('info')} className={`${tabMenuState === 'info' && 'active'}`}>
           정보
         </li>
-        <li
-          onClick={() => setTabMenuState('review')}
-          className={`${tabMenuState === 'review' && 'active'}`}
-        >
+        <li onClick={() => setTabMenuState('review')} className={`${tabMenuState === 'review' && 'active'}`}>
           리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
         </li>
       </ul>
       {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
-      {data && tabMenuState === 'review' && (
-        <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />
-      )}
+      {data && tabMenuState === 'review' && <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />}
 
       <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
     </>

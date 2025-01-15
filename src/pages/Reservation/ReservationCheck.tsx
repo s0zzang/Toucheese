@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import Payment from './components/Payment';
 import { useSelectTimeStore } from '@store/useSelectTime';
 import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDate';
+import useReservationStore from '@store/useReservationStore';
 
 interface FormValues {
   visitorName: string;
@@ -26,11 +27,9 @@ const ReservationCheck = () => {
     setIsAgreed(e.target.checked);
   };
 
-  const options = ['전체 컷 원본 파일', '전체 컷 원본 파일', '옵션 선택1', '옵션 선택2', '옵션 선택3'];
-
   const { time } = useSelectTimeStore();
   const { date } = useSelectDateStore();
-
+  const { studioName, totalPrice, options, menuName, basicPrice, menuImage } = useReservationStore();
   const [isDifferentVisitor, setIsDifferentVisitor] = useState(false);
 
   const {
@@ -88,20 +87,20 @@ const ReservationCheck = () => {
               font-size: 1.2rem;
             `}
           >
-            A 스튜디오
+            {studioName}
           </h4>
           <p css={TypoTitleXsM}>{changeformatDateForUi({ date, time })}</p>
           <hr css={hrStyle} />
           <div css={flexRow}>
             <div>
-              <p css={TypoTitleXsM}>프로필 A 반신 촬영</p>
+              <p css={TypoTitleXsM}>{menuName}</p>
               <div css={textWrapperStyle}>
-                {options.map((option, index) => (
-                  <span key={index}>{option}</span>
+                {options.map((option) => (
+                  <span key={option.option_id}>{option.optionName}</span>
                 ))}
               </div>
             </div>
-            <img src="https://imgur.com/BMDwLgQ" alt="포트폴리오 이미지" css={imgStyle} />
+            <img src={menuImage} alt="포트폴리오 이미지" css={imgStyle} />
           </div>
         </div>
       </section>
@@ -180,30 +179,32 @@ const ReservationCheck = () => {
         <div css={[boxStyle, TypoBodySmR]}>
           <div css={PriceInforowStyle}>
             <span>기본 가격</span>
-            <span>프로필 A 반신 촬영</span>
-            <span>60,000원</span>
+            <span>{menuName}</span>
+            <span>{basicPrice?.toLocaleString()}원</span>
           </div>
           <div css={PriceInforowStyle}>
             <span>추가 옵션</span>
             <span>
-              전체 컷 원본 파일
-              <br />
-              추가 옵션1
-              <br />
-              추가 옵션2
+              {options.map((option, index) => (
+                <span key={option.option_id}>
+                  {option.optionName}
+                  {index < options.length - 1 && <br />}
+                </span>
+              ))}
             </span>
             <span>
-              10,000원
-              <br />
-              0원
-              <br />
-              0원
+              {options.map((option, index) => (
+                <span key={option.option_id}>
+                  {option.optionPrice.toLocaleString()}원{index < options.length - 1 && <br />}
+                </span>
+              ))}
             </span>
           </div>
+
           <hr css={hrStyle} />
           <div css={[PriceInforowStyle, TypoTitleXsSB, totalPriceStyle]}>
             <span>총 결제금액</span>
-            <span>70,000원</span>
+            <span>{totalPrice.toLocaleString()}원</span>
           </div>
         </div>
       </section>
@@ -409,7 +410,7 @@ const PriceInforowStyle = css`
   display: flex;
   margin-bottom: 0.8rem;
 
-  span:first-of-type {
+  > span:first-of-type {
     color: ${variables.colors.gray800};
     margin-right: 0.8rem;
   }

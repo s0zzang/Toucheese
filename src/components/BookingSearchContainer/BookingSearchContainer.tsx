@@ -4,9 +4,12 @@ import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import LocalDateSelectionModal from '@pages/Home/components/LocalDateSelectionModal';
 import { changeformatDateForUi } from '@store/useSelectDate';
+import { defaultUserState } from '@store/useUserStore';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
+import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { IUser } from 'types/types';
 
 /** 메인 전체 지역 예약 날짜 선택 등  */
 // button => 모달 오픈용  searchStyle => 검색용
@@ -20,8 +23,8 @@ const BookingSearchContainer = () => {
     time: new Set(searchParams.getAll('times')),
   });
 
-  // user 정보 세션에서 가져오기
-  const user = false;
+  // user 정보 로컬스토리지에서 가져오기
+  const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
 
   return (
     <BookingSearchContainerStyle>
