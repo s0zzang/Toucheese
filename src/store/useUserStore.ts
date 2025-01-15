@@ -29,7 +29,9 @@ export const useUserStore = create(
           user_id,
           username,
         })),
-      resetUser: () => set(() => defaultUserState),
+      resetUser: () => {
+        localStorage.removeItem('userState');
+      },
     }),
     {
       name: 'userState',
