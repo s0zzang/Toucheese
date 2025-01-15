@@ -58,7 +58,7 @@ const Auth = () => {
       <div css={LoginTypeButtonWrapper}>
         <LoginTypeButton type="kakao" onClick={handleKakaoLogin} />
         <LoginTypeButton type="google" />
-        <LoginTypeButton type="email" onClick={() => navigate('/user/signup')} />
+        <LoginTypeButton type="email" onClick={() => navigate('/user/AuthVerification')} />
       </div>
 
       <Link to="/login">
