@@ -7,7 +7,6 @@ import KakaoMap from '@components/Kakao/KakaoMap';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
 import ShareButton from '@components/Share/ShareButton';
 import { css } from '@emotion/react';
-import styled from '@emotion/styled';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
 import {
   DividerStyle,
@@ -30,6 +29,7 @@ const StudioMain = () => {
   const [isOpened, setIsOpened] = useState(false);
   const [isWebPSupported, setIsWebPSupported] = useState(false);
   const navigate = useNavigate();
+  const handleClick = () => navigate(`/studio/${_id}/menu`);
 
   /** webP 지원 여부 확인 후 상태값 저장 */
   useEffect(() => {
@@ -110,7 +110,7 @@ const StudioMain = () => {
       <Header customStyle={HeaderStyle} />
 
       {/* 이미지 */}
-      <div css={portfolioPreviewStyle}>
+      <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
         {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
           <img
             key={idx}
@@ -120,12 +120,12 @@ const StudioMain = () => {
         ))}
         <div css={portfolioPsitionStyle}>
           <img src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')} alt="사진5" />
-          <DimOverlayStyle onClick={() => navigate(`/studio/${_id}/portfolio`)}>
+          <div css={DimOverlayStyle}>
             <img src="/img/icon-morePreview.svg" alt="더보기" />
             <span>
               {data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}
             </span>
-          </DimOverlayStyle>
+          </div>
         </div>
       </div>
 
@@ -280,7 +280,7 @@ const StudioMain = () => {
       </div>
 
       <div css={reservationStyle}>
-        <Button variant="black" text="예약하기" size="large" width="max" />
+        <Button variant="black" text="예약하기" size="large" width="max" onClick={handleClick} />
       </div>
     </>
   );
@@ -331,7 +331,7 @@ const portfolioPsitionStyle = css`
   }
 `;
 
-const DimOverlayStyle = styled.div`
+const DimOverlayStyle = css`
   position: absolute;
   top: 0;
   left: 0;
