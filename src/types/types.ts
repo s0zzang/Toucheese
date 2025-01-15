@@ -171,7 +171,7 @@ export interface IUser {
   accessToken: string | null;
   email: string | null;
   phone: string | null;
-  registration: 'EMAIL' | 'KAKAO' | 'GOOGLE' | null;
+  registration: 'EMAIL' | 'kakao' | 'google' | null;
   user_id: number | null;
   username: string | null;
 }
@@ -180,7 +180,7 @@ export interface IUserRes {
   accessToken: string;
   email: string;
   phone: string;
-  registration: 'EMAIL' | 'KAKAO' | 'GOOGLE';
+  registration: 'EMAIL' | 'kakao' | 'google';
   user_id: number;
   username: string;
 }
