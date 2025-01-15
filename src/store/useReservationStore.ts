@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface StudioInfo {
-  studioId?: number;
+  menuId?: number;
   studioName?: string;
   menuName?: string;
   basicPrice?: number;
@@ -28,7 +28,7 @@ interface ReservationInfoAction {
 }
 
 const initialState: ReservationInfo = {
-  studioId: 0,
+  menuId: 0,
   studioName: '',
   menuName: '',
   basicPrice: 0,
@@ -42,7 +42,7 @@ const useReservationStore = create(
     (set) => ({
       ...initialState,
       setBasicReservation: (price, id) =>
-        set((state) => ({ ...state, totalPrice: price, studioId: id, options: [] })),
+        set((state) => ({ ...state, totalPrice: price, menuId: id, options: [] })),
       addOptionPrice: (options, isChecked) =>
         set((state) => {
           const updatedOptions = isChecked
