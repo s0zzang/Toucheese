@@ -5,9 +5,18 @@ import { css } from '@emotion/react';
 import LoginTypeButton from './components/LoginTypeButton';
 import { Link, useNavigate } from 'react-router-dom';
 import variables from '@styles/Variables';
+import { useEffect } from 'react';
 
 const Auth = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('AccessToken');
+    if (token) {
+      alert('이미 로그인되어 있습니다.');
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleKakaoLogin = () => {
     const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
