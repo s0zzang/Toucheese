@@ -70,17 +70,10 @@ const AuthVerification = () => {
   useEffect(() => {
     setValue('phone', phone);
     setValue('name', name);
-    console.log('useEffect = > Current phone, name:', phone, name);
+    console.log('useEffect => phone, name:', phone, name);
   }, [phone, name, setValue]);
 
-  const ButtonActive = () => {
-    if (name !== '' && phone !== '') {
-      setIsActive(true);
-    } else {
-      setIsActive(false);
-    }
-  };
-
+  const ButtonActive = () => (name && phone ? setIsActive(true) : setIsActive(false));
   return (
     <>
       <Helmet>
