@@ -2,16 +2,18 @@
 import { css, SerializedStyles } from '@emotion/react';
 import variables from '@styles/Variables';
 import Header from '@components/Header/Header';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
 import StudioMenuDetailInfo from './StudioMenuDetailInfo';
 import { useEffect, useState } from 'react';
 import StudioMenuDetailReview from './StudioMenuDetailReview';
-import { IMenuListRes } from 'types/types';
+import { IMenuListRes, IUser } from 'types/types';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import useReservationStore from '@store/useReservationStore';
 import { Helmet } from 'react-helmet-async';
+import { defaultUserState } from '@store/useUserStore';
+import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 
 const StudioMenuDetail = () => {
   const { _menuId, _id } = useParams();
@@ -22,8 +24,8 @@ const StudioMenuDetail = () => {
   const setBasicReservation = useReservationStore((state) => state.setBasicReservation);
   const saveReservationDetails = useReservationStore((state) => state.saveReservationDetails);
   const { totalPrice, options, menuId } = useReservationStore();
-  const [user, setUser] = useState(true); // 추후 로그인 기능 완료되면 교체 예정
-  console.log(setUser); //베포에러로인한 콘솔 추후 로그인 기능 완료후 제거
+  const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
+  const { pathname } = useLocation();
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -82,8 +84,10 @@ const StudioMenuDetail = () => {
     saveReservationDetails(saveData);
 
     if (user) {
+      window.sessionStorage.removeItem('lastPage');
       navigate(`/studio/${_id}/reservation`);
     } else {
+      window.sessionStorage.setItem('lastPage', pathname);
       navigate('/user/auth');
     }
   };
