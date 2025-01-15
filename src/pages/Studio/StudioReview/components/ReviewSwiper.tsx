@@ -20,13 +20,13 @@ const ReviewSwiper = ({ data }: { data: IReviewImages[] }) => {
           <img src={slide.url} alt={`리뷰 이미지 ${slide.id}`} />
         </div>
         <div>
-          <h1
+          <h2
             css={css`
               ${TypoTitleXsM}
             `}
           >
             {slide.menuName}
-          </h1>
+          </h2>
           <p
             css={css`
               opacity: 0.6;
