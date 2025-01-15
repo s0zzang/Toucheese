@@ -6,29 +6,35 @@ const KakaoCallback = () => {
 
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get('code');
-
     console.log(code);
 
-    if (code) {
-      // 백엔드 서버에 인가 코드를 전송하여 토큰을 받아옵니다
-      fetch(`${import.meta.env.VITE_TOUCHEESE_API}/user/auth/kakao/callback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code: code }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // 토큰을 로컬 스토리지에 저장
-          localStorage.setItem('token', data.token);
-          navigate('/'); // 메인 페이지로 이동
-        })
-        .catch((error) => {
-          console.error('카카오 로그인 에러:', error);
-          navigate('/login');
-        });
-    }
+    const handleKakaoLogin = async () => {
+      try {
+        if (!code) return;
+
+        const response = await fetch(
+          `${import.meta.env.VITE_TOUCHEESE_API}/user/auth/kakao/callback`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code }),
+          },
+        );
+
+        const result = await response.json();
+        console.log(result);
+        // 로그인 성공 시 useUserStore의 상태를 업데이트
+        // 회원가입 된 계정이 없는 경우는 회원가입
+        navigate('/');
+      } catch (error) {
+        console.error('카카오 로그인 에러:', error);
+        navigate('/login');
+      }
+    };
+
+    handleKakaoLogin();
   }, [navigate]);
 
   return <div>로그인 처리중...</div>;
