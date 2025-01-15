@@ -168,6 +168,15 @@ export interface IMenuListRes {
 }
 
 export interface IUser {
+  accessToken: string | null;
+  email: string | null;
+  phone: string | null;
+  registration: 'EMAIL' | 'KAKAO' | 'GOOGLE' | null;
+  user_id: number | null;
+  username: string | null;
+}
+
+export interface IUserRes {
   accessToken: string;
   email: string;
   phone: string;

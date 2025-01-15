@@ -20,7 +20,6 @@ const GoogleCallback = () => {
           },
           body: JSON.stringify({
             accessToken,
-            redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
           }),
         },
       );
