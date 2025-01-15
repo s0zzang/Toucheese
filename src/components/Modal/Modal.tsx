@@ -129,6 +129,7 @@ const TitleStyle = styled.div<ITitleStyle>`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${(props) => props.type === 'fullscreen' && variables.colors.white};
   color: ${(props) => props.type === 'dimmed' && variables.colors.white};
   min-height: 5.2rem;
   position: fixed;

@@ -1,6 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
+import useReservationStore from '@store/useReservationStore';
+import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import {
   TypoBodyMdM,
   TypoBodyMdR,
@@ -18,19 +21,26 @@ interface IStepStyle {
 
 const ReservationComplete = () => {
   const navigate = useNavigate();
+  const {
+    studioName: studio,
+    menuName: reservedMenu,
+    options,
+    clearReservationInfo,
+  } = useReservationStore();
+  const date = useSelectDateStore((state) => state.date);
+  const time = useSelectTimeStore((state) => state.time);
 
   // 임시 예약 데이터 => 예약 정보를 전역으로 받아서 추가 예정입니다.
   const reservationData = {
-    studio: '그믐달 스튜디오',
-    reservedDate: '12.6 (금)',
-    reservedTime: '오후 1:00',
-    reservedMenu: '프로필 A 반신 촬영',
-    options: ['전체 컷 원본 파일', '전체 컷 원본 파일', '옵션 1', '옵션 2', '옵션 3'],
+    studio,
+    reservedDateTime: changeformatDateForUi({ date, time }),
+    reservedMenu,
+    options,
   };
 
   const reservedOptions = reservationData.options.map((option, index) => (
     <p key={index} css={TypoBodySmR} className="content-item-options">
-      {option}
+      {option.optionName}
     </p>
   ));
 
@@ -84,8 +94,7 @@ const ReservationComplete = () => {
                 일정
               </p>
               <div css={TypoBodyMdR} className="content-item-desc schedule">
-                <p className="date">{reservationData.reservedDate}</p>
-                <p className="time">{reservationData.reservedTime}</p>
+                <p>{reservationData.reservedDateTime}</p>
               </div>
             </div>
             <div className="content-item">
@@ -106,9 +115,20 @@ const ReservationComplete = () => {
           text="예약 상세"
           variant="gray"
           active={true}
-          onClick={() => console.log('예약 상세 페이지는 아직 개발 중!')}
+          onClick={() => {
+            console.log('예약 상세 페이지는 아직 개발 중!');
+            clearReservationInfo();
+          }}
         />
-        <Button text="홈으로" variant="black" active={true} onClick={() => navigate('/')} />
+        <Button
+          text="홈으로"
+          variant="black"
+          active={true}
+          onClick={() => {
+            navigate('/');
+            clearReservationInfo();
+          }}
+        />
       </FooterButtonStyle>
     </>
   );
@@ -251,19 +271,6 @@ const ReservationInfoStyle = styled.div`
           display: flex;
           align-items: center;
           gap: 0.4rem;
-
-          & > .date {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-
-            &::after {
-              content: '';
-              width: 0.1rem;
-              height: 1.4rem;
-              background-color: ${variables.colors.gray400};
-            }
-          }
         }
 
         &.menu {

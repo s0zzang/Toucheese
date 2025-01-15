@@ -15,6 +15,7 @@ jobs:
 
       - name: Create .env file
         run: |
+          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env
           echo "VITE_TOUCHEESE_API=${{ secrets.VITE_TOUCHEESE_API }}" >> .env
           echo "VITE_TOUCHEESE_STUDIO_LIMIT=${{ secrets.VITE_TOUCHEESE_STUDIO_LIMIT }}" >> .env
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
