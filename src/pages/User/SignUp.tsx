@@ -50,7 +50,10 @@ const SignUp = () => {
   return (
     <>
       <BackButton />
-      <h2 css={pageTitleStyle}>회원가입</h2>
+      <h2 css={pageTitleStyle}>
+        이메일과 비밀번호를
+        <br /> 설정해주세요.
+      </h2>
       <form noValidate onSubmit={handleSubmit(onSubmit)} css={formStyle}>
         {/* 이메일 */}
         <div css={containerStyle}>
