@@ -1,4 +1,4 @@
-import useReservationStore from '@store/useReservationStore';
+import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -26,10 +26,9 @@ interface PaymentProps {
 const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) => {
   const { _id } = useParams<{ _id: string }>();
 
-  const baseUrl = process.env.NODE_ENV === 'production' ? 'https://toucheese.store' : 'http://localhost:5173';
+  const baseUrl =
+    process.env.NODE_ENV === 'production' ? 'https://toucheese.store' : 'http://localhost:5173';
   const returnUrl = `${baseUrl}/studio/${_id}/reservation/complete`;
-
-  const clearReservationInfo = useReservationStore((state) => state.clearReservationInfo);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.IMP) {
@@ -122,7 +121,6 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
             .then((response) => {
               if (response.ok) {
                 console.log('결제 검증 성공');
-                clearReservationInfo(); // 결제 성공 시 예약 정보 삭제
               } else {
                 console.error('결제 검증 실패');
               }
@@ -170,7 +168,6 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
             .then((response) => {
               if (response.ok) {
                 console.log('결제 검증 성공');
-                clearReservationInfo();
               } else {
                 console.error('결제 검증 실패');
               }
@@ -230,7 +227,6 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
           .then((response) => {
             if (response.ok) {
               console.log('결제 검증 성공');
-              clearReservationInfo();
             } else {
               console.error('결제 검증 실패');
             }
@@ -245,14 +241,23 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
   };
 
   return (
-    <button
+    <ReservationFooter
+      text="결제하기"
+      type="button"
       onClick={() => {
         onClick();
         handlePayment();
       }}
-    >
-      결제하기
-    </button>
+      disabled={!isAgreed}
+    />
+    // <button
+    //   onClick={() => {
+    //     onClick();
+    //     handlePayment();
+    //   }}
+    // >
+    //   결제하기
+    // </button>
   );
 };
 
