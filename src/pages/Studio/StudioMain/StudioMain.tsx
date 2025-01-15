@@ -102,7 +102,6 @@ const StudioMain = () => {
     <>
       <Helmet>
         <title>{`${data.name} - 상세정보`}</title>
-        <meta property="og:site_name" content="toucheese" />
         <meta property="og:title" content="스튜디오 상세정보" />
         <meta property="og:url" content={`${window.location.href}`} />
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />

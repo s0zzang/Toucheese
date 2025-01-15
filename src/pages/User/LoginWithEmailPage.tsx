@@ -1,18 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
 import Input from '@components/Input/Input';
-// import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 import { TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
-import { useToastStore } from '@store/useToastStore';
+import useToast from '@hooks/useToast';
+import { useUserStore } from '@store/useUserStore';
 
 const LoginWithEmailPage = () => {
   const navigate = useNavigate();
-  const setToast = useToastStore((state) => state.setToast);
+  const openToast = useToast();
+  const setUser = useUserStore((state) => state.setUser);
   const {
     register,
     handleSubmit,
@@ -35,18 +36,12 @@ const LoginWithEmailPage = () => {
       }
       const result = await response.json();
       console.log('로그인 성공:', result);
-      localStorage.setItem('AccessToken', result.accessToken);
-      setToast({
-        id: Date.now(),
-        content: '로그인에 성공했습니다.',
-      });
+      setUser(result);
+      openToast('로그인에 성공했습니다.');
       navigate('/');
     } catch (error) {
       console.error('로그인 에러:', error);
-      setToast({
-        id: Date.now(),
-        content: '로그인에 실패했습니다. 다시 시도해주세요.',
-      });
+      openToast('로그인에 실패했습니다. 다시 시도해주세요.');
     }
   };
 

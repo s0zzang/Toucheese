@@ -6,7 +6,8 @@ import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import useSignupStore from '@store/useSignupStore';
 import { TypoTitleMdSb } from '@styles/Common';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,6 +29,7 @@ const AuthVerification = () => {
   /** zustand 스토어에 데이터 저장 */
   const { setSignupData, phone, name } = useSignupStore();
   const navigate = useNavigate();
+  const [isActive, setIsActive] = useState(false);
 
   const handleSave = (data: any) => {
     setSignupData(data);
@@ -71,10 +73,30 @@ const AuthVerification = () => {
     console.log('useEffect = > Current phone, name:', phone, name);
   }, [phone, name, setValue]);
 
+  const ButtonActive = () => {
+    if (name !== '' && phone !== '') {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  };
+
   return (
     <>
+      <Helmet>
+        <title>{`회원가입 - 본인인증`}</title>
+        <meta property="og:title" content="사용자 본인인증" />
+        <meta property="og:url" content={`${window.location.href}`} />
+        <meta property="og:description" content="사용자 본인인증" />
+      </Helmet>
+
       <BackButton />
-      <h2 css={pageTitleStyle}>회원가입</h2>
+      <h1 css={pageHeaderStyle}>본인인증</h1>
+      <h2 css={pageTitleStyle}>
+        이름과 휴대폰 번호를
+        <br />
+        알려주세요
+      </h2>
       <form noValidate onSubmit={handleSubmit(handleSave)} css={formStyle}>
         <div css={containerStyle}>
           {/* 이름 */}
@@ -130,6 +152,8 @@ const AuthVerification = () => {
             text="다음"
             size="large"
             variant="deepGray"
+            disabled={true}
+            active={false}
           />
         </div>
       </form>
@@ -149,6 +173,10 @@ const buttonStyle = css`
   position: fixed;
   bottom: 3rem;
   width: calc(100% - 3.2rem);
+`;
+
+const pageHeaderStyle = css`
+  visibility: hidden;
 `;
 
 const pageTitleStyle = css`
