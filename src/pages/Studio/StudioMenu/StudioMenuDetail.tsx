@@ -26,7 +26,6 @@ const StudioMenuDetail = () => {
   const { totalPrice, options, menuId } = useReservationStore();
   const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
-  console.log(pathname);
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
