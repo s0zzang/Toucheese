@@ -3,9 +3,6 @@ import Header from '@components/Header/Header';
 import { css } from '@emotion/react';
 import useModal from '@hooks/useModal';
 import PolicyModal from '@pages/Reservation/components/PolicyModal';
-import useReservationStore from '@store/useReservationStore';
-import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
-import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import {
   TypoBodyMdR,
   TypoBodyMdSb,
@@ -19,6 +16,9 @@ import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Payment from './components/Payment';
+import useReservationStore from '@store/useReservationStore';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
+import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
 
 interface FormValues {
   visitorName: string;
@@ -305,6 +305,7 @@ const ReservationCheck = () => {
         trigger={trigger}
         paymentMethod={paymentMethod}
         isAgreed={isAgreed}
+        totalPrice={totalPrice}
       />
     </>
   );

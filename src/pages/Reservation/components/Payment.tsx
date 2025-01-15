@@ -21,13 +21,13 @@ interface PaymentProps {
   trigger: () => Promise<boolean>;
   paymentMethod: string;
   isAgreed: boolean;
+  totalPrice: string;
 }
 
-const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) => {
+const Payment = ({ onClick, trigger, paymentMethod, isAgreed, totalPrice }: PaymentProps) => {
   const { _id } = useParams<{ _id: string }>();
 
-  const baseUrl =
-    process.env.NODE_ENV === 'production' ? 'https://toucheese.store' : 'http://localhost:5173';
+  const baseUrl = import.meta.env.VITE_BASE_URL;
   const returnUrl = `${baseUrl}/studio/${_id}/reservation/complete`;
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
         pay_method: 'card', // 결제수단
         merchant_uid: 'order_' + new Date().getTime(), // 고유 주문번호
         name: '주문상품', // 상품명
-        amount: 1, // 결제 금액
+        amount: totalPrice,
         buyer_email: 'iamport@siot.do', // 구매자 이메일
         buyer_name: '박지똥', // 구매자 이름
         buyer_tel: '02-1234-1234', // 구매자 연락처
@@ -140,9 +140,9 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
       {
         channelKey: import.meta.env.VITE_PORTONE_KAKAO_CHANNEL_KEY,
         pay_method: 'EASY_PAY',
-        merchant_uid: 'order_no_0001',
+        merchant_uid: 'order_' + new Date().getTime(),
         name: '주문명:결제테스트',
-        amount: 1,
+        amount: totalPrice,
         buyer_email: 'test@portone.io',
         buyer_name: '박지뚱',
         buyer_tel: '010-1234-5678',
@@ -200,8 +200,8 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
       merchantUserKey: 'unique_user_key_1234', // 사용자 고유 키
       merchantPayKey: 'order_' + new Date().getTime(),
       productName: '테스트 상품',
-      totalPayAmount: 1000, // 결제 금액
-      taxScopeAmount: 1000,
+      totalPayAmount: totalPrice, // 결제 금액
+      taxScopeAmount: totalPrice,
       taxExScopeAmount: 0,
       returnUrl,
     });
@@ -250,14 +250,6 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
       }}
       disabled={!isAgreed}
     />
-    // <button
-    //   onClick={() => {
-    //     onClick();
-    //     handlePayment();
-    //   }}
-    // >
-    //   결제하기
-    // </button>
   );
 };
 
