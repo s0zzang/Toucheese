@@ -22,19 +22,19 @@ const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes }) => {
       <div css={MenuInfoWrapperStyle}>
         <section css={MenuInfoStyle}>
           <div className="menuInfoItem">
-            <h4 className="time">예상 소요 시간</h4>
+            <h3 className="time">예상 소요 시간</h3>
             <p>약 {infoItem.duration ? totalMinutes : 60}분</p>
           </div>
           <div className="menuInfoItem">
-            <h4 className="camera">기본 촬영 수</h4>
+            <h3 className="camera">기본 촬영 수</h3>
             <p>{infoItem.pictureNum ? infoItem.pictureNum : `70-80컷`}</p>
           </div>
           <div className="menuInfoItem">
-            <h4 className="crop">인화 사이즈</h4>
+            <h3 className="crop">인화 사이즈</h3>
             <p>{infoItem.pictureSize ? infoItem.pictureSize : '4x6in'}</p>
           </div>
           <div className="menuInfoItem">
-            <h4 className="folder">기본 제공 파일</h4>
+            <h3 className="folder">기본 제공 파일</h3>
             <p>{infoItem.offerFile ? infoItem.offerFile : '3포즈 리터칭 JPG파일'}</p>
           </div>
         </section>
@@ -98,7 +98,7 @@ const MenuInfoStyle = css`
     gap: 1rem;
     ${TypoBodyMdR}
 
-    & h4 {
+    & h3 {
       color: ${variables.colors.gray800};
       background-position: left;
       padding-left: 2rem;

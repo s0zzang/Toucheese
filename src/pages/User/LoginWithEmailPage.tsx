@@ -1,14 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
 import Input from '@components/Input/Input';
-// import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 import { TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
+import useToast from '@hooks/useToast';
+import { useUserStore } from '@store/useUserStore';
 
 const LoginWithEmailPage = () => {
+  const navigate = useNavigate();
+  const openToast = useToast();
+  const setUser = useUserStore((state) => state.setUser);
   const {
     register,
     handleSubmit,
@@ -31,9 +36,12 @@ const LoginWithEmailPage = () => {
       }
       const result = await response.json();
       console.log('로그인 성공:', result);
+      setUser(result);
+      openToast('로그인에 성공했습니다.');
+      navigate('/');
     } catch (error) {
       console.error('로그인 에러:', error);
-      alert('로그인에 실패했습니다. 다시 시도해주세요.');
+      openToast('로그인에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -80,10 +88,10 @@ const LoginWithEmailPage = () => {
           placeholder="toucheese@gmail.com"
           register={register('email', {
             required: '이메일을 입력해주세요',
-            // pattern: {
-            //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            //   message: '올바른 이메일 주소를 입력해주세요.',
-            // },
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: '올바른 이메일 주소를 입력해주세요.',
+            },
           })}
           error={errors.email?.message?.toString()}
         />
@@ -97,10 +105,10 @@ const LoginWithEmailPage = () => {
               value: 8,
               message: '아이디와 비밀번호를 확인해주세요.',
             },
-            // pattern: {
-            //   value: /[!@#$%^&*(),.?":{}|<>]/,
-            //   message: '특수문자를 하나 이상 포함해야 합니다',
-            // },
+            pattern: {
+              value: /[!@#$%^&*(),.?":{}|<>]/,
+              message: '특수문자를 하나 이상 포함해야 합니다',
+            },
           })}
           error={errors.password?.message?.toString()}
         />

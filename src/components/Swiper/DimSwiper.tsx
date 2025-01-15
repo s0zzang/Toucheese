@@ -6,7 +6,7 @@ import { Navigation, Virtual } from 'swiper/modules';
 import { Swiper, SwiperClass } from 'swiper/react';
 
 import { css } from '@emotion/react';
-import { TypoBodyMdR } from '@styles/Common';
+import { Hidden, TypoBodyMdR } from '@styles/Common';
 import 'swiper/css';
 
 interface IDimSwiper<T extends { id: number }> {
@@ -81,9 +81,13 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
   return (
     firstSlide && (
       <>
-        <h2 css={[TypoBodyMdR, TitleStyle]}>
-          {activeIndex} / {data.length}
-        </h2>
+        <p css={[TypoBodyMdR, TitleStyle]}>
+          <h3>
+            {activeIndex} <span css={Hidden}>번째</span>{' '}
+          </h3>
+          <i>/</i>
+          {data.length}
+        </p>
         <Swiper {...swiperOption}>{children}</Swiper>
       </>
     )
@@ -98,6 +102,14 @@ const TitleStyle = css`
   position: absolute;
   inset: 0;
   bottom: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  i {
+    font-style: normal;
+  }
 `;
 
 export const SlideImgBox = css`

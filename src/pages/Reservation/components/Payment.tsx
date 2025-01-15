@@ -1,3 +1,4 @@
+import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -25,7 +26,8 @@ interface PaymentProps {
 const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) => {
   const { _id } = useParams<{ _id: string }>();
 
-  const baseUrl = process.env.NODE_ENV === 'production' ? 'https://toucheese.store' : 'http://localhost:5173';
+  const baseUrl =
+    process.env.NODE_ENV === 'production' ? 'https://toucheese.store' : 'http://localhost:5173';
   const returnUrl = `${baseUrl}/studio/${_id}/reservation/complete`;
 
   useEffect(() => {
@@ -197,23 +199,65 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed }: PaymentProps) =>
     oPay.open({
       merchantUserKey: 'unique_user_key_1234', // 사용자 고유 키
       merchantPayKey: 'order_' + new Date().getTime(),
-      productName: '테스트 상품', // 상품명
+      productName: '테스트 상품',
       totalPayAmount: 1000, // 결제 금액
       taxScopeAmount: 1000,
       taxExScopeAmount: 0,
       returnUrl,
     });
+
+    // 결제 성공 후 처리
+    window.addEventListener('message', (event) => {
+      if (event.origin !== baseUrl) {
+        return;
+      }
+
+      const data = event.data;
+      if (data.success) {
+        console.log('네이버페이 결제 성공:', data);
+        fetch('/api/verify-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            merchant_uid: data.merchantPayKey, // 주문번호
+          }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              console.log('결제 검증 성공');
+            } else {
+              console.error('결제 검증 실패');
+            }
+          })
+          .catch((error) => {
+            console.error('결제 검증 요청 중 오류 발생:', error);
+          });
+      } else {
+        console.error('네이버페이 결제 실패:', data.message);
+      }
+    });
   };
 
   return (
-    <button
+    <ReservationFooter
+      text="결제하기"
+      type="button"
       onClick={() => {
         onClick();
         handlePayment();
       }}
-    >
-      결제하기
-    </button>
+      disabled={!isAgreed}
+    />
+    // <button
+    //   onClick={() => {
+    //     onClick();
+    //     handlePayment();
+    //   }}
+    // >
+    //   결제하기
+    // </button>
   );
 };
 

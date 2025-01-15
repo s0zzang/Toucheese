@@ -166,3 +166,21 @@ export interface IMenuListRes {
   created_at: string | null;
   updated_at: string | null;
 }
+
+export interface IUser {
+  accessToken: string | null;
+  email: string | null;
+  phone: string | null;
+  registration: 'EMAIL' | 'KAKAO' | 'GOOGLE' | null;
+  user_id: number | null;
+  username: string | null;
+}
+
+export interface IUserRes {
+  accessToken: string;
+  email: string;
+  phone: string;
+  registration: 'EMAIL' | 'KAKAO' | 'GOOGLE';
+  user_id: number;
+  username: string;
+}

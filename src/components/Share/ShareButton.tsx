@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import ShareOptions from '@components/Share/ShareOptions';
+import variables from '@styles/Variables';
 
 interface ShareProps {
   title: string;
@@ -23,6 +24,7 @@ const ShareButton = ({ title, description, imageUrl, webUrl }: ShareProps) => {
       <button onClick={handleOpenBottomSheet}>
         <img src="/img/icon-share.svg" alt="공유하기" />
       </button>
+      <p>공유</p>
       <BottomSheet />
     </div>
   );
@@ -31,7 +33,18 @@ const ShareButton = ({ title, description, imageUrl, webUrl }: ShareProps) => {
 export default ShareButton;
 
 const containerStyle = css`
-  display: inline-block;
-  width: auto;
-  height: auto;
+  button {
+    all: unset;
+    margin-top: -0.35rem;
+    img {
+      width: 2.7rem;
+      height: 2.7rem;
+    }
+  }
+  p {
+    font-size: 0.9rem;
+    color: ${variables.colors.gray600};
+    text-align: center;
+    margin-top: -0.05rem;
+  }
 `;
