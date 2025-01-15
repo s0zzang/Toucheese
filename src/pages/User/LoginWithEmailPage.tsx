@@ -36,14 +36,7 @@ const LoginWithEmailPage = () => {
       }
       const result = await response.json();
       console.log('로그인 성공:', result);
-      setUser({
-        accessToken: result.accessToken,
-        email: result.email,
-        phone: result.phone,
-        registration: result.registration,
-        user_id: result.user_id,
-        username: result.username,
-      });
+      setUser(result);
       openToast('로그인에 성공했습니다.');
       navigate('/');
     } catch (error) {
