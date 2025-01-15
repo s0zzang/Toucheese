@@ -2,7 +2,7 @@
 
 import { css, CSSObject } from '@emotion/react';
 import styled from '@emotion/styled';
-import { convertToDateFormat, lessThan10Add0, useSelectDateStore } from '@store/useSelectDate';
+import { convertToDateFormat, lessThan10Add0, useSelectDateStore } from '@store/useSelectDateStore';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';

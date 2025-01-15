@@ -3,13 +3,21 @@ import Header from '@components/Header/Header';
 import { css } from '@emotion/react';
 import useModal from '@hooks/useModal';
 import PolicyModal from '@pages/Reservation/components/PolicyModal';
-import { TypoBodyMdR, TypoBodyMdSb, TypoBodySmR, TypoCapSmM, TypoTitleXsM, TypoTitleXsR, TypoTitleXsSB } from '@styles/Common';
+import {
+  TypoBodyMdR,
+  TypoBodyMdSb,
+  TypoBodySmR,
+  TypoCapSmM,
+  TypoTitleXsM,
+  TypoTitleXsR,
+  TypoTitleXsSB,
+} from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Payment from './components/Payment';
-import { useSelectTimeStore } from '@store/useSelectTime';
-import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDate';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
+import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
 import useReservationStore from '@store/useReservationStore';
 
 interface FormValues {
@@ -29,7 +37,8 @@ const ReservationCheck = () => {
 
   const { time } = useSelectTimeStore();
   const { date } = useSelectDateStore();
-  const { studioName, totalPrice, options, menuName, basicPrice, menuImage } = useReservationStore();
+  const { studioName, totalPrice, options, menuName, basicPrice, menuImage } =
+    useReservationStore();
   const [isDifferentVisitor, setIsDifferentVisitor] = useState(false);
 
   const {
@@ -111,7 +120,12 @@ const ReservationCheck = () => {
         <p css={TypoTitleXsM}>박지똥</p>
         <p css={TypoTitleXsM}>010-1234-5678</p>
         <div css={checkboxWrapperStyle}>
-          <input type="checkbox" id="visitorCheckbox" css={checkboxStyle} onChange={(e) => setIsDifferentVisitor(e.target.checked)} />
+          <input
+            type="checkbox"
+            id="visitorCheckbox"
+            css={checkboxStyle}
+            onChange={(e) => setIsDifferentVisitor(e.target.checked)}
+          />
           <label htmlFor="visitorCheckbox" css={labelStyle}>
             <img src="/img/icon-check-gray.svg" alt="체크 아이콘" />
             실제 방문자가 달라요
@@ -129,7 +143,12 @@ const ReservationCheck = () => {
                 방문자 이름
               </label>
               <div css={visitorInputStyle}>
-                <input type="text" placeholder="방문자 이름을 입력하세요." id="visitorName" {...register('visitorName', { required: '방문자 이름을 입력해주세요.' })} />
+                <input
+                  type="text"
+                  placeholder="방문자 이름을 입력하세요."
+                  id="visitorName"
+                  {...register('visitorName', { required: '방문자 이름을 입력해주세요.' })}
+                />
                 {visitorName && (
                   <button type="button" onClick={() => setValue('visitorName', '')}>
                     <img src="/img/icon-cancel.svg" alt="입력창 삭제 버튼" />
@@ -214,15 +233,31 @@ const ReservationCheck = () => {
         <h2 css={[TypoTitleXsSB, titleAlignStyle]}>결제수단</h2>
         <div css={[TypoTitleXsR, radioGroupStyle]}>
           <label css={radioLabelStyle}>
-            <input type="radio" name="paymentMethod" value="kakaoPay" onChange={(e) => setPaymentMethod(e.target.value)} defaultChecked />
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="kakaoPay"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              defaultChecked
+            />
             <img src="/img/icon-kakaoPay.svg" alt="카카오페이 로고" />
           </label>
           <label css={radioLabelStyle}>
-            <input type="radio" name="paymentMethod" onChange={(e) => setPaymentMethod(e.target.value)} value="naverPay" />
+            <input
+              type="radio"
+              name="paymentMethod"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              value="naverPay"
+            />
             <img src="/img/icon-naverPay.svg" alt="네이버페이 로고" />
           </label>
           <label css={radioLabelStyle}>
-            <input type="radio" name="paymentMethod" onChange={(e) => setPaymentMethod(e.target.value)} value="creditCard" />
+            <input
+              type="radio"
+              name="paymentMethod"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              value="creditCard"
+            />
             <span>일반신용카드</span>
           </label>
         </div>
@@ -265,7 +300,12 @@ const ReservationCheck = () => {
           </div>
         </div>
       </div>
-      <Payment onClick={handleSubmitForm} trigger={trigger} paymentMethod={paymentMethod} isAgreed={isAgreed} />
+      <Payment
+        onClick={handleSubmitForm}
+        trigger={trigger}
+        paymentMethod={paymentMethod}
+        isAgreed={isAgreed}
+      />
     </>
   );
 };

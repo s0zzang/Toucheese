@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useDimSwiperStore } from '@store/useDimSwiper';
+import { useDimSwiperStore } from '@store/useDimSwiperStore';
 import { Dispatch, ReactNode, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { Navigation, Virtual } from 'swiper/modules';
 import { Swiper, SwiperClass } from 'swiper/react';

@@ -1,8 +1,8 @@
 import Calendar from '@components/Calendar/Calendar';
 import { DividerStyle } from '@styles/Common';
 import SelectTime from './SelectTime';
-import { useSelectTimeStore } from '@store/useSelectTime';
-import { convertToDateFormat, today, useSelectDateStore } from '@store/useSelectDate';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
+import { convertToDateFormat, today, useSelectDateStore } from '@store/useSelectDateStore';
 import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
 import { Dispatch, SetStateAction } from 'react';

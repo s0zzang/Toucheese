@@ -1,7 +1,7 @@
 import Calendar from '@components/Calendar/Calendar';
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, test } from 'vitest';
-import { convertToDateFormat } from '@store/useSelectDate';
+import { convertToDateFormat } from '@store/useSelectDateStore';
 import userEvent from '@testing-library/user-event';
 
 describe('달력 컴포넌트', () => {

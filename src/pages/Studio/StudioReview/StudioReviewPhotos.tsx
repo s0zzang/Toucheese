@@ -5,7 +5,7 @@ import MasonryList from '@components/Masonry/Masonry';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import DimmedModal from '@pages/Studio/components/DimmedModal';
-import { useDimSwiperStore } from '@store/useDimSwiper';
+import { useDimSwiperStore } from '@store/useDimSwiperStore';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';

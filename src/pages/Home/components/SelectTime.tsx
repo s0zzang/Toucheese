@@ -2,7 +2,7 @@
 
 import Button from '@components/Button/Button';
 import { css } from '@emotion/react';
-import { useSelectTimeStore } from '@store/useSelectTime';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import { Hidden, TypoBodyMdM, TypoBodySmR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useMemo } from 'react';
