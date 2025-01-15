@@ -7,7 +7,7 @@ import EmptyMessage from '@components/Message/EmptyMessage';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
 import { css } from '@emotion/react';
 import useModal from '@hooks/useModal';
-import { useDimSwiperStore } from '@store/useDimSwiper';
+import { useDimSwiperStore } from '@store/useDimSwiperStore';
 import { useQuery } from '@tanstack/react-query';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { IPortfolio, IStudioRes } from 'types/types';

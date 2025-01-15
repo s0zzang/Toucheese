@@ -3,7 +3,7 @@
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import LocalDateSelectionModal from '@pages/Home/components/LocalDateSelectionModal';
-import { changeformatDateForUi } from '@store/useSelectDate';
+import { changeformatDateForUi } from '@store/useSelectDateStore';
 import { defaultUserState } from '@store/useUserStore';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
