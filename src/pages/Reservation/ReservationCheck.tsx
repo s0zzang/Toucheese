@@ -3,6 +3,9 @@ import Header from '@components/Header/Header';
 import { css } from '@emotion/react';
 import useModal from '@hooks/useModal';
 import PolicyModal from '@pages/Reservation/components/PolicyModal';
+import useReservationStore from '@store/useReservationStore';
+import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import {
   TypoBodyMdR,
   TypoBodyMdSb,
@@ -16,10 +19,6 @@ import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Payment from './components/Payment';
-import { useSelectTimeStore } from '@store/useSelectTimeStore';
-import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
-import useReservationStore from '@store/useReservationStore';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 interface FormValues {
   visitorName: string;
@@ -52,8 +51,6 @@ const ReservationCheck = () => {
     formState: { errors },
     trigger,
   } = useForm<FormValues>({ mode: 'onChange' });
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const [visitorName, visitorContact] = watch(['visitorName', 'visitorContact']);
 
@@ -80,7 +77,6 @@ const ReservationCheck = () => {
     if (isValid) {
       const formData = getValues();
       console.log('데이터', formData);
-      navigate(`${pathname.split('payment')[0]}complete`);
     }
   };
 
