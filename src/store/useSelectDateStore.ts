@@ -18,7 +18,7 @@ export const getDay = (date: Date) => {
   return week[date.getDay()];
 };
 
-export const changeformatDateForUi = ({ date, time }: { date: string; time: Set<string> }) => {
+export const changeformatDateForUi = ({ date, time }: { date: string; time: string[] }) => {
   if (!date) return null;
   const [year, month, day] = date.split('-');
   const dayOfWeek = getDay(new Date(date));
@@ -31,7 +31,7 @@ export const changeformatDateForUi = ({ date, time }: { date: string; time: Set<
       ? `${[...sortedTimes][0]} 외 ${sortedTimes.length - 1}개`
       : sortedTimes[0];
 
-  return `${selectedDateForUi}${time.size ? ` / ${selectedTimeForUi}` : ''}`;
+  return `${selectedDateForUi}${time.length ? ` / ${selectedTimeForUi}` : ''}`;
 };
 
 export const useSelectDateStore = create(

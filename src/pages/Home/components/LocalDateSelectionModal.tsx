@@ -35,7 +35,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const setParams = () => {
     // 시간을 다중 선택한 경우, times=시간17times=시간2 형태로 데이터 요청
     const times = [...time].map((time) => `times=${time}`).join('&');
-    const timesToParams = time.size ? `&${times}` : '';
+    const timesToParams = time.length ? `&${times}` : '';
 
     // 주소를 '전체보기'로 선택한 경우, 파라미터 요청 X
     const addressToParams = selectedLocation === '전체보기' ? '' : `&addressGu=${selectedLocation}`;

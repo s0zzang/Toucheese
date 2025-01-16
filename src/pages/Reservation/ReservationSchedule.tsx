@@ -43,7 +43,7 @@ const ReservationSchedule = () => {
           </dl>
           <dl className="timeBox">
             <dt css={Hidden}>시간</dt>
-            <dd>{time.size ? time : <span>시간을 선택해주세요</span>}</dd>
+            <dd>{time.length ? time : <span>시간을 선택해주세요</span>}</dd>
           </dl>
         </div>
 
@@ -51,7 +51,7 @@ const ReservationSchedule = () => {
           text="다음"
           type="button"
           onClick={() => navigate(`${pathname}/payment`)}
-          disabled={!(time.size > 0)}
+          disabled={!(time.length > 0)}
         />
       </div>
     </>

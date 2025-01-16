@@ -2,14 +2,14 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface TimeState {
-  time: Set<string>;
+  time: string[];
   setTime: (date: string, type: string) => void;
 }
 
 export const useSelectTimeStore = create(
   persist<TimeState>(
     (set) => ({
-      time: new Set(),
+      time: [],
       setTime: (newTime: string, type: string) =>
         set((state) => {
           const updatedTime = new Set(state.time);
@@ -25,7 +25,7 @@ export const useSelectTimeStore = create(
             updatedTime.add(newTime);
           }
 
-          return { time: updatedTime };
+          return { time: [...updatedTime] };
         }),
     }),
     { name: 'selectTimeStore', storage: createJSONStorage(() => sessionStorage) },
