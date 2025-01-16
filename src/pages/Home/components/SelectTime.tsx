@@ -49,7 +49,7 @@ const SelectTime = ({ type }: ITimeProp) => {
                   variant="white"
                   size="small"
                   width="max"
-                  active={selectedTime.includes(time)}
+                  active={selectedTime.length !== 0 && selectedTime.includes(time)}
                   onClick={() => handleTImeClick(time)}
                 />
                 <h4 css={Hidden}>{time}</h4>
@@ -69,7 +69,7 @@ const SelectTime = ({ type }: ITimeProp) => {
                   variant="white"
                   size="small"
                   width="max"
-                  active={selectedTime.includes(time)}
+                  active={selectedTime.length !== 0 && selectedTime.includes(time)}
                   onClick={() => handleTImeClick(time)}
                 />
                 <h4 css={Hidden}>{time}</h4>
@@ -86,7 +86,7 @@ const SelectTime = ({ type }: ITimeProp) => {
         )}
 
         <h3 css={Hidden}>
-          선택된 시간: <span className="selected">{[...selectedTime].join(',')}</span>
+          선택된 시간: <span className="selected">{selectedTime.join(',')}</span>
         </h3>
       </section>
     </>
