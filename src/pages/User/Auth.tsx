@@ -12,7 +12,6 @@ const Auth = () => {
   const handleKakaoLogin = () => {
     const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
     const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
-
     console.log('KAKAO_CLIENT_ID:', KAKAO_CLIENT_ID);
     console.log('REDIRECT_URI:', REDIRECT_URI);
     // 카카오 공식 OAuth 엔드포인트 사용

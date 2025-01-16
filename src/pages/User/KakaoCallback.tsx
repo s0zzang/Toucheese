@@ -6,11 +6,12 @@ const KakaoCallback = () => {
 
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get('code');
-    console.log(code);
 
     const handleKakaoLogin = async () => {
       try {
-        if (!code) return;
+        if (!code) {
+          throw new Error('인증 코드를 찾을 수 없습니다.');
+        }
 
         const response = await fetch(
           `${import.meta.env.VITE_TOUCHEESE_API}/user/auth/kakao/callback`,
@@ -24,10 +25,17 @@ const KakaoCallback = () => {
         );
 
         const result = await response.json();
-        console.log(result);
-        // 로그인 성공 시 useUserStore의 상태를 업데이트
-        // 회원가입 된 계정이 없는 경우는 회원가입
-        navigate('/');
+        console.log('result: 필요함', result);
+
+        if (result.status.length > 1) {
+          navigate('user/AuthVerification', {
+            state: {
+              status: result,
+            },
+          });
+        } else {
+          navigate('/');
+        }
       } catch (error) {
         console.error('카카오 로그인 에러:', error);
         navigate('/login');
