@@ -42,7 +42,7 @@ export const useSelectDateStore = create(
     }),
     {
       name: 'selectDateStore',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

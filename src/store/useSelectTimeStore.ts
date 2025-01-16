@@ -28,6 +28,6 @@ export const useSelectTimeStore = create(
           return { time: updatedTime };
         }),
     }),
-    { name: 'selectTimeStore', storage: createJSONStorage(() => localStorage) },
+    { name: 'selectTimeStore', storage: createJSONStorage(() => sessionStorage) },
   ),
 );
