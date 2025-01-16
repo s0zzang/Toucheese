@@ -7,28 +7,42 @@ const KakaoCallback = () => {
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get('code');
 
-    console.log(code);
+    const handleKakaoLogin = async () => {
+      try {
+        if (!code) {
+          throw new Error('인증 코드를 찾을 수 없습니다.');
+        }
 
-    if (code) {
-      // 백엔드 서버에 인가 코드를 전송하여 토큰을 받아옵니다
-      fetch(`${import.meta.env.VITE_TOUCHEESE_API}/user/auth/kakao/callback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code: code }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // 토큰을 로컬 스토리지에 저장
-          localStorage.setItem('token', data.token);
-          navigate('/'); // 메인 페이지로 이동
-        })
-        .catch((error) => {
-          console.error('카카오 로그인 에러:', error);
-          navigate('/login');
-        });
-    }
+        const response = await fetch(
+          `${import.meta.env.VITE_TOUCHEESE_API}/user/auth/kakao/callback`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code }),
+          },
+        );
+
+        const result = await response.json();
+        console.log('result: 필요함', result);
+
+        if (result.status.length > 1) {
+          navigate('user/AuthVerification', {
+            state: {
+              status: result,
+            },
+          });
+        } else {
+          navigate('/');
+        }
+      } catch (error) {
+        console.error('카카오 로그인 에러:', error);
+        navigate('/login');
+      }
+    };
+
+    handleKakaoLogin();
   }, [navigate]);
 
   return <div>로그인 처리중...</div>;

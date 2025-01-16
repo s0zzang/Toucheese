@@ -5,23 +5,13 @@ import { css } from '@emotion/react';
 import LoginTypeButton from './components/LoginTypeButton';
 import { Link, useNavigate } from 'react-router-dom';
 import variables from '@styles/Variables';
-import { useEffect } from 'react';
 
 const Auth = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem('AccessToken');
-    if (token) {
-      alert('이미 로그인되어 있습니다.');
-      navigate('/');
-    }
-  }, [navigate]);
-
   const handleKakaoLogin = () => {
     const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
     const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
-
     console.log('KAKAO_CLIENT_ID:', KAKAO_CLIENT_ID);
     console.log('REDIRECT_URI:', REDIRECT_URI);
     // 카카오 공식 OAuth 엔드포인트 사용
