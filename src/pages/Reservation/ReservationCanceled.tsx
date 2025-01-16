@@ -8,7 +8,7 @@ const ReservationCanceled = () => {
   // 임시 데이터
   const id = 1;
   const date = convertToDateFormat(today);
-  const time = new Set(['13:00']);
+  const time = ['13:00'];
 
   const reservationData = {
     studio: '그믐달 스튜디오',
@@ -24,11 +24,11 @@ const ReservationCanceled = () => {
   };
 
   const handleToDetail = () => {
-    navigate(`/reservation/${id}`);
+    navigate(`/reservation/${id}`, { replace: true });
   };
 
   const handleToHome = () => {
-    navigate('/');
+    navigate('/', { replace: true });
   };
 
   return (

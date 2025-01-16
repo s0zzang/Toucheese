@@ -19,9 +19,7 @@ const ReservationComplete = () => {
     clearReservationInfo,
   } = useReservationStore();
   const { date, setDate } = useSelectDateStore();
-  // setTime 추가 예정
-  const { time } = useSelectTimeStore();
-  console.log(date, time);
+  const { time, setTime } = useSelectTimeStore();
 
   // [임시] 예약 생성 후 response로 id를 전달받아 사용 예정
   const id = 1;
@@ -33,18 +31,20 @@ const ReservationComplete = () => {
     options,
   };
 
-  const handleToDetail = () => {
+  const resetReservationInfo = () => {
     clearReservationInfo();
     setDate(convertToDateFormat(today));
-    // setTime('reset');
-    navigate(`/reservation/${id}`);
+    setTime('reset');
+  };
+
+  const handleToDetail = () => {
+    resetReservationInfo();
+    navigate(`/reservation/${id}`, { replace: true });
   };
 
   const handleToHome = () => {
-    clearReservationInfo();
-    setDate(convertToDateFormat(today));
-    // setTime('reset');
-    navigate('/');
+    resetReservationInfo();
+    navigate('/', { replace: true });
   };
 
   return (
