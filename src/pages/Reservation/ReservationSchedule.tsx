@@ -6,18 +6,25 @@ import SelectTime from '@pages/Home/components/SelectTime';
 import { DividerStyle, Hidden } from '@styles/Common';
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
-import { getDay, useSelectDateStore } from '@store/useSelectDateStore';
+import { convertToDateFormat, getDay, today, useSelectDateStore } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 const ReservationSchedule = () => {
-  const { time } = useSelectTimeStore();
-  const { date } = useSelectDateStore();
+  const { time, setTime } = useSelectTimeStore();
+  const { date, setDate } = useSelectDateStore();
   const [_, month, day] = date.split('-');
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  // 필터링 시 날짜, 시간 초기화
+  useEffect(() => {
+    setDate(convertToDateFormat(today));
+    setTime('reset');
+  }, []);
 
   return (
     <>
