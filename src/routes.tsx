@@ -20,6 +20,9 @@ const MyPage = lazy(() => import('@pages/User/MyPage'));
 const ReservationSchedule = lazy(() => import('@pages/Reservation/ReservationSchedule'));
 const ReservationCheck = lazy(() => import('@pages/Reservation/ReservationCheck'));
 const ReservationComplete = lazy(() => import('@pages/Reservation/ReservationComplete'));
+const ReservationList = lazy(() => import('@pages/Reservation/ReservationList'));
+const ReservationDetail = lazy(() => import('@pages/Reservation/ReservationDetail'));
+const ReservationCanceled = lazy(() => import('@pages/Reservation/ReservationCanceled'));
 
 const router = createBrowserRouter([
   {
@@ -101,6 +104,22 @@ const router = createBrowserRouter([
             path: 'complete',
             element: <ReservationComplete />,
           },
+        ],
+      },
+    ],
+  },
+  {
+    path: 'reservation',
+    children: [
+      {
+        path: 'list',
+        element: <ReservationList />,
+      },
+      {
+        path: ':_id',
+        children: [
+          { index: true, element: <ReservationDetail /> },
+          { path: 'canceled', element: <ReservationCanceled /> },
         ],
       },
     ],
