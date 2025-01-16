@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface DateState {
   date: string;
@@ -33,7 +34,15 @@ export const changeformatDateForUi = ({ date, time }: { date: string; time: Set<
   return `${selectedDateForUi}${time.size ? ` / ${selectedTimeForUi}` : ''}`;
 };
 
-export const useSelectDateStore = create<DateState>((set) => ({
-  date: convertToDateFormat(today),
-  setDate: (newDate) => set({ date: newDate }),
-}));
+export const useSelectDateStore = create(
+  persist<DateState>(
+    (set) => ({
+      date: convertToDateFormat(today),
+      setDate: (newDate) => set({ date: newDate }),
+    }),
+    {
+      name: 'selectDateStore',
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
+);
