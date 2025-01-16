@@ -20,7 +20,7 @@ const BookingSearchContainer = () => {
   const [searchParams] = useSearchParams();
   const searchParamsDateTime = changeformatDateForUi({
     date: searchParams.get('date')!,
-    time: new Set(searchParams.getAll('times')),
+    time: searchParams.getAll('times'),
   });
 
   // user 정보 로컬스토리지에서 가져오기
