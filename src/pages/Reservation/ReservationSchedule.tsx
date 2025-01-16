@@ -30,8 +30,10 @@ const ReservationSchedule = () => {
 
       <Header title="예약하기" />
 
-      <Calendar style={DividerStyle} />
-      <SelectTime type="reservation" />
+      <div css={contentBox}>
+        <Calendar style={DividerStyle} />
+        <SelectTime type="reservation" />
+      </div>
 
       <div css={fixedBox}>
         <div css={finalDate}>
@@ -58,11 +60,15 @@ const ReservationSchedule = () => {
 
 export default ReservationSchedule;
 
+const contentBox = css`
+  padding-bottom: 8rem;
+`;
+
 const fixedBox = css`
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 8.1rem;
+  bottom: 0;
   border-top: 1px solid ${variables.colors.gray300};
   background: #fff;
 `;
@@ -72,6 +78,12 @@ const finalDate = css`
   display: flex;
   gap: 1.4rem;
   align-items: center;
+
+  // ReservationFooter
+  & + div {
+    position: initial;
+    inset: unset;
+  }
 
   dl {
     padding-left: 2rem;
