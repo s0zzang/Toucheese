@@ -3,16 +3,18 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface TimeState {
   time: string[];
-  setTime: (date: string, type: string) => void;
+  setTime: (date: string, type?: string) => void;
 }
 
 export const useSelectTimeStore = create(
   persist<TimeState>(
     (set) => ({
       time: [],
-      setTime: (newTime: string, type: string) =>
+      setTime: (newTime: string, type?: string) =>
         set((state) => {
           const updatedTime = new Set(state.time);
+
+          if (newTime === 'reset') updatedTime.clear();
 
           if (type === 'filter') {
             if (newTime === '') updatedTime.clear();
