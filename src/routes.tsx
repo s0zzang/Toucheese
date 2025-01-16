@@ -17,6 +17,12 @@ const StudioReview = lazy(() => import('@pages/Studio/StudioReview/StudioReview'
 const StudioReviewPhotos = lazy(() => import('@pages/Studio/StudioReview/StudioReviewPhotos'));
 const SignUp = lazy(() => import('@pages/User/SignUp'));
 const MyPage = lazy(() => import('@pages/User/MyPage'));
+const Profile = lazy(() => import('@pages/User/Profile'));
+const ChangeProfile = lazy(() => import('@pages/User/ChangeProfile'));
+const PasswordConfirm = lazy(() => import('@pages/User/PasswordConfirm'));
+const ChangePassword = lazy(() => import('@pages/User/ChangePassword'));
+const MyReviews = lazy(() => import('@pages/User/MyReviews'));
+const BookmarkedStudios = lazy(() => import('@pages/User/BookmarkedStudios'));
 const ReservationSchedule = lazy(() => import('@pages/Reservation/ReservationSchedule'));
 const ReservationCheck = lazy(() => import('@pages/Reservation/ReservationCheck'));
 const ReservationComplete = lazy(() => import('@pages/Reservation/ReservationComplete'));
@@ -52,6 +58,30 @@ const router = createBrowserRouter([
       {
         path: 'mypage',
         element: <MyPage />,
+      },
+      {
+        path: 'profile',
+        element: <Profile />,
+      },
+      {
+        path: 'profile/edit',
+        element: <ChangeProfile />,
+      },
+      {
+        path: 'profile/passwordConfirm',
+        element: <PasswordConfirm />,
+      },
+      {
+        path: 'profile/passwordChange',
+        element: <ChangePassword />,
+      },
+      {
+        path: 'myReviews',
+        element: <MyReviews />,
+      },
+      {
+        path: 'bookmarks',
+        element: <BookmarkedStudios />,
       },
     ],
   },
