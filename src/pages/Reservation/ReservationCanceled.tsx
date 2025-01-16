@@ -1,16 +1,13 @@
 import { changeformatDateForUi, convertToDateFormat, today } from '@store/useSelectDateStore';
-import { useNavigate } from 'react-router-dom';
 import CompleteMessage from './components/CompleteMessage';
 
 const ReservationCanceled = () => {
-  const navigate = useNavigate();
-
   // 임시 데이터
-  const id = 1;
   const date = convertToDateFormat(today);
   const time = ['13:00'];
 
   const reservationData = {
+    id: 1,
     studio: '그믐달 스튜디오',
     reservedDateTime: changeformatDateForUi({ date, time }),
     reservedMenu: '프로필 A 반신 촬영',
@@ -23,22 +20,7 @@ const ReservationCanceled = () => {
     ],
   };
 
-  const handleToDetail = () => {
-    navigate(`/reservation/${id}`, { replace: true });
-  };
-
-  const handleToHome = () => {
-    navigate('/', { replace: true });
-  };
-
-  return (
-    <CompleteMessage
-      type="canceled"
-      data={reservationData}
-      handleToDetail={handleToDetail}
-      handleToHome={handleToHome}
-    />
-  );
+  return <CompleteMessage type="canceled" data={reservationData} resetInfo={() => {}} />;
 };
 
 export default ReservationCanceled;

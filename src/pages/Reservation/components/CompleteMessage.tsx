@@ -11,12 +11,14 @@ import {
   TypoTitleXsM,
 } from '@styles/Common';
 import variables from '@styles/Variables';
+import { useNavigate } from 'react-router-dom';
 
 interface IStepStyle {
   type: 'active' | 'inactive';
 }
 
 interface IData {
+  id: number;
   studio: string | undefined;
   reservedMenu: string | undefined;
   reservedDateTime: string | null;
@@ -26,14 +28,14 @@ interface IData {
 const CompleteMessage = ({
   type,
   data,
-  handleToDetail,
-  handleToHome,
+  resetInfo,
 }: {
   type: 'reserved' | 'canceled';
   data: IData;
-  handleToDetail: () => void;
-  handleToHome: () => void;
+  resetInfo: () => void;
 }) => {
+  const navigate = useNavigate();
+
   const reservedOptions = data.options.map((option, index) => (
     <p key={index} css={TypoBodySmR} className="content-item-options">
       {option.optionName}
@@ -122,7 +124,8 @@ const CompleteMessage = ({
           variant="gray"
           active={true}
           onClick={() => {
-            handleToDetail();
+            resetInfo();
+            navigate(`/reservation/${data.id}`, { replace: true });
           }}
         />
         <Button
@@ -130,7 +133,8 @@ const CompleteMessage = ({
           variant="black"
           active={true}
           onClick={() => {
-            handleToHome();
+            resetInfo();
+            navigate('/', { replace: true });
           }}
         />
       </FooterButtonStyle>
