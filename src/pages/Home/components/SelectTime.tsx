@@ -49,7 +49,7 @@ const SelectTime = ({ type }: ITimeProp) => {
                   variant="white"
                   size="small"
                   width="max"
-                  active={selectedTime.length !== 0 && selectedTime.includes(time)}
+                  active={!!selectedTime.length && selectedTime.includes(time)}
                   onClick={() => handleTImeClick(time)}
                 />
                 <h4 css={Hidden}>{time}</h4>
@@ -69,7 +69,7 @@ const SelectTime = ({ type }: ITimeProp) => {
                   variant="white"
                   size="small"
                   width="max"
-                  active={selectedTime.length !== 0 && selectedTime.includes(time)}
+                  active={!!selectedTime.length && selectedTime.includes(time)}
                   onClick={() => handleTImeClick(time)}
                 />
                 <h4 css={Hidden}>{time}</h4>
