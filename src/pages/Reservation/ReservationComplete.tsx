@@ -6,12 +6,9 @@ import {
   useSelectDateStore,
 } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
-import { useNavigate } from 'react-router-dom';
 import CompleteMessage from './components/CompleteMessage';
 
 const ReservationComplete = () => {
-  const navigate = useNavigate();
-
   const {
     studioName: studio,
     menuName: reservedMenu,
@@ -19,41 +16,25 @@ const ReservationComplete = () => {
     clearReservationInfo,
   } = useReservationStore();
   const { date, setDate } = useSelectDateStore();
-  // setTime 추가 예정
-  const { time } = useSelectTimeStore();
-  console.log(date, time);
+  const { time, setTime } = useSelectTimeStore();
 
   // [임시] 예약 생성 후 response로 id를 전달받아 사용 예정
-  const id = 1;
-
   const reservationData = {
+    id: 1,
     studio,
     reservedDateTime: changeformatDateForUi({ date, time }),
     reservedMenu,
     options,
   };
 
-  const handleToDetail = () => {
+  const resetReservationInfo = () => {
     clearReservationInfo();
     setDate(convertToDateFormat(today));
-    // setTime('reset');
-    navigate(`/reservation/${id}`);
-  };
-
-  const handleToHome = () => {
-    clearReservationInfo();
-    setDate(convertToDateFormat(today));
-    // setTime('reset');
-    navigate('/');
+    setTime('reset');
   };
 
   return (
-    <CompleteMessage
-      type="reserved"
-      data={reservationData}
-      handleToDetail={handleToDetail}
-      handleToHome={handleToHome}
-    />
+    <CompleteMessage type="reserved" data={reservationData} resetInfo={resetReservationInfo} />
   );
 };
 
