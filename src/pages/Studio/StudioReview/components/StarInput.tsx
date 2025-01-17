@@ -4,25 +4,45 @@ import { TypoBodyMdR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 
-const StarInput = () => {
-  const [starState, setStarState] = useState<number[]>([0, 0, 0, 0, 0]);
+// 별점 상수 5개
+const TOTAL_STARS = 5;
 
-  const getRatingText = (stars: number[]) => {
-    const count = stars.filter((s) => s === 1).length;
-    switch (count) {
-      case 1:
-        return '별로였어요';
-      case 2:
-        return '그저 그랬어요';
-      case 3:
-        return '괜찮았어요';
-      case 4:
-        return '좋았어요';
-      case 5:
-        return '최고였어요!';
-      default:
-        return '별점을 입력해주세요';
-    }
+// 별점 텍스트 점수 따라 변환
+const RATING_TEXT: { [key: number]: string } = {
+  0: '별점을 입력해주세요',
+  1: '별로였어요',
+  2: '그저 그랬어요',
+  3: '괜찮았어요',
+  4: '좋았어요',
+  5: '최고였어요!',
+};
+
+// 별점 스타일
+const starStyles = css`
+  margin-right: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: scale(1.2);
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+`;
+
+// 별점 컴포넌트 부모 컴포넌트로 전송 함수
+interface StarInputProps {
+  onRatingChange: (rating: number) => void;
+}
+
+/** 별점 등록 컴포넌트  */
+const StarInput = ({ onRatingChange }: StarInputProps) => {
+  const [rating, setRating] = useState(0);
+
+  const handleStarClick = (clickedIndex: number) => {
+    const newRating = clickedIndex + 1;
+    setRating(newRating);
+    onRatingChange(newRating);
   };
 
   return (
@@ -32,28 +52,13 @@ const StarInput = () => {
         align-items: center;
       `}
     >
-      {starState.map((star, index) => (
+      {Array.from({ length: TOTAL_STARS }, (_, index) => (
         <img
           key={index}
-          src={star === 1 ? '/img/icon-star-filled.svg' : '/img/icon-star-notfilled.svg'}
-          alt="별점"
-          css={css`
-            margin-right: 5px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            &:hover {
-              transform: scale(1.2);
-            }
-            &:active {
-              transform: scale(0.9);
-            }
-          `}
-          onClick={() => {
-            const newStarState = Array(5)
-              .fill(0)
-              .map((_, i) => (i <= index ? 1 : 0));
-            setStarState(newStarState);
-          }}
+          src={index < rating ? '/img/icon-star-filled.svg' : '/img/icon-star-notfilled.svg'}
+          alt={`별점 ${index + 1}점`}
+          css={starStyles}
+          onClick={() => handleStarClick(index)}
         />
       ))}
       <span
@@ -62,7 +67,7 @@ const StarInput = () => {
           color: ${variables.colors.gray600};
         `}
       >
-        {getRatingText(starState)}
+        {RATING_TEXT[rating]}
       </span>
     </div>
   );
