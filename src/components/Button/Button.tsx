@@ -126,6 +126,13 @@ const Button = ({
       color:${variables.colors.white};
       `}
 
+    ${variant === 'deepGray' &&
+    active &&
+    `
+      background-color: ${variables.colors.black};
+      color:${variables.colors.white};
+      `}
+
     ${variant === 'white' &&
     ` background-color: ${variables.colors.white}; 
       color:${variables.colors.gray900};

@@ -6,11 +6,11 @@ import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import { TypoTitleMdSb } from '@styles/Common';
 import { useForm } from 'react-hook-form';
-
-const IMPCode = import.meta.env.VITE_AUTH_IMP_CODE;
-const channelKey = import.meta.env.VITE_AUTH_CHANNEL_KEY;
+import useSignupStore from '@store/useSignupStore';
+import { useState } from 'react';
 
 const SignUp = () => {
+  /** react-hook-form */
   const {
     register,
     handleSubmit,
@@ -18,50 +18,93 @@ const SignUp = () => {
     watch,
   } = useForm();
 
-  const onSubmit = (data: any) => console.log(data);
+  /** zustand 스토어에 데이터 저장 */
+  // 이후 사용될 Phone, name 추가 호출 필요
+  const { setSignupData } = useSignupStore();
+  const [emailError, setEmailError] = useState<string | null>(null);
 
-  /** 간편 본인인증 실행 함수 */
-  const handleAuth = () => {
-    const { IMP } = window;
-    IMP.init(IMPCode);
-
-    IMP.certification(
-      {
-        channelKey: channelKey,
-        merchant_uid: 'test_m5nmk62j',
-        m_redirect_url: 'http://localhost:5173',
-        popup: true,
-      },
-      async (res: {
-        success: boolean;
-        imp_uid: string;
-        merchant_uid: string;
-        pg_provider: 'inicis_unified';
-        pg_type: 'certification';
-        error_code: string;
-        error_msg: string;
-      }) => {
-        try {
-          if (res.success) {
-            console.log(res);
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      },
-    );
+  const handleVerifyComplete = () => {
+    console.log('본인인증 완료');
   };
+
+  const CheckEmail = async (email: string) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/auth/register/check`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error('서버 오류가 발생했습니다.');
+      }
+
+      const result = await response.json();
+      return { success: result.success, message: result.message };
+    } catch (error) {
+      console.error('중복확인 오류:', error);
+      return { success: false, message: '중복확인 요청에 실패했습니다.' };
+    }
+  };
+
+  const handleEmailCheck = async () => {
+    const email = watch('email');
+    if (!email) {
+      setEmailError('이메일을 입력하세요.');
+      return;
+    }
+
+    const { success, message } = await CheckEmail(email);
+
+    if (success) {
+      setEmailError(null);
+      alert('사용 가능한 이메일입니다.');
+    } else {
+      setEmailError(message);
+    }
+  };
+
+  const onSubmit = (data: any) => {
+    setSignupData(data);
+  };
+
+  /** local storage에 저장된 전화번호, 이름 불러오기 */
+  const loadLocalStorageData = (key: string) => {
+    /** key에 해당하는 데이터 호출 */
+    const localData = localStorage.getItem(key);
+    if (!localData) {
+      return null;
+    }
+    /** 문자열로 저장된 데이터 객체로 변환 */
+    try {
+      const parsedData = JSON.parse(localData);
+      return parsedData;
+    } catch (error) {
+      console.error('JSON 파싱 오류', error);
+      return null;
+    }
+  };
+  loadLocalStorageData('signup-storage');
 
   return (
     <>
       <BackButton />
-      <h2 css={pageTitleStyle}>회원가입</h2>
+      <h2 css={pageTitleStyle}>
+        이메일과 비밀번호를
+        <br /> 설정해주세요.
+      </h2>
       <form noValidate onSubmit={handleSubmit(onSubmit)} css={formStyle}>
         {/* 이메일 */}
         <div css={containerStyle}>
           <Input
             labelName="아이디 (이메일)"
             type="email"
+            onChange={(e) => {
+              console.log('이메일 변경:', e.target.value);
+              register('email').onChange(e);
+            }}
             hasCheckButton
             checkButtonText="중복확인"
             placeholder="이메일 주소를 입력하세요"
@@ -72,7 +115,8 @@ const SignUp = () => {
                 message: '올바른 이메일 형식이 아닙니다.',
               },
             })}
-            error={errors.email?.message?.toString()}
+            onCheck={handleEmailCheck}
+            error={emailError || errors.email?.message?.toString()}
           />
 
           {/* 비밀번호 */}
@@ -116,43 +160,16 @@ const SignUp = () => {
             })}
             error={errors.passwordConfirm?.message?.toString()}
           />
-
-          {/* 이름 */}
-          <Input
-            labelName="이름"
-            type="name"
-            placeholder="실명을 입력하세요."
-            register={register('name', {
-              required: '이름은 필수입니다',
-              minLength: {
-                value: 2,
-                message: '이름은 2자 이상이어야 합니다',
-              },
-            })}
-            error={errors.name?.message?.toString()}
-          />
-
-          {/* 휴대폰 번호 */}
-          <Input
-            labelName="휴대폰 번호"
-            type="phone"
-            placeholder="‘-’구분없이 입력하세요"
-            onCheck={handleAuth}
-            hasCheckButton
-            checkButtonText="인증하기"
-            register={register('phone', {
-              required: '휴대폰 번호는 필수입니다.',
-              minLength: {
-                value: 11,
-                message: '올바른 휴대폰 번호 형식이 아닙니다.',
-              },
-            })}
-            error={errors.phone?.message?.toString()}
-          />
         </div>
 
         <div css={buttonStyle}>
-          <Button type="submit" text="가입하기" size="large" variant="deepGray" />
+          <Button
+            onClick={handleVerifyComplete}
+            type="submit"
+            text="가입하기"
+            size="large"
+            variant="deepGray"
+          />
         </div>
       </form>
     </>

@@ -1,5 +1,5 @@
 import Home from '@pages/Home/Home';
-import { convertToDateFormat } from '@store/useSelectDate';
+import { convertToDateFormat } from '@store/useSelectDateStore';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

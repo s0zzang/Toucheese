@@ -2,7 +2,7 @@
 
 import { css, CSSObject } from '@emotion/react';
 import styled from '@emotion/styled';
-import { convertToDateFormat, lessThan10Add0, useSelectDateStore } from '@store/useSelectDate';
+import { convertToDateFormat, lessThan10Add0, useSelectDateStore } from '@store/useSelectDateStore';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
@@ -89,6 +89,8 @@ const Calendar = ({ style }: CalendarProp) => {
 
   return (
     <CalendarWrStyle css={style}>
+      <h2 css={Hidden}>날짜 선택</h2>
+
       <TopStyle>
         <TodayStyle onClick={moveToToday}>
           오늘 <span css={Hidden}>날짜로 이동</span>

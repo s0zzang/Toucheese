@@ -9,11 +9,13 @@ import React, { useState } from 'react';
 interface InputProps {
   labelName: string;
   type: string;
+  value?: string;
   placeholder: string;
   error?: string;
   register?: UseFormRegisterReturn;
   hasCheckButton?: boolean;
   onCheck?: () => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   checkButtonText?: string;
   inputWidth?: string;
 }
@@ -130,7 +132,7 @@ const inputStyle = (error?: string) => css`
     border: 1px solid ${error ? 'red' : variables.colors.gray300};
     border-radius: 0.6rem;
     background-color: ${variables.colors.white};
-    font-size: 1.4rem;
+    font-size: 1.6rem;
 
     ${error && `animation: shake 0.3s ease-in-out 2;`}
   }

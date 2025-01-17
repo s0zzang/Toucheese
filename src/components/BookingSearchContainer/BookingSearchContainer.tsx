@@ -3,9 +3,13 @@
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import LocalDateSelectionModal from '@pages/Home/components/LocalDateSelectionModal';
+import { changeformatDateForUi } from '@store/useSelectDateStore';
+import { defaultUserState } from '@store/useUserStore';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useNavigate } from 'react-router-dom';
+import { getLocalStorageItem } from '@utils/getLocalStorageItem';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { IUser } from 'types/types';
 
 /** 메인 전체 지역 예약 날짜 선택 등  */
 // button => 모달 오픈용  searchStyle => 검색용
@@ -13,17 +17,25 @@ const BookingSearchContainer = () => {
   const modal = useModal();
   const navigate = useNavigate();
 
-  // user 정보 세션에서 가져오기
-  const user = false;
+  const [searchParams] = useSearchParams();
+  const searchParamsDateTime = changeformatDateForUi({
+    date: searchParams.get('date')!,
+    time: searchParams.getAll('times'),
+  });
+
+  // user 정보 로컬스토리지에서 가져오기
+  const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
 
   return (
     <BookingSearchContainerStyle>
-      <div>
-        <Button type="button" onClick={() => modal.open()}>
-          <ButtonTitleStyle>전체지역</ButtonTitleStyle>{' '}
+      <div onClick={() => modal.open()}>
+        <Button type="button">
+          <ButtonTitleStyle>{searchParams.get('addressGu') || '전체지역'}</ButtonTitleStyle>{' '}
           <img src="/img/icon-select-arrow.svg" alt="전체 지역 탐색" />
         </Button>
-        <ButtonTitleDes>예약 날짜와 시간을 선택해주세요.</ButtonTitleDes>
+        <ButtonTitleDes>
+          {searchParamsDateTime || '예약 날짜와 시간을 선택해주세요.'}
+        </ButtonTitleDes>
       </div>
 
       <ButtonStyle
@@ -96,6 +108,7 @@ const ButtonTitleStyle = styled.h1`
 
 const ButtonTitleDes = styled.p`
   color: ${variables.colors.gray600};
+  cursor: pointer;
 `;
 
 export default BookingSearchContainer;

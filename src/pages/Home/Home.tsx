@@ -42,6 +42,11 @@ const Home = () => {
   const [isFixed, setIsFixed] = useState(false);
   const homeRef = useRef<HTMLTableSectionElement | null>(null);
   const navigate = useNavigate();
+
+  //로그인 완료 후 예약페이지로 돌아가기
+  const lastPage = window.sessionStorage.getItem('lastPage');
+  if (lastPage) navigate(lastPage);
+
   // 스크롤에 따라 Navigator 고정
   useEffect(() => {
     const handleScroll = () => {

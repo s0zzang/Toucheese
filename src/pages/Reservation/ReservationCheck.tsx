@@ -3,11 +3,23 @@ import Header from '@components/Header/Header';
 import { css } from '@emotion/react';
 import useModal from '@hooks/useModal';
 import PolicyModal from '@pages/Reservation/components/PolicyModal';
-import { TypoBodyMdR, TypoBodyMdSb, TypoBodySmR, TypoCapSmM, TypoTitleXsM, TypoTitleXsR, TypoTitleXsSB } from '@styles/Common';
+import {
+  TypoBodyMdR,
+  TypoBodyMdSb,
+  TypoBodySmR,
+  TypoCapSmM,
+  TypoTitleXsM,
+  TypoTitleXsR,
+  TypoTitleXsSB,
+} from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Payment from './components/Payment';
+import useReservationStore from '@store/useReservationStore';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
+import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
+import { useUserStore } from '@store/useUserStore';
 
 interface FormValues {
   visitorName: string;
@@ -24,8 +36,11 @@ const ReservationCheck = () => {
     setIsAgreed(e.target.checked);
   };
 
-  const options = ['전체 컷 원본 파일', '전체 컷 원본 파일', '옵션 선택1', '옵션 선택2', '옵션 선택3'];
-
+  const { time } = useSelectTimeStore();
+  const { date } = useSelectDateStore();
+  const { studioName, totalPrice, options, menuName, basicPrice, menuImage } =
+    useReservationStore();
+  const { username, phone } = useUserStore();
   const [isDifferentVisitor, setIsDifferentVisitor] = useState(false);
 
   const {
@@ -83,20 +98,20 @@ const ReservationCheck = () => {
               font-size: 1.2rem;
             `}
           >
-            A 스튜디오
+            {studioName}
           </h4>
-          <p css={TypoTitleXsM}>2024. 12. 6 (금) 오후 1:00</p>
+          <p css={TypoTitleXsM}>{changeformatDateForUi({ date, time })}</p>
           <hr css={hrStyle} />
           <div css={flexRow}>
             <div>
-              <p css={TypoTitleXsM}>프로필 A 반신 촬영</p>
+              <p css={TypoTitleXsM}>{menuName}</p>
               <div css={textWrapperStyle}>
-                {options.map((option, index) => (
-                  <span key={index}>{option}</span>
+                {options.map((option) => (
+                  <span key={option.option_id}>{option.optionName}</span>
                 ))}
               </div>
             </div>
-            <img src="https://imgur.com/BMDwLgQ" alt="포트폴리오 이미지" css={imgStyle} />
+            <img src={menuImage} alt="포트폴리오 이미지" css={imgStyle} />
           </div>
         </div>
       </section>
@@ -104,10 +119,15 @@ const ReservationCheck = () => {
       {/* 예약자정보 */}
       <section>
         <h2 css={[TypoTitleXsSB, titleAlignStyle]}>예약자정보</h2>
-        <p css={TypoTitleXsM}>박지똥</p>
-        <p css={TypoTitleXsM}>010-1234-5678</p>
+        <p css={TypoTitleXsM}>{username}</p>
+        <p css={TypoTitleXsM}>{phone}</p>
         <div css={checkboxWrapperStyle}>
-          <input type="checkbox" id="visitorCheckbox" css={checkboxStyle} onChange={(e) => setIsDifferentVisitor(e.target.checked)} />
+          <input
+            type="checkbox"
+            id="visitorCheckbox"
+            css={checkboxStyle}
+            onChange={(e) => setIsDifferentVisitor(e.target.checked)}
+          />
           <label htmlFor="visitorCheckbox" css={labelStyle}>
             <img src="/img/icon-check-gray.svg" alt="체크 아이콘" />
             실제 방문자가 달라요
@@ -125,7 +145,12 @@ const ReservationCheck = () => {
                 방문자 이름
               </label>
               <div css={visitorInputStyle}>
-                <input type="text" placeholder="방문자 이름을 입력하세요." id="visitorName" {...register('visitorName', { required: '방문자 이름을 입력해주세요.' })} />
+                <input
+                  type="text"
+                  placeholder="방문자 이름을 입력하세요."
+                  id="visitorName"
+                  {...register('visitorName', { required: '방문자 이름을 입력해주세요.' })}
+                />
                 {visitorName && (
                   <button type="button" onClick={() => setValue('visitorName', '')}>
                     <img src="/img/icon-cancel.svg" alt="입력창 삭제 버튼" />
@@ -175,30 +200,32 @@ const ReservationCheck = () => {
         <div css={[boxStyle, TypoBodySmR]}>
           <div css={PriceInforowStyle}>
             <span>기본 가격</span>
-            <span>프로필 A 반신 촬영</span>
-            <span>60,000원</span>
+            <span>{menuName}</span>
+            <span>{basicPrice?.toLocaleString()}원</span>
           </div>
           <div css={PriceInforowStyle}>
             <span>추가 옵션</span>
             <span>
-              전체 컷 원본 파일
-              <br />
-              추가 옵션1
-              <br />
-              추가 옵션2
+              {options.map((option, index) => (
+                <span key={option.option_id}>
+                  {option.optionName}
+                  {index < options.length - 1 && <br />}
+                </span>
+              ))}
             </span>
             <span>
-              10,000원
-              <br />
-              0원
-              <br />
-              0원
+              {options.map((option, index) => (
+                <span key={option.option_id}>
+                  {option.optionPrice.toLocaleString()}원{index < options.length - 1 && <br />}
+                </span>
+              ))}
             </span>
           </div>
+
           <hr css={hrStyle} />
           <div css={[PriceInforowStyle, TypoTitleXsSB, totalPriceStyle]}>
             <span>총 결제금액</span>
-            <span>70,000원</span>
+            <span>{totalPrice.toLocaleString()}원</span>
           </div>
         </div>
       </section>
@@ -208,15 +235,31 @@ const ReservationCheck = () => {
         <h2 css={[TypoTitleXsSB, titleAlignStyle]}>결제수단</h2>
         <div css={[TypoTitleXsR, radioGroupStyle]}>
           <label css={radioLabelStyle}>
-            <input type="radio" name="paymentMethod" value="kakaoPay" onChange={(e) => setPaymentMethod(e.target.value)} defaultChecked />
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="카카오페이"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              defaultChecked
+            />
             <img src="/img/icon-kakaoPay.svg" alt="카카오페이 로고" />
           </label>
           <label css={radioLabelStyle}>
-            <input type="radio" name="paymentMethod" onChange={(e) => setPaymentMethod(e.target.value)} value="naverPay" />
+            <input
+              type="radio"
+              name="paymentMethod"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              value="네이버페이"
+            />
             <img src="/img/icon-naverPay.svg" alt="네이버페이 로고" />
           </label>
           <label css={radioLabelStyle}>
-            <input type="radio" name="paymentMethod" onChange={(e) => setPaymentMethod(e.target.value)} value="creditCard" />
+            <input
+              type="radio"
+              name="paymentMethod"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              value="일반신용카드"
+            />
             <span>일반신용카드</span>
           </label>
         </div>
@@ -259,7 +302,13 @@ const ReservationCheck = () => {
           </div>
         </div>
       </div>
-      <Payment onClick={handleSubmitForm} trigger={trigger} paymentMethod={paymentMethod} isAgreed={isAgreed} />
+      <Payment
+        onClick={handleSubmitForm}
+        trigger={trigger}
+        paymentMethod={paymentMethod}
+        isAgreed={isAgreed}
+        totalPrice={totalPrice}
+      />
     </>
   );
 };
@@ -404,7 +453,7 @@ const PriceInforowStyle = css`
   display: flex;
   margin-bottom: 0.8rem;
 
-  span:first-of-type {
+  > span:first-of-type {
     color: ${variables.colors.gray800};
     margin-right: 0.8rem;
   }

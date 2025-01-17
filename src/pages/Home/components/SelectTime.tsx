@@ -2,7 +2,7 @@
 
 import Button from '@components/Button/Button';
 import { css } from '@emotion/react';
-import { useSelectTimeStore } from '@store/useSelectTime';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import { Hidden, TypoBodyMdM, TypoBodySmR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useMemo } from 'react';
@@ -36,7 +36,7 @@ const SelectTime = ({ type }: ITimeProp) => {
   return (
     <>
       <section css={SelectTimeStyle}>
-        <h2 css={Hidden}>예약 가능한 날짜</h2>
+        <h2 css={Hidden}>시간 선택</h2>
 
         <article>
           <h3 css={timeZoneTitle}>오전</h3>
@@ -49,9 +49,10 @@ const SelectTime = ({ type }: ITimeProp) => {
                   variant="white"
                   size="small"
                   width="max"
-                  active={selectedTime.has(time)}
+                  active={!!selectedTime.length && selectedTime.includes(time)}
                   onClick={() => handleTImeClick(time)}
                 />
+                <h4 css={Hidden}>{time}</h4>
               </li>
             ))}
           </ul>
@@ -68,18 +69,24 @@ const SelectTime = ({ type }: ITimeProp) => {
                   variant="white"
                   size="small"
                   width="max"
-                  active={selectedTime.has(time)}
+                  active={!!selectedTime.length && selectedTime.includes(time)}
                   onClick={() => handleTImeClick(time)}
                 />
+                <h4 css={Hidden}>{time}</h4>
               </li>
             ))}
           </ul>
         </article>
 
-        {type === 'filter' && <p css={infoText}>중복 선택이 가능합니다.</p>}
+        {type === 'filter' && (
+          <>
+            <p css={infoText}>중복 선택이 가능합니다.</p>
+            <p css={infoText}>선택하지 않으면 전체 시간이 조회됩니다.</p>
+          </>
+        )}
 
         <h3 css={Hidden}>
-          선택된 시간: <span className="selected">{[...selectedTime].join(',')}</span>
+          선택된 시간: <span className="selected">{selectedTime.join(',')}</span>
         </h3>
       </section>
     </>
@@ -121,8 +128,12 @@ const timeZone = css`
 `;
 
 const infoText = css`
-  margin-top: 2rem;
+  margin-top: 0.8rem;
   padding-left: 2rem;
   ${TypoBodySmR}
-  background: url(/img/icon-info.svg) no-repeat center left;
+  background: url(/img/icon-info-gray600.svg) no-repeat center left;
+
+  &:first-of-type {
+    margin-top: 2rem;
+  }
 `;

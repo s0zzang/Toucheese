@@ -3,8 +3,8 @@ import Modal from '@components/Modal/Modal';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
-import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDate';
-import { useSelectTimeStore } from '@store/useSelectTime';
+import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const { date } = useSelectDateStore();
 
   const [isSelectedDate, setIsSelectedDate] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<string | null>('전체보기');
   const { openBottomSheet } = useBottomSheetState();
   const navigate = useNavigate();
 
@@ -33,14 +33,15 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   ];
 
   const setParams = () => {
-    const currentParams = new URLSearchParams(window.location.search);
-    currentParams.set('date', date);
-    currentParams.set('times', '1');
-    // currentParams.set(
-    //   'times',
-    //   [...time].map((item, idx) => (idx === 0 ? item : `&times=${item}`)),
-    // );
-    navigate(`?${currentParams.toString()}`);
+    // 시간을 다중 선택한 경우, times=시간17times=시간2 형태로 데이터 요청
+    const times = [...time].map((time) => `times=${time}`).join('&');
+    const timesToParams = time.length ? `&${times}` : '';
+
+    // 주소를 '전체보기'로 선택한 경우, 파라미터 요청 X
+    const addressToParams = selectedLocation === '전체보기' ? '' : `&addressGu=${selectedLocation}`;
+
+    const params = new URLSearchParams(`date=${date}${addressToParams}${timesToParams}`);
+    navigate(`?${params.toString()}`);
   };
 
   const handleOpenLocation = () =>

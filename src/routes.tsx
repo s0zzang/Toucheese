@@ -1,4 +1,7 @@
+import StudioReviewWritePage from '@pages/Studio/StudioReview/StudioReviewWritePage';
 import Auth from '@pages/User/Auth';
+import AuthVerification from '@pages/User/AuthVerification';
+import KakaoCallback from '@pages/User/KakaoCallback';
 import LoginWithEmailPage from '@pages/User/LoginWithEmailPage';
 
 import { lazy } from 'react';
@@ -15,9 +18,18 @@ const StudioReview = lazy(() => import('@pages/Studio/StudioReview/StudioReview'
 const StudioReviewPhotos = lazy(() => import('@pages/Studio/StudioReview/StudioReviewPhotos'));
 const SignUp = lazy(() => import('@pages/User/SignUp'));
 const MyPage = lazy(() => import('@pages/User/MyPage'));
+const Profile = lazy(() => import('@pages/User/Profile'));
+const ChangeProfile = lazy(() => import('@pages/User/ChangeProfile'));
+const PasswordConfirm = lazy(() => import('@pages/User/PasswordConfirm'));
+const ChangePassword = lazy(() => import('@pages/User/ChangePassword'));
+const MyReviews = lazy(() => import('@pages/User/MyReviews'));
+const BookmarkedStudios = lazy(() => import('@pages/User/BookmarkedStudios'));
 const ReservationSchedule = lazy(() => import('@pages/Reservation/ReservationSchedule'));
 const ReservationCheck = lazy(() => import('@pages/Reservation/ReservationCheck'));
 const ReservationComplete = lazy(() => import('@pages/Reservation/ReservationComplete'));
+const ReservationList = lazy(() => import('@pages/Reservation/ReservationList'));
+const ReservationDetail = lazy(() => import('@pages/Reservation/ReservationDetail'));
+const ReservationCanceled = lazy(() => import('@pages/Reservation/ReservationCanceled'));
 
 const router = createBrowserRouter([
   {
@@ -31,6 +43,14 @@ const router = createBrowserRouter([
         path: 'auth',
         element: <Auth />,
       },
+      {
+        path: 'auth/kakao/callback',
+        element: <KakaoCallback />,
+      },
+      {
+        path: 'AuthVerification',
+        element: <AuthVerification />,
+      },
 
       {
         path: 'signup',
@@ -40,10 +60,34 @@ const router = createBrowserRouter([
         path: 'mypage',
         element: <MyPage />,
       },
+      {
+        path: 'profile',
+        element: <Profile />,
+      },
+      {
+        path: 'profile/edit',
+        element: <ChangeProfile />,
+      },
+      {
+        path: 'profile/passwordConfirm',
+        element: <PasswordConfirm />,
+      },
+      {
+        path: 'profile/passwordChange',
+        element: <ChangePassword />,
+      },
+      {
+        path: 'myReviews',
+        element: <MyReviews />,
+      },
+      {
+        path: 'bookmarks',
+        element: <BookmarkedStudios />,
+      },
     ],
   },
   {
-    path: 'login',
+    path: '/login',
     element: <LoginWithEmailPage />,
   },
   {
@@ -76,6 +120,7 @@ const router = createBrowserRouter([
           { path: 'photos', element: <StudioReviewPhotos /> },
         ],
       },
+
       {
         path: 'reservation',
         children: [
@@ -91,6 +136,23 @@ const router = createBrowserRouter([
             path: 'complete',
             element: <ReservationComplete />,
           },
+        ],
+      },
+    ],
+  },
+  {
+    path: 'reservation',
+    children: [
+      {
+        path: 'list',
+        element: <ReservationList />,
+      },
+      {
+        path: ':_id',
+        children: [
+          { index: true, element: <ReservationDetail /> },
+          { path: 'canceled', element: <ReservationCanceled /> },
+          { path: 'review/write', element: <StudioReviewWritePage /> },
         ],
       },
     ],

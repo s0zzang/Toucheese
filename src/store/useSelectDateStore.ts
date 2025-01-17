@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface DateState {
   date: string;
@@ -17,22 +18,29 @@ export const getDay = (date: Date) => {
   return week[date.getDay()];
 };
 
-export const changeformatDateForUi = ({ date, time }: { date: string; time: Set<string> }) => {
+export const changeformatDateForUi = ({ date, time }: { date: string; time: string[] }) => {
+  if (!date) return null;
   const [year, month, day] = date.split('-');
   const dayOfWeek = getDay(new Date(date));
-  const sortedTimes = [...time].sort();
+  const sortedTimes = time.sort();
 
   // UI를 위한 포맷 변경
   const selectedDateForUi = `${year}. ${+month}. ${+day} (${dayOfWeek})`;
   const selectedTimeForUi =
-    sortedTimes.length > 1
-      ? `${[...sortedTimes][0]} 외 ${sortedTimes.length - 1}개`
-      : sortedTimes[0];
+    sortedTimes.length > 1 ? `${sortedTimes[0]} 외 ${sortedTimes.length - 1}개` : sortedTimes[0];
 
-  return `${selectedDateForUi}${time.size ? ` / ${selectedTimeForUi}` : ''}`;
+  return `${selectedDateForUi}${time.length ? ` / ${selectedTimeForUi}` : ''}`;
 };
 
-export const useSelectDateStore = create<DateState>((set) => ({
-  date: convertToDateFormat(today),
-  setDate: (newDate) => set({ date: newDate }),
-}));
+export const useSelectDateStore = create(
+  persist<DateState>(
+    (set) => ({
+      date: convertToDateFormat(today),
+      setDate: (newDate) => set({ date: newDate }),
+    }),
+    {
+      name: 'selectDateStore',
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
+);

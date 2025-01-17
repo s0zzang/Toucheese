@@ -2,15 +2,18 @@
 import { css, SerializedStyles } from '@emotion/react';
 import variables from '@styles/Variables';
 import Header from '@components/Header/Header';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
 import StudioMenuDetailInfo from './StudioMenuDetailInfo';
 import { useEffect, useState } from 'react';
 import StudioMenuDetailReview from './StudioMenuDetailReview';
-import { IMenuListRes } from 'types/types';
+import { IMenuListRes, IUser } from 'types/types';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
-import useReservationStore from '@store/useReservationStore';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
+import useReservationStore from '@store/useReservationStore';
+import { Helmet } from 'react-helmet-async';
+import { defaultUserState } from '@store/useUserStore';
+import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 
 const StudioMenuDetail = () => {
   const { _menuId, _id } = useParams();
@@ -20,9 +23,9 @@ const StudioMenuDetail = () => {
   const [tabMenuState, setTabMenuState] = useState('info');
   const setBasicReservation = useReservationStore((state) => state.setBasicReservation);
   const saveReservationDetails = useReservationStore((state) => state.saveReservationDetails);
-  const { totalPrice, options, studioId } = useReservationStore();
-  const [user, setUser] = useState(false); // 추후 로그인 기능 완료되면 교체 예정
-  console.log(setUser); //베포에러로인한 콘솔 추후 로그인 기능 완료후 제거
+  const { totalPrice, options, menuId } = useReservationStore();
+  const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
+  const { pathname } = useLocation();
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -45,7 +48,7 @@ const StudioMenuDetail = () => {
     const fetchAndSetData = async () => {
       const result = await fetchMenuDetail();
       setData(result);
-      if (studioId !== result.id) {
+      if (menuId !== result.id) {
         setBasicReservation(result.price, result.id);
       }
     };
@@ -70,23 +73,40 @@ const StudioMenuDetail = () => {
 
   const handleReservartionNext = () => {
     const saveData = {
-      studioId: data?.studioId,
+      menuId: data?.id,
       studioName: data?.studioName,
       menuName: data?.name,
+      menuImage: data?.menuImages[0].url,
+      basicPrice: data?.price,
       totalPrice,
       options,
     };
     saveReservationDetails(saveData);
 
     if (user) {
+      window.sessionStorage.removeItem('lastPage');
       navigate(`/studio/${_id}/reservation`);
     } else {
+      window.sessionStorage.setItem('lastPage', pathname);
       navigate('/user/auth');
     }
   };
 
   return (
     <>
+      {data && (
+        <Helmet>
+          <title>
+            {data?.studioName} - {data.name}
+          </title>
+          <meta property="og:title" content={`${data?.studioName} - ${data.name}`} />
+          <meta property="og:url" content={`${window.location.href}`} />
+          <meta
+            property="og:description"
+            content={`스튜디오 메뉴에 대한 상세 설명과 ${data?.reviews.content}개의 리뷰를 제공하는 페이지입니다.`}
+          />
+        </Helmet>
+      )}
       <Header title={`${scrollY ? data?.name : ''}`} customStyle={HeaderCustomStyle(scrollY)} />
       {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />}
       <div css={MenuDescStyle}>

@@ -7,12 +7,14 @@ import EmptyMessage from '@components/Message/EmptyMessage';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
 import { css } from '@emotion/react';
 import useModal from '@hooks/useModal';
-import { useDimSwiperStore } from '@store/useDimSwiper';
+import { useDimSwiperStore } from '@store/useDimSwiperStore';
 import { useQuery } from '@tanstack/react-query';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { IPortfolio, IStudioRes } from 'types/types';
 import DimmedModal from '../components/DimmedModal';
 import PortfolioSwiper from './PortfolioSwiper';
+import { Hidden } from '@styles/Common';
+import { Helmet } from 'react-helmet-async';
 
 interface IPortfolioResponse {
   menuIdList: number[];
@@ -24,6 +26,7 @@ interface IPortfolioResponse {
 const StudioPortfolio = () => {
   const { _id } = useParams() as { _id: string };
   const [params, setSearchParams] = useSearchParams();
+  const selectedMenu = params.get('menuId');
   const { open } = useModal(1);
 
   const setSelectedId = useDimSwiperStore((state) => state.setSelectedId);
@@ -63,8 +66,22 @@ const StudioPortfolio = () => {
 
   return (
     <>
+      {isSuccess && (
+        <Helmet>
+          <title>{`${portfolios.studioName} - 포트폴리오`}</title>
+          <meta property="og:title" content={`${portfolios.studioName} 포트폴리오`} />
+          <meta property="og:url" content={`${window.location.href}`} />
+          <meta property="og:description" content={`${portfolios.studioName} 포트폴리오`} />
+        </Helmet>
+      )}
+
       <Header title={isSuccess ? portfolios.studioName : ''} />
       <StudioNavigator _id={_id} />
+
+      <h2 css={Hidden}>
+        포트폴리오 - {selectedMenu ? portfolios?.menuNameList[+selectedMenu - 1] : '전체'} 보기
+      </h2>
+      <h3 css={Hidden}>총 {portfolios?.portfolioDtos.content.length}개</h3>
 
       <ul css={filterBoxStyle}>
         <li>

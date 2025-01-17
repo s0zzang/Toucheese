@@ -1,21 +1,49 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
 import Input from '@components/Input/Input';
-// import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 import { TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
+import useToast from '@hooks/useToast';
+import { useUserStore } from '@store/useUserStore';
 
 const LoginWithEmailPage = () => {
+  const navigate = useNavigate();
+  const openToast = useToast();
+  const setUser = useUserStore((state) => state.setUser);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => console.log(data);
+  //TODO - 리액트 쿼리 뮤테이트로 변경 해야함
+  const handleLogin = async (data: any) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const result = await response.json();
+      console.log('로그인 성공:', result);
+      setUser(result);
+      openToast('로그인에 성공했습니다.');
+      navigate('/');
+    } catch (error) {
+      console.error('로그인 에러:', error);
+      openToast('로그인에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
 
   return (
     <>
@@ -47,7 +75,7 @@ const LoginWithEmailPage = () => {
 
       <form
         noValidate
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleLogin)}
         css={css`
           display: flex;
           flex-direction: column;

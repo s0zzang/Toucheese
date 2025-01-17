@@ -14,6 +14,10 @@ export interface IPortfolio {
 }
 
 export interface IReviewImages {
+  reviewContent?: string;
+  userName?: string;
+  rating?: number;
+  menuName?: string;
   id: number;
   reviewId: number;
   url: string;
@@ -88,7 +92,15 @@ export interface IStudioItem extends IStudioInfo {
 }
 
 export interface IStudioDetail extends IStudioInfo {
-  options: ('CHANGING_ROOM' | 'DRESSING_ROOM' | 'HAIR_MAKEUP' | 'INDIVIDUAL_EDITING' | 'SUIT_RENTAL_FREE' | 'ORIGINAL_FILES' | 'PARKING_AREA')[];
+  options: (
+    | 'CHANGING_ROOM'
+    | 'DRESSING_ROOM'
+    | 'HAIR_MAKEUP'
+    | 'INDIVIDUAL_EDITING'
+    | 'SUIT_RENTAL_FREE'
+    | 'ORIGINAL_FILES'
+    | 'PARKING_AREA'
+  )[];
   openingHours: IOpeningHours[];
   holidays: IHolidays[];
   open: boolean;
@@ -153,4 +165,22 @@ export interface IMenuListRes {
   reviewCount: number;
   created_at: string | null;
   updated_at: string | null;
+}
+
+export interface IUser {
+  accessToken: string | null;
+  email: string | null;
+  phone: string | null;
+  registration: 'EMAIL' | 'kakao' | 'google' | null;
+  user_id: number | null;
+  username: string | null;
+}
+
+export interface IUserRes {
+  accessToken: string;
+  email: string;
+  phone: string;
+  registration: 'EMAIL' | 'kakao' | 'google';
+  user_id: number;
+  username: string;
 }

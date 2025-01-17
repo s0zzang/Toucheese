@@ -6,24 +6,41 @@ import SelectTime from '@pages/Home/components/SelectTime';
 import { DividerStyle, Hidden } from '@styles/Common';
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
-import { getDay, useSelectDateStore } from '@store/useSelectDate';
-import { useSelectTimeStore } from '@store/useSelectTime';
+import { convertToDateFormat, getDay, today, useSelectDateStore } from '@store/useSelectDateStore';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 const ReservationSchedule = () => {
-  const { time } = useSelectTimeStore();
-  const { date } = useSelectDateStore();
+  const { time, setTime } = useSelectTimeStore();
+  const { date, setDate } = useSelectDateStore();
   const [_, month, day] = date.split('-');
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  // 필터링 시 날짜, 시간 초기화
+  useEffect(() => {
+    setDate(convertToDateFormat(today));
+    setTime('reset');
+  }, []);
+
   return (
     <>
+      <Helmet>
+        <title>{`터치즈 - 예약하기`}</title>
+        <meta property="og:title" content="터치즈 - 예약하기" />
+        <meta property="og:url" content={`${window.location.href}`} />
+        <meta property="og:description" content="터치즈 - 예약하기" />
+      </Helmet>
+
       <Header title="예약하기" />
 
-      <Calendar style={DividerStyle} />
-      <SelectTime type="reservation" />
+      <div css={contentBox}>
+        <Calendar style={DividerStyle} />
+        <SelectTime type="reservation" />
+      </div>
 
       <div css={fixedBox}>
         <div css={finalDate}>
@@ -33,7 +50,7 @@ const ReservationSchedule = () => {
           </dl>
           <dl className="timeBox">
             <dt css={Hidden}>시간</dt>
-            <dd>{time.size ? time : <span>시간을 선택해주세요</span>}</dd>
+            <dd>{time.length ? time : <span>시간을 선택해주세요</span>}</dd>
           </dl>
         </div>
 
@@ -41,7 +58,7 @@ const ReservationSchedule = () => {
           text="다음"
           type="button"
           onClick={() => navigate(`${pathname}/payment`)}
-          disabled={!(time.size > 0)}
+          disabled={!(time.length > 0)}
         />
       </div>
     </>
@@ -50,11 +67,15 @@ const ReservationSchedule = () => {
 
 export default ReservationSchedule;
 
+const contentBox = css`
+  padding-bottom: 8rem;
+`;
+
 const fixedBox = css`
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 8.1rem;
+  bottom: 0;
   border-top: 1px solid ${variables.colors.gray300};
   background: #fff;
 `;
@@ -64,6 +85,12 @@ const finalDate = css`
   display: flex;
   gap: 1.4rem;
   align-items: center;
+
+  // ReservationFooter
+  & + div {
+    position: initial;
+    inset: unset;
+  }
 
   dl {
     padding-left: 2rem;
