@@ -28,7 +28,7 @@ const KakaoCallback = () => {
         console.log('result: 필요함', result);
 
         if (result.status.length > 1) {
-          navigate('user/AuthVerification', {
+          navigate('/user/AuthVerification', {
             state: {
               status: result,
             },
