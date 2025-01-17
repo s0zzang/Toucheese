@@ -32,7 +32,7 @@ const ReservationDetail = () => {
     if (isDeadlinePassed) {
       return '규정에 따라 예약취소가 불가합니다. 사진관에 문의해주세요.';
     } else {
-      const formattedDate = changeformatDateForUi({ date: sevenDaysBefore, time: new Set() });
+      const formattedDate = changeformatDateForUi({ date: sevenDaysBefore, time: [] });
       return `${formattedDate} 23:59까지 예약취소가 가능합니다.`;
     }
   };
