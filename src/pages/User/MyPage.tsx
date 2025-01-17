@@ -7,6 +7,7 @@ import { IUser } from 'types/types';
 import { defaultUserState } from '@store/useUserStore';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
+import ReservationCard from '@components/ReservationCard/ReservationCard';
 
 const MyPage = () => {
   const { username, email } = getLocalStorageItem<IUser>('userState', defaultUserState);
@@ -17,6 +18,10 @@ const MyPage = () => {
         <Link to="/user/profile">{username}님 환영해요!</Link>
         <p>{email}</p>
       </div>
+
+      <article>
+        <ReservationCard />
+      </article>
 
       <ul css={MyPageMenuStyle}>
         <li className="history">
@@ -117,4 +122,8 @@ const MyPageMenuStyle = css`
   .bookmarkstudio > a {
     border-bottom: none;
   }
+`;
+
+const box = css`
+  box-shadow: inset 0 0 10px black;
 `;
