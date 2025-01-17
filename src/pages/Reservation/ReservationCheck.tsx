@@ -19,6 +19,7 @@ import Payment from './components/Payment';
 import useReservationStore from '@store/useReservationStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
+import { useUserStore } from '@store/useUserStore';
 
 interface FormValues {
   visitorName: string;
@@ -39,6 +40,7 @@ const ReservationCheck = () => {
   const { date } = useSelectDateStore();
   const { studioName, totalPrice, options, menuName, basicPrice, menuImage } =
     useReservationStore();
+  const { username, phone } = useUserStore();
   const [isDifferentVisitor, setIsDifferentVisitor] = useState(false);
 
   const {
@@ -117,8 +119,8 @@ const ReservationCheck = () => {
       {/* 예약자정보 */}
       <section>
         <h2 css={[TypoTitleXsSB, titleAlignStyle]}>예약자정보</h2>
-        <p css={TypoTitleXsM}>박지똥</p>
-        <p css={TypoTitleXsM}>010-1234-5678</p>
+        <p css={TypoTitleXsM}>{username}</p>
+        <p css={TypoTitleXsM}>{phone}</p>
         <div css={checkboxWrapperStyle}>
           <input
             type="checkbox"
@@ -236,7 +238,7 @@ const ReservationCheck = () => {
             <input
               type="radio"
               name="paymentMethod"
-              value="kakaoPay"
+              value="카카오페이"
               onChange={(e) => setPaymentMethod(e.target.value)}
               defaultChecked
             />
@@ -247,7 +249,7 @@ const ReservationCheck = () => {
               type="radio"
               name="paymentMethod"
               onChange={(e) => setPaymentMethod(e.target.value)}
-              value="naverPay"
+              value="네이버페이"
             />
             <img src="/img/icon-naverPay.svg" alt="네이버페이 로고" />
           </label>
@@ -256,7 +258,7 @@ const ReservationCheck = () => {
               type="radio"
               name="paymentMethod"
               onChange={(e) => setPaymentMethod(e.target.value)}
-              value="creditCard"
+              value="일반신용카드"
             />
             <span>일반신용카드</span>
           </label>
