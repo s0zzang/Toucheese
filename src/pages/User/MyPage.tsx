@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import Header from '@components/Header/Header';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IUser } from 'types/types';
 import { defaultUserState } from '@store/useUserStore';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
@@ -11,6 +11,8 @@ import ReservationCard from '@components/ReservationCard/ReservationCard';
 
 const MyPage = () => {
   const { username, email } = getLocalStorageItem<IUser>('userState', defaultUserState);
+  const { pathname } = useLocation();
+
   return (
     <>
       <Header title="마이페이지" />
@@ -19,9 +21,7 @@ const MyPage = () => {
         <p>{email}</p>
       </div>
 
-      <article>
-        <ReservationCard />
-      </article>
+      <ReservationCard isMyPage={pathname.includes('aa')} />
 
       <ul css={MyPageMenuStyle}>
         <li className="history">
@@ -77,6 +77,7 @@ const MyPageMenuStyle = css`
     height: 1rem;
     width: calc(100% + (1.6rem * 2));
     margin-left: -1.6rem;
+    margin-top: 1.6rem;
   }
 
   & li {
