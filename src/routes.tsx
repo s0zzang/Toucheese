@@ -1,3 +1,4 @@
+import StudioReviewWritePage from '@pages/Studio/StudioReview/StudioReviewWritePage';
 import Auth from '@pages/User/Auth';
 import AuthVerification from '@pages/User/AuthVerification';
 import KakaoCallback from '@pages/User/KakaoCallback';
@@ -119,6 +120,7 @@ const router = createBrowserRouter([
           { path: 'photos', element: <StudioReviewPhotos /> },
         ],
       },
+
       {
         path: 'reservation',
         children: [
@@ -150,6 +152,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <ReservationDetail /> },
           { path: 'canceled', element: <ReservationCanceled /> },
+          { path: 'review/write', element: <StudioReviewWritePage /> },
         ],
       },
     ],
