@@ -120,7 +120,7 @@ const router = createBrowserRouter([
           { path: 'photos', element: <StudioReviewPhotos /> },
         ],
       },
-      { path: 'review/write', element: <StudioReviewWritePage /> },
+
       {
         path: 'reservation',
         children: [
@@ -152,6 +152,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <ReservationDetail /> },
           { path: 'canceled', element: <ReservationCanceled /> },
+          { path: 'review/write', element: <StudioReviewWritePage /> },
         ],
       },
     ],
