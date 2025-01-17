@@ -7,6 +7,7 @@ import { css } from '@emotion/react';
 import { TypoTitleMdSb } from '@styles/Common';
 import { useForm } from 'react-hook-form';
 import useSignupStore from '@store/useSignupStore';
+import { useState } from 'react';
 
 const SignUp = () => {
   /** react-hook-form */
@@ -20,9 +21,49 @@ const SignUp = () => {
   /** zustand 스토어에 데이터 저장 */
   // 이후 사용될 Phone, name 추가 호출 필요
   const { setSignupData } = useSignupStore();
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   const handleVerifyComplete = () => {
     console.log('본인인증 완료');
+  };
+
+  const CheckEmail = async (email: string) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/auth/register/check`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error('서버 오류가 발생했습니다.');
+      }
+
+      const result = await response.json();
+      return { success: result.success, message: result.message };
+    } catch (error) {
+      console.error('중복확인 오류:', error);
+      return { success: false, message: '중복확인 요청에 실패했습니다.' };
+    }
+  };
+
+  const handleEmailCheck = async () => {
+    const email = watch('email');
+    if (!email) {
+      setEmailError('이메일을 입력하세요.');
+      return;
+    }
+
+    const { success, message } = await CheckEmail(email);
+
+    if (success) {
+      setEmailError(null);
+      alert('사용 가능한 이메일입니다.');
+    } else {
+      setEmailError(message);
+    }
   };
 
   const onSubmit = (data: any) => {
@@ -74,7 +115,8 @@ const SignUp = () => {
                 message: '올바른 이메일 형식이 아닙니다.',
               },
             })}
-            error={errors.email?.message?.toString()}
+            onCheck={handleEmailCheck}
+            error={emailError || errors.email?.message?.toString()}
           />
 
           {/* 비밀번호 */}
