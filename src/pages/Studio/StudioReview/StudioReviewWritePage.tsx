@@ -24,14 +24,14 @@ const StudioReviewWritePage = () => {
       <Header title="리뷰 작성하기" />
 
       <section>
-        <h1
+        <h2
           css={css`
             ${TypoTitleXsM}
             margin-top: 1.6rem;
           `}
         >
           촬영 어떠셨나요?
-        </h1>
+        </h2>
         <div
           css={css`
             margin-top: 0.8rem;
@@ -49,7 +49,7 @@ const StudioReviewWritePage = () => {
       <div css={DividerStyle}></div>
 
       <section>
-        <h2
+        <h3
           css={css`
             ${TypoTitleXsM}
             margin-top: 1.6rem;
@@ -57,7 +57,7 @@ const StudioReviewWritePage = () => {
           `}
         >
           사진 첨부
-        </h2>
+        </h3>
         <div>
           <ImageUploadPreview maxImages={5} onImagesChange={handleImagesChange} />
         </div>
@@ -66,14 +66,14 @@ const StudioReviewWritePage = () => {
       <div css={DividerStyle}></div>
 
       <section>
-        <h2
+        <h4
           css={css`
             ${TypoTitleXsM}
             margin-top: 1.6rem;
           `}
         >
           리뷰 작성
-        </h2>
+        </h4>
         <div
           css={css`
             width: 100%;
