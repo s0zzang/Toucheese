@@ -117,7 +117,7 @@ const MyPageMenuStyle = css`
     background-image: url('/img/icon-myreview.svg');
   }
   .bookmarkstudio > a::before {
-    background-image: url('/img/icon-bookmark-studio.svg');
+    background-image: url('/img/icon-studio-black.svg');
   }
   .bookmarkstudio > a {
     border-bottom: none;
