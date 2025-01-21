@@ -5,8 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import { TypoBodyMdM, TypoBodySmR, TypoTitleXsM } from '@styles/Common';
 import { useState } from 'react';
 import StatusChip from './StatusChip';
+import RatingReview from './RatingReview';
 
-const ReservationCard = ({ isMyPage }: { isMyPage?: boolean }) => {
+const ReservationCard = ({
+  isMyPage,
+  isReviewed,
+}: {
+  isMyPage?: boolean;
+  isReviewed?: boolean;
+}) => {
   const navigate = useNavigate();
   const [data, setData] = useState(true);
   //API 구현시 실제 데이터로 변경
@@ -34,6 +41,7 @@ const ReservationCard = ({ isMyPage }: { isMyPage?: boolean }) => {
               <img src="/img/sample-1.png" alt="메뉴 사진" />
             </div>
           </div>
+          {isReviewed && <RatingReview />}
         </article>
       ) : (
         <article css={EmptyCardStyle}>
