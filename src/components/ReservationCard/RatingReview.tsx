@@ -26,8 +26,6 @@ const RatingReview = ({ ratingValue = 0 }) => {
       case 5:
         setRatingComment('최고였어요!');
         break;
-      default:
-        setRatingComment('촬영은 어떠셨나요? 사진관 이용 리뷰를 남겨주세요.');
     }
   }, [ratingValue]);
 
