@@ -2,6 +2,7 @@
 import { css } from '@emotion/react';
 import { TypoCapXsR } from '@styles/Common';
 import variables from '@styles/Variables';
+import { useEffect, useState } from 'react';
 
 type ChipType = {
   state: 'confirmed' | 'pending' | 'completed' | 'canceled';
@@ -9,7 +10,26 @@ type ChipType = {
 };
 
 const StatusChip = ({ state = 'pending' }: ChipType) => {
-  return <div css={ChipStyle(state)}>이용상태</div>;
+  const [stateText, setStateText] = useState('pending');
+
+  useEffect(() => {
+    switch (state) {
+      case 'pending':
+        setStateText('예약확인중');
+        break;
+      case 'confirmed':
+        setStateText('예약확정');
+        break;
+      case 'completed':
+        setStateText('이용완료');
+        break;
+      case 'canceled':
+        setStateText('예약취소');
+        break;
+    }
+  }, [state]);
+
+  return <div css={ChipStyle(state)}>{stateText}</div>;
 };
 
 export default StatusChip;
