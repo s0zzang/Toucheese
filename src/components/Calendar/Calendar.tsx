@@ -5,10 +5,15 @@ import styled from '@emotion/styled';
 import { convertToDateFormat, lessThan10Add0, useSelectDateStore } from '@store/useSelectDateStore';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import createCalendar from './createCalendar';
+import fetchAvailableDate from './fetchAvailableDate';
 
 interface CalendarProp {
   style?: CSSObject;
+  type?: string;
 }
 
 interface Day {
@@ -17,7 +22,9 @@ interface Day {
   date: number;
 }
 
-const Calendar = ({ style }: CalendarProp) => {
+const Calendar = ({ style, type = 'filter' }: CalendarProp) => {
+  const { _id } = useParams() as { _id: string };
+
   const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
   const [baseDate, setBaseDate] = useState(new Date());
   const [calendar, setCalendar] = useState<Day[]>();
@@ -26,34 +33,15 @@ const Calendar = ({ style }: CalendarProp) => {
   const baseMonth = baseDate.getMonth();
   const today = new Date();
 
-  const addDateToCalendar = (startDay: Date, endDay: Date) => {
-    const standard = new Date(startDay);
-    const dates = [];
-    while (standard <= endDay) {
-      const year = standard.getFullYear();
-      const month = standard.getMonth() + 1;
-      const date = standard.getDate();
-      dates.push({ year, month, date });
-      standard.setDate(date + 1);
-    }
-    return dates;
-  };
-
-  const createCalendar = () => {
-    // 기준 달의 첫 날
-    const firstDayOfMonth = new Date(baseYear, baseMonth, 1);
-    // 달력 시작 날짜 설정 : 기준 달의 첫 날의 주의 일요일
-    const startDay = new Date(firstDayOfMonth);
-    startDay.setDate(1 - firstDayOfMonth.getDay());
-
-    // 기준 달의 마지막 날
-    const lastDayOfMonth = new Date(baseYear, baseMonth + 1, 0);
-    // 달력 끝 날짜 설정 : 기준 달의 마지막 날의 주의 토요일
-    const endDay = new Date(lastDayOfMonth);
-    endDay.setDate(lastDayOfMonth.getDate() + (6 - lastDayOfMonth.getDay()));
-
-    setCalendar(addDateToCalendar(startDay, endDay));
-  };
+  // 타입이 'reservation'일 때만, 예약 불가능한 날짜 조회
+  const { data: disableDates } =
+    type === 'reservation'
+      ? useQuery({
+          queryKey: ['disableDates', _id, `${baseYear}-${baseMonth}`],
+          queryFn: () => fetchAvailableDate(_id, baseDate),
+          staleTime: 1000 * 60 * 10, // 10분
+        })
+      : { data: null };
 
   const changeMonth = (direction: number) => {
     setBaseDate(new Date(baseDate.getFullYear(), baseDate.getMonth() + direction, 1));
@@ -79,7 +67,7 @@ const Calendar = ({ style }: CalendarProp) => {
   };
 
   useEffect(() => {
-    createCalendar();
+    createCalendar(baseYear, baseMonth, setCalendar);
   }, [baseDate]);
 
   useEffect(() => {
@@ -124,23 +112,30 @@ const Calendar = ({ style }: CalendarProp) => {
         </DayOfWeekStyle>
         <ul>
           {calendar &&
-            calendar.map(({ year, month, date }) => (
-              <li
-                // 순서대로 1. 활성화 스타일, 2. 다음 달인 경우 스타일, 3. 오늘보다 이전 날짜 스타 일 지정
-                css={css`
-                  ${activeDay === `${year}-${lessThan10Add0(month)}-${lessThan10Add0(date)}` &&
-                  activeStyle};
-                  ${month != baseMonth + 1 && nextMonthStyle};
-                  ${today > new Date(year, month - 1, date + 1) && disabledStyle}
-                `}
-                key={`${month} - ${date}`}
-              >
-                <button type="button" onClick={() => handleDateClick(year, month, date)}>
-                  {date}
-                  <span css={Hidden}>일</span>
-                </button>
-              </li>
-            ))}
+            calendar.map(({ year, month, date }) => {
+              const isActive =
+                activeDay === `${year}-${lessThan10Add0(month)}-${lessThan10Add0(date)}`;
+              const isNextMonth = month != baseMonth + 1;
+              const isPrevToday = today > new Date(year, month - 1, date + 1);
+              const isReservationComplete =
+                type === 'reservation' && disableDates?.includes(`${+month}-${+date}`);
+              return (
+                <li
+                  css={css`
+                    ${isActive && activeStyle};
+                    ${isNextMonth && nextMonthStyle};
+                    ${isPrevToday && disabledStyle}
+                    ${isReservationComplete && disabledStyle}
+                  `}
+                  key={`${month} - ${date}`}
+                >
+                  <button type="button" onClick={() => handleDateClick(year, month, date)}>
+                    {date}
+                    <span css={Hidden}>일</span>
+                  </button>
+                </li>
+              );
+            })}
         </ul>
         <h3 css={Hidden}>
           선택된 날짜: <span className="selected">{activeDay}</span>
@@ -234,7 +229,7 @@ export const activeStyle = css`
 `;
 
 export const nextMonthStyle = css`
-  color: ${variables.colors.gray600};
+  color: ${variables.colors.gray700};
 `;
 
 export const disabledStyle = css`

@@ -38,7 +38,7 @@ const ReservationSchedule = () => {
       <Header title="예약하기" />
 
       <div css={contentBox}>
-        <Calendar style={DividerStyle} />
+        <Calendar style={DividerStyle} type="reservation" />
         <SelectTime type="reservation" />
       </div>
 
