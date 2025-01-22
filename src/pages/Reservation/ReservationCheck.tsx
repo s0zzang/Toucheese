@@ -29,7 +29,7 @@ interface FormValues {
 }
 
 const ReservationCheck = () => {
-  const [paymentMethod, setPaymentMethod] = useState('kakaoPay');
+  const [paymentMethod, setPaymentMethod] = useState('카카오페이');
   const [isAgreed, setIsAgreed] = useState(false);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +38,7 @@ const ReservationCheck = () => {
 
   const { time } = useSelectTimeStore();
   const { date } = useSelectDateStore();
-  const { studioName, totalPrice, options, menuName, basicPrice, menuImage } =
+  const { studioName, totalPrice, options, menuName, basicPrice, menuImage, menuId, requests } =
     useReservationStore();
   const { username, phone } = useUserStore();
   const [isDifferentVisitor, setIsDifferentVisitor] = useState(false);
@@ -52,9 +52,17 @@ const ReservationCheck = () => {
     setValue,
     formState: { errors },
     trigger,
-  } = useForm<FormValues>({ mode: 'onChange' });
+  } = useForm<FormValues>({
+    mode: 'onChange',
+  });
 
   const [visitorName, visitorContact] = watch(['visitorName', 'visitorContact']);
+
+  const formatPhoneNumber = (phone: string | undefined): string => {
+    if (!phone) return '';
+
+    return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+  };
 
   const handleSubmitForm = async () => {
     const isValid = await trigger();
@@ -78,7 +86,27 @@ const ReservationCheck = () => {
 
     if (isValid) {
       const formData = getValues();
-      console.log('데이터', formData);
+      const formattedContact = formatPhoneNumber(formData.visitorContact);
+      const currentState = useReservationStore.getState();
+
+      const visitorInfo = isDifferentVisitor
+        ? {
+            name: formData.visitorName,
+            contact: formattedContact,
+          }
+        : {
+            name: username,
+            contact: phone,
+          };
+
+      currentState.saveReservationDetails({
+        ...currentState,
+        visitorInfo,
+        requests: formData.requests || '',
+        paymentMethod,
+      });
+
+      console.log('최종 예약 정보:', useReservationStore.getState());
     }
   };
 
@@ -165,12 +193,15 @@ const ReservationCheck = () => {
                 <input
                   type="text"
                   placeholder="'-'구분없이 휴대폰 번호를 입력하세요."
+                  maxLength={11}
                   {...register('visitorContact', {
                     required: '방문자 연락처를 입력해주세요.',
                     pattern: {
                       value: /^[0-9]+$/,
-                      message: '숫자만 입력해주세요.',
+                      message: '휴대폰 번호는 숫자 11자리를 입력해주세요.',
                     },
+                    validate: (value) =>
+                      value.length === 11 || '휴대폰 번호는 정확히 11자리여야 합니다.',
                   })}
                 />
                 {visitorContact && (
@@ -308,6 +339,13 @@ const ReservationCheck = () => {
         paymentMethod={paymentMethod}
         isAgreed={isAgreed}
         totalPrice={totalPrice}
+        options={options}
+        userName={isDifferentVisitor ? visitorName || '' : username || ''}
+        phone={isDifferentVisitor ? visitorContact || '' : phone || ''}
+        menuId={menuId}
+        requests={requests}
+        date={date}
+        time={time[0]}
       />
     </>
   );

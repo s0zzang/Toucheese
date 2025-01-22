@@ -22,13 +22,41 @@ interface PaymentProps {
   paymentMethod: string;
   isAgreed: boolean;
   totalPrice: number;
+  options?: Option[];
+  menuId?: number;
+  userName?: string;
+  phone?: string;
+  requests?: string;
+  date: string;
+  time: string;
 }
 
-const Payment = ({ onClick, trigger, paymentMethod, isAgreed, totalPrice }: PaymentProps) => {
+interface Option {
+  option_id: number;
+  optionPrice: number;
+  optionName: string;
+}
+
+const Payment = ({
+  onClick,
+  trigger,
+  paymentMethod,
+  isAgreed,
+  totalPrice,
+  options = [],
+  menuId,
+  userName,
+  phone,
+  requests,
+  date,
+  time,
+}: PaymentProps) => {
   const { _id } = useParams<{ _id: string }>();
 
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const returnUrl = `${baseUrl}/studio/${_id}/reservation/complete`;
+
+  const optionIds = options.map((option) => option.option_id);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.IMP) {
@@ -76,13 +104,13 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed, totalPrice }: Paym
     }
 
     switch (paymentMethod) {
-      case 'kakaoPay':
+      case '카카오페이':
         requestKakaoPay();
         break;
-      case 'naverPay':
+      case '네이버페이':
         requestNaverPay();
         break;
-      case 'creditCard':
+      case '일반신용카드':
         requestCreditCard();
         break;
       default:
@@ -108,7 +136,7 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed, totalPrice }: Paym
           console.log('결제 성공:', rsp);
 
           // 서버에 결제 검증 요청 (임시)
-          fetch('/api/verify-payment', {
+          fetch(`${import.meta.env.VITE_TOUCHEESE_API}/reservation/action`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -116,11 +144,22 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed, totalPrice }: Paym
             body: JSON.stringify({
               imp_uid: rsp.imp_uid, // 포트원 결제 고유 ID
               merchant_uid: rsp.merchant_uid, // 상점에서 생성한 주문번호
+              studioId: _id,
+              menuID: menuId,
+              additionalOptionId: optionIds,
+              visitingCustomerName: userName,
+              visitingCustomerPhone: phone,
+              note: requests,
+              totalPrice,
+              paymentMethod,
+              date,
+              startTime: time,
             }),
           })
             .then((response) => {
               if (response.ok) {
                 console.log('결제 검증 성공');
+                window.location.href = returnUrl;
               } else {
                 console.error('결제 검증 실패');
               }
@@ -155,7 +194,7 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed, totalPrice }: Paym
           console.log('결제 성공:', rsp);
 
           // 서버에 결제 검증 요청 (임시)
-          fetch('/api/verify-payment', {
+          fetch(`${import.meta.env.VITE_TOUCHEESE_API}/reservation/action`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -163,11 +202,22 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed, totalPrice }: Paym
             body: JSON.stringify({
               imp_uid: rsp.imp_uid, // 포트원 결제 고유 ID
               merchant_uid: rsp.merchant_uid, // 상점에서 생성한 주문번호
+              studioId: _id,
+              menuID: menuId,
+              additionalOptionId: optionIds,
+              visitingCustomerName: userName,
+              visitingCustomerPhone: phone,
+              note: requests,
+              totalPrice,
+              paymentMethod,
+              date,
+              startTime: time,
             }),
           })
             .then((response) => {
               if (response.ok) {
                 console.log('결제 검증 성공');
+                window.location.href = returnUrl;
               } else {
                 console.error('결제 검증 실패');
               }
@@ -215,13 +265,24 @@ const Payment = ({ onClick, trigger, paymentMethod, isAgreed, totalPrice }: Paym
       const data = event.data;
       if (data.success) {
         console.log('네이버페이 결제 성공:', data);
-        fetch('/api/verify-payment', {
+        fetch(`${import.meta.env.VITE_TOUCHEESE_API}/reservation/action`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+
           body: JSON.stringify({
-            merchant_uid: data.merchantPayKey, // 주문번호
+            merchant_uid: data.merchantPayKey,
+            studioId: _id,
+            menuID: menuId,
+            additionalOptionId: optionIds,
+            visitingCustomerName: userName,
+            visitingCustomerPhone: phone,
+            note: requests,
+            totalPrice,
+            paymentMethod,
+            date,
+            startTime: time,
           }),
         })
           .then((response) => {

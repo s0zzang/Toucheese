@@ -15,9 +15,17 @@ export interface ReservationOption {
   optionName: string;
 }
 
+interface VisitorInfo {
+  name: string | null;
+  contact: string | null;
+}
+
 interface ReservationInfo extends StudioInfo {
   totalPrice: number;
   options: ReservationOption[];
+  visitorInfo?: VisitorInfo | null;
+  requests?: string;
+  paymentMethod?: string;
 }
 
 interface ReservationInfoAction {
@@ -35,6 +43,9 @@ const initialState: ReservationInfo = {
   totalPrice: 0,
   options: [],
   menuImage: '',
+  visitorInfo: null,
+  requests: '',
+  paymentMethod: '',
 };
 
 const useReservationStore = create(
@@ -59,6 +70,9 @@ const useReservationStore = create(
           };
         }),
       saveReservationDetails: (data) => set((state) => ({ ...state, ...data })),
+      setVisitorInfo: (visitorInfo: VisitorInfo) => set(() => ({ visitorInfo })),
+      setRequests: (requests: string) => set(() => ({ requests })),
+      setPaymentMethod: (method: string) => set(() => ({ paymentMethod: method })),
       clearReservationInfo: () => {
         sessionStorage.removeItem('reservation-storage');
       },

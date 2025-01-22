@@ -8,13 +8,12 @@ import {
   lessThan10Add0,
   useSelectDateStore,
 } from '@store/useSelectDateStore';
-import { useUserStore } from '@store/useUserStore';
 import { TypoBodySmM, TypoBodySmR, TypoTitleXsSB } from '@styles/Common';
 import variables from '@styles/Variables';
 
 const ReservationDetail = () => {
-  const { totalPrice, options, menuName, basicPrice } = useReservationStore();
-  const { username, phone } = useUserStore();
+  const { totalPrice, options, menuName, basicPrice, paymentMethod, requests, visitorInfo } =
+    useReservationStore();
 
   // 취소 가능 날짜 계산
   const { date } = useSelectDateStore();
@@ -55,7 +54,7 @@ const ReservationDetail = () => {
             <div>
               <div css={itemStyle}>
                 <span>이용 상태</span>
-                <span>사진관에서 예약 확인쭝</span>
+                <span>사진관에서 예약 확인중</span>
               </div>
               <div css={itemStyle}>
                 <span>예약 메뉴</span>
@@ -80,18 +79,18 @@ const ReservationDetail = () => {
             <div>
               <div css={itemStyle}>
                 <span>이름</span>
-                <span>{username}</span>
+                <span>{visitorInfo?.name}</span>
               </div>
               <div css={itemStyle}>
                 <span>전화 번호</span>
-                <span>{phone}</span>
+                <span>{visitorInfo?.contact}</span>
               </div>
             </div>
           </div>
         </section>
         <section css={sectionStyle}>
           <h2 css={[TypoTitleXsSB, titleStyle]}>요청사항</h2>
-          <div css={requestsStyle}>ㅇㅇ</div>
+          <div css={requestsStyle}>{requests}</div>
         </section>
         <section css={sectionStyle}>
           <h2 css={[TypoTitleXsSB, titleStyle]}>결제정보</h2>
@@ -125,7 +124,7 @@ const ReservationDetail = () => {
             </div>
             <div css={itemStyle}>
               <span>결제 수단</span>
-              <span>카페</span>
+              <span>{paymentMethod}</span>
             </div>
           </div>
         </section>
