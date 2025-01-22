@@ -1,27 +1,27 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { convertToDateFormat, getDay } from '@store/useSelectDateStore';
+import { TypoBodyMdM, TypoBodySmR, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
-import { TypoBodyMdM, TypoBodySmR, TypoTitleXsM } from '@styles/Common';
-import { useState } from 'react';
-import StatusChip from './StatusChip';
 import RatingReview from './RatingReview';
+import StatusChip from './StatusChip';
+import { IResItem } from '@pages/Reservation/ReservationList';
 
 type ReservationCardType = {
   isMyPage?: boolean;
-  isReview?: boolean;
-  ratingValue?: number;
+  data: IResItem;
 };
 
-const ReservationCard = ({ isMyPage, isReview, ratingValue = 0 }: ReservationCardType) => {
+const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
   const navigate = useNavigate();
-  const [data, setData] = useState(true);
+  // const [data, setData] = useState(true);
   //API 구현시 실제 데이터로 변경
 
   return (
     <section>
       {data ? (
-        <article css={CardStyle(isMyPage, data)}>
+        <article css={CardStyle(isMyPage, true)}>
           {isMyPage && (
             <div css={AlarmStyle}>
               <img src="/img/icon-calendar-yellow.svg" alt="일정 d-day 아이콘" />
@@ -30,18 +30,20 @@ const ReservationCard = ({ isMyPage, isReview, ratingValue = 0 }: ReservationCar
           )}
           <div css={ReservationInfoStyle}>
             <div className="cardInfo">
-              <StatusChip state="confirmed" />
+              <StatusChip state={data.status} />
               <p className="cardName">
-                <span>사진관명</span> | <span>메뉴명</span>
+                <span>{data.studio}</span> | <span>{data.menu}</span>
               </p>
-              <p className="cardDate">2024.12.6 (금) 13:00</p>
+              <p className="cardDate">{`${convertToDateFormat(new Date(data.date))} (${getDay(new Date(data.date))}) ${data.time}`}</p>
             </div>
 
             <div className="cardCover">
-              <img src="/img/sample-1.png" alt="메뉴 사진" />
+              <img src={data.menuImage} alt="메뉴 사진" />
             </div>
           </div>
-          {isReview && <RatingReview ratingValue={ratingValue} />}
+          {data.status === 'completed' && (
+            <RatingReview ratingValue={data.review && data.review.rating} />
+          )}
         </article>
       ) : (
         <article css={EmptyCardStyle}>

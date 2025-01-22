@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
 import ReservationNavigator from '@components/Navigator/ReservationNavigator';
+import ReservationCard from '@components/ReservationCard/ReservationCard';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { TypoBodyMdM, TypoTitleXsM } from '@styles/Common';
@@ -10,14 +11,18 @@ import { useEffect, useState } from 'react';
 export type ResStatus = '이용 예정' | '이용 완료' | '예약 취소';
 const STATUS: ResStatus[] = ['이용 예정', '이용 완료', '예약 취소'];
 
-interface IResItem {
+export interface IResItem {
   id: number;
-  status: string;
+  status: 'pending' | 'confirmed' | 'completed' | 'canceled';
   studio: string;
   menu: string;
   menuImage: string;
   date: string;
   time: string;
+  review?: {
+    rating: number;
+    content: string;
+  };
 }
 
 // 임시 데이터
@@ -27,7 +32,7 @@ const reserved: IResItem[] = [
     status: 'confirmed',
     studio: '모노 멘션',
     menu: '상반신 촬영',
-    menuImage: 'https://i.imgur.com/7C4GSF4.jpeg',
+    menuImage: 'https://i.imgur.com/7C4GSF4.webp',
     date: '2025-01-25',
     time: '13:00',
   },
@@ -36,7 +41,7 @@ const reserved: IResItem[] = [
     status: 'pending',
     studio: '모노 멘션',
     menu: '상반신 촬영',
-    menuImage: 'https://i.imgur.com/7C4GSF4.jpeg',
+    menuImage: 'https://i.imgur.com/7C4GSF4.webp',
     date: '2025-01-18',
     time: '13:00',
   },
@@ -48,16 +53,20 @@ const completed: IResItem[] = [
     status: 'completed',
     studio: '모노 멘션',
     menu: '상반신 촬영',
-    menuImage: 'https://i.imgur.com/7C4GSF4.jpeg',
+    menuImage: 'https://i.imgur.com/7C4GSF4.webp',
     date: '2025-01-25',
     time: '13:00',
+    review: {
+      rating: 4,
+      content: '좋았어요',
+    },
   },
   {
     id: 3,
     status: 'completed',
     studio: '모노 멘션',
     menu: '상반신 촬영',
-    menuImage: 'https://i.imgur.com/7C4GSF4.jpeg',
+    menuImage: 'https://i.imgur.com/7C4GSF4.webp',
     date: '2025-01-12',
     time: '13:00',
   },
@@ -117,6 +126,9 @@ const ReservationList = () => {
         {data.length ? (
           <ContentStyle>
             <p css={TypoBodyMdM}>총 {data.length}건</p>
+            {data.map((item) => (
+              <ReservationCard key={item.id} data={item} />
+            ))}
           </ContentStyle>
         ) : (
           emptyMessage
