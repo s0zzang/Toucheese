@@ -10,24 +10,22 @@ type ChipType = {
 };
 
 const StatusChip = ({ state = 'pending' }: ChipType) => {
-  const [stateText, setStateText] = useState('pending');
+  let stateText = '';
 
-  useEffect(() => {
-    switch (state) {
-      case 'pending':
-        setStateText('예약확인중');
-        break;
-      case 'confirmed':
-        setStateText('예약확정');
-        break;
-      case 'completed':
-        setStateText('이용완료');
-        break;
-      case 'canceled':
-        setStateText('예약취소');
-        break;
-    }
-  }, [state]);
+  switch (state) {
+    case 'pending':
+      stateText = '예약확인중';
+      break;
+    case 'confirmed':
+      stateText = '예약확정';
+      break;
+    case 'completed':
+      stateText = '이용완료';
+      break;
+    case 'canceled':
+      stateText = '예약취소';
+      break;
+  }
 
   return <div css={ChipStyle(state)}>{stateText}</div>;
 };

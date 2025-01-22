@@ -5,29 +5,28 @@ import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 
 const RatingReview = ({ ratingValue = 0 }) => {
-  const [ratingComment, setRatingComment] = useState(
-    '촬영은 어떠셨나요? 사진관 이용 리뷰를 남겨주세요.',
-  );
+  let ratingComment = '';
 
-  useEffect(() => {
-    switch (ratingValue) {
-      case 1:
-        setRatingComment('별로였어요.');
-        break;
-      case 2:
-        setRatingComment('그저 그랬어요.');
-        break;
-      case 3:
-        setRatingComment('괜찮았어요.');
-        break;
-      case 4:
-        setRatingComment('좋았어요.');
-        break;
-      case 5:
-        setRatingComment('최고였어요!');
-        break;
-    }
-  }, [ratingValue]);
+  switch (ratingValue) {
+    case 1:
+      ratingComment = '별로였어요.';
+      break;
+    case 2:
+      ratingComment = '그저 그랬어요.';
+      break;
+    case 3:
+      ratingComment = '괜찮았어요.';
+      break;
+    case 4:
+      ratingComment = '좋았어요.';
+      break;
+    case 5:
+      ratingComment = '최고였어요!';
+      break;
+    default:
+      ratingComment = '촬영은 어떠셨나요? 사진관 이용 리뷰를 남겨주세요.';
+      break;
+  }
 
   return (
     <div css={CardRatingStar}>
