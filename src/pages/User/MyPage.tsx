@@ -1,17 +1,37 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import variables from '@styles/Variables';
 import Header from '@components/Header/Header';
+import ReservationCard from '@components/ReservationCard/ReservationCard';
+import { css } from '@emotion/react';
+import { IResItem } from '@pages/Reservation/ReservationList';
+import { defaultUserState, useUserStore } from '@store/useUserStore';
+import { TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
+import variables from '@styles/Variables';
+import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IUser } from 'types/types';
-import { defaultUserState } from '@store/useUserStore';
-import { getLocalStorageItem } from '@utils/getLocalStorageItem';
-import { TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
-import ReservationCard from '@components/ReservationCard/ReservationCard';
 
 const MyPage = () => {
   const { username, email } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
+
+  const data: IResItem = {
+    id: 2,
+    status: 'confirmed',
+    studio: '모노 멘션',
+    menu: '상반신 촬영',
+    menuImage: 'https://i.imgur.com/7C4GSF4.webp',
+    date: '2025-01-25',
+    time: '13:00',
+  };
+
+  // 임시 로그아웃
+  const logout = useUserStore((state) => state.resetUser);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <>
@@ -21,7 +41,7 @@ const MyPage = () => {
         <p>{email}</p>
       </div>
 
-      <ReservationCard isMyPage={pathname.includes('aa')} />
+      <ReservationCard isMyPage={pathname.includes('mypage')} data={data} />
 
       <ul css={MyPageMenuStyle}>
         <li className="history">
@@ -34,6 +54,10 @@ const MyPage = () => {
           <Link to="/user/bookmarks">찜한 사진관</Link>
         </li>
       </ul>
+
+      <button type="button" onClick={handleClick}>
+        로그아웃
+      </button>
     </>
   );
 };
@@ -123,8 +147,4 @@ const MyPageMenuStyle = css`
   .bookmarkstudio > a {
     border-bottom: none;
   }
-`;
-
-const box = css`
-  box-shadow: inset 0 0 10px black;
 `;
