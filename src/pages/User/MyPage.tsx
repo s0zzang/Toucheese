@@ -9,20 +9,44 @@ import variables from '@styles/Variables';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IUser } from 'types/types';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const MyPage = () => {
   const { username, email } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
 
-  const data: IResItem = {
-    id: 2,
-    status: 'confirmed',
-    studio: '모노 멘션',
-    menu: '상반신 촬영',
-    menuImage: 'https://i.imgur.com/7C4GSF4.webp',
-    date: '2025-01-25',
-    time: '13:00',
-  };
+  const data: IResItem[] = [
+    {
+      id: 2,
+      status: 'confirmed',
+      studio: '모노 멘션',
+      menu: '상반신 촬영',
+      menuImage: 'https://i.imgur.com/7C4GSF4.webp',
+      date: '2025-01-25',
+      time: '13:00',
+    },
+    {
+      id: 4,
+      status: 'confirmed',
+      studio: '모노 멘션',
+      menu: '상반신 촬영',
+      menuImage: 'https://i.imgur.com/7C4GSF4.webp',
+      date: '2025-01-25',
+      time: '13:00',
+    },
+    {
+      id: 3,
+      status: 'confirmed',
+      studio: '모노 멘션',
+      menu: '상반신 촬영',
+      menuImage: 'https://i.imgur.com/7C4GSF4.webp',
+      date: '2025-01-12',
+      time: '13:00',
+    },
+  ];
 
   // 임시 로그아웃
   const logout = useUserStore((state) => state.resetUser);
@@ -40,8 +64,22 @@ const MyPage = () => {
         <Link to="/user/profile">{username}님 환영해요!</Link>
         <p>{email}</p>
       </div>
-
-      <ReservationCard isMyPage={pathname.includes('mypage')} data={data} />
+      <Swiper
+        css={ReservationCardSwiperStyle}
+        modules={[Pagination]}
+        centeredSlides={true}
+        spaceBetween={10}
+        slidesPerView={1.1}
+        pagination={{
+          clickable: true,
+        }}
+      >
+        {data.map((item) => (
+          <SwiperSlide key={item.id}>
+            <ReservationCard isMyPage={pathname.includes('mypage')} data={item} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
       <ul css={MyPageMenuStyle}>
         <li className="history">
@@ -69,6 +107,7 @@ const MyInfoStyle = css`
   flex-direction: column;
   gap: 0.4rem;
   padding: 1.6rem 0;
+  align-items: flex-start;
 
   & a {
     ${TypoTitleMdSb}
@@ -121,7 +160,7 @@ const MyPageMenuStyle = css`
         background-repeat: no-repeat;
         background-position: center;
         background-size: 1rem;
-        margin-left: auto;
+        margin-left: 1.1;
       }
 
       &::before {
@@ -146,5 +185,35 @@ const MyPageMenuStyle = css`
   }
   .bookmarkstudio > a {
     border-bottom: none;
+  }
+`;
+
+const ReservationCardSwiperStyle = css`
+  width: calc(100% + (${variables.layoutPadding} * 2));
+  margin-left: calc(-1 * ${variables.layoutPadding});
+  padding-bottom: 1.6rem;
+
+  .swiper-pagination {
+    position: absolute;
+    z-index: 10;
+    width: 8rem;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    background-color: ${variables.colors.gray400};
+  }
+
+  .swiper-pagination-bullet {
+    width: 100%;
+    height: 0.2rem;
+    border-radius: 0;
+    margin: 0 !important;
+    cursor: pointer;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: ${variables.colors.primary600};
   }
 `;

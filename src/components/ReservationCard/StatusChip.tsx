@@ -2,7 +2,6 @@
 import { css } from '@emotion/react';
 import { TypoCapXsR } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useEffect, useState } from 'react';
 
 type ChipType = {
   state: 'confirmed' | 'pending' | 'completed' | 'canceled';
