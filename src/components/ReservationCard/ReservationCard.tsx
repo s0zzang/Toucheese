@@ -7,15 +7,13 @@ import { useState } from 'react';
 import StatusChip from './StatusChip';
 import RatingReview from './RatingReview';
 
-const ReservationCard = ({
-  isMyPage,
-  isReviewed,
-  ratingValue = 0,
-}: {
+type ReservationCardType = {
   isMyPage?: boolean;
-  isReviewed?: boolean;
+  isReview?: boolean;
   ratingValue?: number;
-}) => {
+};
+
+const ReservationCard = ({ isMyPage, isReview, ratingValue = 0 }: ReservationCardType) => {
   const navigate = useNavigate();
   const [data, setData] = useState(true);
   //API 구현시 실제 데이터로 변경
@@ -43,7 +41,7 @@ const ReservationCard = ({
               <img src="/img/sample-1.png" alt="메뉴 사진" />
             </div>
           </div>
-          {isReviewed && <RatingReview ratingValue={ratingValue} />}
+          {isReview && <RatingReview ratingValue={ratingValue} />}
         </article>
       ) : (
         <article css={EmptyCardStyle}>
