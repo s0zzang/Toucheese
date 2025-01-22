@@ -15,9 +15,17 @@ export interface ReservationOption {
   optionName: string;
 }
 
+interface VisitorInfo {
+  name: string | null;
+  contact: string | null;
+}
+
 interface ReservationInfo extends StudioInfo {
   totalPrice: number;
   options: ReservationOption[];
+  visitorInfo?: VisitorInfo | null; // 방문자 정보 (다를 경우만 저장)
+  requests?: string; // 요청사항
+  paymentMethod?: string; // 결제수단
 }
 
 interface ReservationInfoAction {
@@ -35,6 +43,9 @@ const initialState: ReservationInfo = {
   totalPrice: 0,
   options: [],
   menuImage: '',
+  visitorInfo: null, // 기본값: null (방문자가 다른 경우에만 설정)
+  requests: '',
+  paymentMethod: '',
 };
 
 const useReservationStore = create(
@@ -59,6 +70,9 @@ const useReservationStore = create(
           };
         }),
       saveReservationDetails: (data) => set((state) => ({ ...state, ...data })),
+      setVisitorInfo: (visitorInfo: VisitorInfo) => set(() => ({ visitorInfo })),
+      setRequests: (requests: string) => set(() => ({ requests })),
+      setPaymentMethod: (method: string) => set(() => ({ paymentMethod: method })),
       clearReservationInfo: () => {
         sessionStorage.removeItem('reservation-storage');
       },
