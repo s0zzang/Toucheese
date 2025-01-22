@@ -10,9 +10,11 @@ import RatingReview from './RatingReview';
 const ReservationCard = ({
   isMyPage,
   isReviewed,
+  ratingValue = 0,
 }: {
   isMyPage?: boolean;
   isReviewed?: boolean;
+  ratingValue?: number;
 }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(true);
@@ -41,7 +43,7 @@ const ReservationCard = ({
               <img src="/img/sample-1.png" alt="메뉴 사진" />
             </div>
           </div>
-          {isReviewed && <RatingReview />}
+          {isReviewed && <RatingReview ratingValue={ratingValue} />}
         </article>
       ) : (
         <article css={EmptyCardStyle}>
