@@ -1,16 +1,20 @@
 /** @jsxImportSource @emotion/react */
 
 import Modal from '@components/Modal/Modal';
+import TextArea from '@components/TextArea/TextArea';
 import { css } from '@emotion/react';
 import useModal from '@hooks/useModal';
-import { TypoBodyMdM, TypoTitleSmS, TypoTitleXsR } from '@styles/Common';
+import { TypoTitleSmS, TypoTitleXsR } from '@styles/Common';
+import { useState } from 'react';
 
 const CancelModal = () => {
   const cancelReasonModal = useModal(1);
   const cancelConfirmModal = useModal(2);
+  const [textareaValue, setTextareaValue] = useState('');
 
   const handleCancel = () => {
     console.log('취소 API 작업');
+    console.log(textareaValue); // 빌드 오류 방지
   };
 
   const cancelReasonButton = [
@@ -81,11 +85,12 @@ const CancelModal = () => {
             <h3 css={cancelTitle}>
               취소 사유 상세 <span>(선택)</span>
             </h3>
-            <textarea
+            <TextArea
+              setTextArea={setTextareaValue}
+              placeholder="예약을 취소하는 이유를 구체적으로 알려주세요."
               name="cancelReason"
               id="cancelReason"
-              placeholder="예약을 취소하는 이유를 구체적으로 알려주세요."
-            ></textarea>
+            />
           </section>
         </>
       </Modal>
@@ -120,7 +125,6 @@ const cancelList = css`
 
   li {
     ${TypoTitleXsR}
-    ${TypoBodyMdM}
   }
 `;
 
