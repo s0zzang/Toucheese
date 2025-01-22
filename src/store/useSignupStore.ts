@@ -2,8 +2,8 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface PersistedSignupState {
-  name: string;
-  phone: string;
+  name?: string;
+  phone?: string;
   setSignupData: (data: Partial<PersistedSignupState>) => void;
   clearSignupData: () => void;
   _persist?: {
@@ -40,7 +40,7 @@ const useSignupStore = create<PersistedSignupState>()(
     }),
     {
       name: 'signup-storage',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

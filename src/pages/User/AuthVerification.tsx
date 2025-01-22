@@ -6,10 +6,10 @@ import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import useSignupStore from '@store/useSignupStore';
 import { TypoTitleMdSb } from '@styles/Common';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface AuthVerificationType {
   success: boolean;
@@ -27,13 +27,40 @@ const AuthRedirectURI = import.meta.env.VITE_AUTH_REDIRECT_URI;
 
 const AuthVerification = () => {
   /** zustand 스토어에 데이터 저장 */
-  const { setSignupData, phone, name } = useSignupStore();
+  const { setSignupData } = useSignupStore();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
 
+  const storedData = sessionStorage.getItem('signup-storage');
+  const parsedData = storedData ? JSON.parse(storedData) : null;
+  const storageName = parsedData?.state?.name || '';
+  const storagePhone = parsedData?.state?.phone || '';
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    // form 초기값을 sessionStorage 데이터로 설정
+    defaultValues: {
+      name: storageName,
+      phone: storagePhone,
+    },
+  });
+
+  /** 페이지가 처음 로드될 때 zustand 상태를 react-hook-form에 반영 */
+  useLayoutEffect(() => {
+    if (searchParams.get('success')) {
+      setIsActive(true);
+      setSignupData({ name: storageName, phone: storagePhone });
+      reset();
+    }
+  }, []);
+
   const handleSave = (data: any) => {
     setSignupData(data);
-    console.log('현재상태 :', useSignupStore.getState(), '데이터 저장 완료 :', phone, name);
   };
 
   /** 간편 본인인증 실행 함수 */
@@ -50,7 +77,17 @@ const AuthVerification = () => {
       async (res: AuthVerificationType) => {
         try {
           if (res.success) {
-            console.log(res);
+            // 상태 업데이트가 이루어진 후 비동기적으로 reset 호출
+            setIsActive(true);
+            setSignupData({ name: storageName, phone: storagePhone });
+
+            // 비동기적으로 reset 호출 (setState 후 화면이 렌더링된 후 reset)
+            setTimeout(() => {
+              reset({
+                name: storageName,
+                phone: storagePhone,
+              });
+            }, 0); // setState 후 화면 리렌더링을 보장하기 위해 0ms 후 실행
           }
         } catch (err) {
           console.error(err);
@@ -59,21 +96,6 @@ const AuthVerification = () => {
     );
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm();
-
-  /** 페이지가 처음 로드될 때 zustand 상태를 react-hook-form에 반영 */
-  useEffect(() => {
-    setValue('phone', phone);
-    setValue('name', name);
-    console.log('useEffect => phone, name:', phone, name);
-  }, [phone, name, setValue]);
-
-  const ButtonActive = () => (name && phone ? setIsActive(true) : setIsActive(false));
   return (
     <>
       <Helmet>
@@ -96,11 +118,8 @@ const AuthVerification = () => {
           <Input
             labelName="이름"
             type="name"
-            value={name}
             onChange={(e) => {
-              console.log('이름 변경:', e.target.value);
               setSignupData({ name: e.target.value });
-              register('email').onChange(e);
             }}
             placeholder="실명을 입력하세요."
             register={register('name', {
@@ -117,11 +136,8 @@ const AuthVerification = () => {
           <Input
             labelName="휴대폰 번호"
             type="phone"
-            value={phone}
             onChange={(e) => {
-              console.log('폰번호 변경:', e.target.value);
               setSignupData({ phone: e.target.value });
-              register('email').onChange(e);
             }}
             placeholder="‘-’구분없이 입력하세요"
             onCheck={handleAuth}
@@ -145,8 +161,8 @@ const AuthVerification = () => {
             text="다음"
             size="large"
             variant="deepGray"
-            disabled={true}
-            active={false}
+            disabled={false}
+            active={isActive}
           />
         </div>
       </form>

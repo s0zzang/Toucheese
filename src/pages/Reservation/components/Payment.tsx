@@ -21,7 +21,7 @@ interface PaymentProps {
   trigger: () => Promise<boolean>;
   paymentMethod: string;
   isAgreed: boolean;
-  totalPrice: string;
+  totalPrice: number;
 }
 
 const Payment = ({ onClick, trigger, paymentMethod, isAgreed, totalPrice }: PaymentProps) => {
