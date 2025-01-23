@@ -30,7 +30,13 @@ const Calendar = ({ style, type = 'filter', disableDates = null }: CalendarProp)
   const today = new Date();
 
   const changeMonth = (direction: number) => {
-    setBaseDate(new Date(baseDate.getFullYear(), baseDate.getMonth() + direction, 1));
+    const firstOfChangedMonth = new Date(
+      baseDate.getFullYear(),
+      baseDate.getMonth() + direction,
+      1,
+    );
+    setBaseDate(firstOfChangedMonth);
+    setActiveDay(convertToDateFormat(firstOfChangedMonth));
   };
 
   const moveToToday = () => {
@@ -40,7 +46,8 @@ const Calendar = ({ style, type = 'filter', disableDates = null }: CalendarProp)
 
   const handleDateClick = (year: number, month: number, day: number) => {
     const currentMonth = baseDate.getMonth() + 1;
-    const value = `${year}-${lessThan10Add0(month)}-${lessThan10Add0(day)}`;
+    // const value = `${year}-${lessThan10Add0(month)}-${lessThan10Add0(day)}`;
+    const value = convertToDateFormat(new Date(`${year}-${month}-${day}`));
     setActiveDay(value);
 
     // 12월, 1월 예외처리
@@ -136,7 +143,7 @@ export default Calendar;
 const CalendarWrStyle = styled.article`
   max-width: 500px;
   width: 100%;
-  aspect-ratio: 1/1.03;
+  aspect-ratio: 1/1.045;
   margin: 0 auto;
 
   @media (min-width: 1024px) {
