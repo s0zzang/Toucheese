@@ -30,7 +30,6 @@ interface FormValues {
 
 const ReservationCheck = () => {
   const [paymentMethod, setPaymentMethod] = useState('카카오페이');
-  console.log(paymentMethod);
   const [isAgreed, setIsAgreed] = useState(false);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,8 +105,6 @@ const ReservationCheck = () => {
         requests: formData.requests || '',
         paymentMethod,
       });
-
-      console.log('최종 예약 정보:', useReservationStore.getState());
     }
   };
 
