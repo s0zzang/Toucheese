@@ -31,10 +31,11 @@ const AuthVerification = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const storedData = sessionStorage.getItem('signup-storage');
   const parsedData = storedData ? JSON.parse(storedData) : null;
-  const storageName = parsedData?.state?.name || '';
+  const storageName = parsedData?.state?.username || '';
   const storagePhone = parsedData?.state?.phone || '';
 
   const {
@@ -45,16 +46,18 @@ const AuthVerification = () => {
   } = useForm({
     // form 초기값을 sessionStorage 데이터로 설정
     defaultValues: {
-      name: storageName,
+      username: storageName,
       phone: storagePhone,
     },
   });
 
   /** 페이지가 처음 로드될 때 zustand 상태를 react-hook-form에 반영 */
+  /** 모바일 - 본인인증 페이지 이동 */
   useLayoutEffect(() => {
     if (searchParams.get('success')) {
       setIsActive(true);
-      setSignupData({ name: storageName, phone: storagePhone });
+      setIsDisabled(false);
+      setSignupData({ username: storageName, phone: storagePhone });
       reset();
     }
   }, []);
@@ -76,21 +79,25 @@ const AuthVerification = () => {
       },
       async (res: AuthVerificationType) => {
         try {
+          /** PC - 본인인증 팝업 */
           if (res.success) {
             // 상태 업데이트가 이루어진 후 비동기적으로 reset 호출
             setIsActive(true);
-            setSignupData({ name: storageName, phone: storagePhone });
+            setIsDisabled(false);
+            setSignupData({ username: storageName, phone: storagePhone });
 
             // 비동기적으로 reset 호출 (setState 후 화면이 렌더링된 후 reset)
             setTimeout(() => {
               reset({
-                name: storageName,
+                username: storageName,
                 phone: storagePhone,
               });
             }, 0); // setState 후 화면 리렌더링을 보장하기 위해 0ms 후 실행
           }
         } catch (err) {
           console.error(err);
+          setIsActive(false);
+          setIsDisabled(true);
         }
       },
     );
@@ -106,7 +113,13 @@ const AuthVerification = () => {
       </Helmet>
 
       <BackButton />
-      <h1 css={pageHeaderStyle}>본인인증</h1>
+      <h1
+        css={css`
+          visibility: hidden;
+        `}
+      >
+        본인인증
+      </h1>
       <h2 css={pageTitleStyle}>
         이름과 휴대폰 번호를
         <br />
@@ -119,17 +132,17 @@ const AuthVerification = () => {
             labelName="이름"
             type="name"
             onChange={(e) => {
-              setSignupData({ name: e.target.value });
+              setSignupData({ username: e.target.value });
             }}
             placeholder="실명을 입력하세요."
-            register={register('name', {
+            register={register('username', {
               required: '이름은 필수입니다',
               minLength: {
                 value: 2,
                 message: '이름은 2자 이상이어야 합니다',
               },
             })}
-            error={errors.name?.message?.toString()}
+            error={errors.username?.message?.toString()}
           />
 
           {/* 휴대폰 번호 */}
@@ -161,7 +174,7 @@ const AuthVerification = () => {
             text="다음"
             size="large"
             variant="deepGray"
-            disabled={false}
+            disabled={isDisabled}
             active={isActive}
           />
         </div>
@@ -182,10 +195,6 @@ const buttonStyle = css`
   position: fixed;
   bottom: 3rem;
   width: calc(100% - 3.2rem);
-`;
-
-const pageHeaderStyle = css`
-  visibility: hidden;
 `;
 
 const pageTitleStyle = css`
