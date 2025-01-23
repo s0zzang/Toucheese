@@ -12,7 +12,7 @@ import { IResvItem } from 'types/types';
 
 export interface ResStatus {
   statusKor: '이용 예정' | '이용 완료' | '예약 취소';
-  statusEng: 'DEFAULT' | 'COMPLETED' | 'CANCELED';
+  statusEng: 'DEFAULT' | 'COMPLETE' | 'CANCEL';
 }
 
 const ReservationList = () => {
@@ -24,6 +24,7 @@ const ReservationList = () => {
 
   // resStatus 변경 시 api 호출
   const { data } = useGetReservationList(resStatus.statusEng);
+  console.log(data);
 
   // resStatus 변경 시 아이템 초기화
   useEffect(() => {
