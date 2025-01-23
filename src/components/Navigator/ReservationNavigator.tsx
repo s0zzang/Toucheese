@@ -5,21 +5,25 @@ import { TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { Dispatch, SetStateAction } from 'react';
 
+const STATUS: ResStatus[] = [
+  { statusKor: '이용 예정', statusEng: 'DEFAULT' },
+  { statusKor: '이용 완료', statusEng: 'COMPLETED' },
+  { statusKor: '예약 취소', statusEng: 'CANCELED' },
+];
+
 const ReservationNavigator = ({
-  list,
   status,
   setStatus,
 }: {
-  list: ResStatus[];
   status: ResStatus;
   setStatus: Dispatch<SetStateAction<ResStatus>>;
 }) => {
   return (
     <nav>
       <UlStyle>
-        {list.map((item, index) => {
-          const isActive = item === status;
-          const length = list.length;
+        {STATUS.map((item, index) => {
+          const isActive = item.statusKor === status.statusKor;
+          const length = STATUS.length;
 
           return (
             <LiStyle
@@ -28,7 +32,7 @@ const ReservationNavigator = ({
               onClick={() => setStatus(item)}
               length={length}
             >
-              <span css={TypoTitleXsM}>{item}</span>
+              <span css={TypoTitleXsM}>{item.statusKor}</span>
             </LiStyle>
           );
         })}
