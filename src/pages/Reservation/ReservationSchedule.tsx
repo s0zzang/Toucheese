@@ -22,7 +22,7 @@ const ReservationSchedule = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const { data: availableDate, isError } = useGetAvailableDate(_id, new Date(date));
+  const { data: availableDate, isFetching, isSuccess } = useGetAvailableDate(_id, new Date(date));
 
   // 필터링 시 날짜, 시간 초기화
   useEffect(() => {
@@ -50,7 +50,8 @@ const ReservationSchedule = () => {
         <SelectTime
           type="reservation"
           availableTimeWithDates={availableDate?.availableTimeWithDates}
-          isError={isError}
+          isSuccess={isSuccess}
+          isFetching={isFetching}
         />
       </div>
 

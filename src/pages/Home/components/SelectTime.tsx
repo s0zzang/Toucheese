@@ -21,18 +21,20 @@ interface ITimeProp {
     date: string;
     availableTimeDto: ITimes[];
   }[];
-  isError: boolean;
+
+  isSuccess: boolean;
+  isFetching: boolean;
 }
 
-const SelectTime = ({ type, availableTimeWithDates, isError }: ITimeProp) => {
+const SelectTime = ({ type, availableTimeWithDates, isSuccess, isFetching }: ITimeProp) => {
   const { time: selectedTime, setTime } = useSelectTimeStore();
   const { date } = useSelectDateStore();
 
   const times =
     type === 'filter'
       ? filterTimes
-      : availableTimeWithDates?.find((TimeWithDate) => TimeWithDate.date === date)!
-          .availableTimeDto;
+      : availableTimeWithDates?.find((TimeWithDate) => TimeWithDate.date === date)
+          ?.availableTimeDto;
 
   const morningTimes = useMemo(() => times?.filter((times) => times.time <= '11:00'), [times]);
   const afternoonTimes = useMemo(() => times?.filter((times) => times.time > '11:00'), [times]);
@@ -41,7 +43,21 @@ const SelectTime = ({ type, availableTimeWithDates, isError }: ITimeProp) => {
     setTime(value, type);
   };
 
-  return !isError ? (
+  if (isFetching) return null;
+  if (!isSuccess)
+    return (
+      <div css={emptyMessageBox}>
+        <EmptyMessage message="오류가 발생했습니다. 잠시 후 다시 시도해주세요." />
+      </div>
+    );
+  if (!times)
+    return (
+      <div css={emptyMessageBox}>
+        <EmptyMessage message="예약이 불가능합니다." />
+      </div>
+    );
+
+  return (
     <>
       <section css={SelectTimeStyle}>
         <h2 css={Hidden}>시간 선택</h2>
@@ -106,8 +122,6 @@ const SelectTime = ({ type, availableTimeWithDates, isError }: ITimeProp) => {
         </h3>
       </section>
     </>
-  ) : (
-    <EmptyMessage message="오류가 발생했습니다. 잠시 후 다시 시도해주세요." />
   );
 };
 
@@ -162,4 +176,8 @@ const disabledStyle = css`
   color: ${variables.colors.gray500};
   border-color: ${variables.colors.gray400};
   pointer-events: none;
+`;
+
+const emptyMessageBox = css`
+  padding: 3rem 0;
 `;
