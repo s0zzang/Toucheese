@@ -3,6 +3,7 @@ import Auth from '@pages/User/Auth';
 import AuthVerification from '@pages/User/AuthVerification';
 import KakaoCallback from '@pages/User/KakaoCallback';
 import LoginWithEmailPage from '@pages/User/LoginWithEmailPage';
+import SignupSuccess from '@pages/User/signupSuccess';
 
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
@@ -56,6 +57,12 @@ const router = createBrowserRouter([
         path: 'signup',
         element: <SignUp />,
       },
+
+      {
+        path: 'signupSuccess',
+        element: <SignupSuccess />,
+      },
+
       {
         path: 'mypage',
         element: <MyPage />,
