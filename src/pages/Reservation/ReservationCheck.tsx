@@ -263,7 +263,7 @@ const ReservationCheck = () => {
       <section>
         <h2 css={[TypoTitleXsSB, titleAlignStyle]}>결제수단</h2>
         <div css={[TypoTitleXsR, radioGroupStyle]}>
-          <li style={{ fontSize: '1.8rem' }} css={radioLabelStyle}>
+          <li css={radioLabelStyle}>
             <input
               type="radio"
               name="paymentMethod"
@@ -275,7 +275,7 @@ const ReservationCheck = () => {
               <img css={payIconStyle} src="/img/icon-kakaoPay.svg" alt="카카오페이 로고" />
             </label>
           </li>
-          <li style={{ fontSize: '1.8rem' }} css={radioLabelStyle}>
+          <li css={radioLabelStyle}>
             <input
               type="radio"
               name="paymentMethod"
@@ -287,7 +287,7 @@ const ReservationCheck = () => {
               <img css={payIconStyle} src="/img/icon-naverPay.svg" alt="네이버페이 로고" />
             </label>
           </li>
-          <li style={{ fontSize: '1.8rem' }} css={radioLabelStyle}>
+          <li css={radioLabelStyle}>
             <input
               type="radio"
               name="paymentMethod"
@@ -515,6 +515,7 @@ const totalPriceStyle = css`
 
 //결제수단
 const radioGroupStyle = css`
+  fontsize: 1.8rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
