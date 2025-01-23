@@ -81,7 +81,6 @@ const StudioReviewWritePage = () => {
         <div
           css={css`
             width: 100%;
-            height: 15rem;
             margin-top: 1.5rem;
             margin-bottom: 5rem;
           `}
