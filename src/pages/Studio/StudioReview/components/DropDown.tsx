@@ -32,7 +32,11 @@ const Dropdown = ({ options, selectedOption, onSelect }: DropdownProps) => {
       {isOpen && (
         <OptionList>
           {options.map((option) => (
-            <OptionItem key={option} onClick={() => handleSelectOption(option)} isSelected={option === selectedOption}>
+            <OptionItem
+              key={option}
+              onClick={() => handleSelectOption(option)}
+              isSelected={option === selectedOption}
+            >
               {option}
             </OptionItem>
           ))}
@@ -74,6 +78,7 @@ const OptionItem = styled.li<{ isSelected: boolean }>`
   padding: 0.8rem 1rem;
   cursor: pointer;
   background-color: ${({ isSelected }) => (isSelected ? variables.colors.gray100 : '')};
+  border-radius: 0.8rem;
 
   &:hover {
     background-color: ${variables.colors.gray100};
