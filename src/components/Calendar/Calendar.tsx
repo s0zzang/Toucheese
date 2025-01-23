@@ -5,15 +5,13 @@ import styled from '@emotion/styled';
 import { convertToDateFormat, lessThan10Add0, useSelectDateStore } from '@store/useSelectDateStore';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import createCalendar from './createCalendar';
-import fetchAvailableDate from './fetchAvailableDate';
 
 interface CalendarProp {
   style?: CSSObject;
   type?: string;
+  disableDates?: string[] | null;
 }
 
 interface Day {
@@ -22,9 +20,7 @@ interface Day {
   date: number;
 }
 
-const Calendar = ({ style, type = 'filter' }: CalendarProp) => {
-  const { _id } = useParams() as { _id: string };
-
+const Calendar = ({ style, type = 'filter', disableDates = null }: CalendarProp) => {
   const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
   const [baseDate, setBaseDate] = useState(new Date());
   const [calendar, setCalendar] = useState<Day[]>();
@@ -32,16 +28,6 @@ const Calendar = ({ style, type = 'filter' }: CalendarProp) => {
   const baseYear = baseDate.getFullYear();
   const baseMonth = baseDate.getMonth();
   const today = new Date();
-
-  // 타입이 'reservation'일 때만, 예약 불가능한 날짜 조회
-  const { data: disableDates } =
-    type === 'reservation'
-      ? useQuery({
-          queryKey: ['disableDates', _id, `${baseYear}-${baseMonth}`],
-          queryFn: () => fetchAvailableDate(_id, baseDate),
-          staleTime: 1000 * 60 * 10, // 10분
-        })
-      : { data: null };
 
   const changeMonth = (direction: number) => {
     setBaseDate(new Date(baseDate.getFullYear(), baseDate.getMonth() + direction, 1));
@@ -149,7 +135,13 @@ export default Calendar;
 
 const CalendarWrStyle = styled.article`
   max-width: 500px;
+  width: 100%;
+  aspect-ratio: 1/1.03;
   margin: 0 auto;
+
+  @media (min-width: 1024px) {
+    aspect-ratio: 1/0.9;
+  }
 `;
 
 const TopStyle = styled.div`

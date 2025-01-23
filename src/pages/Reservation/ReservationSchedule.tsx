@@ -9,16 +9,20 @@ import variables from '@styles/Variables';
 import { convertToDateFormat, getDay, today, useSelectDateStore } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
+import { useGetAvailableDate } from '@hooks/useGetAvailableDate';
 
 const ReservationSchedule = () => {
+  const { _id } = useParams() as { _id: string };
   const { time, setTime } = useSelectTimeStore();
   const { date, setDate } = useSelectDateStore();
   const [_, month, day] = date.split('-');
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  const { data: availableDate, isError } = useGetAvailableDate(_id, new Date(date));
 
   // 필터링 시 날짜, 시간 초기화
   useEffect(() => {
@@ -38,8 +42,16 @@ const ReservationSchedule = () => {
       <Header title="예약하기" />
 
       <div css={contentBox}>
-        <Calendar style={DividerStyle} type="reservation" />
-        <SelectTime type="reservation" />
+        <Calendar
+          style={DividerStyle}
+          type="reservation"
+          disableDates={availableDate?.disableDates}
+        />
+        <SelectTime
+          type="reservation"
+          availableTimeWithDates={availableDate?.availableTimeWithDates}
+          isError={isError}
+        />
       </div>
 
       <div css={fixedBox}>
