@@ -6,22 +6,20 @@ import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 import RatingReview from './RatingReview';
 import StatusChip from './StatusChip';
-import { IResItem } from '@pages/Reservation/ReservationList';
+import { IResvItem } from 'types/types';
 
 type ReservationCardType = {
   isMyPage?: boolean;
-  data: IResItem;
+  data: IResvItem | null;
 };
 
 const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
   const navigate = useNavigate();
-  // const [data, setData] = useState(true);
-  //API 구현시 실제 데이터로 변경
 
   return (
     <section>
       {data ? (
-        <article css={CardStyle(isMyPage, true)}>
+        <article css={CardStyle(isMyPage)}>
           {isMyPage && (
             <div css={AlarmStyle}>
               <img src="/img/icon-calendar-yellow.svg" alt="일정 d-day 아이콘" />
@@ -32,16 +30,16 @@ const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
             <div className="cardInfo">
               <StatusChip state={data.status} />
               <p className="cardName">
-                <span>{data.studio}</span> | <span>{data.menu}</span>
+                <span>{data.studioName}</span> | <span>{data.menuName}</span>
               </p>
-              <p className="cardDate">{`${convertToDateFormat(new Date(data.date))} (${getDay(new Date(data.date))}) ${data.time}`}</p>
+              <p className="cardDate">{`${convertToDateFormat(new Date(data.date))} (${getDay(new Date(data.date))}) ${data.startTime.split(':').slice(0, 2).join(':')}`}</p>
             </div>
 
             <div className="cardCover">
-              <img src={data.menuImage} alt="메뉴 사진" />
+              <img src={data.menuImgUrl} alt="메뉴 사진" />
             </div>
           </div>
-          {data.status === 'completed' && (
+          {data.status === 'COMPLETE' && (
             <RatingReview ratingValue={data.review && data.review.rating} />
           )}
         </article>
@@ -62,13 +60,13 @@ const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
 
 export default ReservationCard;
 
-const CardStyle = (isMyPage: boolean | undefined, data: boolean) => css`
+const CardStyle = (isMyPage: boolean | undefined) => css`
   display: flex;
   flex-direction: column;
   background-color: ${variables.colors.white};
   border-radius: 0.6rem;
   gap: 0.8rem;
-  ${isMyPage && data
+  ${isMyPage
     ? `border: 0.1rem solid ${variables.colors.primary600}`
     : `border: 0.1rem solid ${variables.colors.gray400}`};
   padding: 1.4rem;

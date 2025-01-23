@@ -2,51 +2,23 @@
 import Header from '@components/Header/Header';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
 import { css } from '@emotion/react';
-import { IResItem } from '@pages/Reservation/ReservationList';
 import { defaultUserState, useUserStore } from '@store/useUserStore';
 import { TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { IUser } from 'types/types';
+import { IResvItem, IUser } from 'types/types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { useState } from 'react';
 
 const MyPage = () => {
   const { username, email } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
 
-  const data: IResItem[] = [
-    {
-      id: 2,
-      status: 'confirmed',
-      studio: '모노 멘션',
-      menu: '상반신 촬영',
-      menuImage: 'https://i.imgur.com/7C4GSF4.webp',
-      date: '2025-01-25',
-      time: '13:00',
-    },
-    {
-      id: 4,
-      status: 'confirmed',
-      studio: '모노 멘션',
-      menu: '상반신 촬영',
-      menuImage: 'https://i.imgur.com/7C4GSF4.webp',
-      date: '2025-01-25',
-      time: '13:00',
-    },
-    {
-      id: 3,
-      status: 'confirmed',
-      studio: '모노 멘션',
-      menu: '상반신 촬영',
-      menuImage: 'https://i.imgur.com/7C4GSF4.webp',
-      date: '2025-01-12',
-      time: '13:00',
-    },
-  ];
+  const [data, setData] = useState<IResvItem[]>([]);
 
   // 임시 로그아웃
   const logout = useUserStore((state) => state.resetUser);
@@ -74,8 +46,8 @@ const MyPage = () => {
           clickable: true,
         }}
       >
-        {data.map((item) => (
-          <SwiperSlide key={item.id}>
+        {(data?.length ? data : [null]).map((item, i) => (
+          <SwiperSlide key={`${item ? item.reservationId : i}`}>
             <ReservationCard isMyPage={pathname.includes('mypage')} data={item} />
           </SwiperSlide>
         ))}
