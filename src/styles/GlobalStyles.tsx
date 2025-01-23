@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import variables from './Variables';
+import { TypoBodyMdR } from './Common';
 
 const GlobalStyles = css`
   @font-face {
@@ -240,14 +241,47 @@ const GlobalStyles = css`
   input[type='checkbox'],
   input[type='radio'] {
     all: unset;
+    box-sizing: border-box;
     display: inline-block;
+    min-width: 1.4rem;
     cursor: pointer;
     position: relative;
-    vertical-align: text-top;
-    border-radius: 50%;
+    vertical-align: middle;
+    margin-top: -0.2em;
+    margin-right: 0.7em;
     aspect-ratio: 1 / 1;
-    margin-right: 0.5em;
-    box-sizing: border-box;
+  }
+
+  input[type='radio'] {
+    width: 1.3em;
+    border: 2px solid ${variables.colors.gray500};
+    border-radius: 50%;
+
+    &:checked {
+      border-width: 0.4em;
+      border-color: ${variables.colors.primary600};
+    }
+  }
+
+  input[type='checkbox'] {
+    width: 1.4em;
+    border: 2px solid ${variables.colors.gray600};
+    border-radius: 2px;
+
+    &:checked {
+      color: ${variables.colors.primary600};
+      border-color: currentColor;
+      background: currentColor url(/img/icon-check-white-radius.svg) no-repeat center / 0.8em;
+    }
+  }
+
+  textarea {
+    position: relative;
+    border: 1px solid ${variables.colors.gray400};
+    border-radius: 0.6rem;
+    padding: 1rem 1.2rem 2.6rem;
+    min-height: 7.6rem;
+    ${TypoBodyMdR}
   }
 
   @media (max-width: 350px) {

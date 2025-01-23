@@ -13,7 +13,13 @@ interface StudioReviewCategoriesProps {
 }
 
 /** 리뷰에 대한 필터링 컴포넌트 */
-const StudioReviewCategories = ({ avgRating, totalReviewNum, menuNameList, menuIdList, onFilterChange }: StudioReviewCategoriesProps) => {
+const StudioReviewCategories = ({
+  avgRating,
+  totalReviewNum,
+  menuNameList,
+  menuIdList,
+  onFilterChange,
+}: StudioReviewCategoriesProps) => {
   const FILTER_OPTIONS = ['전체리뷰', ...menuNameList];
   const [selectedOption, setSelectedOption] = useState('전체리뷰');
 
@@ -28,7 +34,11 @@ const StudioReviewCategories = ({ avgRating, totalReviewNum, menuNameList, menuI
   return (
     <Container>
       <CategoryWrapper>
-        <Dropdown options={FILTER_OPTIONS} selectedOption={selectedOption} onSelect={handleOptionSelect} />
+        <Dropdown
+          options={FILTER_OPTIONS}
+          selectedOption={selectedOption}
+          onSelect={handleOptionSelect}
+        />
       </CategoryWrapper>
       <RatingWrapper>
         <RatingIcon src="/img/icon-rating.svg" alt="평점" />

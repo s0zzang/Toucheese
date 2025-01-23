@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { css } from '@emotion/react';
+import { css, CSSObject } from '@emotion/react';
 import { TypoBodyMdM, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import React from 'react';
@@ -21,6 +21,7 @@ interface ButtonProps {
   icon?: React.ReactNode;
   iconSizeWidth?: string;
   iconSizeHeight?: string;
+  style?: CSSObject;
 }
 
 /**  버튼 컴포넌트 사용
@@ -51,6 +52,7 @@ const Button = ({
   variant = 'primary',
   fixed = false,
   size = 'large',
+  style,
 }: ButtonProps) => {
   const widthStyles = {
     fit: css`
@@ -175,7 +177,7 @@ ${width === 'fit' &&
   `;
 
   return (
-    <button type={type} css={styles} disabled={disabled} onClick={onClick}>
+    <button type={type} css={[styles, style]} disabled={disabled} onClick={onClick}>
       <div css={iconWrapperStyles}>
         {icon}
         {text}

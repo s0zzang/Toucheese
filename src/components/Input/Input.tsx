@@ -103,7 +103,7 @@ const Input = ({
             </button>
           )}
         </div>
-        {isValid && (
+        {isValid && !error && (
           <div css={errorContainerStyle}>
             <img src="/img/icon-valid.svg" alt="유효성 검사 통과" css={errorIconStyle} />
             <p css={errorStyle(error, isValid)}>유효성 검사 통과</p>

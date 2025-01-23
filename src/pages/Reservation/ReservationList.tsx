@@ -4,98 +4,42 @@ import ReservationNavigator from '@components/Navigator/ReservationNavigator';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useGetReservationList } from '@hooks/useGetReservationList';
 import { TypoBodyMdM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
+import { IResvItem } from 'types/types';
 
-export type ResStatus = '이용 예정' | '이용 완료' | '예약 취소';
-const STATUS: ResStatus[] = ['이용 예정', '이용 완료', '예약 취소'];
-
-export interface IResItem {
-  id: number;
-  status: 'pending' | 'confirmed' | 'completed' | 'canceled';
-  studio: string;
-  menu: string;
-  menuImage: string;
-  date: string;
-  time: string;
-  review?: {
-    rating: number;
-    content: string;
-  };
+export interface ResStatus {
+  statusKor: '이용 예정' | '이용 완료' | '예약 취소';
+  statusEng: 'DEFAULT' | 'COMPLETE' | 'CANCEL';
 }
 
-// 임시 데이터
-const reserved: IResItem[] = [
-  {
-    id: 2,
-    status: 'confirmed',
-    studio: '모노 멘션',
-    menu: '상반신 촬영',
-    menuImage: 'https://i.imgur.com/7C4GSF4.webp',
-    date: '2025-01-25',
-    time: '13:00',
-  },
-  {
-    id: 1,
-    status: 'pending',
-    studio: '모노 멘션',
-    menu: '상반신 촬영',
-    menuImage: 'https://i.imgur.com/7C4GSF4.webp',
-    date: '2025-01-18',
-    time: '13:00',
-  },
-];
-
-const completed: IResItem[] = [
-  {
-    id: 4,
-    status: 'completed',
-    studio: '모노 멘션',
-    menu: '상반신 촬영',
-    menuImage: 'https://i.imgur.com/7C4GSF4.webp',
-    date: '2025-01-25',
-    time: '13:00',
-    review: {
-      rating: 4,
-      content: '좋았어요',
-    },
-  },
-  {
-    id: 3,
-    status: 'completed',
-    studio: '모노 멘션',
-    menu: '상반신 촬영',
-    menuImage: 'https://i.imgur.com/7C4GSF4.webp',
-    date: '2025-01-12',
-    time: '13:00',
-  },
-];
-
-const canceled: IResItem[] = [];
-
 const ReservationList = () => {
-  const [resStatus, setResStatus] = useState<ResStatus>('이용 예정');
-  const [data, setData] = useState<IResItem[]>([]);
-
-  // 로컬 스토리지에서 토큰 꺼내기
-  // const { accessToken } = getLocalStorageItem<IUser>('userState', defaultUserState);
+  const [resStatus, setResStatus] = useState<ResStatus>({
+    statusKor: '이용 예정',
+    statusEng: 'DEFAULT',
+  });
+  const [items, setItems] = useState<IResvItem[]>([]);
 
   // resStatus 변경 시 api 호출
-  useEffect(() => {
-    // if (accessToken) {
-    //   const result = useGetReservationList(resStatus, accessToken);
-    // }
+  const { data } = useGetReservationList(resStatus.statusEng);
+  console.log(data);
 
-    // 임시로 데이터 set
-    if (resStatus === '이용 예정') setData(reserved);
-    else if (resStatus === '이용 완료') setData(completed);
-    else setData(canceled);
-  }, [resStatus]);
+  // resStatus 변경 시 아이템 초기화
+  useEffect(() => {
+    setItems([]);
+  }, [resStatus.statusEng]);
+
+  useEffect(() => {
+    if (data) {
+      setItems(data);
+    }
+  }, [data]);
 
   // 예약 내역이 없을 시 메시지 생성
   let emptyMessage;
-  switch (resStatus) {
+  switch (resStatus.statusKor) {
     case '이용 예정':
       emptyMessage = (
         <p css={TypoTitleXsM}>
@@ -119,15 +63,15 @@ const ReservationList = () => {
     <>
       <HeaderContainerStyle>
         <Header title="예약내역" backTo="/user/mypage" customStyle={headerStyle} />
-        <ReservationNavigator list={STATUS} status={resStatus} setStatus={setResStatus} />
+        <ReservationNavigator status={resStatus} setStatus={setResStatus} />
       </HeaderContainerStyle>
 
-      <SectionStyle className={data.length ? '' : 'empty'}>
-        {data.length ? (
+      <SectionStyle className={items.length ? '' : 'empty'}>
+        {items.length ? (
           <ContentStyle>
-            <p css={TypoBodyMdM}>총 {data.length}건</p>
-            {data.map((item) => (
-              <ReservationCard key={item.id} data={item} />
+            <p css={TypoBodyMdM}>총 {items.length}건</p>
+            {items.map((item) => (
+              <ReservationCard key={item.reservationId} data={item} />
             ))}
           </ContentStyle>
         ) : (

@@ -1,18 +1,25 @@
-import { ResStatus } from '@pages/Reservation/ReservationList';
-import { useQuery } from '@tanstack/react-query';
+import { defaultUserState } from '@store/useUserStore';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { getLocalStorageItem } from '@utils/getLocalStorageItem';
+import { IResvRes, IUser } from 'types/types';
+
+export type ResStatus = 'DEFAULT' | 'RESERVED' | 'COMPLETE' | 'CANCEL';
 
 // 예약 상태 별 예약 내역을 불러오는 hook
-// api 완성되면 연동
-const fetchReservationList = async (resStatus: ResStatus, accessToken: string) => {
-  console.log(accessToken);
+const fetchReservationList = async (status: ResStatus): Promise<IResvRes> => {
+  const { accessToken } = getLocalStorageItem<IUser>('userState', defaultUserState);
+  const newStatus = status.toLowerCase();
 
-  const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/${resStatus}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      // Authorization: Bearer ${accessToken}
+  const response = await fetch(
+    `${import.meta.env.VITE_TOUCHEESE_API}/user/mypage/reservation${newStatus !== 'default' ? `/${newStatus}` : ''}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
-  });
+  );
 
   if (!response.ok) {
     console.error('Failed to fetch data');
@@ -21,11 +28,12 @@ const fetchReservationList = async (resStatus: ResStatus, accessToken: string) =
   return response.json();
 };
 
-export const useGetReservationList = (resStatus: ResStatus, accessToken: string) => {
+export const useGetReservationList = (resStatus: ResStatus): UseQueryResult<IResvRes> => {
   return useQuery({
-    queryKey: [resStatus],
-    queryFn: () => fetchReservationList(resStatus, accessToken),
+    queryKey: ['reservation', { resStatus }],
+    queryFn: () => fetchReservationList(resStatus),
     staleTime: 1000 * 60 * 1,
     refetchOnWindowFocus: false,
+    retry: 3,
   });
 };

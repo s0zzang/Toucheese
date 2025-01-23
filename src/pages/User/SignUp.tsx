@@ -7,7 +7,9 @@ import { css } from '@emotion/react';
 import { TypoTitleMdSb } from '@styles/Common';
 import { useForm } from 'react-hook-form';
 import useSignupStore from '@store/useSignupStore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const SignUp = () => {
   /** react-hook-form */
@@ -19,33 +21,36 @@ const SignUp = () => {
   } = useForm();
 
   /** zustand 스토어에 데이터 저장 */
-  // 이후 사용될 Phone, name 추가 호출 필요
   const { setSignupData } = useSignupStore();
-  const [emailError, setEmailError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string>('');
+  const [isActive, setIsActive] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
 
-  const handleVerifyComplete = () => {
-    console.log('본인인증 완료');
-  };
+  const email = watch('email');
+  const password = watch('password');
+  const passwordConfirm = watch('passwordConfirm');
 
+  /** 이메일 중복 확인 */
   const CheckEmail = async (email: string) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/auth/register/check`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${import.meta.env.VITE_TOUCHEESE_API}/auth/register/check?email=${email}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-        body: JSON.stringify({ email }),
-      });
+      );
 
       if (!response.ok) {
-        throw new Error('서버 오류가 발생했습니다.');
+        throw new Error(`서버 오류가 발생 :${response.status}`);
       }
-
-      const result = await response.json();
-      return { success: result.success, message: result.message };
+      return await response.json();
     } catch (error) {
-      console.error('중복확인 오류:', error);
-      return { success: false, message: '중복확인 요청에 실패했습니다.' };
+      throw error;
     }
   };
 
@@ -56,28 +61,50 @@ const SignUp = () => {
       return;
     }
 
-    const { success, message } = await CheckEmail(email);
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    if (!emailPattern.test(email)) {
+      setEmailError('올바른 이메일 형식이 아닙니다.');
+      return;
+    }
 
-    if (success) {
-      setEmailError(null);
-      alert('사용 가능한 이메일입니다.');
-    } else {
-      setEmailError(message);
+    try {
+      const response = await CheckEmail(email);
+
+      if (response.success === true) {
+        setIsSuccess(true);
+      } else if (response.success === false) {
+        setEmailError('중복된 이메일입니다.');
+      }
+    } catch (error) {
+      setEmailError('이메일 중복확인 에러');
     }
   };
+
+  useEffect(() => {
+    // 모든 조건이 만족하면 활성화
+    const emailValid = emailError === '사용가능';
+    const passwordValid =
+      password &&
+      /^[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/.test(password) &&
+      !password.includes(email);
+    const passwordsMatch = password === passwordConfirm;
+
+    setIsActive(emailValid && passwordValid && passwordsMatch);
+    setIsDisabled(!(emailValid && passwordValid && passwordsMatch));
+  }, [email, password, passwordConfirm, emailError]);
 
   const onSubmit = (data: any) => {
     setSignupData(data);
   };
 
   /** local storage에 저장된 전화번호, 이름 불러오기 */
-  const loadLocalStorageData = (key: string) => {
+  const loadSessionStorageData = (key: string) => {
     /** key에 해당하는 데이터 호출 */
-    const localData = localStorage.getItem(key);
+    const localData = sessionStorage.getItem(key);
     if (!localData) {
       return null;
     }
-    /** 문자열로 저장된 데이터 객체로 변환 */
+
     try {
       const parsedData = JSON.parse(localData);
       return parsedData;
@@ -86,10 +113,55 @@ const SignUp = () => {
       return null;
     }
   };
-  loadLocalStorageData('signup-storage');
+  loadSessionStorageData('signup-storage');
+
+  const handleVerifyComplete = async () => {
+    const userData = loadSessionStorageData('signup-storage');
+
+    // react-hook-form 입력된 데이터 가져오기
+    const formData = {
+      email,
+      password,
+      userName: userData?.state.username,
+      phone: userData?.state.phone,
+      registration: 'EMAIL',
+    };
+
+    // post
+    try {
+      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`서버 오류: ${response.status}`);
+      }
+      navigate('/user/signupSuccess');
+    } catch (error) {
+      console.error('회원가입 중 오류 발생:', error);
+    }
+  };
 
   return (
     <>
+      <Helmet>
+        <title>{`회원가입 - 계정 생성`}</title>
+        <meta property="og:title" content="사용자 계정 생성" />
+        <meta property="og:url" content={`${window.location.href}`} />
+        <meta property="og:description" content="사용자 계정생성" />
+      </Helmet>
+      <h1
+        css={css`
+          visibility: hidden;
+        `}
+      >
+        계정 생성
+      </h1>
+
       <BackButton />
       <h2 css={pageTitleStyle}>
         이메일과 비밀번호를
@@ -102,8 +174,9 @@ const SignUp = () => {
             labelName="아이디 (이메일)"
             type="email"
             onChange={(e) => {
-              console.log('이메일 변경:', e.target.value);
               register('email').onChange(e);
+              setEmailError('');
+              setIsSuccess(false);
             }}
             hasCheckButton
             checkButtonText="중복확인"
@@ -117,6 +190,7 @@ const SignUp = () => {
             })}
             onCheck={handleEmailCheck}
             error={emailError || errors.email?.message?.toString()}
+            isValid={isSuccess}
           />
 
           {/* 비밀번호 */}
@@ -169,6 +243,8 @@ const SignUp = () => {
             text="가입하기"
             size="large"
             variant="deepGray"
+            active={isActive}
+            disabled={isDisabled}
           />
         </div>
       </form>
