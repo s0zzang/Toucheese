@@ -30,6 +30,7 @@ interface FormValues {
 
 const ReservationCheck = () => {
   const [paymentMethod, setPaymentMethod] = useState('카카오페이');
+  console.log(paymentMethod);
   const [isAgreed, setIsAgreed] = useState(false);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -265,34 +266,42 @@ const ReservationCheck = () => {
       <section>
         <h2 css={[TypoTitleXsSB, titleAlignStyle]}>결제수단</h2>
         <div css={[TypoTitleXsR, radioGroupStyle]}>
-          <label css={radioLabelStyle}>
+          <li style={{ fontSize: '1.8rem' }} css={radioLabelStyle}>
             <input
               type="radio"
               name="paymentMethod"
+              id="kakaoPay"
               value="카카오페이"
               onChange={(e) => setPaymentMethod(e.target.value)}
-              defaultChecked
             />
-            <img src="/img/icon-kakaoPay.svg" alt="카카오페이 로고" />
-          </label>
-          <label css={radioLabelStyle}>
+            <label htmlFor="kakaoPay">
+              <img css={payIconStyle} src="/img/icon-kakaoPay.svg" alt="카카오페이 로고" />
+            </label>
+          </li>
+          <li style={{ fontSize: '1.8rem' }} css={radioLabelStyle}>
             <input
               type="radio"
               name="paymentMethod"
-              onChange={(e) => setPaymentMethod(e.target.value)}
+              id="naverPay"
               value="네이버페이"
+              onChange={(e) => setPaymentMethod(e.target.value)}
             />
-            <img src="/img/icon-naverPay.svg" alt="네이버페이 로고" />
-          </label>
-          <label css={radioLabelStyle}>
+            <label htmlFor="naverPay">
+              <img css={payIconStyle} src="/img/icon-naverPay.svg" alt="네이버페이 로고" />
+            </label>
+          </li>
+          <li style={{ fontSize: '1.8rem' }} css={radioLabelStyle}>
             <input
               type="radio"
               name="paymentMethod"
-              onChange={(e) => setPaymentMethod(e.target.value)}
+              id="creditCard"
               value="일반신용카드"
+              onChange={(e) => setPaymentMethod(e.target.value)}
             />
-            <span>일반신용카드</span>
-          </label>
+            <label htmlFor="creditCard">
+              <span css={TypoTitleXsR}>일반신용카드</span>
+            </label>
+          </li>
         </div>
       </section>
 
@@ -340,9 +349,10 @@ const ReservationCheck = () => {
         isAgreed={isAgreed}
         totalPrice={totalPrice}
         options={options}
-        userName={isDifferentVisitor ? visitorName || '' : username || ''}
-        phone={isDifferentVisitor ? visitorContact || '' : phone || ''}
+        visitorName={isDifferentVisitor ? visitorName || '' : username || ''}
+        visitorPhone={isDifferentVisitor ? visitorContact || '' : phone || ''}
         menuId={menuId}
+        menuName={menuName}
         requests={requests}
         date={date}
         time={time[0]}
@@ -512,29 +522,15 @@ const radioGroupStyle = css`
   flex-direction: column;
   gap: 1.2rem;
 `;
+
 const radioLabelStyle = css`
   display: flex;
   align-items: center;
-  gap: 1rem;
   cursor: pointer;
+`;
 
-  input {
-    width: 2rem;
-    height: 2rem;
-    border: 2px solid ${variables.colors.gray500};
-    border-radius: 50%;
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-
-    &:checked {
-      border: 0.6rem solid ${variables.colors.primary600};
-      background-color: white;
-    }
-  }
-  img {
-    width: 7rem;
-  }
+const payIconStyle = css`
+  width: 6rem;
 `;
 
 //동의,약관,규정
