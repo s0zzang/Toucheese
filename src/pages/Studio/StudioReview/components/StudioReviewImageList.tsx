@@ -5,18 +5,33 @@ import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 
 /** 이미지만 상세보기 (자식) 컴포넌트 */
-const StudioReviewImageList = ({ samplePhotoList, pageId }: { samplePhotoList: string[]; pageId: string | undefined }) => {
+const StudioReviewImageList = ({
+  samplePhotoList,
+  pageId,
+}: {
+  samplePhotoList: string[];
+  pageId: string | undefined;
+}) => {
   const navigate = useNavigate();
 
   return (
     <PhotoContainerStyle>
       {samplePhotoList.slice(0, 3).map((photo, index) => (
         <div key={index}>
-          <img src={photo} alt={`사진${index + 1}`} />
+          <picture>
+            <source srcSet={photo.replace(/\.(jpg|jpeg|png)$/, '.webp')} type="image/webp" />
+            <img src={photo} alt={`사진${index + 1}`} />
+          </picture>
         </div>
       ))}
       <ImageListLastContentStyle>
-        <img src={samplePhotoList[3]} alt="사진4" />
+        <picture>
+          <source
+            srcSet={samplePhotoList[3].replace(/\.(jpg|jpeg|png)$/, '.webp')}
+            type="image/webp"
+          />
+          <img src={samplePhotoList[3]} alt="사진4" />
+        </picture>
         <DimOverlayStyle onClick={() => navigate(`/studio/${pageId}/review/photos`)}>
           <span>더보기</span>
         </DimOverlayStyle>
