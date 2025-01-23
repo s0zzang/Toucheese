@@ -20,7 +20,7 @@ interface Day {
   date: number;
 }
 
-const Calendar = ({ style, type = 'filter', disableDates = null }: CalendarProp) => {
+const Calendar = ({ style, type = 'filter', disableDates }: CalendarProp) => {
   const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
   const [baseDate, setBaseDate] = useState(new Date());
   const [calendar, setCalendar] = useState<Day[]>();
@@ -46,7 +46,6 @@ const Calendar = ({ style, type = 'filter', disableDates = null }: CalendarProp)
 
   const handleDateClick = (year: number, month: number, day: number) => {
     const currentMonth = baseDate.getMonth() + 1;
-    // const value = `${year}-${lessThan10Add0(month)}-${lessThan10Add0(day)}`;
     const value = convertToDateFormat(new Date(`${year}-${month}-${day}`));
     setActiveDay(value);
 
