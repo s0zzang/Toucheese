@@ -184,3 +184,22 @@ export interface IUserRes {
   user_id: number;
   username: string;
 }
+
+export type IResvRes = IResvItem[];
+
+export interface IResvItem {
+  reservationId: number;
+  studioId: number;
+  studioName: string;
+  menuId: number;
+  menuName: string;
+  menuImgUrl: string;
+  status: 'WAITING' | 'RESERVED' | 'COMPLETE' | 'CANCEL';
+  date: string;
+  startTime: string;
+  // 임시
+  review?: {
+    rating: number;
+    content: string;
+  };
+}

@@ -69,41 +69,50 @@ const Modal = ({
   return (
     isOpen && (
       <ModalStyle type={type}>
-        {/* FullScreen 모달 헤더 */}
-        {type === 'fullscreen' && (
-          <TitleStyle type="fullscreen">
-            {isOpen}
-            <CloseBtnStyle type="button" mode="fullscreen" onClick={handleClose}>
-              <span css={Hidden}>모달 닫기</span>
-            </CloseBtnStyle>
-            {title && <h2 css={TypoTitleSmS}>{title}</h2>}
-          </TitleStyle>
-        )}
-        {/* Dim 처리 모달 헤더 */}
-        {type === 'dimmed' && (
-          <TitleStyle type="dimmed">
-            {title && <h2 css={TypoBodyMdR}>{title}</h2>}
-            <CloseBtnStyle type="button" mode="dimmed" onClick={handleClose}>
-              <span css={Hidden}>모달 닫기</span>
-            </CloseBtnStyle>
-          </TitleStyle>
-        )}
-        <ContentsStyle type={type}>{children}</ContentsStyle>
+        <ModalInner type={type}>
+          {/* default 모달 헤더 */}
+          {type === 'default' && <TitleStyleDefault>{title}</TitleStyleDefault>}
 
-        {withBtn && (
-          <ButtonBoxStyle>
-            {buttons?.map(({ text, variant = 'black', event, width = 'max' }) => (
-              <Button
-                key={text}
-                variant={variant}
-                onClick={event}
-                text={text}
-                disabled={false}
-                width={width}
-              />
-            ))}
-          </ButtonBoxStyle>
-        )}
+          {/* FullScreen 모달 헤더 */}
+          {type === 'fullscreen' && (
+            <TitleStyle type="fullscreen">
+              {isOpen}
+              <CloseBtnStyle type="button" mode="fullscreen" onClick={handleClose}>
+                <span css={Hidden}>모달 닫기</span>
+              </CloseBtnStyle>
+              {title && <h2 css={TypoTitleSmS}>{title}</h2>}
+            </TitleStyle>
+          )}
+
+          {/* Dim 처리 모달 헤더 */}
+          {type === 'dimmed' && (
+            <TitleStyle type="dimmed">
+              {title && <h2 css={TypoBodyMdR}>{title}</h2>}
+              <CloseBtnStyle type="button" mode="dimmed" onClick={handleClose}>
+                <span css={Hidden}>모달 닫기</span>
+              </CloseBtnStyle>
+            </TitleStyle>
+          )}
+
+          {/* Content */}
+          <ContentsStyle type={type}>{children}</ContentsStyle>
+
+          {/* Buttons */}
+          {withBtn && (
+            <ButtonBoxStyle type={type}>
+              {buttons?.map(({ text, variant = 'black', event, width = 'max' }) => (
+                <Button
+                  key={text}
+                  variant={variant}
+                  onClick={event}
+                  text={text}
+                  disabled={false}
+                  width={width}
+                />
+              ))}
+            </ButtonBoxStyle>
+          )}
+        </ModalInner>
       </ModalStyle>
     )
   );
@@ -115,13 +124,31 @@ const ModalStyle = styled.section<IModalStyle>`
   position: fixed;
   z-index: 99;
   inset: 0;
-  background: ${(props) =>
-    props.type !== 'fullscreen' ? 'rgba(0,0,0,0.85)' : variables.colors.white};
-  padding: 5.2rem 2rem 10rem;
+  overflow: hidden auto;
   display: flex;
   flex-direction: column;
   justify-content: ${(props) => (props.type !== 'fullscreen' ? '' : 'space-between')};
-  overflow: hidden auto;
+  background: ${(props) =>
+    props.type !== 'fullscreen' ? 'rgba(0,0,0,0.85)' : variables.colors.white};
+  padding: ${(props) => props.type !== 'default' && `5.2rem 2rem 10rem`};
+`;
+
+const ModalInner = styled.div<IModalStyle>`
+  ${(props) =>
+    props.type === 'default' &&
+    `
+    background: #fff;
+    width: calc(100% - 6rem);
+    margin: auto;
+    max-width: 30rem;
+    min-height: 18rem;
+    padding: 3rem 2rem 2rem;
+    border-radius: 1.4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+  `}
 `;
 
 const TitleStyle = styled.div<ITitleStyle>`
@@ -137,6 +164,10 @@ const TitleStyle = styled.div<ITitleStyle>`
   left: 2rem;
   right: 2rem;
   z-index: 1;
+`;
+
+const TitleStyleDefault = styled.h2`
+  ${TypoTitleSmS};
 `;
 
 const CloseBtnStyle = styled.button<ICloseBtnStyle>`
@@ -155,15 +186,30 @@ const CloseBtnStyle = styled.button<ICloseBtnStyle>`
 const ContentsStyle = styled.div<IContentStyle>`
   padding: ${(props) => props.type === 'fullscreen' && '1rem 0'};
   flex-grow: 1;
+
+  ${(props) => props.type === 'default' && TypoBodyMdR}
+  ${(props) => props.type === 'default' && `color: ${variables.colors.gray800}`}
 `;
 
-const ButtonBoxStyle = styled.div`
-  padding: 1rem 1.6rem 4rem;
+const ButtonBoxStyle = styled.div<IModalStyle>`
   display: flex;
-  justify-content: space-between;
-  gap: 0.8rem;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+
+  ${(props) =>
+    props.type !== 'default' &&
+    `
+    padding: 1rem 1.6rem 4rem;
+    justify-content: space-between;
+    gap: 0.8rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;  
+  `}
+
+  ${(props) =>
+    props.type === 'default' &&
+    `
+    gap: 1.4rem;
+    margin-top: 1rem;
+    `}
 `;

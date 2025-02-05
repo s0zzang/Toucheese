@@ -18,6 +18,7 @@ interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   checkButtonText?: string;
   inputWidth?: string;
+  isValid?: boolean;
 }
 
 const Input = ({
@@ -30,6 +31,7 @@ const Input = ({
   onCheck,
   checkButtonText = '중복확인',
   inputWidth = '100%',
+  isValid,
 }: InputProps) => {
   const [inputValue, setInputValue] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -69,7 +71,7 @@ const Input = ({
         <div css={inputContainerStyle}>
           <div css={inputWrapperStyle}>
             <input
-              css={inputStyle(error)}
+              css={inputStyle(error, isValid)}
               type={type}
               placeholder={placeholder}
               {...register}
@@ -101,10 +103,16 @@ const Input = ({
             </button>
           )}
         </div>
+        {isValid && !error && (
+          <div css={errorContainerStyle}>
+            <img src="/img/icon-valid.svg" alt="유효성 검사 통과" css={errorIconStyle} />
+            <p css={errorStyle(error, isValid)}>유효성 검사 통과</p>
+          </div>
+        )}
         {error && (
           <div css={errorContainerStyle}>
-            <img src="/img/icon-error.svg" alt="error" css={errorIconStyle} />
-            <p css={errorStyle}>{error}</p>
+            <img src="/img/icon-error.svg" alt="검증 실패 " css={errorIconStyle} />
+            <p css={errorStyle(error, isValid)}>{error}</p>
           </div>
         )}
       </label>
@@ -121,7 +129,7 @@ const labelStyle = css`
   ${TypoBodySmM}
 `;
 
-const inputStyle = (error?: string) => css`
+const inputStyle = (error?: string, isValid?: boolean) => css`
   && {
     margin-top: 0.4rem;
     margin-bottom: 0.4rem;
@@ -129,7 +137,7 @@ const inputStyle = (error?: string) => css`
     height: 5.6rem;
     box-sizing: border-box;
     padding: 1rem;
-    border: 1px solid ${error ? 'red' : variables.colors.gray300};
+    border: 1px solid ${error ? 'red' : isValid ? 'green' : variables.colors.gray300};
     border-radius: 0.6rem;
     background-color: ${variables.colors.white};
     font-size: 1.6rem;
@@ -137,7 +145,7 @@ const inputStyle = (error?: string) => css`
     ${error && `animation: shake 0.3s ease-in-out 2;`}
   }
   &:focus {
-    outline: 1px solid ${error ? 'red' : variables.colors.primary};
+    outline: 1px solid ${error ? 'red' : isValid ? 'green' : variables.colors.primary};
   }
 
   @keyframes shake {
@@ -164,9 +172,8 @@ const errorIconStyle = css`
   width: 1.6rem;
   height: 1.6rem;
 `;
-
-const errorStyle = css`
-  color: red;
+const errorStyle = (error?: string, isValid?: boolean) => css`
+  color: ${error ? 'red' : isValid ? 'green' : variables.colors.gray600};
 `;
 
 const inputWrapperStyle = css`

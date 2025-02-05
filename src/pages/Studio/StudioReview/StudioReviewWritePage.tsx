@@ -6,6 +6,8 @@ import variables from '@styles/Variables';
 import StarInput from './components/StarInput';
 import Button from '@components/Button/Button';
 import ImageUploadPreview from './components/ImageUploadPreview';
+import TextArea from '@components/TextArea/TextArea';
+import { useState } from 'react';
 
 /** 리뷰 작성 페이지  */
 const StudioReviewWritePage = () => {
@@ -19,19 +21,21 @@ const StudioReviewWritePage = () => {
     console.log('현재 선택된 이미지들:', images);
   };
 
+  const [textArea, setTextArea] = useState('');
+  console.log(textArea); // 텍스트 area 입력 된 값
   return (
     <main>
       <Header title="리뷰 작성하기" />
 
       <section>
-        <h1
+        <h2
           css={css`
             ${TypoTitleXsM}
             margin-top: 1.6rem;
           `}
         >
           촬영 어떠셨나요?
-        </h1>
+        </h2>
         <div
           css={css`
             margin-top: 0.8rem;
@@ -49,7 +53,7 @@ const StudioReviewWritePage = () => {
       <div css={DividerStyle}></div>
 
       <section>
-        <h2
+        <h3
           css={css`
             ${TypoTitleXsM}
             margin-top: 1.6rem;
@@ -57,7 +61,7 @@ const StudioReviewWritePage = () => {
           `}
         >
           사진 첨부
-        </h2>
+        </h3>
         <div>
           <ImageUploadPreview maxImages={5} onImagesChange={handleImagesChange} />
         </div>
@@ -66,24 +70,27 @@ const StudioReviewWritePage = () => {
       <div css={DividerStyle}></div>
 
       <section>
-        <h2
+        <h4
           css={css`
             ${TypoTitleXsM}
             margin-top: 1.6rem;
           `}
         >
           리뷰 작성
-        </h2>
+        </h4>
         <div
           css={css`
             width: 100%;
-            height: 15rem;
-            background-color: ${variables.colors.gray600};
             margin-top: 1.5rem;
             margin-bottom: 5rem;
           `}
         >
-          리뷰 작성 섹션
+          <TextArea
+            placeholder="리뷰를 작성해주세요."
+            setTextArea={setTextArea}
+            minHeight="15.6rem"
+            maxLength={1000}
+          />
         </div>
       </section>
 

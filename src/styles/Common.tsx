@@ -73,6 +73,11 @@ export const TypoCapSmM = css`
   font-weight: 500;
   line-height: 1.4rem;
 `;
+export const TypoCapXsR = css`
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+`;
 
 export const DividerStyle = css`
   position: relative;
