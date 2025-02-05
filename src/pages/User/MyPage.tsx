@@ -18,7 +18,7 @@ const MyPage = () => {
   const { username, email } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
 
-  const [data, setData] = useState<IResvItem[]>([]);
+  const [data] = useState<IResvItem[]>([]);
 
   // 임시 로그아웃
   const logout = useUserStore((state) => state.resetUser);
