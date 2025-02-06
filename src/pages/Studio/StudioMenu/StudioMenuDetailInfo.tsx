@@ -47,31 +47,27 @@ const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes }) => {
         <section css={AddOptionsWrapperStyle}>
           <h3>추가 옵션</h3>
 
-          <div css={AddOptionsListStyle}>
+          <ul css={AddOptionsListStyle}>
             {infoItem.additionalOptions.map((item) => (
-              <fieldset key={item.id}>
-                <div css={AddOptionItemStyle}>
-                  <input
-                    type="checkbox"
-                    id={`${item.price}`}
-                    name={`${item.price}`}
-                    value="OptionPrice"
-                    onChange={(e) =>
-                      handleOptionClick(
-                        { option_id: item.id, optionPrice: item.price, optionName: item.name },
-                        e,
-                      )
-                    }
-                    checked={options.some((opt) => opt.option_id === item.id)}
-                  />
-                  <label htmlFor={`${item.price}`}>
-                    <span>{item.name}</span>
-                  </label>
-                </div>
+              <li key={item.id}>
+                <input
+                  type="checkbox"
+                  id={`${item.price}`}
+                  name="OptionPrice"
+                  value={`${item.price}`}
+                  onChange={(e) =>
+                    handleOptionClick(
+                      { option_id: item.id, optionPrice: item.price, optionName: item.name },
+                      e,
+                    )
+                  }
+                  checked={options.some((opt) => opt.option_id === item.id)}
+                />
+                <label htmlFor={`${item.price}`}>{item.name}</label>
                 <p>+{item.price.toLocaleString('ko-KR')}원</p>
-              </fieldset>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
       </div>
     </>
@@ -84,7 +80,7 @@ const MenuInfoWrapperStyle = css`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1.8rem 0;
+  margin-top: 1.8rem;
 `;
 
 const MenuInfoStyle = css`
@@ -167,47 +163,17 @@ const AddOptionsWrapperStyle = css`
 const AddOptionsListStyle = css`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  gap: 2.4rem;
 
-  & fieldset {
+  & li {
     display: flex;
-    height: 4.4rem;
-
-    & p {
-      ${TypoBodyMdSb}
-    }
-  }
-`;
-
-const AddOptionItemStyle = css`
-  width: 100%;
-  display: flex;
-  align-items: center;
-
-  & > input[type='checkbox'] {
-    width: 1.8rem;
-    height: 1.8rem;
-    border: 0.2rem solid ${variables.colors.gray600};
-    border-radius: 0.2rem;
-  }
-
-  & > input[type='checkbox']:checked {
-    background-color: ${variables.colors.primary600};
-    border: none;
-    position: relative;
-  }
-  & > input[type='checkbox']:checked::before {
-    content: '';
-    display: block;
-    width: 1.8rem;
-    height: 1.8rem;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 1.2rem;
-    background-image: url(/img/icon-check-white.svg);
-  }
-
-  & label {
-    margin-right: auto;
+    align-items: center;
     ${TypoBodyMdM}
+  }
+
+  & p {
+    margin-left: auto;
+    ${TypoBodyMdSb}
   }
 `;
