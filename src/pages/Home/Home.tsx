@@ -101,7 +101,7 @@ const Home = () => {
 
   return (
     <>
-      <section ref={homeRef}>
+      <SectionStyle ref={homeRef}>
         <BookingSearchContainer />
 
         <NavigatorStyle isFixed={isFixed}>
@@ -142,15 +142,20 @@ const Home = () => {
         <ListStyle>
           <StudioList mode="filter" searchParams={searchParams} />
         </ListStyle>
-      </section>
+      </SectionStyle>
       <BottomSheet />
     </>
   );
 };
 
+const SectionStyle = styled.section`
+  margin-top: -4rem;
+  padding-top: 2rem;
+`;
+
 const NavigatorStyle = styled.div<IFixedProps>`
   position: ${(props) => (props.isFixed ? 'fixed' : 'absolute')};
-  top: ${(props) => (props.isFixed ? '0' : '11.8rem')};
+  top: ${(props) => (props.isFixed ? '0' : '8.8rem')};
   left: 0;
   right: 0;
   z-index: 9;
@@ -217,7 +222,7 @@ const FilterBox = styled.div`
 `;
 
 const ListStyle = styled.div`
-  padding-top: 12rem;
+  padding-top: 9.6rem;
 `;
 
 export default Home;
