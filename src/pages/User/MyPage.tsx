@@ -3,7 +3,7 @@ import Header from '@components/Header/Header';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
 import { css } from '@emotion/react';
 import { defaultUserState, useUserStore } from '@store/useUserStore';
-import { TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
+import { DividerStyle, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -19,6 +19,42 @@ const MyPage = () => {
   const { pathname } = useLocation();
 
   const [data] = useState<IResvItem[]>([]);
+
+  // const data: IResvItem[] = [
+  //   {
+  //     reservationId: 1,
+  //     studioId: 146,
+  //     studioName: '모노멘션',
+  //     menuId: 11,
+  //     menuName: '상반신 촬영',
+  //     menuImgUrl: 'https://i.imgur.com/7C4GSF4.webp',
+  //     status: 'RESERVED',
+  //     date: '2025-01-10',
+  //     startTime: '12:00',
+  //   },
+  //   {
+  //     reservationId: 3,
+  //     studioId: 122,
+  //     studioName: '스튜디오',
+  //     menuId: 44,
+  //     menuName: '증명사진',
+  //     menuImgUrl: 'https://i.imgur.com/7C4GSF4.webp',
+  //     status: 'RESERVED',
+  //     date: '2025-02-10',
+  //     startTime: '11:00',
+  //   },
+  //   {
+  //     reservationId: 2,
+  //     studioId: 146,
+  //     studioName: '주스튜디오',
+  //     menuId: 71,
+  //     menuName: '증명사진',
+  //     menuImgUrl: 'https://i.imgur.com/7C4GSF4.webp',
+  //     status: 'RESERVED',
+  //     date: '2025-01-25',
+  //     startTime: '13:00',
+  //   },
+  // ];
 
   // 임시 로그아웃
   const logout = useUserStore((state) => state.resetUser);
@@ -36,22 +72,25 @@ const MyPage = () => {
         <Link to="/user/profile">{username}님 환영해요!</Link>
         <p>{email}</p>
       </div>
-      <Swiper
-        css={ReservationCardSwiperStyle}
-        modules={[Pagination]}
-        centeredSlides={true}
-        spaceBetween={10}
-        slidesPerView={1.1}
-        pagination={{
-          clickable: true,
-        }}
-      >
-        {(data?.length ? data : [null]).map((item, i) => (
-          <SwiperSlide key={`${item ? item.reservationId : i}`}>
-            <ReservationCard isMyPage={pathname.includes('mypage')} data={item} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+
+      <div css={[ReservationCardSwiperStyle(Boolean(data?.length > 1)), DividerStyle]}>
+        <Swiper
+          className="mypageSwiper"
+          modules={[Pagination]}
+          centeredSlides={true}
+          spaceBetween={10}
+          slidesPerView={1.08}
+          pagination={{
+            clickable: true,
+          }}
+        >
+          {(data?.length ? data : [null]).map((item, i) => (
+            <SwiperSlide key={`${item ? item.reservationId : i}`}>
+              <ReservationCard isMyPage={pathname.includes('mypage')} data={item} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
 
       <ul css={MyPageMenuStyle}>
         <li className="history">
@@ -91,7 +130,7 @@ const MyInfoStyle = css`
       content: '';
       width: 2.4rem;
       height: 2.4rem;
-      background-image: url('/img/icon-arrow-right-black.svg');
+      background-image: url('/img/icon-arrow-16.svg');
       background-repeat: no-repeat;
       background-position: center;
       background-size: 1rem;
@@ -105,21 +144,11 @@ const MyInfoStyle = css`
 `;
 
 const MyPageMenuStyle = css`
-  &::before {
-    content: '';
-    display: block;
-    background-color: ${variables.colors.gray300};
-    height: 1rem;
-    width: calc(100% + (1.6rem * 2));
-    margin-left: -1.6rem;
-    margin-top: 1.6rem;
-  }
-
   & li {
     & a {
+      ${TypoTitleXsR};
       padding: 1.6rem 0;
       border-bottom: 0.1rem solid ${variables.colors.gray300};
-      ${TypoTitleXsR}
       display: flex;
       gap: 1.6rem;
       align-items: center;
@@ -132,40 +161,43 @@ const MyPageMenuStyle = css`
         background-repeat: no-repeat;
         background-position: center;
         background-size: 1rem;
-        margin-left: 1.1;
+        margin-left: auto;
       }
 
       &::before {
         content: '';
-        width: 2rem;
-        height: 2rem;
+        width: 2.8rem;
+        height: 2.8rem;
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 2rem;
+        background-size: 2.6rem;
       }
     }
   }
 
   .history > a::before {
-    background-image: url('/img/icon-calendar-black.svg');
+    background-image: url('/img/icon-calendar-yellow.svg');
   }
   .myreview > a::before {
     background-image: url('/img/icon-myreview.svg');
   }
   .bookmarkstudio > a::before {
-    background-image: url('/img/icon-studio-black.svg');
+    background-image: url('/img/icon-bookmark-active.svg');
   }
   .bookmarkstudio > a {
     border-bottom: none;
   }
 `;
 
-const ReservationCardSwiperStyle = css`
+const ReservationCardSwiperStyle = (data: boolean) => css`
   width: calc(100% + (${variables.layoutPadding} * 2));
-  margin-left: calc(-1 * ${variables.layoutPadding});
-  padding-bottom: 1.6rem;
+  margin-left: -${variables.layoutPadding};
 
-  .swiper-pagination {
+  .mypageSwiper .swiper-wrapper {
+    ${data && `padding-bottom: 1.6rem;`};
+  }
+
+  .mypageSwiper .swiper-pagination {
     position: absolute;
     z-index: 10;
     width: 8rem;
@@ -177,7 +209,7 @@ const ReservationCardSwiperStyle = css`
     background-color: ${variables.colors.gray400};
   }
 
-  .swiper-pagination-bullet {
+  .mypageSwiper .swiper-pagination-bullet {
     width: 100%;
     height: 0.2rem;
     border-radius: 0;
@@ -185,7 +217,7 @@ const ReservationCardSwiperStyle = css`
     cursor: pointer;
   }
 
-  .swiper-pagination-bullet-active {
+  .mypageSwiper .swiper-pagination-bullet-active {
     background-color: ${variables.colors.primary600};
   }
 `;
