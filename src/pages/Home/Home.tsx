@@ -11,6 +11,7 @@ import styled from '@emotion/styled';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface IFixedProps {
@@ -43,7 +44,7 @@ const Home = () => {
   const homeRef = useRef<HTMLTableSectionElement | null>(null);
   const navigate = useNavigate();
 
-  //로그인 완료 후 예약페이지로 돌아가기
+  // 로그인 완료 후 예약페이지로 돌아가기
   const lastPage = window.sessionStorage.getItem('lastPage');
   if (lastPage) navigate(lastPage);
 
@@ -101,6 +102,23 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>
+          {searchParams.get('vibeName')
+            ? `스튜디오 조회 - ${searchParams.get('vibeName')}`
+            : '세상의 모든 사진관, 터치즈'}
+        </title>
+        <meta name="description" content="터치즈에서 원하는 스튜디오를 검색해보세요!" />
+        <meta
+          property="og:title"
+          content={
+            searchParams.get('vibeName')
+              ? `스튜디오 조회 - ${searchParams.get('vibeName')}`
+              : '세상의 모든 사진관, 터치즈'
+          }
+        />
+        <meta property="og:description" content="터치즈에서 원하는 스튜디오를 검색해보세요!" />
+      </Helmet>
       <SectionStyle ref={homeRef}>
         <BookingSearchContainer />
 
