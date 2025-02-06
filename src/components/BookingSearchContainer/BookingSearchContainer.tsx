@@ -5,7 +5,7 @@ import useModal from '@hooks/useModal';
 import LocalDateSelectionModal from '@pages/Home/components/LocalDateSelectionModal';
 import { changeformatDateForUi } from '@store/useSelectDateStore';
 import { defaultUserState } from '@store/useUserStore';
-import { Hidden } from '@styles/Common';
+import { Hidden, TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -30,10 +30,10 @@ const BookingSearchContainer = () => {
     <BookingSearchContainerStyle>
       <div onClick={() => modal.open()}>
         <Button type="button">
-          <ButtonTitleStyle>{searchParams.get('addressGu') || '전체지역'}</ButtonTitleStyle>{' '}
+          <h1 css={TypoTitleSmS}>{searchParams.get('addressGu') || '전체지역'}</h1>{' '}
           <img src="/img/icon-select-arrow.svg" alt="전체 지역 탐색" />
         </Button>
-        <ButtonTitleDes>
+        <ButtonTitleDes css={TypoBodyMdR}>
           {searchParamsDateTime || '예약 날짜와 시간을 선택해주세요.'}
         </ButtonTitleDes>
       </div>
@@ -67,7 +67,7 @@ const BookingSearchContainer = () => {
 const BookingSearchContainerStyle = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 1.8rem;
+  margin-bottom: 2.4rem;
 `;
 
 const Button = styled.button`
@@ -99,11 +99,6 @@ const ButtonStyle = styled.button`
       width: 1.6rem;
     }
   }
-`;
-
-const ButtonTitleStyle = styled.h1`
-  font-size: 1.8rem;
-  font-weight: 600;
 `;
 
 const ButtonTitleDes = styled.p`

@@ -17,7 +17,7 @@ const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
   const navigate = useNavigate();
 
   return (
-    <section>
+    <>
       {data ? (
         <article css={CardStyle(isMyPage)}>
           {isMyPage && (
@@ -54,7 +54,7 @@ const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
           </button>
         </article>
       )}
-    </section>
+    </>
   );
 };
 
@@ -151,7 +151,7 @@ const EmptyCardStyle = css`
       content: '';
       width: 1.8rem;
       height: 1.8rem;
-      background-image: url('/img/icon-studio-yellow.svg');
+      background-image: url('/img/icon-studio-gray.svg');
       background-repeat: no-repeat;
       background-position: center;
       background-size: 1.8rem;
