@@ -32,7 +32,7 @@ const StudioItem = ({
       if (item.price < minPrice) minPrice = item.price;
     });
 
-    return minPrice;
+    return minPrice.toLocaleString('ko-KR');
   };
 
   return (
