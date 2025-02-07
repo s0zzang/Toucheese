@@ -89,6 +89,7 @@ const HeaderContainerStyle = styled.div`
   left: 0;
   right: 0;
   padding-top: 4rem;
+  box-shadow: inset 0 0 10px red;
 `;
 
 const SectionStyle = styled.section`
@@ -135,6 +136,7 @@ const headerStyle = css`
   display: flex;
   align-items: center;
   padding: 1.6rem;
+  padding-top: unset;
 `;
 
 export default ReservationList;
