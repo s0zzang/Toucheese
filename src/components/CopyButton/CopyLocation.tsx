@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import useToast from '@hooks/useToast';
+import { TypoBodyMdR, TypoBodySmR } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useState } from 'react';
 
 interface CopyButtonProps {
   text: string;
@@ -9,26 +10,27 @@ interface CopyButtonProps {
 }
 
 const CopyLocation = ({ text, buttonLabel }: CopyButtonProps) => {
-  const [isCopied, setIsCopied] = useState(false);
+  const openToast = useToast();
 
   const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(text);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 1500);
+    try {
+      await navigator.clipboard.writeText(text);
+      openToast('주소가 복사되었습니다.');
+    } catch (error) {
+      openToast('주소 복사에 실패했습니다.');
+    }
   };
-
   return (
     <div css={containerStyle}>
       <div css={contentRowStyle}>
         <img src="/img/icon-location.svg" alt="주소 아이콘" css={iconStyle} />
-        <span css={textStyle}>{text}</span>
+        <span css={TypoBodyMdR}>{text}</span>
       </div>
-      <div css={buttonRowStyle}>
-        <button css={buttonStyle} onClick={copyToClipboard}>
+      <div>
+        <button css={[buttonStyle, TypoBodySmR]} onClick={copyToClipboard}>
+          <span css={buttonTextStyle}>{buttonLabel}</span>
           <img src="/img/icon-content_copy.svg" alt="주소 복사 아이콘" css={iconStyle} />
-          {buttonLabel}
         </button>
-        {isCopied && <span css={feedbackStyle}>Copied! 🎉</span>}
       </div>
     </div>
   );
@@ -51,43 +53,23 @@ const contentRowStyle = css`
   gap: 0.4rem;
 `;
 
-const buttonRowStyle = css`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
 const iconStyle = css`
   width: 1.6rem;
   height: 1.6rem;
 `;
 
-const textStyle = css`
-  font-size: 1.4rem
-  color: ${variables.colors.gray800};
-`;
-
 const buttonStyle = css`
   display: flex;
   align-items: center;
-  line-height: 1;
-  font-size: 1.2rem;
-  padding: 0.7rem;
-  gap: 0.5rem;
-  background-color: ${variables.colors.gray400};
-  border-radius: 2rem;
-  cursor: pointer;
-  max-width: 7rem;
-  width: 100%;
-  text-align: center;
-  transition: background-color 0.3s;
 
-  &:hover {
-    background-color: ${variables.colors.gray500};
-  }
+  justify-content: center;
+  border-radius: 0.6rem;
+  border: 0.1rem solid ${variables.colors.gray400};
+  cursor: pointer;
+  width: 7.4rem;
+  height: 3rem;
 `;
 
-const feedbackStyle = css`
-  font-size: 1.2rem;
-  color: ${variables.colors.gray800};
+const buttonTextStyle = css`
+  margin-top: 0.2rem;
 `;

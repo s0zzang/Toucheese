@@ -16,7 +16,10 @@ const ShareButton = ({ title, description, imageUrl, webUrl }: ShareProps) => {
   const { openBottomSheet } = useBottomSheetState();
 
   const handleOpenBottomSheet = () => {
-    openBottomSheet(<ShareOptions title={title} description={description} imageUrl={imageUrl} webUrl={webUrl} />, '공유 옵션 선택');
+    openBottomSheet(
+      <ShareOptions title={title} description={description} imageUrl={imageUrl} webUrl={webUrl} />,
+      '공유 옵션 선택',
+    );
   };
 
   return (
@@ -33,6 +36,7 @@ const ShareButton = ({ title, description, imageUrl, webUrl }: ShareProps) => {
 export default ShareButton;
 
 const containerStyle = css`
+  cursor: pointer;
   button {
     all: unset;
     margin-top: -0.35rem;
