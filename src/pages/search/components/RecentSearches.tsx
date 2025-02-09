@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import EmptyMessage from '@components/Message/EmptyMessage';
 import { css } from '@emotion/react';
+import { TypoBodyMdR, TypoCapSmM, TypoTitleXsSB } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -31,30 +32,11 @@ const RecentSearches = () => {
   };
 
   return (
-    <div
-      css={css`
-        border-bottom: 0.1rem solid;
-        border-color: ${variables.colors.gray200};
-      `}
-    >
-      <div
-        css={css`
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        `}
-      >
-        <h3
-          css={css`
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-top: 1rem;
-          `}
-        >
-          최근 검색어
-        </h3>
-        <button onClick={clearAllSearchTerms} css={allClearButtonStyle}>
-          모두지우기
+    <div css={containerStyle}>
+      <div css={titleSectionStyle}>
+        <h2 css={TypoTitleXsSB}>최근 검색어</h2>
+        <button onClick={clearAllSearchTerms} css={[allClearButtonStyle, TypoCapSmM]}>
+          모두 지우기
         </button>
       </div>
       <div css={searchListStyle}>
@@ -67,6 +49,7 @@ const RecentSearches = () => {
                 onClick={() => {
                   handleClickSearchItem(search);
                 }}
+                css={TypoBodyMdR}
               >
                 {search}
               </span>
@@ -77,7 +60,7 @@ const RecentSearches = () => {
                 css={deleteButtonStyle}
                 aria-label={`${search} 삭제`}
               >
-                &times;
+                <img src="/img/icon-delete.svg" alt="최근검색어삭제버튼" />
               </button>
             </div>
           ))
@@ -89,8 +72,18 @@ const RecentSearches = () => {
 
 export default RecentSearches;
 
+const containerStyle = css`
+  padding: 0.5rem 0 2rem;
+  border-bottom: 0.1rem solid ${variables.colors.gray200};
+`;
+
+const titleSectionStyle = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const allClearButtonStyle = css`
-  font-size: 1.2rem;
   color: ${variables.colors.gray600};
   cursor: pointer;
 `;
@@ -99,7 +92,7 @@ const searchListStyle = css`
   display: flex;
   overflow-x: auto;
   cursor: pointer;
-  padding: 1rem 0;
+  padding-top: 1.6rem;
   -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
@@ -108,18 +101,20 @@ const searchListStyle = css`
 `;
 
 const searchItemStyle = css`
-  position: relative;
   margin-right: 1rem;
-  font-size: 1.4rem;
-  padding: 0.5rem 1rem;
-  border: 0.1rem solid;
-  border-radius: ${variables.borderRadius};
-  border-color: ${variables.colors.gray400};
+  padding: 0.4rem 1rem;
+  border: 0.1rem solid ${variables.colors.gray400};
+  border-radius: 0.6rem;
   display: flex;
   align-items: center;
+  height: 3rem;
+
+  span {
+    margin-top: 0.1rem;
+  }
 `;
 
 const deleteButtonStyle = css`
-  margin-left: 0.5rem;
-  color: ${variables.colors.gray500};
+  display: flex;
+  align-items: center;
 `;
