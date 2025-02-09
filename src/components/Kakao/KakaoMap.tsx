@@ -91,7 +91,7 @@ const viewMapButtonStyle = css`
   right: 1.6rem;
   z-index: 1;
   padding: 0.4rem 1rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: ${variables.colors.white};
   background-color: ${variables.colors.gray800};
   border-radius: 0.4rem;
