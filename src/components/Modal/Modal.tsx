@@ -197,13 +197,14 @@ const ButtonBoxStyle = styled.div<IModalStyle>`
   ${(props) =>
     props.type !== 'default' &&
     `
-    padding: 1rem 1.6rem 4rem;
+    padding: 2rem 1.6rem 3rem;
     justify-content: space-between;
     gap: 0.8rem;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;  
+    background: #fff;
   `}
 
   ${(props) =>
