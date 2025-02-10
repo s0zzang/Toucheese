@@ -21,7 +21,7 @@ const DateBottomSheet = ({
       text: '초기화',
       event: () => {
         setDate(convertToDateFormat(today));
-        setTime('', 'filter');
+        setTime('reset', 'filter');
       },
       variant: 'gray' as 'gray',
       width: 'fit' as 'fit',
