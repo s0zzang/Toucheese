@@ -41,7 +41,7 @@ const ReservationCheck = () => {
   const { date } = useSelectDateStore();
   const { studioName, totalPrice, options, menuName, basicPrice, menuImage, menuId, requests } =
     useReservationStore();
-  const { username, phone } = useUserStore();
+  const { username, phone, user_id } = useUserStore();
   const [isDifferentVisitor, setIsDifferentVisitor] = useState(false);
 
   const {
@@ -360,6 +360,7 @@ const ReservationCheck = () => {
         isAgreed={isAgreed}
         totalPrice={totalPrice}
         options={options}
+        userId={user_id}
         visitorName={isDifferentVisitor ? visitorName || '' : username || ''}
         visitorPhone={isDifferentVisitor ? visitorContact || '' : phone || ''}
         menuId={menuId}
