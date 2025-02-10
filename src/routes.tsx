@@ -1,3 +1,4 @@
+import ReservationNpayCallback from '@pages/Reservation/ReservationNpayCallback';
 import StudioReviewWritePage from '@pages/Studio/StudioReview/StudioReviewWritePage';
 import Auth from '@pages/User/Auth';
 import AuthVerification from '@pages/User/AuthVerification';
@@ -143,6 +144,7 @@ const router = createBrowserRouter([
             path: 'complete',
             element: <ReservationComplete />,
           },
+          { path: 'npay/callback', element: <ReservationNpayCallback /> },
         ],
       },
     ],
@@ -162,6 +164,7 @@ const router = createBrowserRouter([
           { path: 'review/write', element: <StudioReviewWritePage /> },
         ],
       },
+      {},
     ],
   },
 ]);

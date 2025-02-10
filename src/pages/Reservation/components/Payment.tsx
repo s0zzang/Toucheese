@@ -25,6 +25,7 @@ interface PaymentProps {
   totalPrice: number;
   options?: Option[];
   menuId?: number;
+  userId: number | null;
   menuName?: string;
   visitorName?: string;
   visitorPhone?: string;
@@ -47,6 +48,7 @@ const Payment = ({
   totalPrice,
   options = [],
   menuId,
+  userId,
   menuName,
   visitorName,
   visitorPhone,
@@ -58,8 +60,10 @@ const Payment = ({
 
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const returnUrl = `${baseUrl}/studio/${_id}/reservation/complete`;
+  const npayReturnUrl = `${baseUrl}/studio/${_id}/reservation/npay/callback`;
 
   const optionIds = options.map((option) => option.option_id);
+
   const { username, phone } = useUserStore();
 
   useEffect(() => {
@@ -234,6 +238,25 @@ const Payment = ({
       return;
     }
 
+    if (!userId) {
+      console.error('사용자의 id 정보가 없습니다.');
+      return;
+    }
+
+    const queryParams = new URLSearchParams({
+      merchantUserKey: userId.toString(),
+      studioId: _id || '',
+      menuID: menuId?.toString() || '',
+      optionIds: optionIds.join(','),
+      visitorName: visitorName || '',
+      visitorPhone: visitorPhone || '',
+      requests: requests || '',
+      totalPrice: totalPrice.toString(),
+      paymentMethod: paymentMethod || '',
+      date: date || '',
+      startTime: time || '',
+    }).toString();
+
     const oPay = window.Naver.Pay.create({
       mode: 'development', //  또는 "production"
       clientId: import.meta.env.VITE_NAVERPAY_CLIENT_ID,
@@ -241,57 +264,13 @@ const Payment = ({
     });
 
     oPay.open({
-      merchantUserKey: 'unique_user_key_1234', // 사용자 고유 키
+      merchantUserKey: userId, // 사용자 고유 키
       merchantPayKey: 'order_' + new Date().getTime(),
       productName: menuName,
       totalPayAmount: totalPrice, // 결제 금액
       taxScopeAmount: totalPrice,
       taxExScopeAmount: 0,
-      returnUrl,
-    });
-
-    // 결제 성공 후 처리
-    window.addEventListener('message', (event) => {
-      if (event.origin !== baseUrl) {
-        return;
-      }
-
-      const data = event.data;
-      if (data.success) {
-        console.log('네이버페이 결제 성공:', data);
-        fetch(`${import.meta.env.VITE_TOUCHEESE_API}/reservation/action`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-
-          body: JSON.stringify({
-            merchant_uid: data.merchantPayKey,
-            studioId: _id,
-            menuID: menuId,
-            additionalOptionId: optionIds,
-            visitingCustomerName: visitorName,
-            visitingCustomerPhone: visitorPhone,
-            note: requests,
-            totalPrice,
-            paymentMethod,
-            date,
-            startTime: time,
-          }),
-        })
-          .then((response) => {
-            if (response.ok) {
-              console.log('결제 검증 성공');
-            } else {
-              console.error('결제 검증 실패');
-            }
-          })
-          .catch((error) => {
-            console.error('결제 검증 요청 중 오류 발생:', error);
-          });
-      } else {
-        console.error('네이버페이 결제 실패:', data.message);
-      }
+      returnUrl: `${npayReturnUrl}?${queryParams}`,
     });
   };
 
