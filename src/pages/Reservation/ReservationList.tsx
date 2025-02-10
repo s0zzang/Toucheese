@@ -89,7 +89,6 @@ const HeaderContainerStyle = styled.div`
   left: 0;
   right: 0;
   padding-top: 4rem;
-  box-shadow: inset 0 0 10px red;
 `;
 
 const SectionStyle = styled.section`
