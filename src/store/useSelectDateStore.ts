@@ -35,8 +35,11 @@ export const changeformatDateForUi = ({ date, time }: { date: string; time: stri
 export const useSelectDateStore = create(
   persist<DateState>(
     (set) => ({
-      date: convertToDateFormat(today),
-      setDate: (newDate) => set({ date: newDate }),
+      date: '',
+      setDate: (newDate) => {
+        if (newDate === 'reset') set({ date: '' });
+        else set({ date: newDate });
+      },
     }),
     {
       name: 'selectDateStore',
