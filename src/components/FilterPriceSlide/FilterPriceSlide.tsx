@@ -56,11 +56,16 @@ const FilterPriceSlideComponent = () => {
     resetState();
   };
 
+  // 가격 포맷팅 함수 추가
+  const formatPrice = (price: number) => {
+    return price.toLocaleString('ko-KR');
+  };
+
   return (
     <>
       <ValueDisplay>
-        <ValueDisplaySpanStyle>{rangeMinValue}원~ </ValueDisplaySpanStyle>
-        <ValueDisplaySpanStyle>{rangeMaxValue} 원 이상</ValueDisplaySpanStyle>
+        <ValueDisplaySpanStyle>{formatPrice(rangeMinValue)}원~ </ValueDisplaySpanStyle>
+        <ValueDisplaySpanStyle>{formatPrice(rangeMaxValue)} 원 이상</ValueDisplaySpanStyle>
       </ValueDisplay>
       <FilterPriceRangeWrap>
         <FilterPriceRangeMin
@@ -102,8 +107,24 @@ const FilterPriceSlideComponent = () => {
         <RangeDisplaySpanStyle>20만원</RangeDisplaySpanStyle>
       </RangeDisplay>
       <ButtonWrapperStyle>
-        <Button size="large" disabled={false} text={`초기화`} width="fit" variant="gray" onClick={handleResetClick} type="button" />
-        <Button size="large" disabled={false} text={`적용하기`} width="max" variant="black" onClick={handleApplyClick} type="button" />
+        <Button
+          size="large"
+          disabled={false}
+          text={`초기화`}
+          width="fit"
+          variant="gray"
+          onClick={handleResetClick}
+          type="button"
+        />
+        <Button
+          size="large"
+          disabled={false}
+          text={`적용하기`}
+          width="max"
+          variant="black"
+          onClick={handleApplyClick}
+          type="button"
+        />
       </ButtonWrapperStyle>
     </>
   );
@@ -129,11 +150,11 @@ const FilterPriceRangeMin = styled.input`
   z-index: 1;
 
   &::-webkit-slider-thumb {
-    height: 2.8rem;
+    height: 2.6rem;
     pointer-events: auto;
-    width: 2.8rem;
+    width: 2.6rem;
     border-radius: 50%;
-    border: 0.2rem solid ${variables.colors.primary};
+    border: 0.1rem solid ${variables.colors.primary};
     background-color: #fff8e1;
     -webkit-appearance: none;
     z-index: 99;
