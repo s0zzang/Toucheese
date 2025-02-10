@@ -7,6 +7,7 @@ import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 import createCalendar from './createCalendar';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
 
 interface CalendarProp {
   style?: CSSObject;
@@ -24,10 +25,13 @@ const Calendar = ({ style, type = 'filter', disableDates }: CalendarProp) => {
   const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
   const [baseDate, setBaseDate] = useState(new Date());
   const [calendar, setCalendar] = useState<Day[]>();
+  const { time, setTime } = useSelectTimeStore();
 
   const baseYear = baseDate.getFullYear();
   const baseMonth = baseDate.getMonth();
   const today = new Date();
+
+  const resetTime = () => setTime('reset');
 
   const changeMonth = (direction: number) => {
     const firstOfChangedMonth = new Date(
@@ -35,16 +39,19 @@ const Calendar = ({ style, type = 'filter', disableDates }: CalendarProp) => {
       baseDate.getMonth() + direction,
       1,
     );
+    if (time) resetTime();
     setBaseDate(firstOfChangedMonth);
     setActiveDay(convertToDateFormat(firstOfChangedMonth));
   };
 
   const moveToToday = () => {
+    if (time) resetTime();
     setBaseDate(today);
     setActiveDay(convertToDateFormat(today));
   };
 
   const handleDateClick = (year: number, month: number, day: number) => {
+    if (time) resetTime();
     const currentMonth = baseDate.getMonth() + 1;
     const value = convertToDateFormat(new Date(`${year}-${month}-${day}`));
     setActiveDay(value);
