@@ -53,7 +53,9 @@ const Calendar = ({ style, type = 'filter', disableDates }: CalendarProp) => {
   const handleDateClick = (year: number, month: number, day: number) => {
     if (time) resetTime();
     const currentMonth = baseDate.getMonth() + 1;
-    const value = convertToDateFormat(new Date(`${year}-${month}-${day}`));
+    const value = convertToDateFormat(
+      new Date(`${year}-${lessThan10Add0(month)}-${lessThan10Add0(day)}`),
+    );
     setActiveDay(value);
 
     // 12월, 1월 예외처리
