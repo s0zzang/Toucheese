@@ -14,8 +14,6 @@ export const useSelectTimeStore = create(
         set((state) => {
           const updatedTime = new Set(state.time);
 
-          if (newTime === 'reset') updatedTime.clear();
-
           if (type === 'filter') {
             if (newTime === '') updatedTime.clear();
             if (updatedTime.has(newTime)) updatedTime.delete(newTime);
@@ -26,6 +24,8 @@ export const useSelectTimeStore = create(
             updatedTime.clear();
             updatedTime.add(newTime);
           }
+
+          if (newTime === 'reset') updatedTime.clear();
 
           return { time: [...updatedTime] };
         }),
