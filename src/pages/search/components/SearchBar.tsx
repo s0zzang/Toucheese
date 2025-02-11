@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
+import { TypoTitleXsR } from '@styles/Common';
 
 const SearchBar = () => {
   const [inputValue, setInputValue] = useState('');
@@ -49,7 +50,14 @@ const SearchBar = () => {
 
   return (
     <div css={containerStyle}>
-      <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyUp={handleKeyUp} placeholder="스튜디오를 검색해보세요." />
+      <input
+        css={TypoTitleXsR}
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyUp={handleKeyUp}
+        placeholder="스튜디오를 검색해보세요."
+      />
       <img src="/img/icon-search2.svg" alt="검색모양아이콘" css={searchIconStyle} />
       {inputValue && (
         <button onClick={handleClear} css={clearButtonStyle}>
@@ -64,39 +72,44 @@ export default SearchBar;
 
 const containerStyle = css`
   position: relative;
-  border-radius: 2rem;
+  border-radius: 1rem;
   width: 100%;
   box-sizing: border-box;
   display: flex;
   align-items: center;
 
   input {
-    font-size: 1.6rem;
     padding: 0 4rem;
-    color: ${variables.colors.gray500};
+    color: ${variables.colors.black};
+    height: 4.4rem;
+    background-color: ${variables.colors.gray200};
+    border: none;
 
     &:focus {
-      border: 0.2rem solid ${variables.colors.gray500};
-      outline: none;
+      outline: 0.1rem solid ${variables.colors.gray500};
     }
   }
 `;
 
 const searchIconStyle = css`
   position: absolute;
-  left: 1.5rem;
+  left: 1.3rem;
   width: 2.4rem;
   height: 2.4rem;
 `;
 
 const clearButtonStyle = css`
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  right: 2.5rem;
+  right: 1.5rem;
+  height: 100%;
 `;
 
 const clearIconStyle = css`
-  width: 1.6rem
-  height: 1.6rem
+  width: 2rem;
+  height: 2rem;
   display: block;
 `;

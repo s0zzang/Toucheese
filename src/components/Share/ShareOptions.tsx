@@ -1,9 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import KakaoShareButton from '@components/Kakao/KaKaoShare';
-import variables from '@styles/Variables';
-import { useState } from 'react';
-import { createPortal } from 'react-dom';
+import useToast from '@hooks/useToast';
 
 interface ShareProps {
   title: string;
@@ -13,19 +11,27 @@ interface ShareProps {
 }
 
 const ShareOptions = ({ title, description, imageUrl, webUrl }: ShareProps) => {
-  const [isCopied, setIsCopied] = useState(false);
+  const openToast = useToast();
 
   const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(webUrl);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 1500);
+    try {
+      await navigator.clipboard.writeText(webUrl);
+      openToast('링크가 복사되었습니다.');
+    } catch (error) {
+      openToast('링크 복사에 실패했습니다.');
+    }
   };
 
   return (
     <div css={shareOptionsStyle}>
       <div css={iconWithLabel}>
         <div css={shareButtonStyle}>
-          <KakaoShareButton title={title} description={description} imageUrl={imageUrl} webUrl={webUrl} />
+          <KakaoShareButton
+            title={title}
+            description={description}
+            imageUrl={imageUrl}
+            webUrl={webUrl}
+          />
         </div>
         <span css={textStyle}>카카오톡</span>
       </div>
@@ -35,8 +41,6 @@ const ShareOptions = ({ title, description, imageUrl, webUrl }: ShareProps) => {
           <img src="/img/icon-copy-link.svg" alt="링크 복사" />
         </div>
         <span css={textStyle}>링크복사</span>
-
-        {isCopied && createPortal(<div css={feedbackStyle}>Copied! 🎉</div>, document.body)}
       </div>
     </div>
   );
@@ -73,17 +77,4 @@ const shareButtonStyle = css`
 
 const textStyle = css`
   font-size: 1.2rem;
-`;
-
-const feedbackStyle = css`
-  font-size: 1.2rem;
-  color: ${variables.colors.gray800};
-  position: fixed;
-  background-color: ${variables.colors.gray800};
-  color: ${variables.colors.white};
-  border-radius: 0.5rem;
-  padding: 0.3rem 0.5rem;
-  bottom: 2rem;
-  z-index: 1000;
-  left: 18.5rem;
 `;

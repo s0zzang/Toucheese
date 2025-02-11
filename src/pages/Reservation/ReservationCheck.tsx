@@ -8,6 +8,7 @@ import {
   TypoBodyMdSb,
   TypoBodySmR,
   TypoCapSmM,
+  TypoCapSmR,
   TypoTitleXsM,
   TypoTitleXsR,
   TypoTitleXsSB,
@@ -40,7 +41,7 @@ const ReservationCheck = () => {
   const { date } = useSelectDateStore();
   const { studioName, totalPrice, options, menuName, basicPrice, menuImage, menuId, requests } =
     useReservationStore();
-  const { username, phone } = useUserStore();
+  const { username, phone, user_id } = useUserStore();
   const [isDifferentVisitor, setIsDifferentVisitor] = useState(false);
 
   const {
@@ -55,6 +56,8 @@ const ReservationCheck = () => {
   } = useForm<FormValues>({
     mode: 'onChange',
   });
+
+  const requestsValue = watch('requests', '');
 
   const [visitorName, visitorContact] = watch(['visitorName', 'visitorContact']);
 
@@ -116,7 +119,7 @@ const ReservationCheck = () => {
 
       {/* 예약정보 */}
       <section>
-        <h2 css={[TypoTitleXsSB, titleAlignStyle]}>예약정보</h2>
+        <h2 css={[TypoTitleXsSB, titleAlignStyle, firstTitleAlignStyle]}>예약정보</h2>
         <div css={boxStyle}>
           <h4
             css={css`
@@ -165,7 +168,7 @@ const ReservationCheck = () => {
         {/* 방문자가 다를 경우 */}
         {isDifferentVisitor && (
           <section>
-            <h2 css={TypoBodyMdSb}>실제 방문하실 분의 정보를 입력하세요.</h2>
+            <h2 css={[TypoBodyMdSb, visitorTitleStyle]}>실제 방문하실 분의 정보를 입력하세요.</h2>
             <div css={visitorFormStyle}>
               <label css={TypoBodySmR} htmlFor="visitorName">
                 방문자 이름
@@ -215,41 +218,47 @@ const ReservationCheck = () => {
         )}
         <section>
           <h2 css={[TypoTitleXsSB, titleAlignStyle]}>요청사항</h2>
-          <textarea
-            css={textRequestsStyle}
-            placeholder="방문 전 요청하실 내용을 적어주세요.&#10;원하는 스타일을 작가님에게 전달할 수 있습니다."
-            {...register('requests')}
-          />
+          <div css={textareaBox}>
+            <textarea
+              css={textRequestsStyle}
+              maxLength={100}
+              placeholder="방문 전 요청하실 내용을 적어주세요.&#10;원하는 스타일을 작가님에게 전달할 수 있습니다."
+              {...register('requests')}
+            />
+            <span css={showLength}>{requestsValue?.length || 0}/100</span>
+          </div>
         </section>
       </form>
 
       {/* 결제정보*/}
-      <section>
+      <section css={paymentSectionStyle}>
         <h2 css={[TypoTitleXsSB, titleAlignStyle]}>결제정보</h2>
         <div css={[boxStyle, TypoBodySmR]}>
-          <div css={PriceInforowStyle}>
+          <div css={[PriceInforowStyle, options.length > 0 && basicPriceStyle]}>
             <span>기본 가격</span>
             <span>{menuName}</span>
             <span>{basicPrice?.toLocaleString()}원</span>
           </div>
-          <div css={PriceInforowStyle}>
-            <span>추가 옵션</span>
-            <span>
-              {options.map((option, index) => (
-                <span key={option.option_id}>
-                  {option.optionName}
-                  {index < options.length - 1 && <br />}
-                </span>
-              ))}
-            </span>
-            <span>
-              {options.map((option, index) => (
-                <span key={option.option_id}>
-                  {option.optionPrice.toLocaleString()}원{index < options.length - 1 && <br />}
-                </span>
-              ))}
-            </span>
-          </div>
+          {options.length > 0 && (
+            <div css={PriceInforowStyle}>
+              <span>추가 옵션</span>
+              <span css={optionListStyle}>
+                {options.map((option, index) => (
+                  <span key={option.option_id}>
+                    {option.optionName}
+                    {index < options.length - 1 && <br />}
+                  </span>
+                ))}
+              </span>
+              <span css={optionListStyle}>
+                {options.map((option, index) => (
+                  <span key={option.option_id}>
+                    {option.optionPrice.toLocaleString()}원{index < options.length - 1 && <br />}
+                  </span>
+                ))}
+              </span>
+            </div>
+          )}
 
           <hr css={hrStyle} />
           <div css={[PriceInforowStyle, TypoTitleXsSB, totalPriceStyle]}>
@@ -269,6 +278,7 @@ const ReservationCheck = () => {
               name="paymentMethod"
               id="kakaoPay"
               value="카카오페이"
+              defaultChecked
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
             <label htmlFor="kakaoPay">
@@ -303,42 +313,46 @@ const ReservationCheck = () => {
       </section>
 
       {/* 개인정보 동의 */}
-      <div css={termsContainerStyle}>
-        <div css={termsCheckStyle}>
-          <input type="checkbox" id="agree" onChange={handleCheckboxChange} />
-          <label htmlFor="agree" css={termsCheckBoxStyle(isAgreed)}>
-            <img src="/img/icon-checkbox-empty.svg" alt="빈 체크박스" />
-            <img src="/img/icon-checkbox-done.svg" alt="체크된 체크박스" />
-          </label>
-          <span>결제 내용을 확인했으며, 아래 내용에 모두 동의합니다.</span>
-        </div>
-        {!isAgreed && <p>결제 진행을 위해 동의가 필요합니다.</p>}
-        <div css={PrivacyPolicyTitleStyle}>
-          <h3 css={TypoBodyMdSb}>개인정보 수집, 제공</h3>
-          <button
-            css={[TypoCapSmM, modalTitleColor]}
-            onClick={() => {
-              open();
-            }}
-          >
-            전체보기
-          </button>
-          <PolicyModal />
-        </div>
-
-        <h3 css={TypoBodyMdSb}>취소/환불 규정</h3>
-        <div css={[TypoBodySmR, refundPolicyTableStyle]}>
-          <div css={refundInfoRowStyle}>
-            <span>이용 7일 전까지</span>
-            <span>결제 금액에 대한 취소 수수료 없음</span>
+      <div css={termsSectionStyle}>
+        {' '}
+        <div css={termsContainerStyle}>
+          <div css={termsCheckStyle}>
+            <input type="checkbox" id="agree" onChange={handleCheckboxChange} />
+            <label htmlFor="agree" css={termsCheckBoxStyle(isAgreed)}>
+              <img src="/img/icon-checkbox-empty.svg" alt="빈 체크박스" />
+              <img src="/img/icon-checkbox-done.svg" alt="체크된 체크박스" />
+            </label>
+            <label htmlFor="agree">결제 내용을 확인했으며, 아래 내용에 모두 동의합니다.</label>
           </div>
-          <hr css={hrStyle} />
-          <div css={refundInfoRowStyle}>
-            <span>이용 7일 전 ~ 이용 당일</span>
-            <span>취소 불가</span>
+          {!isAgreed && <p>결제 진행을 위해 동의가 필요합니다.</p>}
+          <div css={PrivacyPolicyTitleStyle}>
+            <h3 css={TypoBodyMdSb}>개인정보 수집, 제공</h3>
+            <button
+              css={[TypoCapSmM, modalTitleColor]}
+              onClick={() => {
+                open();
+              }}
+            >
+              전체보기
+            </button>
+            <PolicyModal />
+          </div>
+
+          <h3 css={TypoBodyMdSb}>취소/환불 규정</h3>
+          <div css={[TypoBodySmR, refundPolicyTableStyle]}>
+            <div css={refundInfoRowStyle}>
+              <span>이용 7일 전까지</span>
+              <span>결제 금액에 대한 취소 수수료 없음</span>
+            </div>
+            <hr css={hrStyle} />
+            <div css={refundInfoRowStyle}>
+              <span>이용 7일 전 ~ 이용 당일</span>
+              <span>취소 불가</span>
+            </div>
           </div>
         </div>
       </div>
+
       <Payment
         onClick={handleSubmitForm}
         trigger={trigger}
@@ -346,6 +360,7 @@ const ReservationCheck = () => {
         isAgreed={isAgreed}
         totalPrice={totalPrice}
         options={options}
+        userId={user_id}
         visitorName={isDifferentVisitor ? visitorName || '' : username || ''}
         visitorPhone={isDifferentVisitor ? visitorContact || '' : phone || ''}
         menuId={menuId}
@@ -363,13 +378,16 @@ export default ReservationCheck;
 const titleAlignStyle = css`
   height: 4.2rem;
   line-height: 4.2rem;
+  margin-top: 0.4rem;
+`;
+
+const firstTitleAlignStyle = css`
+  margin-top: 0;
 `;
 
 const boxStyle = css`
-  height: 15.3rem;
-  border: solid;
+  border: 1px solid ${variables.colors.gray400};
   border-radius: 0.6rem;
-  border-color: ${variables.colors.gray400};
   padding: 1rem 1.4rem;
 `;
 
@@ -387,6 +405,7 @@ const imgStyle = css`
   width: 6rem;
   height: 7.2rem;
   margin-left: auto;
+  object-fit: cover;
 `;
 
 const textWrapperStyle = css`
@@ -410,7 +429,7 @@ const textWrapperStyle = css`
 const checkboxWrapperStyle = css`
   position: relative;
   display: flex;
-  margin: 1rem 0;
+  margin-top: 0.5rem;
   input {
     display: none;
   }
@@ -430,6 +449,7 @@ const labelStyle = css`
   align-items: center;
   padding: 0.5rem 0.6rem;
   font-size: 1.2rem;
+  line-height: 1.2rem;
   color: ${variables.colors.gray900};
   border: 1px solid ${variables.colors.gray500};
   border-radius: 0.6rem;
@@ -437,6 +457,9 @@ const labelStyle = css`
   gap: 0.1rem;
 `;
 
+const visitorTitleStyle = css`
+  margin-top: 1rem;
+`;
 const visitorFormStyle = css`
   margin-top: 0.8rem;
   display: flex;
@@ -476,12 +499,31 @@ const visitorInputStyle = css`
   }
 `;
 
+const paymentSectionStyle = css`
+  position: relative;
+  margin-top: 2rem; /* 위쪽 여백 */
+  padding-top: 1rem;
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: -1.6rem;
+    right: -1.6rem;
+    top: -2rem;
+    height: 1rem;
+    margin: 1rem 0;
+    background-color: ${variables.colors.gray300};
+  }
+`;
+
 const textRequestsStyle = css`
   color: ${variables.colors.gray600};
   border: 1px solid ${variables.colors.gray400};
   border-radius: 0.6rem;
   padding: 1rem 1.2rem;
   height: 9.6rem;
+  }
 
   &:focus {
     outline: none;
@@ -493,10 +535,21 @@ const textRequestsStyle = css`
   }
 `;
 
+const textareaBox = css`
+  position: relative;
+`;
+
+const showLength = css`
+  position: absolute;
+  color: ${variables.colors.gray500};
+  right: 1.2rem;
+  bottom: 1.2rem;
+  ${TypoCapSmR}
+`;
+
 //결제정보
 const PriceInforowStyle = css`
   display: flex;
-  margin-bottom: 0.8rem;
 
   > span:first-of-type {
     color: ${variables.colors.gray800};
@@ -509,8 +562,18 @@ const PriceInforowStyle = css`
   }
 `;
 
+const basicPriceStyle = css`
+  margin-bottom: 0.8rem;
+`;
+
+const optionListStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+`;
+
 const totalPriceStyle = css`
-  margin-top: 1.5rem;
+  margin-top: 1.2rem;
 `;
 
 //결제수단
@@ -532,8 +595,26 @@ const payIconStyle = css`
 `;
 
 //동의,약관,규정
+
+const termsSectionStyle = css`
+  position: relative;
+  margin-top: 3rem; /* 위쪽 여백 */
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: -1.6rem;
+    right: -1.6rem;
+    top: -2rem;
+    height: 1rem;
+    margin: 1rem 0;
+    background-color: ${variables.colors.gray300};
+  }
+`;
+
 const termsContainerStyle = css`
-  padding-top: 3rem;
+  padding-top: 1rem;
   h3 {
     height: 3.6rem;
     line-height: 3.6rem;

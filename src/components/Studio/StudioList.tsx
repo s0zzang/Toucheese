@@ -5,8 +5,15 @@ import { useEffect, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { IStudioItem } from 'types/types';
 import StudioItem from './StudioItem';
+import Loading from '@components/Loading/Loading';
 
-const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; searchParams: URLSearchParams }) => {
+const StudioList = ({
+  mode,
+  searchParams,
+}: {
+  mode: 'filter' | 'search/result';
+  searchParams: URLSearchParams;
+}) => {
   const params = decodeSearchParamsToString(searchParams);
   const [pageNum, setPageNum] = useState(0);
   const [items, setItems] = useState<IStudioItem[]>([]);
@@ -39,11 +46,13 @@ const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; 
   return (
     <>
       {pageNum === 0 && isLoading ? (
-        <div>로딩중</div>
+        <Loading size="small" phrase="스튜디오를 불러오고 있습니다." />
       ) : (
         <>
           {data?.content.length === 0 ? (
-            <EmptyMessage message={`${mode === 'filter' ? '스튜디오 조회' : '검색'} 결과가 없습니다.`} />
+            <EmptyMessage
+              message={`${mode === 'filter' ? '스튜디오 조회' : '검색'} 결과가 없습니다.`}
+            />
           ) : (
             <Virtuoso
               data={items}
@@ -51,7 +60,14 @@ const StudioList = ({ mode, searchParams }: { mode: 'filter' | 'search/result'; 
               totalCount={items.length}
               endReached={loadMore}
               overscan={10}
-              itemContent={(index, item) => <StudioItem key={item.id} item={item} isFirst={index === 0} isLast={index === items.length - 1} />}
+              itemContent={(index, item) => (
+                <StudioItem
+                  key={item.id}
+                  item={item}
+                  isFirst={index === 0}
+                  isLast={index === items.length - 1}
+                />
+              )}
             />
           )}
         </>

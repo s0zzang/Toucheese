@@ -135,6 +135,7 @@ const headerStyle = css`
   display: flex;
   align-items: center;
   padding: 1.6rem;
+  padding-top: unset;
 `;
 
 export default ReservationList;

@@ -46,6 +46,7 @@ const UlStyle = styled.ul`
 `;
 
 const LiStyle = styled.li<{ length: number }>`
+  cursor: pointer;
   position: relative;
   width: calc(100% / length);
   flex-grow: 1;

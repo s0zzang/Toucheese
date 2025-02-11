@@ -1,4 +1,6 @@
+/** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
+import { TypoTitleXsB, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +29,11 @@ const ThemeNavigator = () => {
       <ThemeListStyle>
         {themes.map((theme) => (
           <li key={theme}>
-            <ThemeButtonStyle isActive={activeTheme === theme} onClick={() => setActiveTheme(theme)}>
+            <ThemeButtonStyle
+              isActive={activeTheme === theme}
+              css={activeTheme === theme ? TypoTitleXsB : TypoTitleXsM}
+              onClick={() => setActiveTheme(theme)}
+            >
               {theme}
             </ThemeButtonStyle>
           </li>
@@ -43,7 +49,7 @@ const NavStyle = styled.nav`
   width: 100%;
   box-sizing: border-box;
   background-color: ${variables.colors.black};
-  padding: 1.4rem 1.2rem;
+  padding: 1.4rem;
 `;
 
 const ThemeListStyle = styled.ul`
@@ -57,9 +63,8 @@ const ThemeListStyle = styled.ul`
 // ThemeNavigator test 코드와 연관되어 있음
 const ThemeButtonStyle = styled.button<{ isActive: boolean }>`
   text-align: center;
-  font-size: ${variables.size.big};
-  color: ${(props) => (props.isActive ? `${variables.colors.white}` : `${variables.colors.gray500}`)};
-  font-weight: ${(props) => (props.isActive ? 'bold' : 'normal')};
+  color: ${(props) =>
+    props.isActive ? `${variables.colors.white}` : `${variables.colors.gray500}`};
   position: relative;
 
   &::after {
