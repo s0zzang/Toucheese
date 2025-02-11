@@ -58,6 +58,10 @@ const FilterPriceSlideComponent = () => {
     setRangeMaxValue(fixedMaxPrice);
     setRangeMinPercent(1);
     setRangeMaxPercent(100);
+    const currentParams = new URLSearchParams(window.location.search);
+    currentParams.delete('minPrice'); // 최소 가격 파라미터 삭제
+    currentParams.delete('maxPrice'); // 최대 가격 파라미터 삭제
+    navigate(`?${currentParams.toString()}`); // 업데이트된 URL로 이동
   };
 
   // handleResetClick 함수는 그대로 사용
