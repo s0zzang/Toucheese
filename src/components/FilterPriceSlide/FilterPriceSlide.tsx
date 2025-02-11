@@ -12,14 +12,14 @@ const FilterPriceSlideComponent = () => {
   // 가격 범위 설정을 위한 상수값
   const fixedMinPrice = 10000;
   const fixedMaxPrice = 200000;
-  const priceGap = 5000; // 최소-최대 가격 간 최소 간격
+  const priceGap = 0; // 최소-최대 가격 간 최소 간격
 
   const navigate = useNavigate();
   const { closeBottomSheet } = useBottomSheetState();
 
   const [rangeMinValue, setRangeMinValue] = useState(fixedMinPrice);
   const [rangeMaxValue, setRangeMaxValue] = useState(fixedMaxPrice);
-  const [rangeMinPercent, setRangeMinPercent] = useState(0);
+  const [rangeMinPercent, setRangeMinPercent] = useState(1);
   const [rangeMaxPercent, setRangeMaxPercent] = useState(100);
 
   /** 최소 가격 범위 변경 핸들러 */
@@ -53,10 +53,15 @@ const FilterPriceSlideComponent = () => {
     setRangeMaxPercent((rangeMaxValue / fixedMaxPrice) * 100);
   };
 
-  // 리셋 하는 공통 hook 호출
-  const { resetState } = useResetState(setRangeMinValue, fixedMinPrice);
+  // useResetState 훅 사용 부분 수정
+  const resetState = () => {
+    setRangeMinValue(fixedMinPrice);
+    setRangeMaxValue(fixedMaxPrice);
+    setRangeMinPercent(1);
+    setRangeMaxPercent(100);
+  };
 
-  // 상태를 초기화하는 함수 호출
+  // handleResetClick 함수는 그대로 사용
   const handleResetClick = () => {
     resetState();
   };
