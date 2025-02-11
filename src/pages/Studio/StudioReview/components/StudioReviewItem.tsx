@@ -21,17 +21,18 @@ export interface Review {
   rating: number;
   reviewImages: IReviewImages[];
   updated_at: string;
+
   userId: number;
   userName: string;
 }
 
 /** 리뷰 아이템 컴포넌트 */
-const StudioReviewItem = ({ review }: { review: Review }) => {
+const StudioReviewItem = ({ review, isLast }: { review: Review; isLast?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <StudioReviewItemContainerStyle key={review.id} isOpen={isOpen}>
+      <StudioReviewItemContainerStyle key={review.id} isOpen={isOpen} isLast={isLast}>
         <TitleWrapper>
           <MainTitle css={TypoTitleXsM}>{review.menuName || '메뉴 이름 없음'}</MainTitle>
           <SubTitle css={TypoCapSmR}>컷 추가 수정 | 포즈 추가 촬영</SubTitle>
@@ -65,12 +66,12 @@ const StudioReviewItem = ({ review }: { review: Review }) => {
 
 export default StudioReviewItem;
 
-const StudioReviewItemContainerStyle = styled.div<{ isOpen: boolean }>`
+const StudioReviewItemContainerStyle = styled.div<{ isOpen: boolean; isLast?: boolean }>`
   width: 100vw;
   margin-left: calc(-1 * ${variables.layoutPadding});
   padding: 0 ${variables.layoutPadding};
   padding-top: 1rem;
-  border-bottom: 1px solid ${variables.colors.gray300};
+  border-bottom: ${({ isLast }) => (isLast ? 'none' : `1px solid ${variables.colors.gray300}`)};
   background-color: ${({ isOpen }) => (isOpen ? variables.colors.gray200 : 'transparent')};
   transition: background-color 0.2s ease;
 `;
