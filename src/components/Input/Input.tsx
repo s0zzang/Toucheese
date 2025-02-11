@@ -146,7 +146,7 @@ const inputStyle = (error?: string, isValid?: boolean) => css`
     ${error && `animation: shake 0.3s ease-in-out 2;`}
   }
   &:focus {
-    outline: 1px solid ${error ? 'red' : isValid ? 'green' : variables.colors.primary};
+    outline: 0.8px solid ${error ? 'red' : isValid ? 'green' : variables.colors.primary};
   }
 
   @keyframes shake {
