@@ -74,6 +74,7 @@ const Input = ({
               css={inputStyle(error, isValid)}
               type={type}
               placeholder={placeholder}
+              autoComplete="off"
               {...register}
               onChange={handleChange}
               value={inputValue}

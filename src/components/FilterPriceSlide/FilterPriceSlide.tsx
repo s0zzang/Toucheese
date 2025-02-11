@@ -7,11 +7,12 @@ import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-/** 가격 트리거 호출 시 가격설정을 양방향으로 할 수 있는 컴포넌트 */
+/** 가격 필터 슬라이더 컴포넌트 */
 const FilterPriceSlideComponent = () => {
-  const fixedMinPrice = 10000; // 최소값을 1만원으로 변경
-  const fixedMaxPrice = 200000; // 최대값을 20만원으로 변경
-  const priceGap = 5000; // 최소-최대 값 간 간격
+  // 가격 범위 설정을 위한 상수값
+  const fixedMinPrice = 10000;
+  const fixedMaxPrice = 200000;
+  const priceGap = 5000; // 최소-최대 가격 간 최소 간격
 
   const navigate = useNavigate();
   const { closeBottomSheet } = useBottomSheetState();
@@ -21,13 +22,15 @@ const FilterPriceSlideComponent = () => {
   const [rangeMinPercent, setRangeMinPercent] = useState(0);
   const [rangeMaxPercent, setRangeMaxPercent] = useState(100);
 
+  /** 최소 가격 범위 변경 핸들러 */
   const priceRangeMinValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     if (value + priceGap <= rangeMaxValue) {
       setRangeMinValue(value);
     }
   };
-  // 기존 파람스를 가져와 새로 추가하는 방식으로 업데이트
+
+  /** URL 파라미터에 선택된 가격 범위 적용 */
   const handleApplyClick = () => {
     const currentParams = new URLSearchParams(window.location.search);
     currentParams.set('minPrice', rangeMinValue.toString());
@@ -36,6 +39,7 @@ const FilterPriceSlideComponent = () => {
     closeBottomSheet();
   };
 
+  /** 최대 가격 범위 변경 핸들러 */
   const priceRangeMaxValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     if (value - priceGap >= rangeMinValue) {
@@ -43,6 +47,7 @@ const FilterPriceSlideComponent = () => {
     }
   };
 
+  /** 슬라이더 위치 퍼센트 계산 */
   const twoRangeHandler = () => {
     setRangeMinPercent((rangeMinValue / fixedMaxPrice) * 100);
     setRangeMaxPercent((rangeMaxValue / fixedMaxPrice) * 100);
@@ -56,7 +61,7 @@ const FilterPriceSlideComponent = () => {
     resetState();
   };
 
-  // 가격 포맷팅 함수 추가
+  /** 가격 표시 형식을 한국어 원 단위로 변환 (예: 10,000원) */
   const formatPrice = (price: number) => {
     return price.toLocaleString('ko-KR');
   };
