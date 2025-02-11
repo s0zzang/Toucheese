@@ -82,15 +82,16 @@ const SignUp = () => {
 
   useEffect(() => {
     // 모든 조건이 만족하면 활성화
-    const emailValid = emailError === '사용가능';
     const passwordValid =
-      password &&
+      // O(1) 연산 검증 추가
+      (password ?? '').length >= 8 &&
       /^[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/.test(password) &&
       !password.includes(email);
     const passwordsMatch = password === passwordConfirm;
+    const isFormValid = isSuccess && passwordValid && passwordsMatch;
 
-    setIsActive(emailValid && passwordValid && passwordsMatch);
-    setIsDisabled(!(emailValid && passwordValid && passwordsMatch));
+    setIsActive(isFormValid);
+    setIsDisabled(!isFormValid);
   }, [email, password, passwordConfirm, emailError]);
 
   const onSubmit = (data: any) => {
