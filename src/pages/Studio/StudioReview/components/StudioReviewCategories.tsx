@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import Dropdown from './DropDown';
+import { TypoBodyMdM } from '@styles/Common';
 
 interface StudioReviewCategoriesProps {
   avgRating?: number;
@@ -33,6 +34,11 @@ const StudioReviewCategories = ({
 
   return (
     <Container>
+      <RatingWrapper>
+        <RatingIcon src="/img/icon-rating.svg" alt="평점" />
+        <RatingScore>{avgRating}</RatingScore>
+        <ReviewCount>{totalReviewNum}개의 리뷰</ReviewCount>
+      </RatingWrapper>
       <CategoryWrapper>
         <Dropdown
           options={FILTER_OPTIONS}
@@ -40,11 +46,6 @@ const StudioReviewCategories = ({
           onSelect={handleOptionSelect}
         />
       </CategoryWrapper>
-      <RatingWrapper>
-        <RatingIcon src="/img/icon-rating.svg" alt="평점" />
-        <RatingScore>{avgRating}</RatingScore>
-        <ReviewCount>{totalReviewNum}개의 리뷰</ReviewCount>
-      </RatingWrapper>
     </Container>
   );
 };
@@ -56,7 +57,9 @@ const Container = styled.div`
   padding: 1.8rem 0;
 `;
 
-const CategoryWrapper = styled.div``;
+const CategoryWrapper = styled.div`
+  margin-top: 1rem;
+`;
 
 const RatingWrapper = styled.div`
   display: flex;
@@ -67,17 +70,14 @@ const RatingWrapper = styled.div`
 const RatingIcon = styled.img`
   width: 1.6rem;
   height: 1.6rem;
-  margin-right: 0.2rem;
+  margin-right: 0.4rem;
   display: flex;
   align-items: center;
 `;
 
 const RatingScore = styled.p`
-  font-weight: 600;
   margin-right: 0.8rem;
-  display: flex;
-  align-items: center;
-  line-height: 1;
+  font-size: ${TypoBodyMdM};
 `;
 const ReviewCount = styled.p`
   color: ${variables.colors.black};

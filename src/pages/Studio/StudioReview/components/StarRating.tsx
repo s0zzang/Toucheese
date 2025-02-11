@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
 import { TypoCapSmR } from '@styles/Common';
-import variables from '@styles/Variables';
-
+import { css } from '@emotion/react';
 interface StarRatingProps {
   rating: number;
 }
@@ -11,11 +10,23 @@ const StarRating = ({ rating }: StarRatingProps) => {
   return (
     <RatingWrapper>
       {Array.from({ length: 5 }, (_, index) => (
-        <Star key={index} filled={index < rating}>
-          ★
-        </Star>
+        <StarIcon key={index} filled={index < rating}>
+          <img
+            src={index < rating ? '/img/icon-rating.svg' : '/img/icon-star-notfilled.svg'}
+            alt={index < rating ? '채워진 별' : '빈 별'}
+            width="14"
+            height="14"
+          />
+        </StarIcon>
       ))}
-      <span css={TypoCapSmR}>{rating}</span>
+      <span
+        css={css`
+          font: ${TypoCapSmR};
+          margin-left: 0.2rem;
+        `}
+      >
+        {rating}
+      </span>
     </RatingWrapper>
   );
 };
@@ -28,7 +39,13 @@ const RatingWrapper = styled.div`
   margin-bottom: 0.6rem;
 `;
 
-const Star = styled.span<{ filled: boolean }>`
-  color: ${(props) => (props.filled ? `${variables.colors.primary}` : `${variables.colors.gray500}`)};
-  font-size: 1.4rem;
+const StarIcon = styled.span<{ filled: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  margin-right: 2px;
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
 `;
