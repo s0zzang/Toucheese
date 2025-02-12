@@ -30,7 +30,7 @@ const DateBottomSheet = ({}: {}) => {
   ];
 
   return (
-    <Modal type="fullscreen" modalId={2} buttons={dateTimeButtons}>
+    <Modal type="fullscreen" title="날짜, 시간 선택" modalId={2} buttons={dateTimeButtons}>
       <>
         <Calendar style={DividerStyle} />
         <SelectTime type="filter" />
