@@ -1,33 +1,35 @@
 /** @jsxImportSource @emotion/react */
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
-import useResetState from '@hooks/useResetState';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-/** 가격 트리거 호출 시 가격설정을 양방향으로 할 수 있는 컴포넌트 */
+/** 가격 필터 슬라이더 컴포넌트 */
 const FilterPriceSlideComponent = () => {
-  const fixedMinPrice = 10000; // 최소값을 1만원으로 변경
-  const fixedMaxPrice = 200000; // 최대값을 20만원으로 변경
-  const priceGap = 5000; // 최소-최대 값 간 간격
+  // 가격 범위 설정을 위한 상수값
+  const fixedMinPrice = 10000;
+  const fixedMaxPrice = 200000;
+  const priceGap = 0; // 최소-최대 가격 간 최소 간격
 
   const navigate = useNavigate();
   const { closeBottomSheet } = useBottomSheetState();
 
   const [rangeMinValue, setRangeMinValue] = useState(fixedMinPrice);
   const [rangeMaxValue, setRangeMaxValue] = useState(fixedMaxPrice);
-  const [rangeMinPercent, setRangeMinPercent] = useState(0);
+  const [rangeMinPercent, setRangeMinPercent] = useState(1);
   const [rangeMaxPercent, setRangeMaxPercent] = useState(100);
 
+  /** 최소 가격 범위 변경 핸들러 */
   const priceRangeMinValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     if (value + priceGap <= rangeMaxValue) {
       setRangeMinValue(value);
     }
   };
-  // 기존 파람스를 가져와 새로 추가하는 방식으로 업데이트
+
+  /** URL 파라미터에 선택된 가격 범위 적용 */
   const handleApplyClick = () => {
     const currentParams = new URLSearchParams(window.location.search);
     currentParams.set('minPrice', rangeMinValue.toString());
@@ -36,6 +38,7 @@ const FilterPriceSlideComponent = () => {
     closeBottomSheet();
   };
 
+  /** 최대 가격 범위 변경 핸들러 */
   const priceRangeMaxValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     if (value - priceGap >= rangeMinValue) {
@@ -43,24 +46,39 @@ const FilterPriceSlideComponent = () => {
     }
   };
 
+  /** 슬라이더 위치 퍼센트 계산 */
   const twoRangeHandler = () => {
     setRangeMinPercent((rangeMinValue / fixedMaxPrice) * 100);
     setRangeMaxPercent((rangeMaxValue / fixedMaxPrice) * 100);
   };
 
-  // 리셋 하는 공통 hook 호출
-  const { resetState } = useResetState(setRangeMinValue, fixedMinPrice);
+  // useResetState 훅 사용 부분 수정
+  const resetState = () => {
+    setRangeMinValue(fixedMinPrice);
+    setRangeMaxValue(fixedMaxPrice);
+    setRangeMinPercent(1);
+    setRangeMaxPercent(100);
+    const currentParams = new URLSearchParams(window.location.search);
+    currentParams.delete('minPrice'); // 최소 가격 파라미터 삭제
+    currentParams.delete('maxPrice'); // 최대 가격 파라미터 삭제
+    navigate(`?${currentParams.toString()}`); // 업데이트된 URL로 이동
+  };
 
-  // 상태를 초기화하는 함수 호출
+  // handleResetClick 함수는 그대로 사용
   const handleResetClick = () => {
     resetState();
+  };
+
+  /** 가격 표시 형식을 한국어 원 단위로 변환 (예: 10,000원) */
+  const formatPrice = (price: number) => {
+    return price.toLocaleString('ko-KR');
   };
 
   return (
     <>
       <ValueDisplay>
-        <ValueDisplaySpanStyle>{rangeMinValue}원~ </ValueDisplaySpanStyle>
-        <ValueDisplaySpanStyle>{rangeMaxValue} 원 이상</ValueDisplaySpanStyle>
+        <ValueDisplaySpanStyle>{formatPrice(rangeMinValue)}원~ </ValueDisplaySpanStyle>
+        <ValueDisplaySpanStyle>{formatPrice(rangeMaxValue)} 원 이상</ValueDisplaySpanStyle>
       </ValueDisplay>
       <FilterPriceRangeWrap>
         <FilterPriceRangeMin
@@ -102,8 +120,24 @@ const FilterPriceSlideComponent = () => {
         <RangeDisplaySpanStyle>20만원</RangeDisplaySpanStyle>
       </RangeDisplay>
       <ButtonWrapperStyle>
-        <Button size="large" disabled={false} text={`초기화`} width="fit" variant="gray" onClick={handleResetClick} type="button" />
-        <Button size="large" disabled={false} text={`적용하기`} width="max" variant="black" onClick={handleApplyClick} type="button" />
+        <Button
+          size="large"
+          disabled={false}
+          text={`초기화`}
+          width="fit"
+          variant="gray"
+          onClick={handleResetClick}
+          type="button"
+        />
+        <Button
+          size="large"
+          disabled={false}
+          text={`적용하기`}
+          width="max"
+          variant="black"
+          onClick={handleApplyClick}
+          type="button"
+        />
       </ButtonWrapperStyle>
     </>
   );
@@ -129,11 +163,11 @@ const FilterPriceRangeMin = styled.input`
   z-index: 1;
 
   &::-webkit-slider-thumb {
-    height: 2.8rem;
+    height: 2.6rem;
     pointer-events: auto;
-    width: 2.8rem;
+    width: 2.6rem;
     border-radius: 50%;
-    border: 0.2rem solid ${variables.colors.primary};
+    border: 0.1rem solid ${variables.colors.primary};
     background-color: #fff8e1;
     -webkit-appearance: none;
     z-index: 99;

@@ -73,6 +73,7 @@ const Auth = () => {
           <span
             css={css`
               color: ${variables.colors.gray700};
+              margin-right: 0.4rem;
             `}
           >
             이미 가입하셨나요?

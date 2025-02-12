@@ -74,6 +74,7 @@ const Input = ({
               css={inputStyle(error, isValid)}
               type={type}
               placeholder={placeholder}
+              autoComplete="off"
               {...register}
               onChange={handleChange}
               value={inputValue}
@@ -136,16 +137,18 @@ const inputStyle = (error?: string, isValid?: boolean) => css`
     width: 100%;
     height: 5.6rem;
     box-sizing: border-box;
-    padding: 1rem;
+    padding: 1rem 6rem 1rem 1rem;
     border: 1px solid ${error ? 'red' : isValid ? 'green' : variables.colors.gray300};
     border-radius: 0.6rem;
     background-color: ${variables.colors.white};
     font-size: 1.6rem;
+    letter-spacing: normal;
+    text-indent: 0;
 
     ${error && `animation: shake 0.3s ease-in-out 2;`}
   }
   &:focus {
-    outline: 1px solid ${error ? 'red' : isValid ? 'green' : variables.colors.primary};
+    outline: 0.8px solid ${error ? 'red' : isValid ? 'green' : variables.colors.primary};
   }
 
   @keyframes shake {

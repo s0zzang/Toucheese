@@ -17,14 +17,14 @@ const Dropdown = ({ options, selectedOption, onSelect }: DropdownProps) => {
   };
 
   const handleSelectOption = (option: string) => {
-    onSelect(option); // 부모 컴포넌트로 선택된 옵션 전달
+    onSelect(option);
     setIsOpen(false);
   };
 
   return (
     <DropdownContainer>
       <FilterDropdown onClick={handleToggleDropdown}>
-        {selectedOption}
+        <SelectedText>{selectedOption}</SelectedText>
         <DropdownIcon isOpen={isOpen}>
           <img src="/img/icon-arrow-down.svg" alt="드롭다운 화살표" />
         </DropdownIcon>
@@ -91,9 +91,15 @@ const FilterDropdown = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-
   height: 3.3rem;
   padding: 0.8rem 1rem;
   border: 1px solid ${variables.colors.gray400};
-  border-radius: ${variables.borderRadius} + 0.8rem;
+  border-radius: ${variables.borderRadius};
+`;
+
+const SelectedText = styled.span`
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
