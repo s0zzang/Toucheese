@@ -15,7 +15,11 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const { time, setTime } = useSelectTimeStore();
   const { date, setDate } = useSelectDateStore();
 
-  const [selectedLocation, setSelectedLocation] = useState<string | null>('전체보기');
+  const searchParams = new URLSearchParams(window.location.search);
+  const paramsSelectedLocation = searchParams.get('addressGu');
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(
+    paramsSelectedLocation ?? '서울전체',
+  );
   const { openBottomSheet } = useBottomSheetState();
   const navigate = useNavigate();
 
@@ -27,7 +31,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
       event: () => {
         setDate('reset');
         setTime('reset', 'filter');
-        setSelectedLocation('전체보기');
+        setSelectedLocation('서울전체');
       },
       variant: 'gray' as 'gray',
       width: 'fit' as 'fit',
@@ -50,7 +54,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
     const dateToParams = date ? `&date=${date}` : '';
 
     // 주소를 '전체보기'로 선택한 경우, 파라미터 요청 X
-    const addressToParams = selectedLocation === '전체보기' ? '' : `&addressGu=${selectedLocation}`;
+    const addressToParams = selectedLocation === '서울전체' ? '' : `&addressGu=${selectedLocation}`;
 
     const params = new URLSearchParams(`${addressToParams}${dateToParams}${timesToParams}`);
     navigate(`?${params.toString()}`);
