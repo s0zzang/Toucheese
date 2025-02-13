@@ -35,8 +35,8 @@ const SelectTime = ({ type, availableTimeWithDates, isSuccess, isFetching }: ITi
       : availableTimeWithDates?.find((TimeWithDate) => TimeWithDate.date === date)
           ?.availableTimeDto;
 
-  const morningTimes = useMemo(() => times?.filter((times) => times.time <= '11:00'), [times]);
-  const afternoonTimes = useMemo(() => times?.filter((times) => times.time > '11:00'), [times]);
+  const morningTimes = useMemo(() => times?.filter((times) => times.time < '12:00'), [times]);
+  const afternoonTimes = useMemo(() => times?.filter((times) => times.time >= '12:00'), [times]);
 
   const handleTImeClick = (value: string) => {
     setTime(value, type);

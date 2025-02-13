@@ -1,9 +1,13 @@
 import { useCallback } from 'react';
 
-const useResetState = (setState: React.Dispatch<React.SetStateAction<any>>, initialState: any) => {
+const useResetState = (
+  setStates: [React.Dispatch<React.SetStateAction<any>>, React.Dispatch<React.SetStateAction<any>>],
+  initialStates: [any, any],
+) => {
   const resetState = useCallback(() => {
-    setState(initialState as number);
-  }, [setState, initialState]);
+    setStates[0](initialStates[0]);
+    setStates[1](initialStates[1]);
+  }, [setStates, initialStates]);
 
   return { resetState };
 };

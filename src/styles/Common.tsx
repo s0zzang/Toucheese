@@ -87,7 +87,7 @@ export const DividerStyle = css`
     position: absolute;
     bottom: 0;
     left: 50%;
-    width: 100vw;
+    width: calc(100% + calc(${variables.layoutPadding} * 2));
     height: 1rem;
     background-color: ${variables.colors.gray300};
     transform: translateX(-50%);

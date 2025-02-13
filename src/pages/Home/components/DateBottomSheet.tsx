@@ -1,17 +1,12 @@
 import Calendar from '@components/Calendar/Calendar';
+import Modal from '@components/Modal/Modal';
+import useModal from '@hooks/useModal';
+import { useSelectDateStore } from '@store/useSelectDateStore';
+import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import { DividerStyle } from '@styles/Common';
 import SelectTime from './SelectTime';
-import { useSelectTimeStore } from '@store/useSelectTimeStore';
-import { convertToDateFormat, today, useSelectDateStore } from '@store/useSelectDateStore';
-import useModal from '@hooks/useModal';
-import Modal from '@components/Modal/Modal';
-import { Dispatch, SetStateAction } from 'react';
 
-const DateBottomSheet = ({
-  setIsSelectedDate,
-}: {
-  setIsSelectedDate: Dispatch<SetStateAction<boolean>>;
-}) => {
+const DateBottomSheet = ({}: {}) => {
   const dateTimeModal = useModal(2);
   const { setTime } = useSelectTimeStore();
   const { setDate } = useSelectDateStore();
@@ -20,8 +15,8 @@ const DateBottomSheet = ({
     {
       text: '초기화',
       event: () => {
-        setDate(convertToDateFormat(today));
-        setTime('', 'filter');
+        setDate('reset');
+        setTime('reset', 'filter');
       },
       variant: 'gray' as 'gray',
       width: 'fit' as 'fit',
@@ -29,13 +24,13 @@ const DateBottomSheet = ({
     {
       text: '적용하기',
       event: () => {
-        setIsSelectedDate(true);
         dateTimeModal.close();
       },
     },
   ];
+
   return (
-    <Modal type="fullscreen" modalId={2} buttons={dateTimeButtons}>
+    <Modal type="fullscreen" title="날짜, 시간 선택" modalId={2} buttons={dateTimeButtons}>
       <>
         <Calendar style={DividerStyle} />
         <SelectTime type="filter" />

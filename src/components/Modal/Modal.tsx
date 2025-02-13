@@ -131,6 +131,11 @@ const ModalStyle = styled.section<IModalStyle>`
   background: ${(props) =>
     props.type !== 'fullscreen' ? 'rgba(0,0,0,0.85)' : variables.colors.white};
   padding: ${(props) => props.type !== 'default' && `5.2rem 2rem 10rem`};
+  ${(prop) =>
+    prop.type === 'fullscreen' &&
+    `
+    margin-top: -5.2rem;
+  `}
 `;
 
 const ModalInner = styled.div<IModalStyle>`
@@ -159,10 +164,10 @@ const TitleStyle = styled.div<ITitleStyle>`
   background-color: ${(props) => props.type === 'fullscreen' && variables.colors.white};
   color: ${(props) => props.type === 'dimmed' && variables.colors.white};
   min-height: 5.2rem;
-  position: fixed;
-  top: 0;
+  position: ${(props) => (props.type === 'fullscreen' ? 'sticky' : 'fixed')};
   left: 2rem;
   right: 2rem;
+  top: 0;
   z-index: 1;
 `;
 
@@ -197,13 +202,14 @@ const ButtonBoxStyle = styled.div<IModalStyle>`
   ${(props) =>
     props.type !== 'default' &&
     `
-    padding: 1rem 1.6rem 4rem;
+    padding: 2rem 1.6rem 3rem;
     justify-content: space-between;
     gap: 0.8rem;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;  
+    background: #fff;
   `}
 
   ${(props) =>

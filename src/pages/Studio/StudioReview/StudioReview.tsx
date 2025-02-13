@@ -92,8 +92,12 @@ const StudioReview = () => {
         menuIdList={menuIdList || []}
         onFilterChange={handleFilterChange}
       />
-      {reviewLists.map((review: Review) => (
-        <StudioReviewItem key={review.id} review={review} />
+      {reviewLists.map((review: Review, index: number) => (
+        <StudioReviewItem
+          key={review.id}
+          review={review}
+          isLast={index === reviewLists.length - 1}
+        />
       ))}
     </>
   );

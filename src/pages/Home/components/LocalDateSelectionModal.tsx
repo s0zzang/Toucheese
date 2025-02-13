@@ -12,17 +12,30 @@ import DateBottomSheet from './DateBottomSheet';
 import LocationBottomSheet from './LocationBottomSheet';
 
 const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
-  const { time } = useSelectTimeStore();
-  const { date } = useSelectDateStore();
+  const { time, setTime } = useSelectTimeStore();
+  const { date, setDate } = useSelectDateStore();
 
-  const [isSelectedDate, setIsSelectedDate] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<string | null>('전체보기');
+  const searchParams = new URLSearchParams(window.location.search);
+  const paramsSelectedLocation = searchParams.get('addressGu');
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(
+    paramsSelectedLocation ?? '서울전체',
+  );
   const { openBottomSheet } = useBottomSheetState();
   const navigate = useNavigate();
 
   const dateLocationModal = useModal(modalId);
   const dateTimeModal = useModal(2);
   const dateLocationButtons = [
+    {
+      text: '초기화',
+      event: () => {
+        setDate('reset');
+        setTime('reset', 'filter');
+        setSelectedLocation('서울전체');
+      },
+      variant: 'gray' as 'gray',
+      width: 'fit' as 'fit',
+    },
     {
       text: '적용하기',
       event: () => {
@@ -33,14 +46,17 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   ];
 
   const setParams = () => {
-    // 시간을 다중 선택한 경우, times=시간17times=시간2 형태로 데이터 요청
+    // 시간을 다중 선택한 경우, times=시간1&times=시간2 형태로 데이터 요청
     const times = [...time].map((time) => `times=${time}`).join('&');
     const timesToParams = time.length ? `&${times}` : '';
 
-    // 주소를 '전체보기'로 선택한 경우, 파라미터 요청 X
-    const addressToParams = selectedLocation === '전체보기' ? '' : `&addressGu=${selectedLocation}`;
+    // 날짜를 초기화한 경우, 파라미터 요청 X
+    const dateToParams = date ? `&date=${date}` : '';
 
-    const params = new URLSearchParams(`date=${date}${addressToParams}${timesToParams}`);
+    // 주소를 '전체보기'로 선택한 경우, 파라미터 요청 X
+    const addressToParams = selectedLocation === '서울전체' ? '' : `&addressGu=${selectedLocation}`;
+
+    const params = new URLSearchParams(`${addressToParams}${dateToParams}${timesToParams}`);
     navigate(`?${params.toString()}`);
   };
 
@@ -63,13 +79,13 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
               {selectedLocation ? selectedLocation : '지역 선택'}
             </button>
             <button type="button" onClick={handleOpenDate}>
-              {isSelectedDate ? changeformatDateForUi({ date, time }) : '예약 날짜 선택'}
+              {date ? changeformatDateForUi({ date, time }) : '예약 날짜 선택'}
             </button>
           </InputBoxStyle>
         </>
       </Modal>
 
-      <DateBottomSheet setIsSelectedDate={setIsSelectedDate} />
+      <DateBottomSheet />
     </>
   );
 };

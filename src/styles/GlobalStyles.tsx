@@ -7,7 +7,8 @@ const GlobalStyles = css`
   @font-face {
     font-family: 'Pretendard';
     font-weight: 400;
-    src: url('../assets/fonts/PretendardVariable.woff2') format('woff2');
+    src: url('@/assets/fonts/PretendardVariable.woff2') format('woff2');
+    font-display: swap;
   }
 
   :root {

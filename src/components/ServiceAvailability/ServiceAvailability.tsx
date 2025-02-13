@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
-import useResetState from '@hooks/useResetState';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 
 /** 필터링 시 매장 서비스 제공 여부를 선택하는 컴포넌트 */
@@ -35,10 +34,12 @@ const ServiceAvailability = () => {
     return titles[index]; // 제목 배열에서 인덱스에 해당하는 제목 반환
   };
 
-  const { resetState } = useResetState(setSelectedButtons, []); // 최대 3개 인자
-
   const handleResetClick = () => {
-    resetState(); // 상태를 초기화하는 함수 호출
+    const currentParams = new URLSearchParams(window.location.search);
+    currentParams.delete('options'); // options 파라미터 삭제
+    navigate(`?${currentParams.toString()}`); // 업데이트된 URL로 이동
+    setSelectedButtons([]); // 선택된 버튼 상태 초기화
+    closeBottomSheet();
   };
   return (
     <>
@@ -143,8 +144,24 @@ const ServiceAvailability = () => {
         />
       </ServiceAvailabilityContainerStyle>
       <ButtonWrapperStyle>
-        <Button size="large" disabled={false} text={`초기화`} width="fit" variant="gray" onClick={handleResetClick} type="button" />
-        <Button size="large" disabled={false} text={`적용하기`} width="max" variant="black" onClick={handleApplyClick} type="button" />
+        <Button
+          size="large"
+          disabled={false}
+          text={`초기화`}
+          width="fit"
+          variant="gray"
+          onClick={handleResetClick}
+          type="button"
+        />
+        <Button
+          size="large"
+          disabled={false}
+          text={`적용하기`}
+          width="max"
+          variant="black"
+          onClick={handleApplyClick}
+          type="button"
+        />
       </ButtonWrapperStyle>
     </>
   );

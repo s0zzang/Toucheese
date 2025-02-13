@@ -7,9 +7,11 @@ import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceS
 import ThemeNavigator from '@components/Navigator/ThemeNavigator';
 import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 import StudioList from '@components/Studio/StudioList';
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import variables from '@styles/Variables';
+import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -41,6 +43,7 @@ console.log('접속한 기기:', isMobile ? '모바일' : '데스크톱');
 const Home = () => {
   const [searchParams] = useSearchParams();
   const [isFixed, setIsFixed] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const homeRef = useRef<HTMLTableSectionElement | null>(null);
   const navigate = useNavigate();
 
@@ -80,7 +83,11 @@ const Home = () => {
   };
 
   const handleReset = () => {
-    navigate('/');
+    setIsAnimating(false);
+    setTimeout(() => setIsAnimating(true), 50);
+    const paramsToDelete = ['sortBy', 'minPrice', 'maxPrice', 'options'];
+    paramsToDelete.forEach((param) => searchParams.delete(param));
+    navigate(`?${decodeSearchParamsToString(searchParams)}`);
   };
 
   const sortBy: SortBy = {
@@ -124,14 +131,22 @@ const Home = () => {
 
         <NavigatorStyle isFixed={isFixed}>
           <ThemeNavigator />
-          <FilterBox>
-            <Button
-              text=""
-              type="reset"
-              variant="gray"
-              icon={<img src="/img/icon-reset.svg" alt="필터 초기화" />}
-              onClick={handleReset}
-            />
+          <FilterBoxStyle>
+            <ButtonWrapperStyle onClick={handleReset} className={isAnimating ? 'rotateIcon' : ''}>
+              <Button
+                text=""
+                type="reset"
+                variant="gray"
+                icon={
+                  <RotateIconStyle
+                    className={isAnimating ? 'rotateIcon' : ''}
+                    src="/img/icon-reset.svg"
+                    alt="필터 초기화"
+                  />
+                }
+                onClick={handleReset}
+              />
+            </ButtonWrapperStyle>
             <div className="filterScroll">
               <Filter
                 params={window.location.search}
@@ -154,7 +169,7 @@ const Home = () => {
                 onClick={handleFilterByStoreInfo}
               />
             </div>
-          </FilterBox>
+          </FilterBoxStyle>
         </NavigatorStyle>
 
         <ListStyle>
@@ -179,7 +194,26 @@ const NavigatorStyle = styled.div<IFixedProps>`
   z-index: 9;
 `;
 
-const FilterBox = styled.div`
+const ButtonWrapperStyle = styled.div`
+  display: inline-block;
+`;
+
+const rotateIcon = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const RotateIconStyle = styled.img`
+  &.rotateIcon {
+    animation: ${rotateIcon} 0.4s ease-out;
+  }
+`;
+
+const FilterBoxStyle = styled.div`
   width: 100%;
   padding: 1.2rem 0rem 1.2rem 1.6rem;
   display: flex;

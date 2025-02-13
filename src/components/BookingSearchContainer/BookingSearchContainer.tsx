@@ -30,7 +30,7 @@ const BookingSearchContainer = () => {
     <BookingSearchContainerStyle>
       <div onClick={() => modal.open()}>
         <Button type="button">
-          <h1 css={TypoTitleSmS}>{searchParams.get('addressGu') || '전체지역'}</h1>{' '}
+          <h1 css={TypoTitleSmS}>{searchParams.get('addressGu') || '서울전체'}</h1>{' '}
           <img src="/img/icon-select-arrow.svg" alt="전체 지역 탐색" />
         </Button>
         <ButtonTitleDes css={TypoBodyMdR}>
