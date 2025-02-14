@@ -30,18 +30,15 @@ const ImageSwiper = ({
     let images: string[] = [];
     const portfolios = photos.slice(0, 5);
 
-    if (portfolios.length) {
-      portfolios.forEach((photo: IPortfolio | IReviewImages) => {
-        images.push(photo.url);
-      });
-    } else {
-      images.push('/img/img-nopic.png');
-    }
+    portfolios.forEach((photo: IPortfolio | IReviewImages) => {
+      images.push(photo.url);
+    });
 
     return images;
   };
 
-  const conditionalContainerStyle = slidesPerView === 1 ? containerFullStyle : containerDefaultStyle;
+  const conditionalContainerStyle =
+    slidesPerView === 1 ? containerFullStyle : containerDefaultStyle;
 
   return (
     <div css={conditionalContainerStyle}>
