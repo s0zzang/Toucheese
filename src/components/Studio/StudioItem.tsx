@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import Bookmark from '@components/Bookmark/Bookmark';
+import NoPic from '@components/NoPic/NoPic';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -37,14 +38,20 @@ const StudioItem = ({
 
   return (
     <DivStyle isFirst={isFirst} isLast={isLast} onClick={handleClick}>
-      <ImageSwiper
-        images={item.portfolios}
-        imageStyle={css`
-          width: 100%;
-          aspect-ratio: 94 / 118;
-          object-fit: cover;
-        `}
-      />
+      <ItemImageStyle>
+        {item.portfolios.length >= 4 ? (
+          <ImageSwiper
+            images={item.portfolios}
+            imageStyle={css`
+              width: 100%;
+              aspect-ratio: 94 / 118;
+              object-fit: cover;
+            `}
+          />
+        ) : (
+          <NoPic />
+        )}
+      </ItemImageStyle>
 
       <ItemContentStyle>
         <ItemInfoStyle>
@@ -94,6 +101,10 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const ItemImageStyle = styled.div`
+  margin-bottom: 1.4rem;
 `;
 
 const ItemContentStyle = styled.div`
