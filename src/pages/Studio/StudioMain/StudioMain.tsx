@@ -19,7 +19,7 @@ import {
   TypoTitleXsM,
 } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -29,8 +29,65 @@ const StudioMain = () => {
   const [isOpened, setIsOpened] = useState(false);
   const [isWebPSupported, setIsWebPSupported] = useState(false);
   const [imageLoadError, setImageLoadError] = useState(false);
+  const [scrollY, setScrollY] = useState(false);
+  const [isNavSticky, setIsNavSticky] = useState(false);
+  const headerRef = useRef(null);
+  const navigatorRef = useRef(null);
   const navigate = useNavigate();
   const handleClick = () => navigate(`/studio/${_id}/menu`);
+
+  /** 스튜디오 소개 텍스트 길이 */
+  const hasMore: boolean | undefined = data && data.description.length > 100;
+
+  // useEffect(() => {
+  //   const headerObserver = new IntersectionObserver(
+  //     /** 가시성에 변화가 있을 때 호출 */
+  //     ([entry]) => {
+  //       // 헤더가 뷰포트에서 사라지기 시작할 때 네비게이터를 sticky로 전환
+  //       setIsNavSticky(!entry.isIntersecting);
+  //     },
+  //     /** 콜백이 호출될 상황 정의 */
+  //     {
+  //       rootMargin: '-100% 0px 0px 0px', // 헤더가 완전히 사라졌을 때
+  //       threshold: 0,
+  //     },
+  //   );
+
+  //   if (headerRef.current) {
+  //     headerObserver.observe(headerRef.current);
+  //   }
+
+  //   return () => {
+  //     if (headerRef.current) {
+  //       headerObserver.unobserve(headerRef.current);
+  //     }
+  //   };
+  // }, []);
+
+  /** 스크롤 이벤트 핸들러 */
+  const handleScroll = () => {
+    // 스크롤이 250px 이상일 때 scrollY를 true로 설정
+    if (window.scrollY >= 200) {
+      setScrollY(true);
+    } else {
+      setScrollY(false);
+    }
+
+    // 스크롤이 310 이상일 때 네비게이터 sticky
+    if (window.scrollY >= 310) {
+      setIsNavSticky(true);
+    } else {
+      setIsNavSticky(false);
+    }
+  };
+
+  /** 스크롤 이벤트 리스너 */
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   /** webP 지원 여부 확인 후 상태값 저장 */
   useEffect(() => {
@@ -64,9 +121,6 @@ const StudioMain = () => {
     ...data.portfolios,
     ...Array(missingImgCount).fill({ url: placeHolderImage }),
   ];
-
-  console.log(data.portfolios);
-  console.log('portfolioWithPlaceHolders', portfolioWithPlaceHolders);
 
   /** 환경별 이미지 조건부 렌더링 */
   const getImageUrl = (url: string) => {
@@ -122,7 +176,16 @@ const StudioMain = () => {
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />
       </Helmet>
 
-      <Header customStyle={HeaderStyle} />
+      <div css={headerWrapperStyle}>
+        <div ref={headerRef}>
+          <Header title={scrollY ? data?.name : ''} customStyle={HeaderCustomStyle(scrollY)} />
+        </div>
+        {isNavSticky && (
+          <div css={stickyNavStyle} ref={navigatorRef}>
+            <StudioNavigator _id={_id || ''} />
+          </div>
+        )}
+      </div>
 
       {/* 이미지 */}
       <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
@@ -212,15 +275,21 @@ const StudioMain = () => {
       </div>
 
       {/* 네비게이션 바 */}
-      <StudioNavigator _id={_id || ''} />
+      {!isNavSticky && (
+        <div css={originalNavStyle}>
+          <StudioNavigator _id={_id || ''} />
+        </div>
+      )}
 
       {/* 홈 기본 정보  - 매장소개 */}
-      <div css={descriptionStyle(isOpened)}>
+      <div css={descriptionStyle(isOpened, hasMore)}>
         <p className="descriptionTitle">매장 소개</p>
         <p className="textDisplay">{`${data.description}`}</p>
-        <span className="textMore" onClick={() => setIsOpened(!isOpened)}>
-          {isOpened ? '접기' : '더보기'}
-        </span>
+        {hasMore && (
+          <span className="textMore" onClick={() => setIsOpened(!isOpened)}>
+            {isOpened ? '접기' : '더보기'}
+          </span>
+        )}
       </div>
 
       {/* 홈 기본 정보  - 영업 정보 */}
@@ -247,24 +316,27 @@ const StudioMain = () => {
             </dl>
           ))
         )}
-
-        <div css={holidayStyle}>
-          {data.openingHours.length !== 0 ? <p className="holidayTitle"> 정기휴무</p> : ''}
-          <div className="holidayMonth">
-            {data.holidays.map((holiday) => (
-              <p key={holiday.id}>
-                {holiday.weekOfMonth === 1
-                  ? '첫'
-                  : holiday.weekOfMonth === 2
-                    ? '둘'
-                    : holiday.weekOfMonth === 3
-                      ? '셋'
-                      : '넷'}
-                째 주 {day[holiday.dayOfWeek as keyof typeof day]}
-              </p>
-            ))}
+        {data.openingHours.length !== 0 ? (
+          <div css={holidayStyle}>
+            <p className="holidayTitle"> 정기휴무</p>
+            <div className="holidayMonth">
+              {data.holidays.map((holiday) => (
+                <p key={holiday.id}>
+                  {holiday.weekOfMonth === 1
+                    ? '첫'
+                    : holiday.weekOfMonth === 2
+                      ? '둘'
+                      : holiday.weekOfMonth === 3
+                        ? '셋'
+                        : '넷'}
+                  째 주 {day[holiday.dayOfWeek as keyof typeof day]}
+                </p>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          ''
+        )}
       </div>
 
       {/* 홈 기본정보 - 위치 정보 */}
@@ -303,10 +375,41 @@ const StudioMain = () => {
 
 export default StudioMain;
 
-const HeaderStyle = css`
-  position: absolute;
-  z-index: 1;
-  padding-top: 1.8rem;
+const headerWrapperStyle = css`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+`;
+
+const stickyNavStyle = css`
+  background-color: ${variables.colors.white};
+  padding: 0 1.6rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: slideDown 0.3s ease forwards;
+
+  @keyframes slideDown {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+const originalNavStyle = css`
+  margin-bottom: 1rem;
+`;
+
+const HeaderCustomStyle = (scrollY: boolean) => css`
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 4rem 1.6rem 1.6rem 1.6rem;
+  ${scrollY && 'background-color: #fff; box-shadow: 0 0.4rem .5rem rgba(0, 0, 0, 0.1);'};
+  transition: all 0.2s;
 `;
 
 const portfolioPreviewStyle = css`
@@ -317,6 +420,7 @@ const portfolioPreviewStyle = css`
   width: calc(100% + 3.2rem);
   margin-left: -1.6rem;
   margin-bottom: 2rem;
+  margin-top: -2rem;
 
   & > img {
     aspect-ratio: 1/1;
@@ -451,7 +555,7 @@ const SocialActionsStyle = css`
   color: ${variables.colors.gray700};
 `;
 
-const descriptionStyle = (isOpened: boolean) => css`
+const descriptionStyle = (isOpened: boolean, hasMore: boolean | undefined) => css`
   padding: 2rem 0;
   border-bottom: 0.1rem solid ${variables.colors.gray300};
 
@@ -479,6 +583,7 @@ const descriptionStyle = (isOpened: boolean) => css`
     ${TypoBodyMdR};
     border-bottom: 0.1rem solid ${variables.colors.gray600};
     cursor: pointer;
+    display: ${hasMore ? 'inline' : 'none'};
   }
 `;
 
