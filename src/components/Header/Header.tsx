@@ -27,5 +27,6 @@ const headerStyle = css`
 `;
 
 const additionalH1Style = css`
-  margin-left: 1rem;
+  margin-left: calc(50% - 2.4rem);
+  transform: translateX(-50%);
 `;
