@@ -18,7 +18,6 @@ const Profile = () => {
   const handlePasswordEditPage = () => {
     navigate('/user/profile/passwordConfirm');
   };
-  console.log(data && JSON.parse(data).state.registration === 'EMAIL' ? '이메일' : '아닌디');
 
   return (
     <>
