@@ -28,6 +28,7 @@ const StudioMain = () => {
   const { data, error } = useGetStudioDetail(`${_id}`);
   const [isOpened, setIsOpened] = useState(false);
   const [isWebPSupported, setIsWebPSupported] = useState(false);
+  const [imageLoadError, setImageLoadError] = useState(false);
   const navigate = useNavigate();
   const handleClick = () => navigate(`/studio/${_id}/menu`);
 
@@ -64,8 +65,22 @@ const StudioMain = () => {
     ...Array(missingImgCount).fill({ url: placeHolderImage }),
   ];
 
+  console.log(data.portfolios);
+  console.log('portfolioWithPlaceHolders', portfolioWithPlaceHolders);
+
   /** 환경별 이미지 조건부 렌더링 */
-  const getImageUrl = (url: string) => (isWebPSupported ? url.replace(/\.jpeg$/, '.webp') : url);
+  const getImageUrl = (url: string) => {
+    const webpUrl = isWebPSupported ? url.replace(/\.jpeg$/, '.webp') : url;
+
+    const img = new Image();
+    img.onerror = () => {
+      console.error('WebP 이미지 로드 실패:', webpUrl);
+      setImageLoadError(true);
+    };
+    img.src = webpUrl;
+
+    return imageLoadError ? url : webpUrl;
+  };
 
   let today = new Date();
   const day = {
