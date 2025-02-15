@@ -74,7 +74,7 @@ const StudioMain = () => {
     }
 
     // 스크롤이 310 이상일 때 네비게이터 sticky
-    if (window.scrollY >= 310) {
+    if (window.scrollY >= 360) {
       setIsNavSticky(true);
     } else {
       setIsNavSticky(false);
