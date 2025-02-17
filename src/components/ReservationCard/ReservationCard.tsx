@@ -101,6 +101,9 @@ const ReservationInfoStyle = css`
   }
 
   .cardCover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 6rem;
     aspect-ratio: 60 / 72;
 
