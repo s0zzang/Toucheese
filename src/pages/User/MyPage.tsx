@@ -130,7 +130,7 @@ const MyInfoStyle = css`
       content: '';
       width: 2.4rem;
       height: 2.4rem;
-      background-image: url('/img/icon-arrow-16.svg');
+      background-image: url('/img/icon-arrow-right-black.svg');
       background-repeat: no-repeat;
       background-position: center;
       background-size: 1rem;
