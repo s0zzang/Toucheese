@@ -107,7 +107,11 @@ const StudioMenuDetail = () => {
           />
         </Helmet>
       )}
-      <Header title={`${scrollY ? data?.name : ''}`} customStyle={HeaderCustomStyle(scrollY)} />
+      <Header
+        title={`${scrollY ? data?.name : ''}`}
+        customStyle={HeaderCustomStyle(scrollY)}
+        backTo={`/studio/${_id}/menu`}
+      />
       {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />}
       <div css={MenuDescStyle}>
         <h2>{data?.name}</h2>
