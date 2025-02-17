@@ -5,6 +5,7 @@ import 'swiper/css';
 import { Mousewheel, Pagination } from 'swiper/modules';
 import variables from '@styles/Variables';
 import { IPortfolio, IReviewImages } from 'types/types';
+import { useState } from 'react';
 
 interface ImageSwiperProps extends SwiperProps {
   images: IPortfolio[] | IReviewImages[];
@@ -24,6 +25,8 @@ const ImageSwiper = ({
   imageStyle,
   ...props
 }: ImageSwiperProps) => {
+  const [isSwiped, setIsSwiped] = useState(false);
+
   const isPaginationActive = slidesPerView === 1;
   // 이미지 5개 불러오기
   const getImages = (photos: IPortfolio[] | IReviewImages[]) => {
@@ -38,7 +41,7 @@ const ImageSwiper = ({
   };
 
   const conditionalContainerStyle =
-    slidesPerView === 1 ? containerFullStyle : containerDefaultStyle;
+    slidesPerView === 1 ? containerFullStyle : containerDefaultStyle(isSwiped);
 
   return (
     <div css={conditionalContainerStyle}>
@@ -50,6 +53,13 @@ const ImageSwiper = ({
         slidesPerView={slidesPerView}
         pagination={isPaginationActive ? { clickable: true, type: 'bullets' } : undefined}
         {...props}
+        onSlideChange={(swiper) => {
+          if (swiper.activeIndex === 0) {
+            setIsSwiped(false);
+          } else {
+            setIsSwiped(true);
+          }
+        }}
       >
         {getImages(images).map((image, index) => (
           <SwiperSlide key={index}>
@@ -63,19 +73,21 @@ const ImageSwiper = ({
 
 export default ImageSwiper;
 
+//단일이미지
 const containerFullStyle = css`
   margin-left: calc(-1 * ${variables.layoutPadding});
 `;
 
-const containerDefaultStyle = css`
+//다중이미지
+const containerDefaultStyle = (isSwiped: boolean) => css`
   width: 100%;
   margin-bottom: 1.4rem;
+  margin-left: ${isSwiped ? `calc(-1 * ${variables.layoutPadding})` : '0'};
 `;
 
 const swiperStyle = css`
   width: calc(100% + ${variables.layoutPadding});
-  margin-right: ${variables.layoutPadding};
-  margin-bottom: 1.4rem;
+
   .swiper-pagination {
     position: absolute;
     bottom: 15px;
@@ -84,6 +96,7 @@ const swiperStyle = css`
     justify-content: center;
     z-index: 10;
   }
+
   .swiper-pagination-bullet {
     background-color: ${variables.colors.white};
     opacity: 0.8;
