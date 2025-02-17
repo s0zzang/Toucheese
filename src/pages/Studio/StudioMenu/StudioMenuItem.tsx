@@ -50,10 +50,17 @@ const MenuItemWrapperStyle = css`
 `;
 
 const MenuCoverStyle = css`
-  max-width: 9.4rem;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 9.4rem;
   aspect-ratio: 1 / 1.2;
   background: #ddd;
+  flex-shrink: 0;
+
+  & img {
+    object-fit: cover;
+  }
 `;
 
 const MenuDescStyle = css`
@@ -75,7 +82,8 @@ const MenuHeadStyle = css`
       display: inline-block;
       width: 1.6rem;
       height: 1.6rem;
-      background-image: url(/img/icon-chevronright.svg);
+      background-image: url(/img/icon-arrow-right-black.svg);
+      background-size: 0.6rem;
       background-position: center;
       background-repeat: no-repeat;
     }
@@ -83,10 +91,10 @@ const MenuHeadStyle = css`
 
   & p {
     display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    -webkit-line-clamp: 2;
     ${TypoCapSmR}
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
     color: ${variables.colors.gray800};
   }
 `;
