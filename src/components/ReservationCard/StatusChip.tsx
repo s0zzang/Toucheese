@@ -32,11 +32,11 @@ const StatusChip = ({ state = 'WAITING' }: ChipType) => {
 export default StatusChip;
 
 const ChipStyle = (state: string) => css`
-  display: inline-block;
   padding: 0.4rem;
   border-radius: 0.4rem;
   text-align: center;
   ${TypoCapXsR}
+  line-height: 1rem;
 
   ${state === 'RESERVED' && `background-color: ${variables.colors.primary200};`}
   ${state === 'WAITING' && `background-color: ${variables.colors.gray300};`}
