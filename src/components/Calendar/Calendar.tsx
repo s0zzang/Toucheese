@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { css, CSSObject } from '@emotion/react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { convertToDateFormat, lessThan10Add0, useSelectDateStore } from '@store/useSelectDateStore';
 import { Hidden } from '@styles/Common';
@@ -10,7 +10,6 @@ import createCalendar from './createCalendar';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
 
 interface CalendarProp {
-  style?: CSSObject;
   type?: string;
   disableDates?: string[] | null;
 }
@@ -21,7 +20,7 @@ interface Day {
   date: number;
 }
 
-const Calendar = ({ style, type = 'filter', disableDates }: CalendarProp) => {
+const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
   const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
   const [baseDate, setBaseDate] = useState(new Date());
   const [calendar, setCalendar] = useState<Day[]>();
@@ -77,7 +76,7 @@ const Calendar = ({ style, type = 'filter', disableDates }: CalendarProp) => {
   }, [activeDay]);
 
   return (
-    <CalendarWrStyle css={style}>
+    <CalendarWrStyle>
       <h2 css={Hidden}>날짜 선택</h2>
 
       <TopStyle>
