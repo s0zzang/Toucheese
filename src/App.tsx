@@ -1,15 +1,14 @@
+import ErrorBoundary from '@components/Error/ErrorBoundary.tsx';
+import Loading from '@components/Loading/Loading.tsx';
+import Toast from '@components/Toast/Toast.tsx';
 import { Global, ThemeProvider } from '@emotion/react';
 import GlobalStyles from '@styles/GlobalStyles';
 import variables from '@styles/Variables';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, RouterProvider } from 'react-router-dom';
-import router from './routes.tsx';
-import { HelmetProvider } from 'react-helmet-async';
-import ErrorBoundary from '@components/Error/ErrorBoundary.tsx';
 import { Suspense, useDeferredValue, useEffect, useState } from 'react';
-import Toast from '@components/Toast/Toast.tsx';
-import Loading from '@components/Loading/Loading.tsx';
-import ScrollToTop from '@hooks/useScrollToTop.ts';
+import { HelmetProvider } from 'react-helmet-async';
+import { RouterProvider } from 'react-router-dom';
+import router from './routes.tsx';
 
 const queryClient = new QueryClient();
 
@@ -32,12 +31,7 @@ function App() {
               {!deferredReady ? (
                 <Loading size="big" phrase="세상의 모든 사진관, 터치즈" />
               ) : (
-                <>
-                  <BrowserRouter>
-                    <ScrollToTop />
-                  </BrowserRouter>
-                  <RouterProvider router={router} />
-                </>
+                <RouterProvider router={router} />
               )}
               <Toast />
             </Suspense>
