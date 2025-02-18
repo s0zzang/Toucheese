@@ -22,7 +22,7 @@ interface Day {
 
 const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
   const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
-  const [baseDate, setBaseDate] = useState(new Date());
+  const [baseDate, setBaseDate] = useState(activeDay ? new Date(activeDay) : new Date());
   const [calendar, setCalendar] = useState<Day[]>();
   const [startClientX, setStartClientX] = useState(0);
   const [endClientX, setEndClientX] = useState(0);
@@ -42,7 +42,6 @@ const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
     );
     if (time) resetTime();
     setBaseDate(firstOfChangedMonth);
-    setActiveDay(convertToDateFormat(firstOfChangedMonth));
   };
 
   const moveToToday = () => {
