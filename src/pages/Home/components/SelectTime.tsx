@@ -6,7 +6,7 @@ import { css } from '@emotion/react';
 import { filterTimes } from '@hooks/useGetAvailableDate';
 import { useSelectDateStore } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
-import { Hidden, TypoBodyMdM, TypoBodySmR } from '@styles/Common';
+import { DividerStyle, Hidden, TypoBodyMdM, TypoBodySmR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useMemo } from 'react';
 
@@ -60,7 +60,7 @@ const SelectTime = ({ type, availableTimeWithDates, isSuccess, isFetching }: ITi
 
   return (
     <>
-      <section css={SelectTimeStyle}>
+      <section css={[SelectTimeStyle, DividerStyle]}>
         <h2 css={Hidden}>시간 선택</h2>
 
         <div css={articleBox}>
@@ -129,8 +129,12 @@ const SelectTime = ({ type, availableTimeWithDates, isSuccess, isFetching }: ITi
 export default SelectTime;
 
 const SelectTimeStyle = css`
-  padding-top: 2rem;
-  border-top: 1px solid ${variables.colors.gray300};
+  padding-top: 3rem;
+
+  &::after {
+    bottom: auto;
+    top: 0;
+  }
 
   ul {
     display: grid;
