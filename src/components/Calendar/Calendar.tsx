@@ -24,6 +24,8 @@ const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
   const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
   const [baseDate, setBaseDate] = useState(new Date());
   const [calendar, setCalendar] = useState<Day[]>();
+  const [startClientX, setStartClientX] = useState(0);
+  const [endClientX, setEndClientX] = useState(0);
   const { time, setTime } = useSelectTimeStore();
 
   const baseYear = baseDate.getFullYear();
@@ -75,6 +77,13 @@ const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
     if (activeDay === convertToDateFormat(today)) moveToToday();
   }, [activeDay]);
 
+  useEffect(() => {
+    // 달력 위에서 스와이프 했을 때 월 변경
+    if (startClientX === endClientX) return;
+    if (startClientX > endClientX) changeMonth(1);
+    else changeMonth(-1);
+  }, [endClientX]);
+
   return (
     <CalendarWrStyle>
       <h2 css={Hidden}>날짜 선택</h2>
@@ -110,7 +119,10 @@ const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
           <li>금</li>
           <li>토</li>
         </DayOfWeekStyle>
-        <ul>
+        <ul
+          onTouchStart={(e) => setStartClientX(e.touches[0].clientX)}
+          onTouchEnd={(e) => setEndClientX(e.changedTouches[0].clientX)}
+        >
           {calendar &&
             calendar.map(({ year, month, date }) => {
               const isActive =
