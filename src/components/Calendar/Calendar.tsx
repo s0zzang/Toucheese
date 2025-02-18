@@ -162,12 +162,7 @@ export default Calendar;
 const CalendarWrStyle = styled.article`
   max-width: 500px;
   width: 100%;
-  aspect-ratio: 1/1.045;
-  margin: 0 auto;
-
-  @media (min-width: 1024px) {
-    aspect-ratio: 1/0.9;
-  }
+  margin: 0 auto 1rem;
 `;
 
 const TopStyle = styled.div`
