@@ -4,6 +4,7 @@ import Button from '@components/Button/Button';
 import EmptyMessage from '@components/Message/EmptyMessage';
 import { css } from '@emotion/react';
 import { filterTimes } from '@hooks/useGetAvailableDate';
+import useToast from '@hooks/useToast';
 import { useSelectDateStore } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import { DividerStyle, Hidden, TypoBodyMdM, TypoBodySmR } from '@styles/Common';
@@ -28,6 +29,7 @@ interface ITimeProp {
 const SelectTime = ({ type, availableTimeWithDates, isSuccess, isFetching }: ITimeProp) => {
   const { time: selectedTime, setTime } = useSelectTimeStore();
   const { date } = useSelectDateStore();
+  const openToast = useToast();
 
   const times =
     type === 'filter'
@@ -39,6 +41,7 @@ const SelectTime = ({ type, availableTimeWithDates, isSuccess, isFetching }: ITi
   const afternoonTimes = useMemo(() => times?.filter((times) => times.time >= '12:00'), [times]);
 
   const handleTImeClick = (value: string) => {
+    if (!date) return openToast('날짜를 먼저 선택해주세요.');
     setTime(value, type);
   };
 
