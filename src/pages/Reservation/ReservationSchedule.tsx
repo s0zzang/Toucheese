@@ -3,7 +3,7 @@
 import Calendar from '@components/Calendar/Calendar';
 import Header from '@components/Header/Header';
 import SelectTime from '@pages/Home/components/SelectTime';
-import { DividerStyle, Hidden } from '@styles/Common';
+import { Hidden } from '@styles/Common';
 import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import { convertToDateFormat, getDay, today, useSelectDateStore } from '@store/useSelectDateStore';
@@ -42,11 +42,7 @@ const ReservationSchedule = () => {
       <Header title="예약하기" />
 
       <div css={contentBox}>
-        <Calendar
-          style={DividerStyle}
-          type="reservation"
-          disableDates={availableDate?.disableDates}
-        />
+        <Calendar type="reservation" disableDates={availableDate?.disableDates} />
         <SelectTime
           type="reservation"
           availableTimeWithDates={availableDate?.availableTimeWithDates}

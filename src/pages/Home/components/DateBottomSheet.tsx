@@ -3,7 +3,6 @@ import Modal from '@components/Modal/Modal';
 import useModal from '@hooks/useModal';
 import { useSelectDateStore } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
-import { DividerStyle } from '@styles/Common';
 import SelectTime from './SelectTime';
 
 const DateBottomSheet = ({}: {}) => {

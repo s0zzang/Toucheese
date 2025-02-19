@@ -22,8 +22,10 @@ interface Day {
 
 const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
   const { date: activeDay, setDate: setActiveDay } = useSelectDateStore();
-  const [baseDate, setBaseDate] = useState(new Date());
+  const [baseDate, setBaseDate] = useState(activeDay ? new Date(activeDay) : new Date());
   const [calendar, setCalendar] = useState<Day[]>();
+  const [startClientX, setStartClientX] = useState(0);
+  const [endClientX, setEndClientX] = useState(0);
   const { time, setTime } = useSelectTimeStore();
 
   const baseYear = baseDate.getFullYear();
@@ -40,7 +42,6 @@ const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
     );
     if (time) resetTime();
     setBaseDate(firstOfChangedMonth);
-    setActiveDay(convertToDateFormat(firstOfChangedMonth));
   };
 
   const moveToToday = () => {
@@ -74,6 +75,13 @@ const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
     // 초기화(활성화 날짜가 오늘로 변경)했을 경우, 오늘 날짜로 이동
     if (activeDay === convertToDateFormat(today)) moveToToday();
   }, [activeDay]);
+
+  useEffect(() => {
+    // 달력 위에서 스와이프 했을 때 월 변경
+    if (startClientX === endClientX) return;
+    if (startClientX > endClientX) changeMonth(1);
+    else changeMonth(-1);
+  }, [endClientX]);
 
   return (
     <CalendarWrStyle>
@@ -110,7 +118,10 @@ const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
           <li>금</li>
           <li>토</li>
         </DayOfWeekStyle>
-        <ul>
+        <ul
+          onTouchStart={(e) => setStartClientX(e.touches[0].clientX)}
+          onTouchEnd={(e) => setEndClientX(e.changedTouches[0].clientX)}
+        >
           {calendar &&
             calendar.map(({ year, month, date }) => {
               const isActive =
@@ -150,12 +161,7 @@ export default Calendar;
 const CalendarWrStyle = styled.article`
   max-width: 500px;
   width: 100%;
-  aspect-ratio: 1/1.045;
-  margin: 0 auto;
-
-  @media (min-width: 1024px) {
-    aspect-ratio: 1/0.9;
-  }
+  margin: 0 auto 1rem;
 `;
 
 const TopStyle = styled.div`
