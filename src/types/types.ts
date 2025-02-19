@@ -45,7 +45,7 @@ export interface IOptions {
 
 export interface IOpeningHours {
   closeTime: string;
-  closed: false;
+  closed: boolean;
   dayOfWeek: string;
   id: number;
   openTime: string;
@@ -82,12 +82,12 @@ interface IStudioInfo {
 
 export interface IStudioItem extends IStudioInfo {
   options: IOptions[];
-  open_time: string;
-  close_time: string;
+  openTime: string;
+  closeTime: string;
   menus: IMenus[];
   created_at: null | string;
   updated_at: null | string;
-  day_of_week: string;
+  dayOfWeek: string;
   bookmark: boolean;
 }
 
