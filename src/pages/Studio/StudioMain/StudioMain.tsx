@@ -2,7 +2,6 @@
 
 import Bookmark from '@components/Bookmark/Bookmark';
 import Button from '@components/Button/Button';
-import Header from '@components/Header/Header';
 import KakaoMap from '@components/Kakao/KakaoMap';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
 import ShareButton from '@components/Share/ShareButton';
@@ -19,9 +18,10 @@ import {
   TypoTitleXsM,
 } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
+import Header from '@components/Header/Header';
 
 const StudioMain = () => {
   const { _id } = useParams();
@@ -30,54 +30,19 @@ const StudioMain = () => {
   const [isWebPSupported, setIsWebPSupported] = useState(false);
   const [imageLoadError, setImageLoadError] = useState(false);
   const [scrollY, setScrollY] = useState(false);
-  const [isNavSticky, setIsNavSticky] = useState(false);
-  const headerRef = useRef(null);
-  const navigatorRef = useRef(null);
   const navigate = useNavigate();
   const handleClick = () => navigate(`/studio/${_id}/menu`);
 
   /** 스튜디오 소개 텍스트 길이 */
   const hasMore: boolean | undefined = data && data.description.length > 100;
 
-  // useEffect(() => {
-  //   const headerObserver = new IntersectionObserver(
-  //     /** 가시성에 변화가 있을 때 호출 */
-  //     ([entry]) => {
-  //       // 헤더가 뷰포트에서 사라지기 시작할 때 네비게이터를 sticky로 전환
-  //       setIsNavSticky(!entry.isIntersecting);
-  //     },
-  //     /** 콜백이 호출될 상황 정의 */
-  //     {
-  //       rootMargin: '-100% 0px 0px 0px', // 헤더가 완전히 사라졌을 때
-  //       threshold: 0,
-  //     },
-  //   );
-
-  //   if (headerRef.current) {
-  //     headerObserver.observe(headerRef.current);
-  //   }
-
-  //   return () => {
-  //     if (headerRef.current) {
-  //       headerObserver.unobserve(headerRef.current);
-  //     }
-  //   };
-  // }, []);
-
   /** 스크롤 이벤트 핸들러 */
   const handleScroll = () => {
-    // 스크롤이 250px 이상일 때 scrollY를 true로 설정
-    if (window.scrollY >= 200) {
+    // 스크롤이 200px 이상일 때 scrollY를 true로 설정
+    if (window.scrollY >= 150) {
       setScrollY(true);
     } else {
       setScrollY(false);
-    }
-
-    // 스크롤이 310 이상일 때 네비게이터 sticky
-    if (window.scrollY >= 360) {
-      setIsNavSticky(true);
-    } else {
-      setIsNavSticky(false);
     }
   };
 
@@ -137,6 +102,8 @@ const StudioMain = () => {
   };
 
   let today = new Date();
+  const dayIndex = today.getDay() === 0 ? 6 : today.getDay() - 1;
+
   const day = {
     MONDAY: '월요일',
     TUESDAY: '화요일',
@@ -176,16 +143,7 @@ const StudioMain = () => {
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />
       </Helmet>
 
-      <div css={headerWrapperStyle}>
-        <div ref={headerRef}>
-          <Header title={scrollY ? data?.name : ''} customStyle={HeaderCustomStyle(scrollY)} />
-        </div>
-        {isNavSticky && (
-          <div css={stickyNavStyle} ref={navigatorRef}>
-            <StudioNavigator _id={_id || ''} />
-          </div>
-        )}
-      </div>
+      <Header title={scrollY ? data?.name : ''} customStyle={HeaderCustomStyle(scrollY)} />
 
       {/* 이미지 */}
       <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
@@ -240,8 +198,8 @@ const StudioMain = () => {
                   <>
                     <p>영업중</p>
                     <time>
-                      {data.openingHours[today.getDay() - 1].openTime.slice(0, 5)} -{' '}
-                      {data.openingHours[today.getDay() - 1].closeTime.slice(0, 5)}
+                      {data.openingHours[dayIndex].openTime.slice(0, 5)} -{' '}
+                      {data.openingHours[dayIndex].closeTime.slice(0, 5)}
                     </time>
                   </>
                 ) : (
@@ -274,12 +232,9 @@ const StudioMain = () => {
         </dl>
       </div>
 
-      {/* 네비게이션 바 */}
-      {!isNavSticky && (
-        <div css={originalNavStyle}>
-          <StudioNavigator _id={_id || ''} />
-        </div>
-      )}
+      <div css={stickyNavStyle}>
+        <StudioNavigator _id={_id || ''} />
+      </div>
 
       {/* 홈 기본 정보  - 매장소개 */}
       <div css={descriptionStyle(isOpened, hasMore)}>
@@ -375,20 +330,15 @@ const StudioMain = () => {
 
 export default StudioMain;
 
-const headerWrapperStyle = css`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-`;
-
 const stickyNavStyle = css`
+  position: sticky;
   background-color: ${variables.colors.white};
-  padding: 0 1.6rem;
+  top: 5.6rem;
   opacity: 0;
+  z-index: 6;
   transform: translateY(-10px);
   animation: slideDown 0.3s ease forwards;
+  padding: 0;
 
   @keyframes slideDown {
     to {
@@ -398,18 +348,9 @@ const stickyNavStyle = css`
   }
 `;
 
-const originalNavStyle = css`
-  margin-bottom: 1rem;
-`;
-
 const HeaderCustomStyle = (scrollY: boolean) => css`
-  position: relative;
-  left: 0;
-  right: 0;
-  top: 0;
-  padding: 4rem 1.6rem 1.6rem 1.6rem;
   ${scrollY && 'background-color: #fff; box-shadow: 0 0.4rem .5rem rgba(0, 0, 0, 0.1);'};
-  transition: all 0.2s;
+  transition: all 0.4s;
 `;
 
 const portfolioPreviewStyle = css`
@@ -420,7 +361,6 @@ const portfolioPreviewStyle = css`
   width: calc(100% + 3.2rem);
   margin-left: -1.6rem;
   margin-bottom: 2rem;
-  margin-top: -2rem;
 
   & > img {
     aspect-ratio: 1/1;
@@ -674,6 +614,7 @@ const optionsStyle = css`
 `;
 
 const reservationStyle = css`
+  border-top: 1px solid ${variables.colors.gray300};
   background-color: ${variables.colors.white};
   padding: 1rem 1.6rem 3rem 1.6rem;
   position: fixed;
