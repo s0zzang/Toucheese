@@ -7,22 +7,38 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
     <NavStyle>
       <UlStyle>
         <LiStyle>
-          <NavLinkStyle to={`/studio/${_id}`} className={({ isActive }) => (isActive ? 'active' : '')} end>
+          <NavLinkStyle
+            to={`/studio/${_id}`}
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            end
+          >
             <span>홈</span>
           </NavLinkStyle>
         </LiStyle>
         <LiStyle>
-          <NavLinkStyle to={`/studio/${_id}/menu`} className={({ isActive }) => (isActive ? 'active' : '')} end>
+          <NavLinkStyle
+            to={`/studio/${_id}/menu`}
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            end
+          >
             <span>메뉴</span>
           </NavLinkStyle>
         </LiStyle>
         <LiStyle>
-          <NavLinkStyle to={`/studio/${_id}/portfolio`} className={({ isActive }) => (isActive ? 'active' : '')} end>
+          <NavLinkStyle
+            to={`/studio/${_id}/portfolio`}
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            end
+          >
             <span>포트폴리오</span>
           </NavLinkStyle>
         </LiStyle>
         <LiStyle>
-          <NavLinkStyle to={`/studio/${_id}/review`} className={({ isActive }) => (isActive ? 'active' : '')} end>
+          <NavLinkStyle
+            to={`/studio/${_id}/review`}
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            end
+          >
             <span>리뷰</span>
           </NavLinkStyle>
         </LiStyle>
@@ -31,7 +47,15 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
   );
 };
 
-const NavStyle = styled.nav``;
+const NavStyle = styled.nav`
+  position: sticky;
+  top: 5.6rem;
+  width: calc(100% + 3.2rem);
+  margin-left: -1.6rem;
+  padding: 0 1.6rem;
+  background-color: white;
+  z-index: 5;
+`;
 
 const UlStyle = styled.ul`
   display: flex;
