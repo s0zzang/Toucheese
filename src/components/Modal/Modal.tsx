@@ -130,7 +130,7 @@ const ModalStyle = styled.section<IModalStyle>`
   justify-content: ${(props) => (props.type !== 'fullscreen' ? '' : 'space-between')};
   background: ${(props) =>
     props.type !== 'fullscreen' ? 'rgba(0,0,0,0.85)' : variables.colors.white};
-  padding: ${(props) => props.type !== 'default' && `5.2rem 2rem 10rem`};
+  padding: ${(props) => props.type !== 'default' && `5.2rem ${variables.layoutPadding} 10rem`};
   ${(prop) =>
     prop.type === 'fullscreen' &&
     `

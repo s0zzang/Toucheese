@@ -5,7 +5,7 @@ import Header from '@components/Header/Header';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
 import StudioMenuDetailInfo from './StudioMenuDetailInfo';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import StudioMenuDetailReview from './StudioMenuDetailReview';
 import { IMenuListRes, IUser } from 'types/types';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
@@ -20,12 +20,27 @@ const StudioMenuDetail = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<IMenuListRes>();
   const [scrollY, setScrollY] = useState(false);
+  const [stickyH, setstickyH] = useState(0);
   const [tabMenuState, setTabMenuState] = useState('info');
   const setBasicReservation = useReservationStore((state) => state.setBasicReservation);
   const saveReservationDetails = useReservationStore((state) => state.saveReservationDetails);
   const { totalPrice, options, menuId } = useReservationStore();
   const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
+  const header = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (header.current) {
+      const observer = new ResizeObserver(() => {
+        const contentHeight = header.current?.getBoundingClientRect().height;
+        setstickyH(contentHeight || 0);
+      });
+
+      observer.observe(header.current);
+
+      return () => observer.disconnect();
+    }
+  }, [header.current]);
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -107,14 +122,17 @@ const StudioMenuDetail = () => {
           />
         </Helmet>
       )}
-      <Header title={`${scrollY ? data?.name : ''}`} customStyle={HeaderCustomStyle(scrollY)} />
+
+      <div ref={header} css={HeaderCustomStyle(scrollY)}>
+        <Header title={`${scrollY ? data?.name : ''}`} backTo={`/studio/${_id}/menu`} />
+      </div>
       {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />}
       <div css={MenuDescStyle}>
         <h2>{data?.name}</h2>
         <p>{data?.description}</p>
       </div>
 
-      <ul css={TabMenuStyle}>
+      <ul css={TabMenuStyle(stickyH)}>
         <li
           onClick={() => setTabMenuState('info')}
           className={`${tabMenuState === 'info' && 'active'}`}
@@ -147,7 +165,7 @@ const HeaderCustomStyle = (scrollY: boolean): SerializedStyles => {
     right: 0;
     top: 0;
     z-index: 50;
-    padding: 1.6rem 1rem;
+    padding: ${variables.layoutPadding} 1rem 0;
     ${scrollY && 'background-color: #fff; box-shadow: 0 0.4rem .5rem rgba(0, 0, 0, 0.1);'};
     transition: all 0.2s;
   `;
@@ -169,11 +187,17 @@ const MenuDescStyle = css`
   }
 `;
 
-const TabMenuStyle = css`
+const TabMenuStyle = (height: number) => css`
+  position: sticky;
+  top: ${height}px;
+  z-index: 100;
   color: ${variables.colors.gray800};
   display: flex;
-  width: 100%;
+  width: calc(100% + (${variables.layoutPadding} * 2));
+  margin-left: -${variables.layoutPadding};
+  padding: 0 ${variables.layoutPadding};
   text-align: center;
+  background-color: ${variables.colors.white};
 
   & li {
     cursor: pointer;

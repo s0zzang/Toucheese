@@ -70,12 +70,11 @@ const ThemeButtonStyle = styled.button<{ isActive: boolean }>`
   &::after {
     content: '';
     display: ${(props) => (props.isActive ? 'block' : 'none')};
-    width: 4px;
-    height: 4px;
-    background-color: ${variables.colors.primary};
     position: absolute;
-    left: 110%;
-    bottom: 1.8rem;
-    transform: translateX(-50%) rotate(45deg);
+    width: 0.6rem;
+    height: 0.6rem;
+    background: url('/img/icon-nav-badge.svg') no-repeat center / contain;
+    top: 0;
+    right: -0.55rem;
   }
 `;

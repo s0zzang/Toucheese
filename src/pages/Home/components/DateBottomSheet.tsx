@@ -3,7 +3,6 @@ import Modal from '@components/Modal/Modal';
 import useModal from '@hooks/useModal';
 import { useSelectDateStore } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
-import { DividerStyle } from '@styles/Common';
 import SelectTime from './SelectTime';
 
 const DateBottomSheet = ({}: {}) => {
@@ -32,7 +31,7 @@ const DateBottomSheet = ({}: {}) => {
   return (
     <Modal type="fullscreen" title="날짜, 시간 선택" modalId={2} buttons={dateTimeButtons}>
       <>
-        <Calendar style={DividerStyle} />
+        <Calendar />
         <SelectTime type="filter" />
       </>
     </Modal>

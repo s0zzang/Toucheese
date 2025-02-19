@@ -1,3 +1,4 @@
+import Layout from '@components/Layout/Layout';
 import ReservationNpayCallback from '@pages/Reservation/ReservationNpayCallback';
 import StudioReviewWritePage from '@pages/Studio/StudioReview/StudioReviewWritePage';
 import Auth from '@pages/User/Auth';
@@ -36,135 +37,141 @@ const ReservationCanceled = lazy(() => import('@pages/Reservation/ReservationCan
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
-  },
-  {
-    path: 'user',
+    element: <Layout />,
     children: [
       {
-        path: 'auth',
-        element: <Auth />,
+        path: '/',
+        element: <Home />,
       },
       {
-        path: 'auth/kakao/callback',
-        element: <KakaoCallback />,
-      },
-      {
-        path: 'AuthVerification',
-        element: <AuthVerification />,
-      },
-
-      {
-        path: 'signup',
-        element: <SignUp />,
-      },
-
-      {
-        path: 'signupSuccess',
-        element: <SignupSuccess />,
-      },
-
-      {
-        path: 'mypage',
-        element: <MyPage />,
-      },
-      {
-        path: 'profile',
-        element: <Profile />,
-      },
-      {
-        path: 'profile/edit',
-        element: <ChangeProfile />,
-      },
-      {
-        path: 'profile/passwordConfirm',
-        element: <PasswordConfirm />,
-      },
-      {
-        path: 'profile/passwordChange',
-        element: <ChangePassword />,
-      },
-      {
-        path: 'myReviews',
-        element: <MyReviews />,
-      },
-      {
-        path: 'bookmarks',
-        element: <BookmarkedStudios />,
-      },
-    ],
-  },
-  {
-    path: '/login',
-    element: <LoginWithEmailPage />,
-  },
-  {
-    path: 'search',
-    element: <Search />,
-  },
-  {
-    path: 'search/results',
-    element: <SearchResults />,
-  },
-  {
-    path: 'studio/:_id',
-    children: [
-      { index: true, element: <StudioMain /> },
-      {
-        path: 'menu',
-        children: [
-          { index: true, element: <StudioMenu /> },
-          { path: ':_menuId', element: <StudioMenuDetail /> },
-        ],
-      },
-      { path: 'portfolio', element: <StudioPortfolio /> },
-      {
-        path: 'review',
+        path: 'user',
         children: [
           {
-            index: true,
-            element: <StudioReview />,
+            path: 'auth',
+            element: <Auth />,
           },
-          { path: 'photos', element: <StudioReviewPhotos /> },
+          {
+            path: 'auth/kakao/callback',
+            element: <KakaoCallback />,
+          },
+          {
+            path: 'AuthVerification',
+            element: <AuthVerification />,
+          },
+
+          {
+            path: 'signup',
+            element: <SignUp />,
+          },
+
+          {
+            path: 'signupSuccess',
+            element: <SignupSuccess />,
+          },
+
+          {
+            path: 'mypage',
+            element: <MyPage />,
+          },
+          {
+            path: 'profile',
+            element: <Profile />,
+          },
+          {
+            path: 'profile/edit',
+            element: <ChangeProfile />,
+          },
+          {
+            path: 'profile/passwordConfirm',
+            element: <PasswordConfirm />,
+          },
+          {
+            path: 'profile/passwordChange',
+            element: <ChangePassword />,
+          },
+          {
+            path: 'myReviews',
+            element: <MyReviews />,
+          },
+          {
+            path: 'bookmarks',
+            element: <BookmarkedStudios />,
+          },
         ],
       },
+      {
+        path: '/login',
+        element: <LoginWithEmailPage />,
+      },
+      {
+        path: 'search',
+        element: <Search />,
+      },
+      {
+        path: 'search/results',
+        element: <SearchResults />,
+      },
+      {
+        path: 'studio/:_id',
+        children: [
+          { index: true, element: <StudioMain /> },
+          {
+            path: 'menu',
+            children: [
+              { index: true, element: <StudioMenu /> },
+              { path: ':_menuId', element: <StudioMenuDetail /> },
+            ],
+          },
+          { path: 'portfolio', element: <StudioPortfolio /> },
+          {
+            path: 'review',
+            children: [
+              {
+                index: true,
+                element: <StudioReview />,
+              },
+              { path: 'photos', element: <StudioReviewPhotos /> },
+            ],
+          },
 
+          {
+            path: 'reservation',
+            children: [
+              {
+                index: true,
+                element: <ReservationSchedule />,
+              },
+              {
+                path: 'payment',
+                element: <ReservationCheck />,
+              },
+              {
+                path: 'complete',
+                element: <ReservationComplete />,
+              },
+              { path: 'npay/callback', element: <ReservationNpayCallback /> },
+            ],
+          },
+        ],
+      },
       {
         path: 'reservation',
         children: [
           {
-            index: true,
-            element: <ReservationSchedule />,
+            path: 'list',
+            element: <ReservationList />,
           },
           {
-            path: 'payment',
-            element: <ReservationCheck />,
+            path: ':_id',
+            children: [
+              { index: true, element: <ReservationDetail /> },
+              { path: 'canceled', element: <ReservationCanceled /> },
+              { path: 'review/write', element: <StudioReviewWritePage /> },
+            ],
           },
-          {
-            path: 'complete',
-            element: <ReservationComplete />,
-          },
-          { path: 'npay/callback', element: <ReservationNpayCallback /> },
+          {},
         ],
       },
-    ],
-  },
-  {
-    path: 'reservation',
-    children: [
-      {
-        path: 'list',
-        element: <ReservationList />,
-      },
-      {
-        path: ':_id',
-        children: [
-          { index: true, element: <ReservationDetail /> },
-          { path: 'canceled', element: <ReservationCanceled /> },
-          { path: 'review/write', element: <StudioReviewWritePage /> },
-        ],
-      },
-      {},
     ],
   },
 ]);
