@@ -50,7 +50,15 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
 };
 
 const NavStyle = styled.nav`
-  margin: 0 calc(-1 * ${variables.layoutPadding});
+
+  position: sticky;
+  top: 5.6rem;
+  width: calc(100% + 3.2rem);
+    margin: 0 calc(-1 * ${variables.layoutPadding});
+  margin-left: -1.6rem;
+  padding: 0 1.6rem;
+  background-color: white;
+  z-index: 5
 `;
 
 const UlStyle = styled.ul`

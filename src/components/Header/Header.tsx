@@ -2,6 +2,7 @@
 import BackButton from '@components/BackButton/BackButton';
 import { css, SerializedStyles } from '@emotion/react';
 import { TypoTitleXsM } from '@styles/Common';
+import variables from '@styles/Variables';
 
 interface HeaderProps {
   title?: string;
@@ -22,8 +23,15 @@ export default Header;
 
 const headerStyle = css`
   display: flex;
+  position: fixed;
+  width: 100%;
+  z-index: 5;
   align-items: center;
-  padding-bottom: 1.4rem;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: ${variables.layoutPadding};
 `;
 
 const additionalH1Style = css`
