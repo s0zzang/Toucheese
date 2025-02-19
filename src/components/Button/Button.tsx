@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css, CSSObject } from '@emotion/react';
-import { TypoBodyMdM, TypoBodySmR, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
+import { TypoBodyMdM, TypoBodySmR, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import React from 'react';
 
