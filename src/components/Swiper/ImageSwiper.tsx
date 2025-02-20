@@ -41,7 +41,7 @@ const ImageSwiper = ({
   };
 
   const conditionalContainerStyle =
-    slidesPerView === 1 ? containerFullStyle : containerDefaultStyle(isSwiped);
+    slidesPerView === 1 ? containerFullStyle : containerDefaultStyle;
 
   return (
     <div css={conditionalContainerStyle}>
@@ -79,10 +79,27 @@ const containerFullStyle = css`
 `;
 
 //다중이미지
-const containerDefaultStyle = (isSwiped: boolean) => css`
-  width: 100%;
+const containerDefaultStyle = css`
   margin-bottom: 1.4rem;
-  margin-left: ${isSwiped ? `calc(-1 * ${variables.layoutPadding})` : '0'};
+  margin-left: calc(${variables.layoutPadding}*-1);
+  width: calc(100% + ${variables.layoutPadding});
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: ${variables.layoutPadding};
+    height: 100%;
+    background: linear-gradient(to left, #fff, transparent);
+    z-index: 1;
+    transform: translateX(100%);
+  }
+  .swiper {
+    padding: 0 ${variables.layoutPadding};
+  }
 `;
 
 const swiperStyle = css`
