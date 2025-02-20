@@ -174,6 +174,7 @@ const GlobalStyles = css`
 
   img {
     max-width: 100%;
+    vertical-align: top;
   }
 
   label {
