@@ -121,7 +121,7 @@ export default MyPage;
 const CustomDividerStyle = css`
   &::after {
     width: 100%;
-    max-width: calc(100vw + (${variables.layoutPadding} * 2)); /* 가로 스크롤 방지 */
+    max-width: calc(100vw + (${variables.layoutPadding} * 2));
   }
 `;
 
