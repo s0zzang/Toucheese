@@ -63,5 +63,5 @@ export default StudioMenu;
 const ItemLIstStyle = css`
   display: flex;
   flex-direction: column;
-  margin: 1.8rem 0;
+  margin: 5.8rem 0 1.8rem;
 `;
