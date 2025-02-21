@@ -274,7 +274,7 @@ const FilterBoxStyle = styled.div`
 `;
 
 const ListStyle = styled.div`
-  padding-top: 9.6rem;
+  padding-top: 10.8rem;
 `;
 
 export default Home;
