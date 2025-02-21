@@ -54,16 +54,16 @@ const MenuCoverStyle = css`
   align-items: center;
   justify-content: center;
   width: 9.4rem;
-  aspect-ratio: 1 / 1.2;
-  background: #ddd;
   flex-shrink: 0;
 
   & img {
+    aspect-ratio: 94 / 118;
     object-fit: cover;
   }
 `;
 
 const MenuDescStyle = css`
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: 1rem;
