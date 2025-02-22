@@ -7,7 +7,7 @@ import { DividerStyle, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/
 import variables from '@styles/Variables';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { IResvItem, IUser } from 'types/types';
+import { IUser } from 'types/types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -18,42 +18,7 @@ const MyPage = () => {
   const { username, email } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
 
-  // const { data } = useGetReservationList('RESERVED');
-  const data: IResvItem[] = [
-    {
-      reservationId: 1,
-      studioId: 146,
-      studioName: '모노멘션',
-      menuId: 11,
-      menuName: '상반신 촬영',
-      menuImgUrl: 'https://i.imgur.com/7C4GSF4.webp',
-      status: 'RESERVED',
-      date: '2025-01-10',
-      startTime: '12:00',
-    },
-    {
-      reservationId: 3,
-      studioId: 122,
-      studioName: '스튜디오',
-      menuId: 44,
-      menuName: '증명사진',
-      menuImgUrl: 'https://i.imgur.com/7C4GSF4.webp',
-      status: 'RESERVED',
-      date: '2025-02-10',
-      startTime: '11:00',
-    },
-    {
-      reservationId: 2,
-      studioId: 146,
-      studioName: '주스튜디오',
-      menuId: 71,
-      menuName: '증명사진',
-      menuImgUrl: 'https://i.imgur.com/7C4GSF4.webp',
-      status: 'RESERVED',
-      date: '2025-01-25',
-      startTime: '13:00',
-    },
-  ];
+  const { data } = useGetReservationList('RESERVED');
 
   // 임시 로그아웃
   const logout = useUserStore((state) => state.resetUser);
@@ -131,7 +96,7 @@ const MyInfoStyle = css`
   gap: 0.4rem;
   padding: 1.6rem 0;
   align-items: flex-start;
-  margin-top: 1.4rem;
+  margin-top: 5.4rem;
 
   & a {
     ${TypoTitleMdSb}

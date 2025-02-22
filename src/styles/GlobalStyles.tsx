@@ -23,7 +23,7 @@ const GlobalStyles = css`
     color: ${variables.colors.black};
     font-family: 'Pretendard', sans-serif; /* Pretendard 폰트 적용 */
     font-size: ${variables.size.medium};
-    padding: 4rem ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
+    padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
   }
 
   html,

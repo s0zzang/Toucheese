@@ -98,6 +98,7 @@ const ReservationInfoStyle = css`
     flex-direction: column;
     align-items: flex-start;
     gap: 0.4rem;
+    flex-grow: 1;
 
     .cardName {
       ${TypoBodySmR}
@@ -120,9 +121,9 @@ const ReservationInfoStyle = css`
     align-items: center;
     justify-content: center;
     width: 6rem;
-    aspect-ratio: 60 / 72;
-
+    flex-shrink: 0;
     & img {
+      aspect-ratio: 60 / 72;
       object-fit: cover;
     }
   }
