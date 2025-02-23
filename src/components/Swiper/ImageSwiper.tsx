@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Swiper, SwiperSlide, SwiperProps } from 'swiper/react';
-import 'swiper/css';
 import { Mousewheel, Pagination } from 'swiper/modules';
 import variables from '@styles/Variables';
 import { IPortfolio, IReviewImages } from 'types/types';
 import { useState } from 'react';
+import 'swiper/css';
 
 interface ImageSwiperProps extends SwiperProps {
   images: IPortfolio[] | IReviewImages[];
@@ -46,6 +46,7 @@ const ImageSwiper = ({
   return (
     <div css={conditionalContainerStyle}>
       <Swiper
+        className="imageSwiper"
         css={swiperStyle}
         modules={modules}
         mousewheel={mousewheel}
@@ -105,27 +106,30 @@ const containerDefaultStyle = css`
 const swiperStyle = css`
   width: calc(100% + ${variables.layoutPadding});
 
-  .swiper-pagination {
+  & .swiper-pagination.swiper-pagination-horizontal {
     position: absolute;
+    z-index: 10;
     bottom: 15px;
-    width: 100%;
+    left: 50%;
+    width: 8rem;
     display: flex;
     justify-content: center;
-    z-index: 10;
-  }
+    transform: translateX(-50%);
 
-  .swiper-pagination-bullet {
-    background-color: ${variables.colors.white};
-    opacity: 0.8;
-    width: 20px;
-    height: 3px;
-    transition: all 0.3s ease;
-    margin: 0 1px;
-    cursor: pointer;
-  }
-  .swiper-pagination-bullet-active {
-    background-color: ${variables.colors.black};
-    opacity: 1;
+    & .swiper-pagination-bullet {
+      background-color: ${variables.colors.white};
+      opacity: 0.8;
+      width: 100%;
+      height: 0.2rem;
+      margin: 0;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    & .swiper-pagination-bullet-active {
+      background-color: ${variables.colors.black};
+      opacity: 1;
+    }
   }
 `;
 
