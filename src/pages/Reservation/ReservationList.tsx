@@ -88,14 +88,13 @@ const HeaderContainerStyle = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  padding-top: 4rem;
 `;
 
 const SectionStyle = styled.section`
   margin: 0 calc(-1 * ${variables.layoutPadding}) -8.8rem;
   background-color: ${variables.colors.gray100};
-  padding: 11.6rem ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
-  height: calc(100vh - 4rem);
+  padding: 10rem ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
+  height: calc(100vh);
   overflow-y: auto;
 
   &.empty {
@@ -130,12 +129,11 @@ const ContentStyle = styled.div`
   flex-direction: column;
   gap: 0.8rem;
 `;
-
 const headerStyle = css`
+  position: unset;
   display: flex;
   align-items: center;
   padding: 1.6rem;
-  padding-top: unset;
 `;
 
 export default ReservationList;

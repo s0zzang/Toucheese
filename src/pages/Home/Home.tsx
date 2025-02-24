@@ -56,7 +56,8 @@ const Home = () => {
     const handleScroll = () => {
       if (homeRef.current) {
         const rect = homeRef.current.getBoundingClientRect();
-        if (rect.top <= -78) {
+
+        if (rect.top <= -88) {
           setIsFixed(true);
         } else {
           setIsFixed(false);
@@ -182,7 +183,6 @@ const Home = () => {
 };
 
 const SectionStyle = styled.section`
-  margin-top: -4rem;
   padding-top: 2rem;
 `;
 
