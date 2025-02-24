@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide, SwiperProps } from 'swiper/react';
 import { Mousewheel, Pagination } from 'swiper/modules';
 import variables from '@styles/Variables';
 import { IPortfolio, IReviewImages } from 'types/types';
-import { useState } from 'react';
 import 'swiper/css';
 
 interface ImageSwiperProps extends SwiperProps {
@@ -25,8 +24,6 @@ const ImageSwiper = ({
   imageStyle,
   ...props
 }: ImageSwiperProps) => {
-  const [isSwiped, setIsSwiped] = useState(false);
-
   const isPaginationActive = slidesPerView === 1;
   // 이미지 5개 불러오기
   const getImages = (photos: IPortfolio[] | IReviewImages[]) => {
@@ -54,13 +51,6 @@ const ImageSwiper = ({
         slidesPerView={slidesPerView}
         pagination={isPaginationActive ? { clickable: true, type: 'bullets' } : undefined}
         {...props}
-        onSlideChange={(swiper) => {
-          if (swiper.activeIndex === 0) {
-            setIsSwiped(false);
-          } else {
-            setIsSwiped(true);
-          }
-        }}
       >
         {getImages(images).map((image, index) => (
           <SwiperSlide key={index}>
