@@ -172,9 +172,10 @@ const errorContainerStyle = css`
 `;
 
 const errorIconStyle = css`
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.2rem;
+  height: 1.2rem;
 `;
+
 const errorStyle = (error?: string, isValid?: boolean) => css`
   color: ${error ? 'red' : isValid ? 'green' : variables.colors.gray600};
 `;

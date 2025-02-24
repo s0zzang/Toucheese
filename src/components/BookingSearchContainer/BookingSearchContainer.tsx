@@ -31,7 +31,7 @@ const BookingSearchContainer = () => {
       <div onClick={() => modal.open()}>
         <Button type="button">
           <h1 css={TypoTitleSmS}>{searchParams.get('addressGu') || '서울전체'}</h1>{' '}
-          <img src="/img/icon-select-arrow.svg" alt="전체 지역 탐색" />
+          <img src="/img/icon-arrowdown-black.svg" alt="전체 지역 탐색" />
         </Button>
         <ButtonTitleDes css={TypoBodyMdR}>
           {searchParamsDateTime || '예약 날짜와 시간을 선택해주세요.'}
@@ -75,7 +75,13 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
   display: flex;
+  align-items: center;
   gap: 0.4rem;
+
+  & > img {
+    width: 1.6rem;
+    height: 0.9rem;
+  }
 `;
 
 const ButtonStyle = styled.button`

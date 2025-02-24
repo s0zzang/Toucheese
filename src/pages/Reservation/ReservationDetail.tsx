@@ -93,7 +93,11 @@ const ReservationDetail = () => {
           </div>
           <div css={buttonContainerStyle}>
             <a css={buttonStyle} href={`tel:${studioDetail?.phone}`}>
-              <img src="/img/icon-call.svg" alt="전화버튼아래화살표" css={buttonIconStyle} />
+              <img
+                src="/img/icon-call-gray800.svg"
+                alt="전화버튼아래화살표"
+                css={buttonIconStyle}
+              />
               <p css={TypoBodySmR}>전화</p>
             </a>
             <button

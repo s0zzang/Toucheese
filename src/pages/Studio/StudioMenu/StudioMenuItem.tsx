@@ -82,10 +82,11 @@ const MenuHeadStyle = css`
       display: inline-block;
       width: 1.6rem;
       height: 1.6rem;
-      background-image: url(/img/icon-arrow-right-black.svg);
-      background-size: 0.6rem;
+      background-image: url(/img/icon-chevronright.svg);
+
       background-position: center;
       background-repeat: no-repeat;
+      background-size: 0.6rem 1.1rem;
     }
   }
 
