@@ -75,7 +75,12 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
 
   return (
     <>
-      <Modal title="지역, 날짜 선택" buttons={dateLocationButtons} type="fullscreen">
+      <Modal
+        title="지역, 날짜 선택"
+        buttons={dateLocationButtons}
+        type="fullscreen"
+        isCloseBtn={true}
+      >
         <>
           <InputBoxStyle>
             <button type="button" onClick={handleOpenLocation}>
