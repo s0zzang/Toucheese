@@ -105,9 +105,11 @@ const MainTitle = styled.h3`
     display: block;
     width: 1.6rem;
     height: 1.6rem;
-    background-image: url('/img/icon-arrow-16.svg');
+    box-sizing: border-box;
+    background-image: url('/img/icon-chevronright.svg');
     background-repeat: no-repeat;
     background-position: center;
+    background-size: 0.6rem 1.1rem;
   }
 `;
 

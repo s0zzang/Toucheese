@@ -103,7 +103,7 @@ const finalDate = css`
 
   dl {
     padding-left: 2rem;
-    background: url(/img/icon-calendar-black.svg) no-repeat center left / 1.4rem;
+    background: url(/img/icon-calendar-black.svg) no-repeat center left / 1.2rem 1.3rem;
 
     &.timeBox {
       background-image: url(/img/icon-clock-black.svg);

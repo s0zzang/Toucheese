@@ -180,7 +180,7 @@ const CloseBtnStyle = styled.button<ICloseBtnStyle>`
   aspect-ratio: 1/1;
   background: ${(props) =>
     props.mode === 'fullscreen'
-      ? 'url(/img/icon-arrow-gray800.svg) no-repeat center / 1.1rem 1.9rem'
+      ? 'url(/img/icon-arrowback.svg) no-repeat center / 1.1rem 1.9rem'
       : 'url(/img/icon-close-white.svg) no-repeat center / 1.2rem'};
   position: absolute;
   left: ${(props) => props.mode === 'fullscreen' && 0};

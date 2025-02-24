@@ -82,8 +82,8 @@ interface IStudioInfo {
 
 export interface IStudioItem extends IStudioInfo {
   options: IOptions[];
-  openTime: string;
-  closeTime: string;
+  open_time: string;
+  close_time: string;
   menus: IMenus[];
   created_at: null | string;
   updated_at: null | string;

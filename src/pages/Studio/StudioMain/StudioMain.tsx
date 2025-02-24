@@ -223,7 +223,7 @@ const StudioMain = () => {
           </div>
           <div>
             <dt>
-              <img src="/img/icon-call.svg" alt="연락처" />
+              <img src="/img/icon-call-gray700.svg" alt="연락처" />
             </dt>
             <dd>
               <p>{`${data.phone}`}</p>

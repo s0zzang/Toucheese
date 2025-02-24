@@ -108,10 +108,10 @@ const MyInfoStyle = css`
       content: '';
       width: 2.4rem;
       height: 2.4rem;
-      background-image: url('/img/icon-arrow-right-black.svg');
+      background-image: url('/img/icon-chevronright.svg');
       background-repeat: no-repeat;
       background-position: center;
-      background-size: 1rem;
+      background-size: 0.9rem 1.6rem;
     }
   }
 
@@ -135,10 +135,10 @@ const MyPageMenuStyle = css`
         content: '';
         width: 2.4rem;
         height: 2.4rem;
-        background-image: url('/img/icon-arrow-right-black.svg');
+        background-image: url('/img/icon-chevronright.svg');
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 1rem;
+        background-size: 0.9rem 1.6rem;
         margin-left: auto;
       }
 

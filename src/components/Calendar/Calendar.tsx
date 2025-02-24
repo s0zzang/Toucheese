@@ -92,18 +92,18 @@ const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
           오늘 <span css={Hidden}>날짜로 이동</span>
         </TodayStyle>
         <TitleStyle>
-          <button onClick={() => changeMonth(-1)}>
+          <button
+            onClick={() => changeMonth(-1)}
+            css={css`
+              transform: rotate(180deg);
+            `}
+          >
             <span css={Hidden}>이전 달로 이동</span>
           </button>
           <div>
             {baseYear}년 {baseMonth + 1}월
           </div>
-          <button
-            css={css`
-              transform: rotate(180deg);
-            `}
-            onClick={() => changeMonth(1)}
-          >
+          <button onClick={() => changeMonth(1)}>
             <span css={Hidden}>다음 달로 이동</span>
           </button>
         </TitleStyle>
@@ -191,7 +191,7 @@ const TitleStyle = styled.div`
   button {
     width: 2.4rem;
     aspect-ratio: 1/1;
-    background: url(/img/icon-arrow-gray.svg) no-repeat center;
+    background: url(/img/icon-chevronright.svg) no-repeat center;
   }
 `;
 
