@@ -46,6 +46,10 @@ const StudioItem = ({
               width: 100%;
               aspect-ratio: 94 / 118;
               object-fit: cover;
+
+              @media (min-width: 768px) {
+                aspect-ratio: 141 / 177;
+              }
             `}
           />
         ) : (

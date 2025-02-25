@@ -38,6 +38,10 @@ const DivStyle = styled.div`
     margin-top: auto;
     margin-bottom: -0.255rem;
   }
+
+  @media (min-width: 768px) {
+    height: 17.1rem;
+  }
 `;
 
 export default NoPic;
