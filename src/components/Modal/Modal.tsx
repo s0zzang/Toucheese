@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 
 interface ModalProp {
   type: 'default' | 'dimmed' | 'fullscreen';
+  isCloseBtn?: boolean;
   title?: string;
   children: JSX.Element | string;
   modalId?: number;
@@ -49,6 +50,7 @@ interface IContentStyle {
 const Modal = ({
   modalId = 1,
   type = 'default',
+  isCloseBtn = false,
   title,
   children,
   withBtn = true,
@@ -77,9 +79,15 @@ const Modal = ({
           {type === 'fullscreen' && (
             <TitleStyle type="fullscreen">
               {isOpen}
-              <CloseBtnStyle type="button" mode="fullscreen" onClick={handleClose}>
-                <span css={Hidden}>모달 닫기</span>
-              </CloseBtnStyle>
+              {isCloseBtn ? (
+                <CloseXBtnStyle type="button" onClick={handleClose}>
+                  <span css={Hidden}>모달 닫기</span>
+                </CloseXBtnStyle>
+              ) : (
+                <CloseBtnStyle type="button" mode="fullscreen" onClick={handleClose}>
+                  <span css={Hidden}>모달 닫기</span>
+                </CloseBtnStyle>
+              )}
               {title && <h2 css={TypoTitleSmS}>{title}</h2>}
             </TitleStyle>
           )}
@@ -185,6 +193,15 @@ const CloseBtnStyle = styled.button<ICloseBtnStyle>`
   position: absolute;
   left: ${(props) => props.mode === 'fullscreen' && 0};
   right: ${(props) => props.mode === 'dimmed' && 0};
+  z-index: 9;
+`;
+
+const CloseXBtnStyle = styled.button`
+  width: 2.4rem;
+  aspect-ratio: 1/1;
+  background: url(/img/icon-close-gray800.svg) no-repeat center / 1.6rem;
+  position: absolute;
+  right: 0;
   z-index: 9;
 `;
 
