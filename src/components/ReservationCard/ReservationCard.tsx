@@ -53,7 +53,7 @@ const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
               <img src={data.menuImgUrl} alt="메뉴 사진" />
             </div>
           </div>
-          {data.status === 'COMPLETE' && (
+          {data.status === 'COMPLETED' && (
             <RatingReview ratingValue={data.review && data.review.rating} />
           )}
         </article>
