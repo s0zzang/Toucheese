@@ -286,6 +286,13 @@ const GlobalStyles = css`
     ${TypoBodyMdR}
   }
 
+  .mo {
+    display: block;
+  }
+  .pc {
+    display: none;
+  }
+
   @media (max-width: 350px) {
     :root {
       font-size: 9px;
@@ -295,6 +302,15 @@ const GlobalStyles = css`
   @media (min-width: 500px) and (max-width: 767px) {
     :root {
       font-size: 11px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .mo {
+      display: none;
+    }
+    .pc {
+      display: block;
     }
   }
 
