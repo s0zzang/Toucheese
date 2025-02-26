@@ -47,9 +47,13 @@ export default ThemeNavigator;
 
 const NavStyle = styled.nav`
   width: 100%;
-  box-sizing: border-box;
   background-color: ${variables.colors.black};
-  padding: 1.4rem;
+  padding: 1.1rem 1rem;
+
+  @media (min-width: 768px) {
+    width: unset;
+    margin: 0.3rem 0;
+  }
 `;
 
 const ThemeListStyle = styled.ul`
@@ -58,6 +62,11 @@ const ThemeListStyle = styled.ul`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+
+  @media (min-width: 768px) {
+    gap: 0.85rem;
+    justify-content: center;
+  }
 `;
 
 // ThemeNavigator test 코드와 연관되어 있음
@@ -66,6 +75,7 @@ const ThemeButtonStyle = styled.button<{ isActive: boolean }>`
   color: ${(props) =>
     props.isActive ? `${variables.colors.white}` : `${variables.colors.gray500}`};
   position: relative;
+  padding: ${(props) => (props.isActive ? '0.3rem 0.9rem 0.3rem 0.8rem' : '0.3rem 0.4rem')};
 
   &::after {
     content: '';
@@ -74,7 +84,7 @@ const ThemeButtonStyle = styled.button<{ isActive: boolean }>`
     width: 0.6rem;
     height: 0.6rem;
     background: url('/img/icon-nav-badge.svg') no-repeat center / contain;
-    top: 0;
-    right: -0.55rem;
+    top: 0.3rem;
+    right: 0.4rem;
   }
 `;

@@ -24,6 +24,10 @@ const GlobalStyles = css`
     font-family: 'Pretendard', sans-serif; /* Pretendard 폰트 적용 */
     font-size: ${variables.size.medium};
     padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
+
+    @media (min-width: 768px) {
+      padding: 0 ${variables.layoutPaddingPC};
+    }
   }
 
   html,

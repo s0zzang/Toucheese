@@ -105,10 +105,19 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
   &:hover {
     cursor: pointer;
   }
+
+  @media (min-width: 768px) {
+    padding: 3.4rem 0;
+    border-bottom: unset;
+  }
 `;
 
 const ItemImageStyle = styled.div`
   margin-bottom: 1.4rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 const ItemContentStyle = styled.div`

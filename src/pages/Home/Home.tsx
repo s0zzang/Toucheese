@@ -1,3 +1,6 @@
+/** @jsxImportSource @emotion/react */
+
+import BookingButton from '@components/BookingSearchContainer/BookingButton';
 import BookingSearchContainer from '@components/BookingSearchContainer/BookingSearchContainer';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import Button from '@components/Button/Button';
@@ -5,16 +8,22 @@ import Filter from '@components/Filter/Filter';
 import FilterTextSelector from '@components/Filter/FilterTextSelector';
 import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
 import ThemeNavigator from '@components/Navigator/ThemeNavigator';
+import PCHeader from '@components/PCHeader/PCHeader';
+import SearchButton from '@components/SearchButton/SearchButton';
 import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 import StudioList from '@components/Studio/StudioList';
-import { keyframes } from '@emotion/react';
+import UserButton from '@components/UserButton/UserButton';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import useGetWindowWidth from '@hooks/useGetWindowWidth';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
+import { remToPx } from '@utils/remToPx';
 import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import LocalDateSelectionModal from './components/LocalDateSelectionModal';
 
 interface IFixedProps {
   isFixed: boolean;
@@ -46,6 +55,7 @@ const Home = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const homeRef = useRef<HTMLTableSectionElement | null>(null);
   const navigate = useNavigate();
+  const windowWidth = useGetWindowWidth();
 
   // 로그인 완료 후 예약페이지로 돌아가기
   const lastPage = window.sessionStorage.getItem('lastPage');
@@ -56,12 +66,9 @@ const Home = () => {
     const handleScroll = () => {
       if (homeRef.current) {
         const rect = homeRef.current.getBoundingClientRect();
+        const threshold = windowWidth >= 768 ? 0 : -1 * remToPx(8.8);
 
-        if (rect.top <= -88) {
-          setIsFixed(true);
-        } else {
-          setIsFixed(false);
-        }
+        setIsFixed(rect.top <= threshold);
       }
     };
 
@@ -127,12 +134,46 @@ const Home = () => {
         />
         <meta property="og:description" content="터치즈에서 원하는 스튜디오를 검색해보세요!" />
       </Helmet>
+
+      <PCHeader>
+        <div
+          css={css`
+            display: flex;
+            margin-left: auto;
+          `}
+        >
+          <SearchButton />
+          <UserButton />
+        </div>
+      </PCHeader>
+
       <SectionStyle ref={homeRef}>
-        <BookingSearchContainer />
+        <BookingSearchContainer className="mo" />
 
         <NavigatorStyle isFixed={isFixed}>
-          <ThemeNavigator />
-          <FilterBoxStyle>
+          {/* 모바일 버전 */}
+          <div className="mo">
+            <ThemeNavigator />
+          </div>
+
+          {/* PC 버전 */}
+          <div
+            className="pc"
+            css={css`
+              @media (min-width: 768px) {
+                background-color: ${variables.colors.black};
+                display: flex;
+                align-items: center;
+                gap: 5.2rem;
+                padding: 0 ${variables.layoutPaddingPC};
+              }
+            `}
+          >
+            <BookingButton type="pc" />
+            <ThemeNavigator />
+          </div>
+
+          <FilterBoxStyle className="mo">
             <ButtonWrapperStyle onClick={handleReset} className={isAnimating ? 'rotateIcon' : ''}>
               <Button
                 text=""
@@ -178,12 +219,17 @@ const Home = () => {
         </ListStyle>
       </SectionStyle>
       <BottomSheet />
+      <LocalDateSelectionModal modalId={1} />
     </>
   );
 };
 
 const SectionStyle = styled.section`
   padding-top: 2rem;
+
+  @media (min-width: 768px) {
+    padding-top: unset;
+  }
 `;
 
 const NavigatorStyle = styled.div<IFixedProps>`
@@ -192,6 +238,10 @@ const NavigatorStyle = styled.div<IFixedProps>`
   left: 0;
   right: 0;
   z-index: 9;
+
+  @media (min-width: 768px) {
+    top: ${(props) => (props.isFixed ? '0' : '8rem')};
+  }
 `;
 
 const ButtonWrapperStyle = styled.div`
@@ -214,67 +264,73 @@ const RotateIconStyle = styled.img`
 `;
 
 const FilterBoxStyle = styled.div`
-  width: 100%;
-  padding: 1.2rem 0rem 1.2rem 1.6rem;
-  display: flex;
-  gap: 0.6rem;
-  box-shadow: 0 0 2px ${variables.colors.gray500};
-  position: relative;
-  background-color: ${variables.colors.white};
-
-  & ::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 1;
-  }
-
-  & > Button {
-    flex-shrink: 0;
-    margin: auto 0;
-  }
-
-  .filterScroll {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* 모바일 스크롤 */
-    scrollbar-width: thin; /* 크롬, 파이어폭스에서 스크롤바 스타일 */
-    white-space: nowrap;
+  @media (max-width: 767px) {
+    width: 100%;
+    padding: 1.2rem 0rem 1.2rem 1.6rem;
     display: flex;
-    gap: 0.8rem;
+    gap: 0.6rem;
+    box-shadow: 0 0 2px ${variables.colors.gray500};
     position: relative;
-  }
-
-  /* 크롬, 사파리 */
-  .filterScroll::-webkit-scrollbar {
-    display: none;
-  }
-
-  .filterScroll {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE, Edge */
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 10%;
-    left: 4.8rem;
-    bottom: 0;
-    z-index: 1;
-    height: 80%;
-    width: 0.6rem;
-    box-shadow: 0.4rem 0 0.2rem rgba(255, 255, 255, 10);
-
     background-color: ${variables.colors.white};
+
+    & ::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 1;
+    }
+
+    & > Button {
+      flex-shrink: 0;
+      margin: auto 0;
+    }
+
+    .filterScroll {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch; /* 모바일 스크롤 */
+      scrollbar-width: thin; /* 크롬, 파이어폭스에서 스크롤바 스타일 */
+      white-space: nowrap;
+      display: flex;
+      gap: 0.8rem;
+      position: relative;
+    }
+
+    /* 크롬, 사파리 */
+    .filterScroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filterScroll {
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE, Edge */
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 10%;
+      left: 4.8rem;
+      bottom: 0;
+      z-index: 1;
+      height: 80%;
+      width: 0.6rem;
+      box-shadow: 0.4rem 0 0.2rem rgba(255, 255, 255, 10);
+
+      background-color: ${variables.colors.white};
+    }
   }
 `;
 
 const ListStyle = styled.div`
   padding-top: 10.8rem;
+
+  @media (min-width: 768px) {
+    padding-top: 5.4rem;
+  }
 `;
 
 export default Home;

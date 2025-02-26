@@ -40,6 +40,7 @@ const variables = {
   },
 
   layoutPadding: '1.6rem',
+  layoutPaddingPC: '2.4rem',
   TransitionDuration: '0.3s',
   borderRadius: '.8rem',
   borderRadiusLarge: '2rem',
