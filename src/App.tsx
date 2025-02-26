@@ -1,4 +1,4 @@
-import ErrorBoundary from '@components/Error/ErrorBoundary.tsx';
+import Error from '@components/Error/Error.tsx';
 import Loading from '@components/Loading/Loading.tsx';
 import Toast from '@components/Toast/Toast.tsx';
 import { Global, ThemeProvider } from '@emotion/react';
@@ -6,6 +6,7 @@ import GlobalStyles from '@styles/GlobalStyles';
 import variables from '@styles/Variables';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Suspense, useDeferredValue, useEffect, useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { HelmetProvider } from 'react-helmet-async';
 import { RouterProvider } from 'react-router-dom';
 import router from './routes.tsx';
@@ -35,7 +36,7 @@ function App() {
       <ThemeProvider theme={variables}>
         <Global styles={GlobalStyles} />
         <QueryClientProvider client={queryClient}>
-          <ErrorBoundary fallback={<div>문제가 발생했습니다.</div>}>
+          <ErrorBoundary FallbackComponent={Error}>
             <Suspense fallback={<Loading />}>
               {!deferredReady && !isNpayCallbackPage ? (
                 <Loading size="big" phrase="세상의 모든 사진관, 터치즈" />

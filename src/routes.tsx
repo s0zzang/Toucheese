@@ -1,4 +1,5 @@
-import Layout from '@components/Layout/Layout';
+import Error from '@components/Error/Error';
+import Layout from '@components/layout/Layout';
 import ReservationNpayCallback from '@pages/Reservation/ReservationNpayCallback';
 import StudioReviewWritePage from '@pages/Studio/StudioReview/StudioReviewWritePage';
 import Auth from '@pages/User/Auth';
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
+    errorElement: <Error />,
     children: [
       {
         path: '/',
