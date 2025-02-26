@@ -149,7 +149,6 @@ const router = createBrowserRouter([
                 path: 'complete',
                 element: <ReservationComplete />,
               },
-              { path: 'npay/callback', element: <ReservationNpayCallback /> },
             ],
           },
         ],
