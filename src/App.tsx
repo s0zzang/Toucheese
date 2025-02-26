@@ -16,19 +16,17 @@ function App() {
   const [isReady, setIsReady] = useState(false);
   const deferredReady = useDeferredValue(isReady);
 
-  const isNpayCallbackPage = window.location.pathname.includes('/reservation/npay-callback');
+  const skipLoading = sessionStorage.getItem('skipLoading');
 
   useEffect(() => {
-    const skipLoading = sessionStorage.getItem('skipLoading');
-
-    if (!isNpayCallbackPage && !skipLoading) {
+    if (!skipLoading) {
       const timer = setTimeout(() => setIsReady(true), 1300);
       return () => clearTimeout(timer);
     } else {
       setIsReady(true);
       sessionStorage.removeItem('skipLoading');
     }
-  }, [isNpayCallbackPage]);
+  }, [skipLoading]);
 
   return (
     <HelmetProvider>
@@ -37,7 +35,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <ErrorBoundary fallback={<div>문제가 발생했습니다.</div>}>
             <Suspense fallback={<Loading />}>
-              {!deferredReady && !isNpayCallbackPage ? (
+              {!deferredReady ? (
                 <Loading size="big" phrase="세상의 모든 사진관, 터치즈" />
               ) : (
                 <RouterProvider router={router} />
