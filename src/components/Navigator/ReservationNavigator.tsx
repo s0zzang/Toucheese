@@ -7,8 +7,8 @@ import { Dispatch, SetStateAction } from 'react';
 
 const STATUS: ResStatus[] = [
   { statusKor: '이용 예정', statusEng: 'DEFAULT' },
-  { statusKor: '이용 완료', statusEng: 'COMPLETE' },
-  { statusKor: '예약 취소', statusEng: 'CANCEL' },
+  { statusKor: '이용 완료', statusEng: 'COMPLETED' },
+  { statusKor: '예약 취소', statusEng: 'CANCELED' },
 ];
 
 const ReservationNavigator = ({

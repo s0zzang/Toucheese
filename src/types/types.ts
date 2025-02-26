@@ -194,7 +194,7 @@ export interface IResvItem {
   menuId: number;
   menuName: string;
   menuImgUrl: string;
-  status: 'WAITING' | 'RESERVED' | 'COMPLETE' | 'CANCEL';
+  status: 'WAITING' | 'RESERVED' | 'COMPLETED' | 'CANCELED';
   date: string;
   startTime: string;
   // 임시
