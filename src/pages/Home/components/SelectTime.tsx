@@ -22,15 +22,12 @@ interface ITimeProp {
     date: string;
     availableTimeDto: ITimes[];
   }[];
-  isSuccess?: boolean;
-  isFetching?: boolean;
 }
 
-const SelectTime = ({ type, availableTimeWithDates, isSuccess, isFetching }: ITimeProp) => {
+const SelectTime = ({ type, availableTimeWithDates }: ITimeProp) => {
   const { time: selectedTime, setTime } = useSelectTimeStore();
   const { date } = useSelectDateStore();
   const openToast = useToast();
-
   const times =
     type === 'filter'
       ? filterTimes
@@ -46,13 +43,6 @@ const SelectTime = ({ type, availableTimeWithDates, isSuccess, isFetching }: ITi
   };
 
   if (type === 'reservation') {
-    if (isFetching) return null;
-    if (!isSuccess)
-      return (
-        <div css={emptyMessageBox}>
-          <EmptyMessage message="오류가 발생했습니다. 잠시 후 다시 시도해주세요." />
-        </div>
-      );
     if (!times)
       return (
         <div css={emptyMessageBox}>
