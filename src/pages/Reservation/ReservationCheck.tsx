@@ -157,9 +157,9 @@ const ReservationCheck = () => {
             css={checkboxStyle}
             onChange={(e) => setIsDifferentVisitor(e.target.checked)}
           />
-          <label htmlFor="visitorCheckbox" css={labelStyle}>
+          <label htmlFor="visitorCheckbox" css={[TypoCapSmM, labelStyle]}>
             <img src="/img/icon-check-gray.svg" alt="체크 아이콘" />
-            실제 방문자가 달라요
+            <p>실제 방문자가 달라요</p>
           </label>
         </div>
       </section>
@@ -427,9 +427,13 @@ const textWrapperStyle = css`
 
 //예약자정보
 const checkboxWrapperStyle = css`
+  width: 13rem;
+  height: 3rem;
+  box-sizing: border-box;
   position: relative;
   display: flex;
   margin-top: 0.5rem;
+
   input {
     display: none;
   }

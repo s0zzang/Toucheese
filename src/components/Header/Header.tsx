@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import BackButton from '@components/BackButton/BackButton';
 import { css, SerializedStyles } from '@emotion/react';
-import { TypoTitleXsM } from '@styles/Common';
+import { TypoTitleXsM, TypoTitleXsSB } from '@styles/Common';
 import variables from '@styles/Variables';
 
 interface HeaderProps {
@@ -14,7 +14,7 @@ const Header = ({ title, backTo, customStyle }: HeaderProps) => {
   return (
     <header css={[headerStyle, customStyle]}>
       <BackButton to={backTo} />
-      {title && <h1 css={[TypoTitleXsM, additionalH1Style]}>{title}</h1>}
+      {title && <h1 css={[TypoTitleXsSB, additionalH1Style]}>{title}</h1>}
     </header>
   );
 };
