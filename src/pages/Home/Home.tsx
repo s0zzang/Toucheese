@@ -66,7 +66,7 @@ const Home = () => {
     const handleScroll = () => {
       if (homeRef.current) {
         const rect = homeRef.current.getBoundingClientRect();
-        const threshold = windowWidth >= 768 ? 0 : -1 * remToPx(8.8);
+        const threshold = windowWidth >= 1024 ? 0 : -1 * remToPx(8.8);
 
         setIsFixed(rect.top <= threshold);
       }
@@ -160,7 +160,7 @@ const Home = () => {
           <div
             className="pc"
             css={css`
-              @media (min-width: 768px) {
+              @media (min-width: 1024px) {
                 background-color: ${variables.colors.black};
                 display: flex;
                 align-items: center;
@@ -227,7 +227,7 @@ const Home = () => {
 const SectionStyle = styled.section`
   padding-top: 2rem;
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     padding-top: unset;
   }
 `;
@@ -239,7 +239,7 @@ const NavigatorStyle = styled.div<IFixedProps>`
   right: 0;
   z-index: 9;
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     top: ${(props) => (props.isFixed ? '0' : '8rem')};
   }
 `;
@@ -264,7 +264,7 @@ const RotateIconStyle = styled.img`
 `;
 
 const FilterBoxStyle = styled.div`
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     width: 100%;
     padding: 1.2rem 0rem 1.2rem 1.6rem;
     display: flex;
@@ -328,7 +328,7 @@ const FilterBoxStyle = styled.div`
 const ListStyle = styled.div`
   padding-top: 10.8rem;
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     padding-top: 5.4rem;
   }
 `;

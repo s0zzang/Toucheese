@@ -30,7 +30,7 @@ const PCHeader = ({ children }: { children: React.ReactNode }) => {
 export default PCHeader;
 
 const HeaderStyle = css`
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     display: flex;
     align-items: center;
     padding: 1rem 0;

@@ -50,7 +50,7 @@ const NavStyle = styled.nav`
   background-color: ${variables.colors.black};
   padding: 1.1rem 1rem;
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     width: unset;
     margin: 0.3rem 0;
   }
@@ -63,7 +63,7 @@ const ThemeListStyle = styled.ul`
   align-items: center;
   cursor: pointer;
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     gap: 0.85rem;
     justify-content: center;
   }

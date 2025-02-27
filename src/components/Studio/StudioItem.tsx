@@ -47,7 +47,7 @@ const StudioItem = ({
               aspect-ratio: 94 / 118;
               object-fit: cover;
 
-              @media (min-width: 768px) {
+              @media (min-width: 1024px) {
                 aspect-ratio: 141 / 177;
               }
             `}
@@ -106,7 +106,7 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
     cursor: pointer;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     padding: 3.4rem 0;
     border-bottom: unset;
   }
@@ -115,7 +115,7 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
 const ItemImageStyle = styled.div`
   margin-bottom: 1.4rem;
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     margin-bottom: 1rem;
   }
 `;

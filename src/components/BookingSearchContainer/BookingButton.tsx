@@ -24,7 +24,7 @@ const BookingButton = ({ type }: { type: 'mo' | 'pc' }) => {
     <div
       onClick={() => modal.open()}
       css={css`
-        @media (min-width: 768px) {
+        @media (min-width: 1024px) {
           margin: 1.1rem 0 1.2rem;
         }
       `}

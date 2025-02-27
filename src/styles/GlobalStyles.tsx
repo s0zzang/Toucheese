@@ -25,7 +25,7 @@ const GlobalStyles = css`
     font-size: ${variables.size.medium};
     padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
 
-    @media (min-width: 768px) {
+    @media (min-width: 1024px) {
       padding: 0 ${variables.layoutPaddingPC};
     }
   }
@@ -309,15 +309,6 @@ const GlobalStyles = css`
     }
   }
 
-  @media (min-width: 768px) {
-    .mo {
-      display: none;
-    }
-    .pc {
-      display: block;
-    }
-  }
-
   @media (min-width: 768px) and (max-width: 1023px) {
     :root {
       font-size: 12px;
@@ -332,6 +323,15 @@ const GlobalStyles = css`
   }
 
   /* PC */
+  @media (min-width: 1024px) {
+    .mo {
+      display: none;
+    }
+    .pc {
+      display: block;
+    }
+  }
+
   @media (min-width: 1024px) and (max-width: 1439px) {
     :root {
       font-size: 9px;
