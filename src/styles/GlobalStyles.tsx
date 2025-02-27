@@ -24,6 +24,10 @@ const GlobalStyles = css`
     font-family: 'Pretendard', sans-serif; /* Pretendard 폰트 적용 */
     font-size: ${variables.size.medium};
     padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
+
+    @media (min-width: 768px) {
+      padding: 0 ${variables.layoutPaddingPC};
+    }
   }
 
   html,
@@ -286,6 +290,13 @@ const GlobalStyles = css`
     ${TypoBodyMdR}
   }
 
+  .mo {
+    display: block;
+  }
+  .pc {
+    display: none;
+  }
+
   @media (max-width: 350px) {
     :root {
       font-size: 9px;
@@ -295,6 +306,15 @@ const GlobalStyles = css`
   @media (min-width: 500px) and (max-width: 767px) {
     :root {
       font-size: 11px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .mo {
+      display: none;
+    }
+    .pc {
+      display: block;
     }
   }
 
