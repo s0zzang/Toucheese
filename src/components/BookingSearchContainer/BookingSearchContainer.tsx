@@ -27,7 +27,7 @@ const BookingSearchContainer = ({ className }: { className: 'mo' }) => {
 };
 
 const BookingSearchContainerStyle = styled.div`
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     display: flex;
     align-items: center;
     margin-bottom: 1.8rem;

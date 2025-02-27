@@ -40,7 +40,7 @@ const ButtonStyle = styled.button`
     height: 1.6rem;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     width: 6rem;
     height: 6rem;
 

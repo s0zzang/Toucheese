@@ -39,7 +39,7 @@ const DivStyle = styled.div`
     margin-bottom: -0.255rem;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     height: 17.1rem;
   }
 `;
