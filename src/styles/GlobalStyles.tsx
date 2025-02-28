@@ -2,6 +2,7 @@
 import { css } from '@emotion/react';
 import variables from './Variables';
 import { TypoBodyMdR } from './Common';
+import { breakPoints } from './breakPoint';
 
 const GlobalStyles = css`
   @font-face {
@@ -16,6 +17,22 @@ const GlobalStyles = css`
     min-width: 320px;
     min-height: 100svh;
     background: ${variables.colors.white};
+
+    --breakPointPC: 500px;
+
+    --layoutPadding: 1.6rem;
+    --headerHeight: 5.6rem;
+    --maxWidth: 100%;
+
+    @media (min-width: ${breakPoints.pc}) {
+      --layoutPadding: 2.4rem;
+      --headerHeight: 8rem;
+      --maxWidth: 1280px;
+
+      max-width: calc(var(--maxWidth) + calc(var(--layoutPadding) * 2));
+      max-width: var(--maxWidth);
+      margin: 0 auto;
+    }
   }
 
   body {
@@ -25,8 +42,8 @@ const GlobalStyles = css`
     font-size: ${variables.size.medium};
     padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
 
-    @media (min-width: 1024px) {
-      padding: 0 ${variables.layoutPaddingPC};
+    @media (min-width: ${breakPoints.pc}) {
+      padding-bottom: 0;
     }
   }
 
@@ -323,7 +340,7 @@ const GlobalStyles = css`
   }
 
   /* PC */
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakPoints.pc}) {
     .mo {
       display: none;
     }
