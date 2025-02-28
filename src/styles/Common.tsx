@@ -107,8 +107,6 @@ export const PCLayout = css`
   max-width: ${variables.maxWidth};
   margin-left: auto;
   margin-right: auto;
-  padding-left: ${variables.layoutPadding};
-  padding-right: ${variables.layoutPadding};
 `;
 
 // 화면 가득 차는 배경
