@@ -22,7 +22,7 @@ const fetchReservationList = async (status: ResStatus): Promise<IResvRes> => {
   );
 
   if (!response.ok) {
-    console.error('Failed to fetch data');
+    throw new Error('Failed to fetch data');
   }
 
   return response.json();
@@ -35,5 +35,6 @@ export const useGetReservationList = (resStatus: ResStatus): UseQueryResult<IRes
     staleTime: 1000 * 60 * 1,
     refetchOnWindowFocus: false,
     retry: 3,
+    throwOnError: true,
   });
 };
