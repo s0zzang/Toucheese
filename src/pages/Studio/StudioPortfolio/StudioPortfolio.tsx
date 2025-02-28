@@ -15,6 +15,7 @@ import DimmedModal from '../components/DimmedModal';
 import PortfolioSwiper from './PortfolioSwiper';
 import { Hidden } from '@styles/Common';
 import { Helmet } from 'react-helmet-async';
+import variables from '@styles/Variables';
 
 interface IPortfolioResponse {
   menuIdList: number[];
@@ -148,5 +149,5 @@ const listStyle = css`
 `;
 
 const studioPaddingTop = css`
-  padding-top: 5.6rem;
+  padding-top: ${variables.headerHeight};
 `;
