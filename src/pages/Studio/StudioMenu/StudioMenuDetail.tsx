@@ -169,14 +169,17 @@ const MenuDescStyle = css`
 const TabMenuStyle = css`
   position: sticky;
   top: 5.5rem;
+  left: 0;
+  right: 0;
   z-index: 100;
   color: ${variables.colors.gray800};
   display: flex;
-  width: calc(100% + (${variables.layoutPadding} * 2));
-  margin-left: -${variables.layoutPadding};
-  padding: 0 ${variables.layoutPadding};
   text-align: center;
   background-color: ${variables.colors.white};
+  width: calc(100% + 3.2rem);
+  margin: 0 calc(-1 * ${variables.layoutPadding});
+  margin-left: -1.6rem;
+  padding: 0 ${variables.layoutPadding};
 
   & li {
     cursor: pointer;
