@@ -79,12 +79,22 @@ const StudioMain = () => {
     return <div>로딩</div>;
   }
 
-  /**이미지 5개 이하일때 대체할 이미지 */
-  const placeHolderImage = '/img/img-nopic.png';
-  const missingImgCount = data.portfolios.length < 5 ? 5 - data.portfolios.length : 0;
+  /** 이미지 5개 이하일 때 대체할 이미지 */
+  const placeHolderImageList = [
+    '/img/img-replace-01.svg',
+    '/img/img-replace-02.svg',
+    '/img/img-replace-03.svg',
+    '/img/img-replace-04.svg',
+    '/img/img-replace-05.svg',
+  ];
+
+  /** 대체이미지 개수 정하기 */
+  const missingImgCount = Math.max(5 - data.portfolios.length, 0);
+
+  /** placeHolderImageList의 뒤에서부터 배열 채우기 */
   const portfolioWithPlaceHolders = [
     ...data.portfolios,
-    ...Array(missingImgCount).fill({ url: placeHolderImage }),
+    ...placeHolderImageList.slice(-missingImgCount).map((url) => ({ url })),
   ];
 
   /** 환경별 이미지 조건부 렌더링 */
