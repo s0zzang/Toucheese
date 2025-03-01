@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
+import { breakPoints } from '@styles/BreakPoint';
 import { TypoBodyMdM } from '@styles/Common';
 import variables from '@styles/Variables';
 
@@ -34,12 +35,12 @@ const DivStyle = styled.div`
     content: '';
     width: 9.752rem;
     height: 9.494rem;
-    background: url('/img/icon-nopic.svg') no-repeat center / contain;
+    background: url('/img/icon-nopic-mo.svg') no-repeat center / contain;
     margin-top: auto;
     margin-bottom: -0.255rem;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakPoints.pc}) {
     height: 17.1rem;
   }
 `;

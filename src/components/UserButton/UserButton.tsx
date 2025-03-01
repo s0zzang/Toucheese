@@ -2,6 +2,7 @@
 
 import styled from '@emotion/styled';
 import { defaultUserState } from '@store/useUserStore';
+import { breakPoints } from '@styles/BreakPoint';
 import { Hidden } from '@styles/Common';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { useNavigate } from 'react-router-dom';
@@ -40,7 +41,7 @@ const ButtonStyle = styled.button`
     height: 1.6rem;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakPoints.pc}) {
     width: 6rem;
     height: 6rem;
 

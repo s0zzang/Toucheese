@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
+import { breakPoints } from '@styles/BreakPoint';
 import { Hidden } from '@styles/Common';
 import { Link } from 'react-router-dom';
 
@@ -30,7 +31,7 @@ const PCHeader = ({ children }: { children: React.ReactNode }) => {
 export default PCHeader;
 
 const HeaderStyle = css`
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakPoints.pc}) {
     display: flex;
     align-items: center;
     padding: 1rem 0;

@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import variables from './Variables';
 import { TypoBodyMdR } from './Common';
-import { breakPoints } from './breakPoint';
+import { breakPoints } from './BreakPoint';
 
 const GlobalStyles = css`
   @font-face {
@@ -332,7 +332,7 @@ const GlobalStyles = css`
     }
   }
 
-  @media (max-width: 1023px) {
+  @media (max-width: ${breakPoints.moMax}) {
     :root {
       width: 100%;
       overflow-x: clip;
@@ -349,7 +349,7 @@ const GlobalStyles = css`
     }
   }
 
-  @media (min-width: 1024px) and (max-width: 1439px) {
+  @media (min-width: ${breakPoints.pc}) and (max-width: 1439px) {
     :root {
       font-size: 9px;
     }
