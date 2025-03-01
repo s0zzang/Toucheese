@@ -3,7 +3,7 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { IResvRes, IUser } from 'types/types';
 
-export type ResStatus = 'DEFAULT' | 'COMPLETED' | 'CANCELED';
+export type ResStatus = 'DEFAULT' | 'RESERVED' | 'COMPLETED' | 'CANCELED';
 
 // 예약 상태 별 예약 내역을 불러오는 hook
 const fetchReservationList = async (status: ResStatus): Promise<IResvRes> => {
