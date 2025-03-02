@@ -31,10 +31,9 @@ interface Review {
 const StudioReview = () => {
   const { _id } = useParams();
   const [selectedMenuId, setSelectedMenuId] = useState<number | null>(null);
-  const { data, isLoading, error } = useStudioReviews(_id, selectedMenuId);
+  const { data } = useStudioReviews(_id, selectedMenuId);
   const [_, setSearchParams] = useSearchParams();
-  if (isLoading) return <div>로딩중...</div>;
-  if (error) return <div>에러가 발생했습니다</div>;
+
   if (!data) return null;
 
   const {
