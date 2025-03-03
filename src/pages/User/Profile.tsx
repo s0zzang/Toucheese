@@ -2,6 +2,7 @@
 import BackButton from '@components/BackButton/BackButton';
 import Button from '@components/Button/Button';
 import { css } from '@emotion/react';
+import { useUserStore } from '@store/useUserStore';
 import { TypoBodyMdR, TypoTitleXsB, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +18,12 @@ const Profile = () => {
 
   const handlePasswordEditPage = () => {
     navigate('/user/profile/passwordConfirm');
+  };
+
+  const logout = useUserStore((state) => state.resetUser);
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   return (
@@ -109,9 +116,13 @@ const Profile = () => {
         </div>
       </div>
 
-      <button css={accoutStyle} type="button">
-        회원 탈퇴
-      </button>
+      <div css={accoutStyle}>
+        <button type="button" onClick={handleLogout}>
+          로그아웃
+        </button>
+        <li>|</li>
+        <button type="button">회원 탈퇴</button>
+      </div>
     </>
   );
 };
@@ -155,6 +166,10 @@ const infoDataBoxStyle = css`
 `;
 
 const accoutStyle = css`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  text-align: center;
   ${TypoBodyMdR}
   color: ${variables.colors.gray600};
   position: absolute;
