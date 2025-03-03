@@ -61,6 +61,7 @@ const Button = ({
     `,
     max: css`
       width: 100%;
+      max-width: 1280px;
       box-sizing: border-box;
     `,
   };
