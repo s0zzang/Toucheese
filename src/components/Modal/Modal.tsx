@@ -59,19 +59,20 @@ const Modal = ({
 }: ModalProp) => {
   const modals = useModalStore((state) => state.modals);
   const isOpen = modals[modalId];
+  const isModalOpen = Object.values(modals).filter((boolean) => boolean).length;
   const { close } = useModal(modalId);
   const handleClose = () => close();
 
   useEffect(() => {
     // 모달이 활성화되면 html에 생기는 전체 스크롤 방지
     const htmlStyle = window.document.documentElement.style;
-    if (isOpen) htmlStyle.overflow = 'hidden';
+    if (isModalOpen) htmlStyle.overflow = 'hidden';
     else htmlStyle.overflow = 'auto';
   }, [isOpen]);
 
   return (
     isOpen && (
-      <ModalStyle type={type}>
+      <ModalStyle type={type} className="modal-box">
         <ModalInner type={type}>
           {/* default 모달 헤더 */}
           {type === 'default' && <TitleStyleDefault>{title}</TitleStyleDefault>}
@@ -147,6 +148,10 @@ const ModalStyle = styled.section<IModalStyle>`
 
   ${mqMin(breakPoints.pc)} {
     background: rgba(0, 0, 0, 0.6);
+
+    & + .modal-box {
+      background: none;
+    }
   }
 `;
 
