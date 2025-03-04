@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
-import { breakPoints } from '@styles/BreakPoint';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { Hidden } from '@styles/Common';
 import { Link } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ const PCHeader = ({ children }: { children: React.ReactNode }) => {
       <Link
         css={css`
           margin: 1.2rem 0;
+          flex-shrink: 0;
 
           & > img {
             width: 13.7rem;
@@ -31,7 +32,7 @@ const PCHeader = ({ children }: { children: React.ReactNode }) => {
 export default PCHeader;
 
 const HeaderStyle = css`
-  @media (min-width: ${breakPoints.pc}) {
+  ${mqMin(breakPoints.pc)} {
     display: flex;
     align-items: center;
     padding: 1rem 0;

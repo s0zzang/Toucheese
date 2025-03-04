@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css, CSSObject } from '@emotion/react';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdM, TypoBodySmR, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import React from 'react';
@@ -87,10 +88,16 @@ const Button = ({
       height: 3.4rem;
       padding: 0 1rem;
     `,
+
+    // PC 버전에 높이 4rem 짜리가 필요한데 없어서 임시로 생성!
     medium: css`
       ${TypoBodyMdM};
       height: 3.8rem;
       padding: 0 1rem;
+
+      ${mqMin(breakPoints.pc)} {
+        height: 4rem;
+      }
     `,
     large: css`
       ${TypoTitleXsM};
@@ -165,7 +172,14 @@ ${type === 'reset' &&
     `
     width: 3rem;
     height: 3rem;
-    border-radius: 2rem;
+    border-radius: 50%;
+
+    ${mqMin(breakPoints.pc)} {
+      width: 4rem;
+      height: 4rem;
+      padding: 1.33rem;
+      box-sizing: border-box;
+    }
     `}
 
 

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import styled from '@emotion/styled';
-import { breakPoints } from '@styles/BreakPoint';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { Hidden } from '@styles/Common';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,7 +35,7 @@ const ButtonStyle = styled.button`
     height: 1.7rem;
   }
 
-  @media (min-width: ${breakPoints.pc}) {
+  ${mqMin(breakPoints.pc)} {
     width: 6rem;
     height: 6rem;
 
