@@ -1,17 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
-import { breakPoints } from '@styles/BreakPoint';
-import { TypoBodyMdM } from '@styles/Common';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { TypoBodyMdM, TypoTitleXsR } from '@styles/Common';
 import variables from '@styles/Variables';
 
 const NoPic = () => {
   return (
     <DivStyle>
-      <p css={TypoBodyMdM}>
-        멋진 사진을 준비 중입니다.
-        <br />
-        기대해 주세요!
-      </p>
+      <p>멋진 사진을 준비 중입니다. 기대해 주세요!</p>
     </DivStyle>
   );
 };
@@ -27,8 +23,11 @@ const DivStyle = styled.div`
   & p {
     flex-grow: 1;
     flex-shrink: 0;
+    max-width: 18rem;
+
     color: ${variables.colors.gray700};
     margin: auto 0;
+    ${TypoBodyMdM}
   }
 
   &::after {
@@ -38,10 +37,30 @@ const DivStyle = styled.div`
     background: url('/img/icon-nopic-mo.svg') no-repeat center / contain;
     margin-top: auto;
     margin-bottom: -0.255rem;
+    margin-left: auto;
   }
 
-  @media (min-width: ${breakPoints.pc}) {
-    height: 17.1rem;
+  ${mqMin(breakPoints.pc)} {
+    height: 17.6rem;
+    padding: ${variables.layoutPadding};
+    flex-direction: column-reverse;
+    gap: 1.4rem;
+
+    & p {
+      flex-grow: unset;
+      max-width: unset;
+      margin: unset;
+      ${TypoTitleXsR}
+      color: ${variables.colors.gray600};
+    }
+
+    &::after {
+      content: '';
+      width: 26.5rem;
+      height: 7.6rem;
+      background: url('/img/icon-nopic-pc.svg') no-repeat center / 100%;
+      margin: 1.4rem 0 0 0.3rem;
+    }
   }
 `;
 
