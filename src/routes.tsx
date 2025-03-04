@@ -1,6 +1,5 @@
 import Error from '@components/Error/Error';
-import Layout from '@components/layout/Layout';
-import ReservationNpayCallback from '@pages/Reservation/ReservationNpayCallback';
+import Layout from '@components/Layout/Layout';
 import StudioReviewWritePage from '@pages/Studio/StudioReview/StudioReviewWritePage';
 import Auth from '@pages/User/Auth';
 import AuthVerification from '@pages/User/AuthVerification';

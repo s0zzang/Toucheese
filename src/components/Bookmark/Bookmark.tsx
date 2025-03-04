@@ -1,9 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
 import useBookmark from '@hooks/useBookmark';
+import useToast from '@hooks/useToast';
+import { defaultUserState } from '@store/useUserStore';
 import { Hidden, TypoCapXsR } from '@styles/Common';
 import variables from '@styles/Variables';
+import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { IUser } from 'types/types';
 
 interface IBookmarkState {
   isActive: boolean;
@@ -24,17 +29,27 @@ const Bookmark = ({
     count: initialCount,
   });
   const handleBookmark = useBookmark(bookmark.isActive);
+  const userState = getLocalStorageItem<IUser>('userState', defaultUserState);
+  const openToast = useToast();
+  const navigate = useNavigate();
 
   // 북마크 설정/해제 api 호출
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    await handleBookmark(1, id);
-    setBookmark((state) => ({
-      ...state,
-      isActive: !state.isActive,
-      count: state.isActive ? state.count - 1 : state.count + 1,
-    }));
+    if (userState.accessToken && userState.user_id) {
+      await handleBookmark(userState.user_id, userState.accessToken, id);
+      setBookmark((state) => ({
+        ...state,
+        isActive: !state.isActive,
+        count: state.isActive ? state.count - 1 : state.count + 1,
+      }));
+    }
+    // 로그인 되지 않은 상태면 로그인 페이지로 이동
+    else {
+      openToast('좋아요를 누르시려면 로그인이 필요합니다!');
+      navigate('/user/auth');
+    }
   };
 
   return (
