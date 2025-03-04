@@ -4,7 +4,7 @@ import NoPic from '@components/NoPic/NoPic';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { breakPoints } from '@styles/BreakPoint';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
@@ -48,7 +48,7 @@ const StudioItem = ({
               aspect-ratio: 94 / 118;
               object-fit: cover;
 
-              @media (min-width: ${breakPoints.pc}) {
+              ${mqMin(breakPoints.pc)} {
                 aspect-ratio: 141 / 177;
               }
             `}
@@ -107,7 +107,7 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
     cursor: pointer;
   }
 
-  @media (min-width: ${breakPoints.pc}) {
+  ${mqMin(breakPoints.pc)} {
     padding: 3.4rem 0;
     border-bottom: unset;
   }
@@ -116,7 +116,7 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
 const ItemImageStyle = styled.div`
   margin-bottom: 1.4rem;
 
-  @media (min-width: ${breakPoints.pc}) {
+  ${mqMin(breakPoints.pc)} {
     margin-bottom: 1rem;
   }
 `;

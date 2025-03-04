@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
-import { breakPoints } from '@styles/BreakPoint';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoTitleXsB, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
@@ -51,7 +51,7 @@ const NavStyle = styled.nav`
   background-color: ${variables.colors.black};
   padding: 1.1rem 1rem;
 
-  @media (min-width: ${breakPoints.pc}) {
+  ${mqMin(breakPoints.pc)} {
     width: unset;
     margin: 0.3rem 0;
   }
@@ -64,7 +64,7 @@ const ThemeListStyle = styled.ul`
   align-items: center;
   cursor: pointer;
 
-  @media (min-width: ${breakPoints.pc}) {
+  ${mqMin(breakPoints.pc)} {
     gap: 0.85rem;
     justify-content: center;
   }

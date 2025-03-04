@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import { changeformatDateForUi } from '@store/useSelectDateStore';
-import { breakPoints } from '@styles/BreakPoint';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdR, TypoBodyMdSb, TypoCapSmM, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useSearchParams } from 'react-router-dom';
@@ -27,7 +27,7 @@ const BookingButton = ({ type }: { type: 'mo' | 'pc' }) => {
       className={type}
       onClick={() => modal.open()}
       css={css`
-        @media (min-width: ${breakPoints.pc}) {
+        ${mqMin(breakPoints.pc)} {
           margin: 1.1rem 0 1.2rem;
         }
       `}

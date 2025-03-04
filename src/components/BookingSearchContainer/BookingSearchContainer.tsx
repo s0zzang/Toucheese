@@ -5,8 +5,8 @@ import UserButton from '@components/UserButton/UserButton';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import LocalDateSelectionModal from '@pages/Home/components/LocalDateSelectionModal';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import BookingButton from './BookingButton';
-import { breakPoints } from '@styles/BreakPoint';
 
 /** 메인 전체 지역 예약 날짜 선택 등  */
 const BookingSearchContainer = ({ className }: { className: 'mo' }) => {
@@ -28,10 +28,12 @@ const BookingSearchContainer = ({ className }: { className: 'mo' }) => {
 };
 
 const BookingSearchContainerStyle = styled.div`
-  @media (max-width: ${breakPoints.moMax}) {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.8rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.8rem;
+
+  ${mqMin(breakPoints.pc)} {
+    display: none;
   }
 `;
 

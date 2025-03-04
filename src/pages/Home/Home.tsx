@@ -9,7 +9,6 @@ import FilterTextSelector from '@components/Filter/FilterTextSelector';
 import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
 import ThemeNavigator from '@components/Navigator/ThemeNavigator';
 import PCHeader from '@components/PCHeader/PCHeader';
-import SearchButton from '@components/SearchButton/SearchButton';
 import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 import StudioList from '@components/Studio/StudioList';
 import UserButton from '@components/UserButton/UserButton';
@@ -17,6 +16,8 @@ import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import useGetWindowWidth from '@hooks/useGetWindowWidth';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { bg100vw, Hidden, PCLayout, TypoBodyMdSb, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { remToPx } from '@utils/remToPx';
@@ -24,8 +25,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './components/LocalDateSelectionModal';
-import { breakPoints } from '@styles/BreakPoint';
-import { bg100vw, PCLayout } from '@styles/Common';
 
 interface IFixedProps {
   isFixed: boolean;
@@ -68,7 +67,7 @@ const Home = () => {
     const handleScroll = () => {
       if (homeRef.current) {
         const rect = homeRef.current.getBoundingClientRect();
-        const threshold = windowWidth >= 1024 ? remToPx(0.4) : -1 * remToPx(8.8);
+        const threshold = windowWidth >= 1024 ? remToPx(0) : -1 * remToPx(8.8);
 
         setIsFixed(rect.top <= threshold);
       }
@@ -141,93 +140,194 @@ const Home = () => {
       <PCHeader>
         <div
           css={css`
+            flex-grow: 1;
             display: flex;
+            align-items: center;
+          `}
+        >
+          <div
+            css={css`
+              margin: 0.6rem auto;
+              position: relative;
+              width: 60rem;
+
+              &::before {
+                content: '';
+                display: inline-block;
+                width: 3.6rem;
+                height: 3.6rem;
+                position: absolute;
+                left: 1.6rem;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 9;
+                background: url('/img/icon-search.svg') no-repeat center / 2.6rem 2.6rem;
+              }
+            `}
+          >
+            <InputStyle
+              className="search-pc"
+              type="text"
+              value={''}
+              onChange={() => {}}
+              onKeyUp={() => {}}
+            />
+
+            {/* 모두 지우기 버튼 활성화 조건 */}
+            {true && (
+              <button
+                onClick={() => {}}
+                css={css`
+                  width: 2rem;
+                  height: 2rem;
+                  position: absolute;
+                  right: 1.6rem;
+                  top: 50%;
+                  transform: translateY(-50%);
+                `}
+              >
+                <img
+                  src="/img/icon-cancel.svg"
+                  alt="모두지우기버튼"
+                  css={css`
+                    display: block;
+                    margin: auto;
+                    width: 1.7rem;
+                    height: 1.7rem;
+                  `}
+                />
+              </button>
+            )}
+          </div>
+        </div>
+        <div
+          css={css`
+            flex-shrink: 0;
             margin-left: auto;
           `}
         >
-          <SearchButton />
           <UserButton />
         </div>
       </PCHeader>
+
+      <NavigatorStyle isFixed={isFixed}>
+        <div
+          css={css`
+            ${mqMin(breakPoints.pc)} {
+              ${PCLayout}
+              ${bg100vw(variables.colors.black)}
+              display: flex;
+              align-items: center;
+              gap: 5.2rem;
+              padding: 0 ${variables.layoutPadding};
+            }
+          `}
+        >
+          <BookingButton type="pc" />
+          <ThemeNavigator />
+        </div>
+
+        {/* 모바일 필터 영역 */}
+        <FilterBoxStyle className="mo">
+          <ButtonWrapperStyle onClick={handleReset} className={isAnimating ? 'rotateIcon' : ''}>
+            <Button
+              text=""
+              type="reset"
+              variant="gray"
+              icon={
+                <RotateIconStyle
+                  className={isAnimating ? 'rotateIcon' : ''}
+                  src="/img/icon-reset.svg"
+                  alt="필터 초기화"
+                />
+              }
+              onClick={handleReset}
+            />
+          </ButtonWrapperStyle>
+          <div className="filterScroll">
+            <Filter
+              params={window.location.search}
+              text="인기순"
+              paramsKeyword={sortBy}
+              paramsName="sortBy"
+              onClick={handleFilterByPopularity}
+            />
+            <Filter
+              params={window.location.search}
+              paramsName={'minPrice'}
+              text="가격대"
+              onClick={handleFilterByPriceRange}
+            />
+            <Filter
+              params={window.location.search}
+              text="매장정보"
+              paramsKeyword={options}
+              paramsName="options"
+              onClick={handleFilterByStoreInfo}
+            />
+          </div>
+        </FilterBoxStyle>
+      </NavigatorStyle>
 
       <SectionStyle ref={homeRef}>
         {/* 모바일 지역, 날짜 선택 버튼 */}
         <BookingSearchContainer className="mo" />
 
-        <NavigatorStyle isFixed={isFixed}>
-          <div
-            css={css`
-              @media (min-width: ${breakPoints.pc}) {
-                ${PCLayout}
-                ${bg100vw(variables.colors.black)}
-                background-color: ${variables.colors.black};
-                display: flex;
-                align-items: center;
-                gap: 5.2rem;
-                padding: 0 ${variables.layoutPadding};
-              }
-            `}
-          >
-            <BookingButton type="pc" />
-            <ThemeNavigator />
-          </div>
-
-          {/* 모바일 필터 영역 */}
-          <FilterBoxStyle className="mo">
-            <ButtonWrapperStyle onClick={handleReset} className={isAnimating ? 'rotateIcon' : ''}>
-              <Button
-                text=""
-                type="reset"
-                variant="gray"
-                icon={
-                  <RotateIconStyle
-                    className={isAnimating ? 'rotateIcon' : ''}
-                    src="/img/icon-reset.svg"
-                    alt="필터 초기화"
-                  />
-                }
-                onClick={handleReset}
-              />
-            </ButtonWrapperStyle>
-            <div className="filterScroll">
-              <Filter
-                params={window.location.search}
-                text="인기순"
-                paramsKeyword={sortBy}
-                paramsName="sortBy"
-                onClick={handleFilterByPopularity}
-              />
-              <Filter
-                params={window.location.search}
-                paramsName={'minPrice'}
-                text="가격대"
-                onClick={handleFilterByPriceRange}
-              />
-              <Filter
-                params={window.location.search}
-                text="매장정보"
-                paramsKeyword={options}
-                paramsName="options"
-                onClick={handleFilterByStoreInfo}
-              />
-            </div>
-          </FilterBoxStyle>
-        </NavigatorStyle>
-
-        {/* PC 버전 필터 영역 */}
+        {/* PC 버전 컨텐츠 */}
         <div
           css={css`
-            @media (min-width: 1024px) {
-              padding-top: 5.8rem;
+            ${mqMin(breakPoints.pc)} {
               display: flex;
               gap: 1.6rem;
               position: relative;
             }
           `}
         >
-          <FilterSection className="pc" isFixed={isFixed}>
-            여기는 필터 영역
-          </FilterSection>
+          {/* PC 필터 영역 */}
+          <FilterSectionStyle className="pc" isFixed={isFixed}>
+            <FilterContentStyle>
+              <div className="filter-sort">
+                <p>매장 정렬</p>
+                <div>정렬 영역</div>
+              </div>
+
+              <div className="filter-price">
+                <p>가격</p>
+                <div>가격 필터 영역</div>
+              </div>
+
+              <div className="filter-options">
+                <p>매장 정보·서비스</p>
+                <div>매장 정보·서비스 필터 영역</div>
+              </div>
+            </FilterContentStyle>
+            <FilterButtonBoxStyle>
+              <ButtonWrapperStyle onClick={handleReset} className={isAnimating ? 'rotateIcon' : ''}>
+                <span css={Hidden}>초기화</span>
+                <Button
+                  text=""
+                  type="reset"
+                  variant="gray"
+                  icon={
+                    <RotateIconStyle
+                      className={isAnimating ? 'rotateIcon' : ''}
+                      src="/img/icon-reset.svg"
+                      alt="필터 초기화"
+                    />
+                  }
+                  onClick={handleReset}
+                />
+              </ButtonWrapperStyle>
+              <Button
+                type="button"
+                size="medium"
+                text={`필터 적용하기`}
+                width="max"
+                variant="black"
+                onClick={() => {}}
+              />
+            </FilterButtonBoxStyle>
+          </FilterSectionStyle>
           <ListStyle>
             <StudioList mode="filter" searchParams={searchParams} />
           </ListStyle>
@@ -239,11 +339,25 @@ const Home = () => {
   );
 };
 
+const InputStyle = styled.input`
+  &.search-pc {
+    all: unset;
+    width: 60rem;
+    background-color: ${variables.colors.gray200};
+    padding: 1.1rem 4.6rem 1.1rem 6.2rem;
+    box-sizing: border-box;
+    ${TypoTitleXsM}
+    color: ${variables.colors.black};
+    border-radius: 1rem;
+    position: relative;
+  }
+`;
+
 const SectionStyle = styled.section`
   padding-top: 2rem;
 
-  @media (min-width: ${breakPoints.pc}) {
-    padding-top: unset;
+  ${mqMin(breakPoints.pc)} {
+    padding-top: 5.8rem;
   }
 `;
 
@@ -254,7 +368,7 @@ const NavigatorStyle = styled.div<IFixedProps>`
   right: 0;
   z-index: 9;
 
-  @media (min-width: ${breakPoints.pc}) {
+  ${mqMin(breakPoints.pc)} {
     top: ${(props) => (props.isFixed ? '0' : '8rem')};
   }
 `;
@@ -279,84 +393,119 @@ const RotateIconStyle = styled.img`
 `;
 
 const FilterBoxStyle = styled.div`
-  @media (max-width: ${breakPoints.moMax}) {
-    width: 100%;
-    padding: 1.2rem 0rem 1.2rem 1.6rem;
+  width: 100%;
+  padding: 1.2rem 0rem 1.2rem 1.6rem;
+  display: flex;
+  gap: 0.6rem;
+  box-shadow: 0 0 2px ${variables.colors.gray500};
+  position: relative;
+  background-color: ${variables.colors.white};
+
+  & ::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  & > Button {
+    flex-shrink: 0;
+    margin: auto 0;
+  }
+
+  .filterScroll {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* 모바일 스크롤 */
+    scrollbar-width: thin; /* 크롬, 파이어폭스에서 스크롤바 스타일 */
+    white-space: nowrap;
     display: flex;
-    gap: 0.6rem;
-    box-shadow: 0 0 2px ${variables.colors.gray500};
+    gap: 0.8rem;
     position: relative;
+  }
+
+  /* 크롬, 사파리 */
+  .filterScroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filterScroll {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE, Edge */
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 4.8rem;
+    bottom: 0;
+    z-index: 1;
+    height: 80%;
+    width: 0.6rem;
+    box-shadow: 0.4rem 0 0.2rem rgba(255, 255, 255, 10);
+
     background-color: ${variables.colors.white};
+  }
 
-    & ::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      z-index: 1;
-    }
-
-    & > Button {
-      flex-shrink: 0;
-      margin: auto 0;
-    }
-
-    .filterScroll {
-      padding-left: 1rem;
-      padding-right: 1rem;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch; /* 모바일 스크롤 */
-      scrollbar-width: thin; /* 크롬, 파이어폭스에서 스크롤바 스타일 */
-      white-space: nowrap;
-      display: flex;
-      gap: 0.8rem;
-      position: relative;
-    }
-
-    /* 크롬, 사파리 */
-    .filterScroll::-webkit-scrollbar {
-      display: none;
-    }
-
-    .filterScroll {
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE, Edge */
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 10%;
-      left: 4.8rem;
-      bottom: 0;
-      z-index: 1;
-      height: 80%;
-      width: 0.6rem;
-      box-shadow: 0.4rem 0 0.2rem rgba(255, 255, 255, 10);
-
-      background-color: ${variables.colors.white};
-    }
+  ${mqMin(breakPoints.pc)} {
+    display: none;
   }
 `;
 
-const FilterSection = styled.div<IFixedProps>`
-  box-shadow: inset 0 0 10px blue;
+const FilterSectionStyle = styled.div<IFixedProps>`
   flex-shrink: 0;
   padding-top: 3rem;
   position: sticky;
   top: ${(props) => (props.isFixed ? '5.8rem' : '0')};
   left: 0;
-  box-sizing: border-box;
   width: 19.2rem;
-  height: ${(props) => (props.isFixed ? 'calc(100vh - 5.8rem)' : 'calc(100vh - 10.8rem)')};
-  transition: height 0.1s;
+  height: ${(props) => (props.isFixed ? 'calc(100vh - 5.8rem)' : 'calc(100vh - 13.8rem)')};
+`;
+
+const FilterContentStyle = styled.div`
+  .filter-sort,
+  .filter-price,
+  .filter-options {
+    > p {
+      ${TypoBodyMdSb}
+      color: ${variables.colors.gray800};
+      margin-bottom: 0.8rem;
+    }
+  }
+
+  .filter-sort {
+    padding-bottom: 2rem;
+    border-bottom: 0.1rem solid ${variables.colors.gray300};
+  }
+
+  .filter-price {
+    margin-top: 2rem;
+    margin-bottom: 3.4rem;
+  }
+`;
+
+const FilterButtonBoxStyle = styled.div`
+  background-color: ${variables.colors.white};
+  padding: 1.6rem 0 2.6rem;
+  position: fixed;
+  width: 19.2rem;
+  z-index: 9;
+  bottom: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
 `;
 
 const ListStyle = styled.div`
   padding-top: 10.8rem;
 
-  @media (min-width: ${breakPoints.pc}) {
+  ${mqMin(breakPoints.pc)} {
     padding: 0 1.6rem 3rem;
     flex-grow: 1;
   }
