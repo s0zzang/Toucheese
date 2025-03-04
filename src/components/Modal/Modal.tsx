@@ -192,10 +192,9 @@ const TitleStyle = styled.div<ITitleStyle>`
   color: ${(props) => props.type === 'dimmed' && variables.colors.white};
 
   ${mqMax(breakPoints.moMax)} {
-    position: ${(props) => props.type === 'fullscreen' && 'sticky'};
+    position: ${(props) => (props.type === 'fullscreen' ? 'sticky' : 'fixed')};
     padding: ${(props) => (props.type === 'fullscreen' ? '1.4rem 0' : '2.8rem 0')};
     min-height: 5.2rem;
-    position: fixed;
     left: 2rem;
     right: 2rem;
     top: 0;
