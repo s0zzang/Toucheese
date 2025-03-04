@@ -85,6 +85,7 @@ const StudioReview = () => {
             <p css={TypoCapSmR}>{totalImageNum}개</p>
           </ReviewTitleWrapperStyle>
           {/* 리뷰 이미지 모아보기 컴포넌트 */}
+
           <StudioReviewImageList pageId={_id} samplePhotoList={samplePhotoList} />
         </ReviewPhotosWrapperStyle>
         {/* 스튜디오 리뷰 카테고리 */}

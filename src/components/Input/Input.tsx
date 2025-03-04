@@ -18,6 +18,7 @@ interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   checkButtonText?: string;
   inputWidth?: string;
+  defaultValue?: string;
   isValid?: boolean;
 }
 
@@ -32,8 +33,9 @@ const Input = ({
   checkButtonText = '중복확인',
   inputWidth = '100%',
   isValid,
+  defaultValue,
 }: InputProps) => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(defaultValue || '');
   const [showPassword, setShowPassword] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
