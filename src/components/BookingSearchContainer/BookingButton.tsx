@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import { changeformatDateForUi } from '@store/useSelectDateStore';
+import { breakPoints } from '@styles/BreakPoint';
 import { TypoBodyMdR, TypoBodyMdSb, TypoCapSmM, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useSearchParams } from 'react-router-dom';
@@ -21,46 +22,47 @@ const BookingButton = ({ type }: { type: 'mo' | 'pc' }) => {
   });
 
   return (
-    <div
+    <button
+      type="button"
+      className={type}
       onClick={() => modal.open()}
       css={css`
-        @media (min-width: 1024px) {
+        @media (min-width: ${breakPoints.pc}) {
           margin: 1.1rem 0 1.2rem;
         }
       `}
     >
-      <ButtonStyle type="button" windowType={type}>
-        <h1 css={type === 'mo' ? TypoTitleSmS : TypoBodyMdSb}>
+      <ButtonTitleStyle windowType={type}>
+        <span css={type === 'mo' ? TypoTitleSmS : TypoBodyMdSb}>
           {searchParams.get('addressGu') || '서울전체'}
-        </h1>
-        <img
-          src={`/img/icon-arrowdown-${type === 'mo' ? 'black' : 'white'}.svg`}
-          alt="지역 및 날짜 선택"
-        />
-      </ButtonStyle>
-      <ButtonTitleDes css={type === 'mo' ? TypoBodyMdR : TypoCapSmM}>
+        </span>
+      </ButtonTitleStyle>
+      <ButtonDesStyle css={type === 'mo' ? TypoBodyMdR : TypoCapSmM}>
         {searchParamsDateTime || '예약 날짜와 시간을 선택해주세요.'}
-      </ButtonTitleDes>
-    </div>
+      </ButtonDesStyle>
+    </button>
   );
 };
 
-const ButtonStyle = styled.button<IButtonType>`
+const ButtonTitleStyle = styled.span<IButtonType>`
   display: flex;
   align-items: center;
-  gap: 0.4rem;
   color: ${(props) =>
     props.windowType === 'mo' ? variables.colors.black : variables.colors.white};
 
-  & > img {
-    width: 1.6rem;
-    height: 0.9rem;
+  &::after {
+    content: '';
+    width: ${(props) => (props.windowType === 'mo' ? '2.4rem' : '1.6rem')};
+    height: ${(props) => (props.windowType === 'mo' ? '2.4rem' : '1.6rem')};
+    background: ${(props) =>
+      props.windowType === 'mo'
+        ? 'url("/img/icon-arrowdown-black.svg") no-repeat center / 1.6rem 0.9rem'
+        : 'url("/img/icon-arrowdown-white.svg") no-repeat center / 1.1rem 0.6rem'};
   }
 `;
 
-const ButtonTitleDes = styled.p`
+const ButtonDesStyle = styled.span`
   color: ${variables.colors.gray600};
-  cursor: pointer;
 `;
 
 export default BookingButton;

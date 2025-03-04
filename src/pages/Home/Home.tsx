@@ -24,6 +24,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './components/LocalDateSelectionModal';
+import { breakPoints } from '@styles/BreakPoint';
+import { bg100vw, PCLayout } from '@styles/Common';
 
 interface IFixedProps {
   isFixed: boolean;
@@ -66,7 +68,7 @@ const Home = () => {
     const handleScroll = () => {
       if (homeRef.current) {
         const rect = homeRef.current.getBoundingClientRect();
-        const threshold = windowWidth >= 1024 ? 0 : -1 * remToPx(8.8);
+        const threshold = windowWidth >= 1024 ? remToPx(0.4) : -1 * remToPx(8.8);
 
         setIsFixed(rect.top <= threshold);
       }
@@ -74,7 +76,7 @@ const Home = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [windowWidth]);
 
   const { openBottomSheet } = useBottomSheetState();
 
@@ -135,6 +137,7 @@ const Home = () => {
         <meta property="og:description" content="터치즈에서 원하는 스튜디오를 검색해보세요!" />
       </Helmet>
 
+      {/* PC 버전 헤더 */}
       <PCHeader>
         <div
           css={css`
@@ -148,24 +151,20 @@ const Home = () => {
       </PCHeader>
 
       <SectionStyle ref={homeRef}>
+        {/* 모바일 지역, 날짜 선택 버튼 */}
         <BookingSearchContainer className="mo" />
 
         <NavigatorStyle isFixed={isFixed}>
-          {/* 모바일 버전 */}
-          <div className="mo">
-            <ThemeNavigator />
-          </div>
-
-          {/* PC 버전 */}
           <div
-            className="pc"
             css={css`
-              @media (min-width: 1024px) {
+              @media (min-width: ${breakPoints.pc}) {
+                ${PCLayout}
+                ${bg100vw(variables.colors.black)}
                 background-color: ${variables.colors.black};
                 display: flex;
                 align-items: center;
                 gap: 5.2rem;
-                padding: 0 ${variables.layoutPaddingPC};
+                padding: 0 ${variables.layoutPadding};
               }
             `}
           >
@@ -173,6 +172,7 @@ const Home = () => {
             <ThemeNavigator />
           </div>
 
+          {/* 모바일 필터 영역 */}
           <FilterBoxStyle className="mo">
             <ButtonWrapperStyle onClick={handleReset} className={isAnimating ? 'rotateIcon' : ''}>
               <Button
@@ -214,9 +214,24 @@ const Home = () => {
           </FilterBoxStyle>
         </NavigatorStyle>
 
-        <ListStyle>
-          <StudioList mode="filter" searchParams={searchParams} />
-        </ListStyle>
+        {/* PC 버전 필터 영역 */}
+        <div
+          css={css`
+            @media (min-width: 1024px) {
+              padding-top: 5.8rem;
+              display: flex;
+              gap: 1.6rem;
+              position: relative;
+            }
+          `}
+        >
+          <FilterSection className="pc" isFixed={isFixed}>
+            여기는 필터 영역
+          </FilterSection>
+          <ListStyle>
+            <StudioList mode="filter" searchParams={searchParams} />
+          </ListStyle>
+        </div>
       </SectionStyle>
       <BottomSheet />
       <LocalDateSelectionModal modalId={1} />
@@ -227,7 +242,7 @@ const Home = () => {
 const SectionStyle = styled.section`
   padding-top: 2rem;
 
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakPoints.pc}) {
     padding-top: unset;
   }
 `;
@@ -239,7 +254,7 @@ const NavigatorStyle = styled.div<IFixedProps>`
   right: 0;
   z-index: 9;
 
-  @media (min-width: 1024px) {
+  @media (min-width: ${breakPoints.pc}) {
     top: ${(props) => (props.isFixed ? '0' : '8rem')};
   }
 `;
@@ -264,7 +279,7 @@ const RotateIconStyle = styled.img`
 `;
 
 const FilterBoxStyle = styled.div`
-  @media (max-width: 1023px) {
+  @media (max-width: ${breakPoints.moMax}) {
     width: 100%;
     padding: 1.2rem 0rem 1.2rem 1.6rem;
     display: flex;
@@ -325,11 +340,25 @@ const FilterBoxStyle = styled.div`
   }
 `;
 
+const FilterSection = styled.div<IFixedProps>`
+  box-shadow: inset 0 0 10px blue;
+  flex-shrink: 0;
+  padding-top: 3rem;
+  position: sticky;
+  top: ${(props) => (props.isFixed ? '5.8rem' : '0')};
+  left: 0;
+  box-sizing: border-box;
+  width: 19.2rem;
+  height: ${(props) => (props.isFixed ? 'calc(100vh - 5.8rem)' : 'calc(100vh - 10.8rem)')};
+  transition: height 0.1s;
+`;
+
 const ListStyle = styled.div`
   padding-top: 10.8rem;
 
-  @media (min-width: 1024px) {
-    padding-top: 5.4rem;
+  @media (min-width: ${breakPoints.pc}) {
+    padding: 0 1.6rem 3rem;
+    flex-grow: 1;
   }
 `;
 
