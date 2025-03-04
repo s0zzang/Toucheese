@@ -24,8 +24,6 @@ const DivStyle = styled.div`
     flex-grow: 1;
     flex-shrink: 0;
     max-width: 18rem;
-    flex-wrap: wrap;
-    word-break: keep-all;
 
     color: ${variables.colors.gray700};
     margin: auto 0;
