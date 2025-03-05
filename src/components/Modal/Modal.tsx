@@ -65,16 +65,22 @@ const Modal = ({
   const { close } = useModal(modalId);
   const handleClose = () => close();
 
+  const handleDimClick = (e: React.MouseEvent) => {
+    const eventTarget = e.target as HTMLElement;
+    if (!eventTarget.classList.contains('modal-box')) return;
+    close();
+  };
+
   useEffect(() => {
     // 모달이 활성화되면 html에 생기는 전체 스크롤 방지
     const htmlStyle = window.document.documentElement.style;
-    if (isModalOpen) htmlStyle.overflow = 'hidden';
-    else htmlStyle.overflow = 'auto';
+    if (isModalOpen) htmlStyle.overflowY = 'hidden';
+    else htmlStyle.overflowY = 'auto';
   }, [isOpen]);
 
   return (
     isOpen && (
-      <ModalStyle type={type} className="modal-box">
+      <ModalStyle type={type} className="modal-box" onClick={(e) => handleDimClick(e)}>
         <ModalInner type={type}>
           {/* default 모달 헤더 */}
           {type === 'default' && <TitleStyleDefault>{title}</TitleStyleDefault>}
@@ -152,50 +158,52 @@ const ModalStyle = styled.section<IModalStyle>`
   ${mqMax(breakPoints.moMax)} {
     background: ${(props) =>
       props.type === 'fullscreen' ? variables.colors.white : ' rgba(0, 0, 0, 0.85)'};
-    margin-top: -5.2rem;
-    padding: ${(props) => props.type !== 'default' && `5.2rem ${variables.layoutPadding} 10rem`};
+    padding: 0 ${variables.layoutPadding} 10rem;
+    padding-top: ${(props) => props.type === 'dimmed' && variables.headerHeight};
     display: flex;
     flex-direction: column;
     justify-content: ${(props) => (props.type !== 'fullscreen' ? '' : 'space-between')};
   }
 
   ${mqMin(breakPoints.pc)} {
-    background: rgba(0, 0, 0, 0.6);
-
-    & + .modal-box {
-      background: none;
+    &:last-of-type {
+      background: rgba(0, 0, 0, 0.6);
     }
   }
 `;
 
 const ModalInner = styled.div<IModalStyle>`
-  background: #fff;
-
   ${(props) =>
     props.type === 'default' &&
     `
-    width: calc(100% - 6rem);
-    margin: auto;
-    max-width: 30rem;
-    min-height: 18rem;
-    padding: 3rem 2rem 2rem;
-    border-radius: 1.4rem;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: .6rem;
-    `}
+  width: calc(100% - 6rem);
+  margin: auto;
+  max-width: 30rem;
+  min-height: 18rem;
+  padding: 3rem 2rem 2rem;
+  border-radius: 1.4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  `}
+
+  ${mqMax(breakPoints.moMax)} {
+    background: ${(props) => props.type !== 'dimmed' && '#fff'};
+    height: ${(props) => props.type !== 'default' && '100%'};
+  }
 
   ${mqMin(breakPoints.pc)} {
+    background: #fff;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
-    max-width: 54rem;
     width: 100%;
-    min-height: 45.6rem;
+    max-width: ${(props) => (props.type === 'default' ? '45rem' : '54rem')};
+    min-height: ${(props) => (props.type === 'default' ? '20rem' : '45.6rem')};
     max-height: calc(100vh - 8rem);
     border-radius: 2rem;
   }
@@ -305,8 +313,9 @@ const ButtonBoxStyle = styled.div<IModalStyle>`
   }
 
   ${mqMin(breakPoints.pc)} {
-    padding: 1.8rem ${variables.layoutPadding} 3rem;
-    border-top: 1px solid ${variables.colors.gray300};
+    padding: ${(props) =>
+      props.type === 'default' ? `1.8rem 0 0` : `1.8rem ${variables.layoutPadding} 3rem`};
+    border-top: ${(props) => props.type !== 'default' && `1px solid ${variables.colors.gray300}`};
     gap: 0.8rem;
   }
 `;
