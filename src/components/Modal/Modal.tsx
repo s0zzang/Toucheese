@@ -63,6 +63,12 @@ const Modal = ({
   const { close } = useModal(modalId);
   const handleClose = () => close();
 
+  const handleDimClick = (e: React.MouseEvent) => {
+    const eventTarget = e.target as HTMLElement;
+    if (!eventTarget.classList.contains('modal-box')) return;
+    close();
+  };
+
   useEffect(() => {
     // 모달이 활성화되면 html에 생기는 전체 스크롤 방지
     const htmlStyle = window.document.documentElement.style;
@@ -72,7 +78,7 @@ const Modal = ({
 
   return (
     isOpen && (
-      <ModalStyle type={type} className="modal-box">
+      <ModalStyle type={type} className="modal-box" onClick={(e) => handleDimClick(e)}>
         <ModalInner type={type}>
           {/* default 모달 헤더 */}
           {type === 'default' && <TitleStyleDefault>{title}</TitleStyleDefault>}
@@ -172,6 +178,10 @@ const ModalInner = styled.div<IModalStyle>`
     flex-direction: column;
     gap: .6rem;
     `}
+
+  ${mqMax(breakPoints.moMax)} {
+    height: ${(props) => props.type === 'fullscreen' && '100%'};
+  }
 
   ${mqMin(breakPoints.pc)} {
     position: absolute;
