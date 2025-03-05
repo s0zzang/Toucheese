@@ -19,8 +19,10 @@ interface ModalProp {
   buttons?: {
     text: string;
     event: () => void;
-    variant?: 'black' | 'gray';
+    variant?: 'black' | 'gray' | 'deepGray';
+    active?: boolean;
     width?: 'max' | 'fit';
+    type?: 'button' | 'submit';
   }[];
 }
 
@@ -110,16 +112,27 @@ const Modal = ({
           {/* Buttons */}
           {withBtn && (
             <ButtonBoxStyle type={type}>
-              {buttons?.map(({ text, variant = 'black', event, width = 'max' }) => (
-                <Button
-                  key={text}
-                  variant={variant}
-                  onClick={event}
-                  text={text}
-                  disabled={false}
-                  width={width}
-                />
-              ))}
+              {buttons?.map(
+                ({
+                  text,
+                  variant = 'black',
+                  event,
+                  width = 'max',
+                  active = true,
+                  type = 'button',
+                }) => (
+                  <Button
+                    key={text}
+                    variant={variant}
+                    onClick={event}
+                    text={text}
+                    // disabled={false}
+                    active={active}
+                    width={width}
+                    type={type}
+                  />
+                ),
+              )}
             </ButtonBoxStyle>
           )}
         </ModalInner>
