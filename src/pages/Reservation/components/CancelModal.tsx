@@ -7,7 +7,11 @@ import useModal from '@hooks/useModal';
 import { TypoTitleSmS, TypoTitleXsR } from '@styles/Common';
 import { useState } from 'react';
 
-const CancelModal = () => {
+export interface CancleModalProps {
+  modalId: number;
+}
+
+const CancelModal = ({ modalId }: CancleModalProps) => {
   const cancelReasonModal = useModal(1);
   const cancelConfirmModal = useModal(2);
   const [textareaValue, setTextareaValue] = useState('');
@@ -96,7 +100,7 @@ const CancelModal = () => {
       </Modal>
 
       <Modal
-        modalId={2}
+        modalId={modalId}
         type="default"
         title="정말 예약을 취소하시겠어요?"
         buttons={cancelConfirmButton}
