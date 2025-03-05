@@ -105,21 +105,22 @@ const swiperStyle = css`
     display: flex;
     justify-content: center;
     transform: translateX(-50%);
+  }
 
-    & .swiper-pagination-bullet {
-      background-color: ${variables.colors.white};
-      opacity: 0.8;
-      width: 100%;
-      height: 0.2rem;
-      margin: 0;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
+  & .swiper-pagination.swiper-pagination-horizontal .swiper-pagination-bullet {
+    background-color: ${variables.colors.white};
+    opacity: 0.8;
+    width: 100%;
+    height: 0.2rem;
+    margin: 0;
+    transition: all 0.3s ease;
+    border-radius: 0;
+    cursor: pointer;
+  }
 
-    & .swiper-pagination-bullet-active {
-      background-color: ${variables.colors.black};
-      opacity: 1;
-    }
+  & .swiper-pagination.swiper-pagination-horizontal .swiper-pagination-bullet-active {
+    background-color: ${variables.colors.black};
+    opacity: 1;
   }
 `;
 
