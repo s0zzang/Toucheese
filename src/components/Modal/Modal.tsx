@@ -4,7 +4,7 @@ import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import { useModalStore } from '@store/useModalStore';
-import { breakPoints, mqMax, mqMin } from '@styles/breakPoint';
+import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import { Hidden, TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect } from 'react';
@@ -66,8 +66,8 @@ const Modal = ({
   useEffect(() => {
     // 모달이 활성화되면 html에 생기는 전체 스크롤 방지
     const htmlStyle = window.document.documentElement.style;
-    if (isModalOpen) htmlStyle.overflow = 'hidden';
-    else htmlStyle.overflow = 'auto';
+    if (isModalOpen) htmlStyle.overflowY = 'hidden';
+    else htmlStyle.overflowY = 'auto';
   }, [isOpen]);
 
   return (
