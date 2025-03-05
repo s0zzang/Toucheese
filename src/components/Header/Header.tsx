@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import BackButton from '@components/BackButton/BackButton';
 import { css, SerializedStyles } from '@emotion/react';
-import { TypoTitleXsM, TypoTitleXsSB } from '@styles/Common';
+import { TypoTitleXsSB } from '@styles/Common';
 import variables from '@styles/Variables';
 
 interface HeaderProps {

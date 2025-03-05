@@ -271,7 +271,7 @@ const Home = () => {
 
       <SectionStyle ref={homeRef}>
         {/* 모바일 지역, 날짜 선택 버튼 */}
-        <BookingSearchContainer className="mo" />
+        <BookingSearchContainer />
 
         {/* PC 버전 컨텐츠 */}
         <div

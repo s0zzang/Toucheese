@@ -132,7 +132,7 @@ const Payment = ({
       (rsp: PaymentResponse) => {
         if (rsp.success) {
           console.log('결제 성공:', rsp);
-          console.log('보낼 바디 값:', JSON.stringify(requestBody, null, 2));
+          // console.log('보낼 바디 값:', JSON.stringify(requestBody, null, 2));
 
           fetch(`${import.meta.env.VITE_TOUCHEESE_API}/reservation/action`, {
             method: 'POST',
