@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 
 interface InputProps {
   labelName: string;
-  type: string;
+  type?: string;
   value?: string;
   placeholder: string;
   error?: string;
@@ -20,6 +20,7 @@ interface InputProps {
   inputWidth?: string;
   defaultValue?: string;
   isValid?: boolean;
+  borderRadius?: string;
 }
 
 const Input = ({
@@ -34,14 +35,36 @@ const Input = ({
   inputWidth = '100%',
   isValid,
   defaultValue,
+  borderRadius = '0.6rem',
 }: InputProps) => {
   const [inputValue, setInputValue] = useState(defaultValue || '');
   const [showPassword, setShowPassword] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
+  /** 머니 포맷터 */
+  const formatMoney = (value: string) => {
+    // 숫자가 아닌 문자 제거
+    const numbers = value.replace(/[^\d]/g, '');
+    // 천 단위 쉼표 추가
+    return numbers.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  /** 인풋 타입이 money 인 경우 값을 쉼표 단위로 변경해주는 함수 */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-    register?.onChange?.(e);
+    if (initialType === 'money') {
+      const formattedValue = formatMoney(e.target.value);
+      setInputValue(formattedValue);
+      if (register?.onChange) {
+        const event = {
+          ...e,
+          target: { ...e.target, value: formattedValue },
+        } as React.ChangeEvent<HTMLInputElement>;
+        register.onChange(event);
+      }
+    } else {
+      setInputValue(e.target.value);
+      register?.onChange?.(e);
+    }
   };
 
   const handleClear = () => {
@@ -73,7 +96,7 @@ const Input = ({
         <div css={inputContainerStyle}>
           <div css={inputWrapperStyle}>
             <input
-              css={inputStyle(error, isValid)}
+              css={inputStyle(error, isValid, borderRadius)}
               type={type}
               placeholder={placeholder}
               autoComplete="off"
@@ -132,7 +155,7 @@ const labelStyle = css`
   ${TypoBodySmM}
 `;
 
-const inputStyle = (error?: string, isValid?: boolean) => css`
+const inputStyle = (error?: string, isValid?: boolean, borderRadius?: string) => css`
   && {
     margin-top: 0.4rem;
     margin-bottom: 0.4rem;
@@ -141,7 +164,7 @@ const inputStyle = (error?: string, isValid?: boolean) => css`
     box-sizing: border-box;
     padding: 1rem 6rem 1rem 1rem;
     border: 1px solid ${error ? 'red' : isValid ? 'green' : variables.colors.gray300};
-    border-radius: 0.6rem;
+    border-radius: ${borderRadius};
     background-color: ${variables.colors.white};
     font-size: 1.6rem;
     letter-spacing: normal;
