@@ -75,7 +75,7 @@ const StudioReview = () => {
         </Helmet>
       )}
 
-      <Header title="리뷰" />
+      <Header title="리뷰" fixed={true} />
       <StudioNavigator _id={_id || ''} />
       <ReviewPhotosWrapperStyle>
         <ReviewTitleWrapperStyle>

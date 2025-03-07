@@ -74,7 +74,7 @@ const StudioPortfolio = () => {
         </Helmet>
       )}
 
-      <Header title={isSuccess ? portfolios.studioName : ''} />
+      <Header title={isSuccess ? portfolios.studioName : ''} fixed={true} />
       <StudioNavigator _id={_id} />
 
       <div css={studioPaddingTop}>

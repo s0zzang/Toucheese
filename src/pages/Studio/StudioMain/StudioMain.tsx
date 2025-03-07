@@ -39,7 +39,7 @@ const StudioMain = () => {
   /** 스크롤 이벤트 핸들러 */
   const handleScroll = () => {
     // 스크롤이 200px 이상일 때 scrollY를 true로 설정
-    if (window.scrollY >= 150) {
+    if (window.scrollY >= 250) {
       setScrollY(true);
     } else {
       setScrollY(false);
@@ -153,7 +153,7 @@ const StudioMain = () => {
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />
       </Helmet>
 
-      <Header title={scrollY ? data?.name : ''} customStyle={HeaderCustomStyle(scrollY)} />
+      <Header title={scrollY ? data?.name : ''} fixed={true} scrollEvent={true} />
 
       {/* 이미지 */}
       <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
@@ -356,11 +356,6 @@ const stickyNavStyle = css`
       transform: translateY(0);
     }
   }
-`;
-
-const HeaderCustomStyle = (scrollY: boolean) => css`
-  ${scrollY && 'background-color: #fff; box-shadow: 0 0.4rem .5rem rgba(0, 0, 0, 0.1);'};
-  transition: all 0.4s;
 `;
 
 const portfolioPreviewStyle = css`
