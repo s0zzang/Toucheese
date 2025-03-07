@@ -8,16 +8,14 @@ import Filter from '@components/Filter/Filter';
 import FilterTextSelector from '@components/Filter/FilterTextSelector';
 import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceSlide';
 import ThemeNavigator from '@components/Navigator/ThemeNavigator';
-import PCHeader from '@components/PCHeader/PCHeader';
 import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 import StudioList from '@components/Studio/StudioList';
-import UserButton from '@components/UserButton/UserButton';
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import useGetWindowWidth from '@hooks/useGetWindowWidth';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { bg100vw, Hidden, PCLayout, TypoBodyMdSb, TypoTitleXsM } from '@styles/Common';
+import { bg100vw, Hidden, PCLayout, TypoBodyMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { remToPx } from '@utils/remToPx';
@@ -135,80 +133,6 @@ const Home = () => {
         />
         <meta property="og:description" content="터치즈에서 원하는 스튜디오를 검색해보세요!" />
       </Helmet>
-
-      {/* PC 버전 헤더 */}
-      <PCHeader>
-        <div
-          css={css`
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-          `}
-        >
-          <div
-            css={css`
-              margin: 0.6rem auto;
-              position: relative;
-              width: 60rem;
-
-              &::before {
-                content: '';
-                display: inline-block;
-                width: 3.6rem;
-                height: 3.6rem;
-                position: absolute;
-                left: 1.6rem;
-                top: 50%;
-                transform: translateY(-50%);
-                z-index: 9;
-                background: url('/img/icon-search.svg') no-repeat center / 2.6rem 2.6rem;
-              }
-            `}
-          >
-            <InputStyle
-              className="search-pc"
-              type="text"
-              value={''}
-              onChange={() => {}}
-              onKeyUp={() => {}}
-            />
-
-            {/* 모두 지우기 버튼 활성화 조건 */}
-            {true && (
-              <button
-                onClick={() => {}}
-                css={css`
-                  width: 2rem;
-                  height: 2rem;
-                  position: absolute;
-                  right: 1.6rem;
-                  top: 50%;
-                  transform: translateY(-50%);
-                `}
-              >
-                <img
-                  src="/img/icon-cancel.svg"
-                  alt="모두지우기버튼"
-                  css={css`
-                    display: block;
-                    margin: auto;
-                    width: 1.7rem;
-                    height: 1.7rem;
-                  `}
-                />
-              </button>
-            )}
-          </div>
-        </div>
-        <div
-          css={css`
-            flex-shrink: 0;
-            margin-left: auto;
-          `}
-        >
-          <UserButton />
-        </div>
-      </PCHeader>
 
       <NavigatorStyle isFixed={isFixed}>
         <div
@@ -338,20 +262,6 @@ const Home = () => {
     </>
   );
 };
-
-const InputStyle = styled.input`
-  &.search-pc {
-    all: unset;
-    width: 60rem;
-    background-color: ${variables.colors.gray200};
-    padding: 1.1rem 4.6rem 1.1rem 6.2rem;
-    box-sizing: border-box;
-    ${TypoTitleXsM}
-    color: ${variables.colors.black};
-    border-radius: 1rem;
-    position: relative;
-  }
-`;
 
 const SectionStyle = styled.section`
   padding-top: 2rem;
