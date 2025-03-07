@@ -1,18 +1,31 @@
 /** @jsxImportSource @emotion/react */
 import BackButton from '@components/BackButton/BackButton';
-import { css, SerializedStyles } from '@emotion/react';
-import { TypoTitleXsM, TypoTitleXsSB } from '@styles/Common';
+import { css } from '@emotion/react';
+import { TypoTitleXsSB } from '@styles/Common';
 import variables from '@styles/Variables';
+import { useEffect, useState } from 'react';
 
 interface HeaderProps {
   title?: string;
   backTo?: string;
-  customStyle?: SerializedStyles;
+  fixed?: boolean;
+  scrollEvent?: boolean;
 }
 
-const Header = ({ title, backTo, customStyle }: HeaderProps) => {
+const Header = ({ title, backTo, fixed = false, scrollEvent = false }: HeaderProps) => {
+  const [scrollY, setScrollY] = useState(false);
+
+  useEffect(() => {
+    if (!scrollEvent) return;
+
+    const handleScroll = () => setScrollY(window.scrollY >= 250);
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [scrollEvent]);
+
   return (
-    <header css={[headerStyle, customStyle]}>
+    <header css={[headerStyle(fixed, scrollY, scrollEvent)]}>
       <BackButton to={backTo} />
       {title && <h1 css={[TypoTitleXsSB, additionalH1Style]}>{title}</h1>}
     </header>
@@ -21,17 +34,24 @@ const Header = ({ title, backTo, customStyle }: HeaderProps) => {
 
 export default Header;
 
-const headerStyle = css`
+const headerStyle = (fix: boolean, scrollY: boolean, scrollEvent: boolean) => css`
   display: flex;
-  position: fixed;
   width: 100%;
-  z-index: 5;
   align-items: center;
-
+  background-color: ${fix && scrollEvent
+    ? scrollY
+      ? variables.colors.white
+      : 'transparent'
+    : variables.colors.white};
+  ${fix &&
+  `position: fixed;
+  z-index: 10;
   top: 0;
   left: 0;
   right: 0;
+  `}
   padding: ${variables.layoutPadding};
+  transition: all 0.2s;
 `;
 
 const additionalH1Style = css`
