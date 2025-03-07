@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
@@ -8,6 +8,7 @@ import useBottomSheetState from '@store/useBottomSheetStateStore';
 import { css } from '@emotion/react';
 import { TypoBodyMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
+import { useFilterStore } from '@store/useFilterStore';
 
 interface ServiceAvailabilityProps {
   isPc?: boolean; // PC 환경인지 여부를 전달받는 prop
@@ -16,6 +17,7 @@ interface ServiceAvailabilityProps {
 /** 필터링 시 매장 서비스 제공 여부를 선택하는 컴포넌트 */
 const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
   const [selectedButtons, setSelectedButtons] = useState<number[]>([]);
+  const { setSelectedServices } = useFilterStore();
   const navigate = useNavigate();
 
   const { closeBottomSheet } = useBottomSheetState(); // 바텀 시트 닫는 함수 호출
@@ -27,6 +29,15 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
       return newSelected; // 선택된 버튼 목록 업데이트
     });
   };
+
+  // PC 모드일 때 선택된 버튼이 변경되면 전역 상태 업데이트
+  useEffect(() => {
+    if (isPc) {
+      const selectedServices = selectedButtons.map((i) => getButtonTitle(i));
+      setSelectedServices(selectedServices);
+      console.log('서비스 선택 변경:', selectedServices);
+    }
+  }, [selectedButtons, isPc, setSelectedServices]);
 
   /** "적용하기" 버튼 클릭 시 선택된 버튼의 제목을 쿼리 파라미터로 변환하여 네비게이션하는 함수 */
   const handleApplyClick = () => {

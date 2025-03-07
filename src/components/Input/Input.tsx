@@ -36,6 +36,7 @@ const Input = ({
   isValid,
   defaultValue,
   borderRadius = '0.6rem',
+  onChange,
 }: InputProps) => {
   const [inputValue, setInputValue] = useState(defaultValue || '');
   const [showPassword, setShowPassword] = useState(false);
@@ -54,15 +55,21 @@ const Input = ({
     if (initialType === 'money') {
       const formattedValue = formatMoney(e.target.value);
       setInputValue(formattedValue);
-      if (register?.onChange) {
+
+      if (onChange) {
         const event = {
           ...e,
           target: { ...e.target, value: formattedValue },
         } as React.ChangeEvent<HTMLInputElement>;
-        register.onChange(event);
+        onChange(event);
+      }
+
+      if (register?.onChange) {
+        register.onChange(e);
       }
     } else {
       setInputValue(e.target.value);
+      onChange?.(e);
       register?.onChange?.(e);
     }
   };
