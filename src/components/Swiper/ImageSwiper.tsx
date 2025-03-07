@@ -84,7 +84,6 @@ const containerDefaultStyle = css`
     right: 0;
     width: ${variables.layoutPadding};
     height: 100%;
-    background: linear-gradient(to left, #fff, transparent);
     z-index: 1;
     transform: translateX(100%);
   }
