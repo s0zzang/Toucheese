@@ -219,7 +219,7 @@ const ReservationDetail = () => {
           active={false}
           onClick={() => cancelModal.open()}
         />
-        <CancelModal />
+        <CancelModal modalId={4} />
         <BottomSheet />
       </div>
     </>

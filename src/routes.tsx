@@ -169,7 +169,6 @@ const router = createBrowserRouter([
               { path: 'review/write', element: <StudioReviewWritePage /> },
             ],
           },
-          {},
         ],
       },
     ],
