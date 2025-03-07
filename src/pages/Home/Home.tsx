@@ -15,7 +15,7 @@ import styled from '@emotion/styled';
 import useGetWindowWidth from '@hooks/useGetWindowWidth';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { bg100vw, Hidden, PCLayout, TypoBodyMdSb } from '@styles/Common';
+import { bg100vw, PCLayout, TypoBodyMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { remToPx } from '@utils/remToPx';
@@ -23,6 +23,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './components/LocalDateSelectionModal';
+import PCFilterWrapper from './components/PCFilterWrapper';
 
 interface IFixedProps {
   isFixed: boolean;
@@ -210,47 +211,8 @@ const Home = () => {
           {/* PC 필터 영역 */}
           <FilterSectionStyle className="pc" isFixed={isFixed}>
             <FilterContentStyle>
-              <div className="filter-sort">
-                <p>매장 정렬</p>
-                <div>정렬 영역</div>
-              </div>
-
-              <div className="filter-price">
-                <p>가격</p>
-                <div>가격 필터 영역</div>
-              </div>
-
-              <div className="filter-options">
-                <p>매장 정보·서비스</p>
-                <div>매장 정보·서비스 필터 영역</div>
-              </div>
+              <PCFilterWrapper />
             </FilterContentStyle>
-            <FilterButtonBoxStyle>
-              <ButtonWrapperStyle onClick={handleReset} className={isAnimating ? 'rotateIcon' : ''}>
-                <span css={Hidden}>초기화</span>
-                <Button
-                  text=""
-                  type="reset"
-                  variant="gray"
-                  icon={
-                    <RotateIconStyle
-                      className={isAnimating ? 'rotateIcon' : ''}
-                      src="/img/icon-reset.svg"
-                      alt="필터 초기화"
-                    />
-                  }
-                  onClick={handleReset}
-                />
-              </ButtonWrapperStyle>
-              <Button
-                type="button"
-                size="medium"
-                text={`필터 적용하기`}
-                width="max"
-                variant="black"
-                onClick={() => {}}
-              />
-            </FilterButtonBoxStyle>
           </FilterSectionStyle>
           <ListStyle>
             <StudioList mode="filter" searchParams={searchParams} />
@@ -396,20 +358,6 @@ const FilterContentStyle = styled.div`
     margin-top: 2rem;
     margin-bottom: 3.4rem;
   }
-`;
-
-const FilterButtonBoxStyle = styled.div`
-  background-color: ${variables.colors.white};
-  padding: 1.6rem 0 2.6rem;
-  position: fixed;
-  width: 19.2rem;
-  z-index: 9;
-  bottom: 0;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.8rem;
 `;
 
 const ListStyle = styled.div`
