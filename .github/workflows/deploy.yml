@@ -23,6 +23,7 @@ jobs:
           echo "VITE_AUTH_IMP_CODE=${{ secrets.VITE_AUTH_IMP_CODE }}" >> .env
           echo "VITE_AUTH_CHANNEL_KEY=${{ secrets.VITE_AUTH_CHANNEL_KEY }}" >> .env
           echo "VITE_AUTH_REDIRECT_URI=${{ secrets.VITE_AUTH_REDIRECT_URI }}" >> .env
+          echo "VITE_AUTH_REDIRECT_EDITPRORILE_URI=${{ secrets.VITE_AUTH_REDIRECT_EDITPRORILE_URI }}" >> .env
           echo "VITE_KAKAO_CLIENT_ID=${{ secrets.VITE_KAKAO_CLIENT_ID }}" >> .env
           echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI }}" >> .env
           echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}" >> .env
