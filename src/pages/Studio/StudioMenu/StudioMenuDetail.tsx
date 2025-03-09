@@ -107,9 +107,10 @@ const StudioMenuDetail = () => {
       )}
 
       <Header
-        customStyle={HeaderCustomStyle(scrollY)}
         title={`${scrollY ? data?.name : ''}`}
         backTo={`/studio/${_id}/menu`}
+        fixed={true}
+        scrollEvent={true}
       />
       {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />}
       <div css={MenuDescStyle}>
@@ -142,11 +143,6 @@ const StudioMenuDetail = () => {
 };
 
 export default StudioMenuDetail;
-
-const HeaderCustomStyle = (scrollY: boolean) => css`
-  transition: all 0.2s;
-  ${scrollY && 'background-color: #fff; box-shadow: 0 0.4rem .5rem rgba(0, 0, 0, 0.1);'};
-`;
 
 const MenuDescStyle = css`
   display: flex;
