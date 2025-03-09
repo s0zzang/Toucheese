@@ -1,5 +1,6 @@
 import Error from '@components/Error/Error';
 import Layout from '@components/Layout/Layout';
+
 import StudioReviewWritePage from '@pages/Studio/StudioReview/StudioReviewWritePage';
 import Auth from '@pages/User/Auth';
 import AuthVerification from '@pages/User/AuthVerification';
@@ -169,7 +170,6 @@ const router = createBrowserRouter([
               { path: 'review/write', element: <StudioReviewWritePage /> },
             ],
           },
-          {},
         ],
       },
     ],

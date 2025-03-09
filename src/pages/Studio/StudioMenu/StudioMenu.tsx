@@ -20,9 +20,7 @@ const StudioMenu = () => {
       },
     });
 
-    if (!res.ok) {
-      console.error('Failed to fetch data');
-    }
+    if (!res.ok) throw new Error('Failed to fetch data');
 
     const data = await res.json();
     return data;

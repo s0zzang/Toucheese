@@ -9,10 +9,10 @@ import { breakPoints, mqMin } from '@styles/BreakPoint';
 import BookingButton from './BookingButton';
 
 /** 메인 전체 지역 예약 날짜 선택 등  */
-const BookingSearchContainer = ({ className }: { className: 'mo' }) => {
+const BookingSearchContainer = () => {
   return (
-    <BookingSearchContainerStyle className={className}>
-      <BookingButton type={className} />
+    <BookingSearchContainerStyle className="mo">
+      <BookingButton type="mo" />
       <div
         css={css`
           display: flex;

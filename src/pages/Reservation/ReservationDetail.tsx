@@ -46,8 +46,8 @@ const ReservationDetail = () => {
   const reservation = reservationList?.find((resv) => resv.reservationId === reservationId);
   const status = reservation?.status || 'WAITING';
 
-  const locationModal = useModal(6);
-  const cancelModal = useModal(7);
+  const locationModal = useModal(3);
+  const cancelModal = useModal(4);
 
   // 취소 가능 날짜 계산
   const { date } = useSelectDateStore(); //임시
@@ -109,7 +109,7 @@ const ReservationDetail = () => {
               <img src="/img/icon-location.svg" alt="위치버튼아래화살표" css={buttonIconStyle} />
               <p css={TypoBodySmR}>위치</p>
             </button>
-            <LocationModal id="146" />
+            <LocationModal modalId={3} id="146" />
           </div>
         </section>
 
@@ -219,7 +219,7 @@ const ReservationDetail = () => {
           active={false}
           onClick={() => cancelModal.open()}
         />
-        <CancelModal />
+        <CancelModal modalId={4} />
         <BottomSheet />
       </div>
     </>

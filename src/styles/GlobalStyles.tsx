@@ -29,6 +29,7 @@ const GlobalStyles = css`
       --headerHeight: 8rem;
       --maxWidth: 1280px;
 
+      overflow-x: clip;
       max-width: calc(var(--maxWidth) + calc(var(--layoutPadding) * 2));
       max-width: var(--maxWidth);
       margin: 0 auto;
