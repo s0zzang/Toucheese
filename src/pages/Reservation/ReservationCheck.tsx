@@ -118,7 +118,7 @@ const ReservationCheck = () => {
       <Header title="결제하기" />
 
       {/* 예약정보 */}
-      <section>
+      <section css={paddingTopStyle}>
         <h2 css={[TypoTitleXsSB, titleAlignStyle, firstTitleAlignStyle]}>예약정보</h2>
         <div css={boxStyle}>
           <h4
@@ -368,12 +368,18 @@ const ReservationCheck = () => {
         requests={requests}
         date={date}
         time={time[0]}
+        basicPrice={basicPrice}
+        menuImage={menuImage}
       />
     </>
   );
 };
 
 export default ReservationCheck;
+
+const paddingTopStyle = css`
+  padding-top: ${variables.headerHeight};
+`;
 
 const titleAlignStyle = css`
   height: 4.2rem;

@@ -22,11 +22,13 @@ interface PaymentProps {
   trigger: () => Promise<boolean>;
   paymentMethod: string;
   isAgreed: boolean;
+  basicPrice: number | undefined;
   totalPrice: number;
   options?: Option[];
   menuId?: number;
   userId: number | null;
   menuName?: string;
+  menuImage?: string;
   visitorName?: string;
   visitorPhone?: string;
   requests?: string;
@@ -45,7 +47,9 @@ const Payment = ({
   trigger,
   paymentMethod,
   isAgreed,
+  basicPrice,
   totalPrice,
+  menuImage,
   options = [],
   menuId,
   userId,
@@ -132,8 +136,6 @@ const Payment = ({
       (rsp: PaymentResponse) => {
         if (rsp.success) {
           console.log('결제 성공:', rsp);
-          // console.log('보낼 바디 값:', JSON.stringify(requestBody, null, 2));
-
           fetch(`${import.meta.env.VITE_TOUCHEESE_API}/reservation/action`, {
             method: 'POST',
             headers: {
@@ -144,10 +146,12 @@ const Payment = ({
               merchant_uid: rsp.merchant_uid, // 상점에서 생성한 주문번호
               studioId: _id,
               menuId: menuId,
+              menuName,
               additionalOptionId: optionIds,
               visitingCustomerName: visitorName,
               visitingCustomerPhone: visitorPhone,
               note: requests,
+              basicPrice,
               totalPrice,
               paymentMethod,
               date,
@@ -158,7 +162,8 @@ const Payment = ({
               const result = await response.json();
               if (response.ok) {
                 console.log('결제 검증 성공:', result);
-                window.location.href = returnUrl;
+                const reservationId = result.reservationId;
+                window.location.href = `${returnUrl}?reservationId=${reservationId}`;
               } else {
                 console.error('결제 검증 실패:', result.message || result);
               }
@@ -199,10 +204,12 @@ const Payment = ({
               merchant_uid: rsp.merchant_uid, // 상점에서 생성한 주문번호
               studioId: _id,
               menuId: menuId,
+              menuImage,
               additionalOptionId: optionIds,
               visitingCustomerName: visitorName,
               visitingCustomerPhone: visitorPhone,
               note: requests,
+              basicPrice,
               totalPrice,
               paymentMethod,
               date,
@@ -213,7 +220,8 @@ const Payment = ({
               const result = await response.json();
               if (response.ok) {
                 console.log('결제 검증 성공:', result);
-                window.location.href = returnUrl;
+                const reservationId = result.reservationId;
+                window.location.href = `${returnUrl}?reservationId=${reservationId}`;
               } else {
                 console.error('결제 검증 실패:', result.message || result);
               }
@@ -269,10 +277,12 @@ const Payment = ({
             merchant_uid: data.merchantPayKey,
             studioId: _id,
             menuId: menuId,
+            menuImage,
             additionalOptionId: optionIds,
             visitingCustomerName: visitorName,
             visitingCustomerPhone: visitorPhone,
             note: requests,
+            basicPrice,
             totalPrice,
             paymentMethod,
             date,
