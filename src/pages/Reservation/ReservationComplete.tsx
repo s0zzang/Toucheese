@@ -7,7 +7,7 @@ import {
 } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import CompleteMessage from './components/CompleteMessage';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const ReservationComplete = () => {
   const {
@@ -19,9 +19,12 @@ const ReservationComplete = () => {
   const { date, setDate } = useSelectDateStore();
   const { time, setTime } = useSelectTimeStore();
 
-  // [임시] 예약 생성 후 response로 id를 전달받아 사용 예정
+  const [searchParams] = useSearchParams();
+  const reservationIdParam = searchParams.get('reservationId');
+  const reservationId = reservationIdParam ? Number(reservationIdParam) : 0;
+
   const reservationData = {
-    id: 1,
+    id: reservationId,
     studio,
     reservedDateTime: changeformatDateForUi({ date, time }),
     reservedMenu,
