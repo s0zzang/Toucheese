@@ -195,6 +195,7 @@ const buttonStyle = css`
   position: fixed;
   bottom: 3rem;
   width: calc(100% - 3.2rem);
+  left: 0;
 `;
 
 const pageTitleStyle = css`
