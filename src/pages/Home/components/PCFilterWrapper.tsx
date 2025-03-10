@@ -51,7 +51,9 @@ const PCFilterWrapper = () => {
 
   return (
     <>
+      {/* 가격 조정 PC */}
       <FilterPriceSlidePC />
+      {/* 매장 옵션 제공 PC */}
       <ServiceAvailability isPc={true} />
 
       <FilterButtonBoxStyle>
