@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import EmptyMessage from '@components/Message/EmptyMessage';
 import { css } from '@emotion/react';
-import { TypoBodyMdR, TypoCapSmM, TypoTitleXsSB } from '@styles/Common';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { TypoBodyMdM, TypoCapSmM, TypoTitleXsB } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -34,22 +35,21 @@ const RecentSearches = () => {
   return (
     <div css={containerStyle}>
       <div css={titleSectionStyle}>
-        <h2 css={TypoTitleXsSB}>최근 검색어</h2>
+        <h2 css={TypoTitleXsB}>최근 검색어</h2>
         <button onClick={clearAllSearchTerms} css={[allClearButtonStyle, TypoCapSmM]}>
           모두 지우기
         </button>
       </div>
-      <div css={searchListStyle}>
+      <div css={[searchListStyle]}>
         {recentSearches.length === 0 ? (
           <EmptyMessage message="최근 검색어가 없습니다." />
         ) : (
           recentSearches.map((search, index) => (
-            <div key={index} css={searchItemStyle}>
+            <div key={index} css={[searchItemStyle, TypoBodyMdM]}>
               <span
                 onClick={() => {
                   handleClickSearchItem(search);
                 }}
-                css={TypoBodyMdR}
               >
                 {search}
               </span>
@@ -98,6 +98,12 @@ const searchListStyle = css`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  ${mqMin(breakPoints.pc)} {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    overflow-x: hidden;
+  }
 `;
 
 const searchItemStyle = css`
@@ -108,9 +114,17 @@ const searchItemStyle = css`
   display: flex;
   align-items: center;
   height: 3rem;
+  gap: 0.2rem;
 
   span {
     margin-top: 0.1rem;
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    max-width: 100%;
+    white-space: normal;
+    word-break: break-word;
+    margin-right: 0;
   }
 `;
 
@@ -118,7 +132,6 @@ const deleteButtonStyle = css`
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 1.6rem;
   height: 1.6rem;
 

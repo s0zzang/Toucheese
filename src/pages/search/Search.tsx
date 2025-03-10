@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import TrendingStudios from '@pages/search/components/TrendingStudios';
-import RecentSearches from '@pages/search/components/RecentSearches';
-import SearchBar from '@pages/search/components/SearchBar';
 import BackButton from '@components/BackButton/BackButton';
 import { Helmet } from 'react-helmet-async';
+import SearchBar from '@components/Search/SearchBar';
+import RecentSearches from '@components/Search/RecentSearches';
+import TrendingStudios from '@components/Search/TrendingStudios';
 
 const Search = () => {
   return (
@@ -18,6 +18,7 @@ const Search = () => {
         />
         <meta property="og:url" content={`${window.location.href}`} />
       </Helmet>
+
       <div css={searchHeaderStyle}>
         <BackButton to="/" replace={true} ariaLabel="메인화면으로 돌아가기" />
         <SearchBar />
@@ -35,4 +36,5 @@ const searchHeaderStyle = css`
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.6rem;
+  padding-top: 2rem;
 `;
