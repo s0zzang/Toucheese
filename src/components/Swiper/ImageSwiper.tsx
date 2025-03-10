@@ -49,6 +49,17 @@ const ImageSwiper = ({
         mousewheel={mousewheel}
         spaceBetween={spaceBetween}
         slidesPerView={slidesPerView}
+        breakpoints={{
+          768: {
+            slidesPerView: 5.5,
+          },
+          1280: {
+            slidesPerView: 7,
+            allowTouchMove: false,
+            mousewheel: false,
+            pagination: false,
+          },
+        }}
         pagination={isPaginationActive ? { clickable: true, type: 'bullets' } : undefined}
         {...props}
       >
@@ -127,4 +138,9 @@ const defaultImageStyle = css`
   width: 100%;
   height: auto;
   object-fit: cover;
+
+  @media (min-width: 1280px) {
+    width: 140px;
+    height: 176px;
+  }
 `;

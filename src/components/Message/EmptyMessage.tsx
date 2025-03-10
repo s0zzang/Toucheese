@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { TypoBodyMdM } from '@styles/Common';
 
 const EmptyMessage = ({ message }: { message: string }) => {
   return (
     <div css={containerStyle}>
-      <p css={emptyMessageStyle}>{message}</p>
+      <p css={[emptyMessageStyle, TypoBodyMdM]}>{message}</p>
     </div>
   );
 };

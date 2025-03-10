@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import EmptyMessage from '@components/Message/EmptyMessage';
 import { css } from '@emotion/react';
-import { TypoBodyMdR, TypoTitleXsSB } from '@styles/Common';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { TypoBodyMdM, TypoBodyMdSb, TypoTitleXsB } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 
@@ -22,8 +23,8 @@ const TrendingStudios = () => {
     <ul>
       {studios.map((studio, index) => (
         <li key={index} css={liStyle}>
-          <span css={indexStyle}>{startIndex + index}</span>
-          <span css={[TypoBodyMdR, studioNameStyle]}>{studio}</span>
+          <span css={[indexStyle, TypoBodyMdSb]}>{startIndex + index}</span>
+          <span css={[studioNameStyle, TypoBodyMdM]}>{studio}</span>
         </li>
       ))}
     </ul>
@@ -31,8 +32,8 @@ const TrendingStudios = () => {
 
   return (
     <div css={wrapperStyle}>
-      <h2 css={[TypoTitleXsSB, titleStyle]}>관심 급상승 사진관</h2>
-      <div css={containerStyle}>
+      <h2 css={[TypoTitleXsB, titleStyle]}>관심 급상승 사진관</h2>
+      <div css={[containerStyle]}>
         {trending.length > 0 ? (
           <>
             {renderStudios(trending.slice(0, 5), 1)}
@@ -60,6 +61,11 @@ const containerStyle = css`
   display: flex;
   flex: 1;
   justify-content: space-between;
+
+  ${mqMin(breakPoints.pc)} {
+    justify-content: flex-start;
+    gap: 6rem;
+  }
 `;
 
 const liStyle = css`
