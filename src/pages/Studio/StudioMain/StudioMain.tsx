@@ -22,6 +22,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '@components/Header/Header';
+import Loading from '@components/Loading/Loading';
 
 const StudioMain = () => {
   const { _id } = useParams();
@@ -76,7 +77,7 @@ const StudioMain = () => {
     return <div>Error: {error.message}</div>;
   }
   if (!data) {
-    return <div>로딩</div>;
+    return <Loading size="big" phrase="스튜디오를 불러오고 있습니다." />;
   }
 
   /** 이미지 5개 이하일 때 대체할 이미지 */
@@ -342,7 +343,6 @@ export default StudioMain;
 
 const stickyNavStyle = css`
   position: sticky;
-  background-color: ${variables.colors.white};
   top: 5.6rem;
   opacity: 0;
   z-index: 6;
