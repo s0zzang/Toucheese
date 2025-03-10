@@ -1,12 +1,17 @@
 /** @jsxImportSource @emotion/react */
 
 import { css, CSSObject } from '@emotion/react';
-import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdM, TypoBodySmR, TypoTitleXsM } from '@styles/Common';
+import { PCLayout, TypoBodyMdM, TypoBodyMdR, TypoBodySmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import React from 'react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'gray' | 'black' | 'white' | 'deepGray';
+type ButtonVariant =
+  | 'primary'
+  | 'gray'
+  | 'black'
+  | 'white'
+  | 'grayWithYellowOutline'
+  | 'grayWithGrayOutline';
 
 interface ButtonProps {
   text: string;
@@ -27,7 +32,7 @@ interface ButtonProps {
 
 /**  버튼 컴포넌트 사용
  * 
-    - iconPosition="right" 아이콘 필요시 버튼 내부 위치 ( 기본값은 non )
+    - iconPosition="right" 아이콘 필요시 버튼 내부 위치 ( 기본값은 none )
     - icon={이미지 태그로 경로 지정} 아이콘 추가
     - iconSizeWidth="1rem" 아이콘 가로사이즈
     - iconSizeHeight="1rem" 아이콘 세로사이즈
@@ -62,8 +67,8 @@ const Button = ({
     `,
     max: css`
       width: 100%;
-      max-width: 1280px;
       box-sizing: border-box;
+      ${PCLayout}
     `,
   };
 
@@ -79,87 +84,127 @@ const Button = ({
 
   const sizeStyles = {
     xsmall: css`
-      ${TypoBodySmR};
-      height: 3rem;
+      ${TypoBodySmM};
+      height: 3.2rem;
       padding: 0 1rem;
     `,
 
     small: css`
-      ${TypoBodyMdM};
-      height: 3.4rem;
+      ${TypoBodyMdR};
+      height: 3.6rem;
       padding: 0 1rem;
     `,
-
-    // PC 버전에 높이 4rem 짜리가 필요한데 없어서 임시로 생성!
     medium: css`
       ${TypoBodyMdM};
-      height: 3.8rem;
+      height: 4rem;
       padding: 0 1rem;
-
-      ${mqMin(breakPoints.pc)} {
-        height: 4rem;
-      }
     `,
     large: css`
       ${TypoTitleXsM};
-      height: 4.6rem;
+      height: 4.8rem;
+    `,
+    xlarge: css`
+      ${TypoBodyMdM}
+      height: 4.8rem;
     `,
   };
 
   const styles = css`
     border: none;
     border-radius: 0.6rem;
-    color: white;
+    color: ${variables.colors.gray900};
     cursor: pointer;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    box-sizing: border-box;
 
     ${sizeStyles[size]}
     ${widthStyles[width]}
 
 
-    ${variant === 'primary' && `background-color: ${variables.colors.primary}`}
-    ${variant === 'secondary' && `background-color: ${variables.colors.primary500}`}
-    ${variant === 'black' && `background-color: ${variables.colors.gray900}`}
-    ${variant === 'gray' &&
-    `
-      background-color: ${variables.colors.gray300};
-      color:${variables.colors.gray800};
-      `}
-
-    ${variant === 'deepGray' &&
-    `
-      background-color: ${variables.colors.gray500};
-      color:${variables.colors.white};
-      `}
-
-    ${variant === 'deepGray' &&
-    active &&
-    `
-      background-color: ${variables.colors.black};
-      color:${variables.colors.white};
-      `}
-
-    ${variant === 'white' &&
-    ` background-color: ${variables.colors.white}; 
-      color:${variables.colors.gray900};
-      border: 0.1rem solid${variables.colors.gray400};
+    // 노란색 버튼
+    ${variant === 'primary' &&
+    css`
+      background-color: ${variables.colors.primary50};
+      border: 0.1rem solid ${variables.colors.primary};
     `}
 
-  ${variant === 'white' &&
+      // 블랙 버튼
+    ${variant === 'black' &&
+    css`
+      background-color: ${variables.colors.gray900};
+      color: ${variables.colors.white};
+    `}
+    
+    // 기본 회색 버튼
+    ${variant === 'gray' &&
+    css`
+      background-color: ${variables.colors.gray400};
+      color: ${variables.colors.white};
+    `}
+
+
+    ${variant === 'gray' &&
     active &&
-    ` background-color: ${variables.colors.primary50}; 
-      border: 0.1rem solid${variables.colors.primary500}; 
-      color:${variables.colors.gray900};
+    css`
+      background-color: ${variables.colors.gray900};
+      color: ${variables.colors.white};
+      border: none;
+    `}
+
+    // 흰색 버튼
+    ${variant === 'white' &&
+    css`
+      background-color: ${variables.colors.white};
+      border: 0.1rem solid ${variables.colors.gray400};
+    `}
+
+    ${variant === 'white' &&
+    active &&
+    css`
+      background-color: ${variables.colors.primary50};
+      border: 0.1rem solid ${variables.colors.primary500};
+    `}
+
+    // 외곽선 노란색 회색 버튼
+    ${variant === 'grayWithYellowOutline' &&
+    css`
+      background-color: ${variables.colors.gray300};
+      border: 0.1rem solid ${variables.colors.primary50};
+    `}
+
+  ${variant === 'grayWithYellowOutline' &&
+    active &&
+    css`
+      background-color: ${variables.colors.gray900};
+      color: ${variables.colors.white};
+      border: none;
+    `}
+  
+
+    // 외곽선 진회색 회색버튼
+    ${variant === 'grayWithGrayOutline' &&
+    css`
+      background-color: ${variables.colors.gray100};
+      border: 0.1rem solid ${variables.colors.gray400};
+      color: ${variables.colors.gray500};
+    `}
+
+  ${variant === 'grayWithGrayOutline' &&
+    active &&
+    css`
+      background-color: ${variables.colors.primary50};
+      border: 0.1rem solid ${variables.colors.primary500};
+      color: ${variables.colors.gray900};
     `}
 
 
 
     ${fixed &&
-    `
+    css`
       position: fixed;
       bottom: 3rem;
       left: 50%;
@@ -170,24 +215,26 @@ const Button = ({
     `}
 
 ${type === 'reset' &&
-    `
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-
-    ${mqMin(breakPoints.pc)} {
-      width: 4rem;
-      height: 4rem;
-      padding: 1.33rem;
-      box-sizing: border-box;
-    }
+    css`
+      width: 3rem;
+      height: 3rem;
+      border-radius: 2rem;
     `}
 
 
 ${width === 'fit' &&
-    (size === 'medium' || size === 'large') &&
-    `
+    !(size === 'medium' || size === 'large') &&
+    css`
       padding: 0 1.4rem;
+    `}
+
+
+    ${disabled &&
+    css`
+      background-color: ${variables.colors.gray400};
+      color: ${variables.colors.white};
+      border: none;
+      cursor: not-allowed;
     `}
   `;
 
