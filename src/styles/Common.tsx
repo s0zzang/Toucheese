@@ -1,66 +1,116 @@
 import { css } from '@emotion/react';
 import variables from './Variables';
+import { breakPoints, mqMin } from './BreakPoint';
 
 // title
 export const TypoTitleXsR = css`
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 2.4rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+  }
 `;
+
 export const TypoTitleXsM = css`
   font-size: 1.6rem;
   font-weight: 500;
   line-height: 2.4rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+  }
 `;
+
 export const TypoTitleXsSB = css`
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 2.4rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+  }
 `;
+
 export const TypoTitleXsB = css`
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 2.4rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+  }
 `;
+
 export const TypoTitleSmS = css`
   font-size: 1.8rem;
   font-weight: 600;
   line-height: 2.4rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 2rem;
+    line-height: 2.6rem;
+  }
 `;
 
 export const TypoTitleMdSb = css`
   font-size: 2.2rem;
   font-weight: 600;
   line-height: 2.8rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 2.8rem;
+    line-height: 3.4rem;
+  }
 `;
 
 export const TypoBodySmM = css`
   font-size: 1.2rem;
   font-weight: 500;
   line-height: 1.8rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.4rem;
+    line-height: 2rem;
+  }
 `;
 
 export const TypoBodySmR = css`
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.8rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.4rem;
+    line-height: 2rem;
+  }
 `;
 
 export const TypoBodyMdR = css`
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 2rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+  }
 `;
 
 export const TypoBodyMdSb = css`
   font-size: 1.4rem;
   font-weight: 700;
   line-height: 2rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+  }
 `;
+
 export const TypoBodyMdM = css`
   font-size: 1.4rem;
   font-weight: 500;
   line-height: 2rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+  }
 `;
 
 export const TypoCapSmR = css`
@@ -68,11 +118,17 @@ export const TypoCapSmR = css`
   font-weight: 400;
   line-height: 1.4rem;
 `;
+
 export const TypoCapSmM = css`
   font-size: 1.2rem;
   font-weight: 500;
   line-height: 1.4rem;
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+  }
 `;
+
 export const TypoCapXsR = css`
   font-size: 1rem;
   font-weight: 400;
