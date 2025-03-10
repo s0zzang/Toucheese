@@ -173,7 +173,7 @@ const AuthVerification = () => {
             type="submit"
             text="다음"
             size="large"
-            variant="deepGray"
+            variant="gray"
             disabled={isDisabled}
             active={isActive}
           />

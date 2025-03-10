@@ -244,7 +244,7 @@ const SignUp = () => {
             type="submit"
             text="가입하기"
             size="large"
-            variant="deepGray"
+            variant="gray"
             active={isActive}
             disabled={isDisabled}
           />

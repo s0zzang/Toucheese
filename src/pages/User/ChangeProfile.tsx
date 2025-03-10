@@ -219,7 +219,7 @@ const ChangeProfile = () => {
             type="submit"
             text="다음"
             size="large"
-            variant="deepGray"
+            variant="gray"
             disabled={isDisabled}
             active={isActive}
           />
@@ -251,7 +251,7 @@ const containerStyle = css`
 const buttonStyle = css`
   position: fixed;
   bottom: 3rem;
-  left: 0;
+  left: 1.6rem;
   width: calc(100% - 3.2rem);
 `;
 
