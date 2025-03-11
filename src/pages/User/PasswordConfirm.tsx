@@ -117,6 +117,7 @@ const PasswordConfirm = () => {
             onClick={handleEditUser}
             type="submit"
             text="다음"
+            width="max"
             size="large"
             variant="gray"
             disabled={isDisabled}

@@ -171,6 +171,7 @@ const AuthVerification = () => {
           <Button
             onClick={() => navigate('/user/signup')}
             type="submit"
+            width="max"
             text="다음"
             size="large"
             variant="gray"

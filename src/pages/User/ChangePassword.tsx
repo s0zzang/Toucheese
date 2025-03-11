@@ -148,6 +148,7 @@ const ChangePassword = () => {
             text="가입하기"
             size="large"
             variant="gray"
+            width="max"
             active={isActive}
             disabled={isDisabled}
           />
