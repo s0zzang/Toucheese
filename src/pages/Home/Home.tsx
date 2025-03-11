@@ -10,7 +10,7 @@ import FilterPriceSlideComponent from '@components/FilterPriceSlide/FilterPriceS
 import ThemeNavigator from '@components/Navigator/ThemeNavigator';
 import ServiceAvailability from '@components/ServiceAvailability/ServiceAvailability';
 import StudioList from '@components/Studio/StudioList';
-import { css, keyframes } from '@emotion/react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useGetWindowWidth from '@hooks/useGetWindowWidth';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
@@ -155,19 +155,7 @@ const Home = () => {
         {/* 모바일 필터 영역 */}
         <FilterBoxStyle className="mo">
           <ButtonWrapperStyle onClick={handleReset} className={isAnimating ? 'rotateIcon' : ''}>
-            <Button
-              text=""
-              type="reset"
-              variant="gray"
-              icon={
-                <RotateIconStyle
-                  className={isAnimating ? 'rotateIcon' : ''}
-                  src="/img/icon-reset.svg"
-                  alt="필터 초기화"
-                />
-              }
-              onClick={handleReset}
-            />
+            <Button type="reset" iconResetSize="small" variant="gray" />
           </ButtonWrapperStyle>
           <div className="filterScroll">
             <Filter
@@ -247,21 +235,6 @@ const NavigatorStyle = styled.div<IFixedProps>`
 
 const ButtonWrapperStyle = styled.div`
   display: inline-block;
-`;
-
-const rotateIcon = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-const RotateIconStyle = styled.img`
-  &.rotateIcon {
-    animation: ${rotateIcon} 0.4s ease-out;
-  }
 `;
 
 const FilterBoxStyle = styled.div`

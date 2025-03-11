@@ -333,7 +333,14 @@ const StudioMain = () => {
       </div>
 
       <div css={reservationStyle}>
-        <Button variant="black" text="예약하기" size="large" width="max" onClick={handleClick} />
+        <Button
+          type="button"
+          variant="black"
+          text="예약하기"
+          size="large"
+          width="max"
+          onClick={handleClick}
+        />
       </div>
     </>
   );

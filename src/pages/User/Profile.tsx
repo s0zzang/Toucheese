@@ -92,6 +92,7 @@ const Profile = () => {
               width="fit"
               variant="white"
               onClick={handleProfileEditPage}
+              type="button"
             />
           </div>
 
@@ -122,6 +123,7 @@ const Profile = () => {
 
             {data && JSON.parse(data).state.registration === 'EMAIL' ? (
               <Button
+                type="button"
                 text="비밀번호 변경하기"
                 size="small"
                 width="fit"

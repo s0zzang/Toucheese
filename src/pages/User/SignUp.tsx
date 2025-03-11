@@ -242,9 +242,10 @@ const SignUp = () => {
           <Button
             onClick={handleVerifyComplete}
             type="submit"
+            width="max"
             text="가입하기"
             size="large"
-            variant="deepGray"
+            variant="gray"
             active={isActive}
             disabled={isDisabled}
           />
