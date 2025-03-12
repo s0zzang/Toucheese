@@ -124,6 +124,7 @@ const PCFilterWrapper = () => {
           <Button
             text=""
             type="reset"
+            iconResetSize="small"
             variant="gray"
             icon={
               <RotateIconStyle
