@@ -90,6 +90,7 @@ const AuthContainerStyle = css`
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
     display: flex;
+    width: ${bg100vw(variables.colors.white)};
 
     min-height: 100vh;
   }

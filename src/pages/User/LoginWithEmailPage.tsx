@@ -9,6 +9,8 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import useToast from '@hooks/useToast';
 import { useUserStore } from '@store/useUserStore';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { bg100vw, PCLayout } from '@styles/Common';
 
 const LoginWithEmailPage = () => {
   const navigate = useNavigate();
@@ -60,82 +62,126 @@ const LoginWithEmailPage = () => {
         />
       </Helmet>
 
-      <div
-        css={css`
-          margin-bottom: 4rem;
-        `}
-      >
-        <Header title="이메일로 로그인" />
+      <div css={AuthContainerStyle}>
+        {/* PC 레이아웃일 때만 보이는 왼쪽 이미지 영역 */}
+        <div css={LeftImageStyle}>
+          <img src="/img/img-pc_AuthPage.svg" alt="터치즈 소개 이미지" />
+        </div>
+
+        {/* 오른쪽 컨텐츠 영역 */}
+        <div css={RightContentStyle}>
+          <div css={HeaderWrapperStyle}>
+            <Header title="이메일로 로그인" />
+          </div>
+
+          <div css={LoginPageDesStyle}>
+            <h1>터치즈에서 간편하게</h1>
+            <p>내 인생 사진관 찾고 예약까지!</p>
+          </div>
+
+          <form noValidate onSubmit={handleSubmit(handleLogin)} css={FormStyle}>
+            <Input
+              labelName="이메일(아이디)"
+              type="email"
+              placeholder="toucheese@gmail.com"
+              register={register('email', {
+                required: '이메일을 입력해주세요',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: '올바른 이메일 주소를 입력해주세요.',
+                },
+              })}
+              error={errors.email?.message?.toString()}
+            />
+            <Input
+              labelName="비밀번호"
+              type="password"
+              placeholder="8자 이상의 비밀번호"
+              register={register('password', {
+                required: '비밀번호를 입력해주세요',
+                minLength: {
+                  value: 8,
+                  message: '아이디와 비밀번호를 확인해주세요.',
+                },
+                pattern: {
+                  value: /[!@#$%^&*(),.?":{}|<>]/,
+                  message: '특수문자를 하나 이상 포함해야 합니다',
+                },
+              })}
+              error={errors.password?.message?.toString()}
+            />
+
+            <button
+              type="submit"
+              css={css`
+                width: 100%;
+                background-color: ${variables.colors.gray900};
+                color: ${variables.colors.white};
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 0.8rem;
+                margin-top: 4.8rem;
+                height: 4.8rem;
+                padding: 12 0px;
+              `}
+            >
+              로그인
+            </button>
+          </form>
+        </div>
       </div>
-
-      <div css={LoginPageDesStyle}>
-        <h1>터치즈에서 간편하게</h1>
-        <p>내 인생 사진관 찾고 예약까지!</p>
-      </div>
-
-      <form
-        noValidate
-        onSubmit={handleSubmit(handleLogin)}
-        css={css`
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        `}
-      >
-        <Input
-          labelName="이메일(아이디)"
-          type="email"
-          placeholder="toucheese@gmail.com"
-          register={register('email', {
-            required: '이메일을 입력해주세요',
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: '올바른 이메일 주소를 입력해주세요.',
-            },
-          })}
-          error={errors.email?.message?.toString()}
-        />
-        <Input
-          labelName="비밀번호"
-          type="password"
-          placeholder="8자 이상의 비밀번호"
-          register={register('password', {
-            required: '비밀번호를 입력해주세요',
-            minLength: {
-              value: 8,
-              message: '아이디와 비밀번호를 확인해주세요.',
-            },
-            pattern: {
-              value: /[!@#$%^&*(),.?":{}|<>]/,
-              message: '특수문자를 하나 이상 포함해야 합니다',
-            },
-          })}
-          error={errors.password?.message?.toString()}
-        />
-
-        <button
-          type="submit"
-          css={css`
-            width: 100%;
-            background-color: ${variables.colors.gray900};
-            color: ${variables.colors.white};
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 0.8rem;
-            margin-top: 4.8rem;
-            height: 4.8rem;
-            padding: 12 0px;
-          `}
-        >
-          로그인
-        </button>
-      </form>
     </>
   );
 };
 
-export default LoginWithEmailPage;
+const AuthContainerStyle = css`
+  ${mqMin(breakPoints.pc)} {
+    ${PCLayout}
+    ${bg100vw(variables.colors.white)}
+    display: flex;
+    min-height: 100vh;
+  }
+`;
+
+const LeftImageStyle = css`
+  display: none;
+
+  ${mqMin(breakPoints.pc)} {
+    display: block;
+    width: 50%;
+    height: 100vh;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+`;
+
+const RightContentStyle = css`
+  width: 100%;
+  padding: 0 2rem;
+
+  ${mqMin(breakPoints.pc)} {
+    width: 50%;
+    padding: 0 8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: ${variables.colors.white};
+  }
+`;
+
+const HeaderWrapperStyle = css`
+  margin-bottom: 4rem;
+
+  ${mqMin(breakPoints.pc)} {
+    margin-bottom: 8rem;
+    display: none;
+  }
+`;
 
 const LoginPageDesStyle = css`
   h1 {
@@ -145,4 +191,22 @@ const LoginPageDesStyle = css`
     font-size: 1.8rem;
   }
   margin-bottom: 3.4rem;
+
+  ${mqMin(breakPoints.pc)} {
+    display: none;
+  }
 `;
+
+const FormStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  ${mqMin(breakPoints.pc)} {
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+`;
+
+export default LoginWithEmailPage;

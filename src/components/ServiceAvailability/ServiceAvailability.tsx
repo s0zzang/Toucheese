@@ -74,7 +74,7 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
           매장정보 서비스
         </h2>
       )}
-      <ServiceAvailabilityContainerStyle>
+      <ServiceAvailabilityContainerStyle isPc={isPc}>
         <Button
           icon={<img src="img/icon-original-file.svg" alt="원본 파일 제공" />}
           iconSizeWidth="2.4rem"
@@ -118,9 +118,23 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
           type="button"
         />
         <Button
-          icon={<img src="img/icon-makeup.svg" alt="헤메코" />}
+          icon={<img src="img/icon-room.svg" alt="탈의실" />}
           iconSizeWidth="2.4rem"
           iconSizeHeight="2.4rem"
+          iconPosition="left"
+          size="medium"
+          text={`탈의실`}
+          width="fit"
+          variant="white"
+          disabled={selectedButtons.includes(5)}
+          active={selectedButtons.includes(5)}
+          onClick={() => handleButtonClick(5)}
+          type="button"
+        />
+        <Button
+          icon={<img src="img/icon-makeup.svg" alt="헤메코" />}
+          iconSizeWidth="2rem"
+          iconSizeHeight="2rem"
           iconPosition="left"
           size="medium"
           text={`헤어, 메이크업 수정`}
@@ -146,23 +160,9 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
           type="button"
         />
         <Button
-          icon={<img src="img/icon-room.svg" alt="탈의실" />}
-          iconSizeWidth="2.4rem"
-          iconSizeHeight="2.4rem"
-          iconPosition="left"
-          size="medium"
-          text={`탈의실`}
-          width="fit"
-          variant="white"
-          disabled={selectedButtons.includes(5)}
-          active={selectedButtons.includes(5)}
-          onClick={() => handleButtonClick(5)}
-          type="button"
-        />
-        <Button
           icon={<img src="img/icon-powder.svg" alt="파우더룸" />}
-          iconSizeWidth="2.4rem"
-          iconSizeHeight="2.4rem"
+          iconSizeWidth="2rem"
+          iconSizeHeight="2rem"
           iconPosition="left"
           size="medium"
           text={`파우더룸`}
@@ -208,6 +208,29 @@ const ServiceAvailabilityContainerStyle = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
+
+  ${({ isPc }: { isPc?: boolean }) =>
+    isPc &&
+    css`
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      max-width: none;
+
+      // 첫 번째, 두 번째, 다섯 번째, 여섯 번째 버튼은 한 줄 전체 차지
+      & > button:nth-of-type(1),
+      & > button:nth-of-type(2),
+      & > button:nth-of-type(5),
+      & > button:nth-of-type(6) {
+        grid-column: 1 / -1;
+      }
+
+      // 세 번째, 네 번째 버튼은 2열로 배치
+      & > button:nth-of-type(3),
+      & > button:nth-of-type(4) {
+        grid-column: auto;
+      }
+    `}
 `;
 const ButtonWrapperStyle = styled.div`
   margin-top: 3.2rem;
