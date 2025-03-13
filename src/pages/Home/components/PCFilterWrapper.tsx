@@ -11,19 +11,20 @@ import variables from '@styles/Variables';
 import { keyframes } from '@emotion/react';
 import { Hidden } from '@styles/Common';
 import { useFilterStore } from '@store/useFilterStore';
+import { formatPrice } from '@utils/formatPrice';
 
 const PCFilterWrapper = () => {
   const [searchParams] = useSearchParams();
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false); // 초기화 버튼 애니메이션 제어
   const navigate = useNavigate();
-  const { minPrice, maxPrice, selectedServices, resetFilter } = useFilterStore();
+  const { minPrice, maxPrice, selectedServices, resetFilter } = useFilterStore(); // 전역상태 저장
 
   // URL 파라미터 기준으로 필터 적용 상태 확인
-  const hasAppliedFilters = () => {
-    return (
-      searchParams.has('minPrice') || searchParams.has('maxPrice') || searchParams.has('options')
-    );
-  };
+  // const hasAppliedFilters = () => {
+  //   return (
+  //     searchParams.has('minPrice') || searchParams.has('maxPrice') || searchParams.has('options')
+  //   );
+  // };
 
   const handleApplyFilter = () => {
     const params = new URLSearchParams(searchParams);
@@ -49,9 +50,72 @@ const PCFilterWrapper = () => {
     navigate(`?${decodeSearchParamsToString(searchParams)}`);
   };
 
+  const handleRemoveFilter = (type: 'price' | 'service', value?: string) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (type === 'price') {
+      params.delete('minPrice');
+      params.delete('maxPrice');
+      resetFilter(); // 가격 필터 초기화
+    } else if (type === 'service' && value) {
+      const currentOptions = params.get('options')?.split('%') || [];
+      const newOptions = currentOptions.filter((option) => option !== value);
+
+      if (newOptions.length === 0) {
+        params.delete('options');
+      } else {
+        params.set('options', newOptions.join('%'));
+      }
+
+      // 선택된 서비스에서 제거
+      useFilterStore.setState({
+        selectedServices: newOptions,
+      });
+    }
+
+    navigate(`?${decodeSearchParamsToString(params)}`);
+  };
+
+  const hasActiveFilters = () => {
+    return (
+      searchParams.get('minPrice') || searchParams.get('maxPrice') || searchParams.get('options')
+    );
+  };
+
   return (
     <>
+      <FilterChipsContainer>
+        {/* 가격 필터 칩 */}
+        {(searchParams.get('minPrice') || searchParams.get('maxPrice')) && (
+          <ChipStyle>
+            <span>
+              {formatPrice(searchParams.get('minPrice') || '0')} -{' '}
+              {formatPrice(searchParams.get('maxPrice') || '')}원
+            </span>
+            <button onClick={() => handleRemoveFilter('price')}>
+              <img src="/img/icon-close-small.svg" alt="가격 필터 삭제" />
+            </button>
+          </ChipStyle>
+        )}
+
+        {/* 서비스 필터 칩 */}
+        {searchParams
+          .get('options')
+          ?.split('%')
+          .map((service) => (
+            <ChipStyle key={service}>
+              <span>{service}</span>
+              <button onClick={() => handleRemoveFilter('service', service)}>
+                <img src="img/icon-close-small.svg" alt="서비스 필터 삭제" />
+              </button>
+            </ChipStyle>
+          ))}
+      </FilterChipsContainer>
+      {hasActiveFilters() && <FilterDividerStyle />}
+      {/* 가격 조정 필터 PC */}
       <FilterPriceSlidePC />
+      {/* 매장 옵션 제공 PC */}
+      <FilterDividerStyle />
       <ServiceAvailability isPc={true} />
 
       <FilterButtonBoxStyle>
@@ -60,6 +124,7 @@ const PCFilterWrapper = () => {
           <Button
             text=""
             type="reset"
+            iconResetSize="small"
             variant="gray"
             icon={
               <RotateIconStyle
@@ -74,7 +139,7 @@ const PCFilterWrapper = () => {
         <Button
           type="button"
           size="medium"
-          text={hasAppliedFilters() ? '적용 중' : '필터 적용하기'}
+          text={'필터 적용하기'}
           width="max"
           variant="black"
           onClick={handleApplyFilter}
@@ -104,6 +169,11 @@ const ButtonWrapperStyle = styled.div`
   display: inline-block;
 `;
 
+const FilterDividerStyle = styled.div`
+  border-top: 0.1rem solid ${variables.colors.gray300};
+  margin: 2rem 0;
+`;
+
 const rotateIcon = keyframes`
   0% {
     transform: rotate(0deg);
@@ -116,5 +186,46 @@ const rotateIcon = keyframes`
 const RotateIconStyle = styled.img`
   &.rotateIcon {
     animation: ${rotateIcon} 0.4s ease-out;
+  }
+`;
+
+const FilterChipsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1.6rem;
+`;
+
+const ChipStyle = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1.2rem;
+  height: 3.2rem;
+  border: 1px solid;
+  border-color: ${variables.colors.gray400};
+  border-radius: 0.8rem;
+
+  span {
+    color: ${variables.colors.gray900};
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    img {
+      width: 0.9rem;
+      height: 0.9rem;
+    }
+  }
+
+  &:hover {
+    background-color: ${variables.colors.gray200};
   }
 `;
