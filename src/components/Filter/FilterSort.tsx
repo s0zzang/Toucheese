@@ -63,7 +63,7 @@ const FilterSort = ({ params }: FilterProps) => {
         iconSizeHeight="1.6rem"
         iconPosition="right"
         disabled={false}
-        active={window.location.search.includes('sortBy')}
+        active={false}
         onClick={onClick}
         style={buttonpropstyle}
       />
