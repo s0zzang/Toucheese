@@ -203,3 +203,10 @@ export interface IResvItem {
     content: string;
   };
 }
+
+export interface SortBy {
+  VIEW_COUNT: string;
+  POPULARITY: string;
+  RATING: string;
+  REVIEW_COUNT: string;
+}

@@ -24,17 +24,11 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import LocalDateSelectionModal from './components/LocalDateSelectionModal';
 import PCFilterWrapper from './components/PCFilterWrapper';
+import { SortBy } from 'types/types';
 
 interface IFixedProps {
   isFixed: boolean;
 }
-
-export type SortBy = {
-  VIEW_COUNT: string;
-  POPULARITY: string;
-  RATING: string;
-  REVIEW_COUNT: string;
-};
 
 export type Options = {
   원본: string;

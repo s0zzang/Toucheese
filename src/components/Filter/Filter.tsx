@@ -1,6 +1,7 @@
 import Button from '@components/Button/Button';
-import { Options, SortBy } from '@pages/Home/Home';
+import { Options } from '@pages/Home/Home';
 import { useEffect, useState } from 'react';
+import { SortBy } from 'types/types';
 
 interface FilterProps {
   text: string;
