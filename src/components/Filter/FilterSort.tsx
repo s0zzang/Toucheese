@@ -42,7 +42,6 @@ const FilterSort = ({ params }: FilterProps) => {
 
   return (
     <>
-      <FilterDividerStyle />
       <h2
         css={css`
           ${TypoBodyMdSb}
@@ -64,7 +63,7 @@ const FilterSort = ({ params }: FilterProps) => {
         iconSizeHeight="1.6rem"
         iconPosition="right"
         disabled={false}
-        active={window.location.search.includes('sortBy')}
+        active={false}
         onClick={onClick}
         style={buttonpropstyle}
       />

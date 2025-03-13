@@ -12,12 +12,13 @@ import { keyframes } from '@emotion/react';
 import { Hidden } from '@styles/Common';
 import { useFilterStore } from '@store/useFilterStore';
 import { formatPrice } from '@utils/formatPrice';
+import FilterSort from '@components/Filter/FilterSort';
 
 const PCFilterWrapper = () => {
   const [searchParams] = useSearchParams();
   const [isAnimating, setIsAnimating] = useState(false); // 초기화 버튼 애니메이션 제어
   const navigate = useNavigate();
-  const { minPrice, maxPrice, selectedServices, resetFilter } = useFilterStore(); // 전역상태 저장
+  const { minPrice, maxPrice, selectedServices, resetFilter, sortBy } = useFilterStore(); // 전역상태 저장
 
   // URL 파라미터 기준으로 필터 적용 상태 확인
   // const hasAppliedFilters = () => {
@@ -34,6 +35,7 @@ const PCFilterWrapper = () => {
     if (selectedServices.length > 0) {
       params.set('options', selectedServices.join('%'));
     }
+    if (sortBy) params.set('sortBy', sortBy);
 
     navigate(`?${decodeSearchParamsToString(params)}`);
   };
@@ -45,12 +47,12 @@ const PCFilterWrapper = () => {
     resetFilter();
     window.location.href = '';
     // URL 파라미터 초기화
-    const paramsToDelete = ['sortBy', 'minPrice', 'maxPrice', 'options'];
+    const paramsToDelete = ['sortBy', 'minPrice', 'maxPrice', 'options', 'sortBy'];
     paramsToDelete.forEach((param) => searchParams.delete(param));
     navigate(`?${decodeSearchParamsToString(searchParams)}`);
   };
 
-  const handleRemoveFilter = (type: 'price' | 'service', value?: string) => {
+  const handleRemoveFilter = (type: 'price' | 'service' | 'sortBy', value?: string) => {
     const params = new URLSearchParams(searchParams);
 
     if (type === 'price') {
@@ -84,6 +86,7 @@ const PCFilterWrapper = () => {
 
   return (
     <>
+      <FilterSort params={searchParams} />
       <FilterChipsContainer>
         {/* 가격 필터 칩 */}
         {(searchParams.get('minPrice') || searchParams.get('maxPrice')) && (
