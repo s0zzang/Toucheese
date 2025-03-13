@@ -42,7 +42,6 @@ const FilterSort = ({ params }: FilterProps) => {
 
   return (
     <>
-      <FilterDividerStyle />
       <h2
         css={css`
           ${TypoBodyMdSb}
