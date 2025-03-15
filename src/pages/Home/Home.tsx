@@ -51,9 +51,15 @@ const Home = () => {
   const navigate = useNavigate();
   const windowWidth = useGetWindowWidth();
 
-  // 로그인 완료 후 예약페이지로 돌아가기
-  const lastPage = window.sessionStorage.getItem('lastPage');
-  if (lastPage) navigate(lastPage);
+  useEffect(() => {
+    // 로그인 완료 후 예약페이지로 돌아가기
+    const lastPage = window.sessionStorage.getItem('lastPage');
+
+    if (lastPage) {
+      navigate(lastPage);
+      window.sessionStorage.removeItem('lastPage');
+    }
+  }, []);
 
   // 스크롤에 따라 Navigator 고정
   useEffect(() => {

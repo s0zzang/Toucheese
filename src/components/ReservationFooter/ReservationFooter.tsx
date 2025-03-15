@@ -29,7 +29,7 @@ const ReservationFooter = ({
 
       <Button
         text={text}
-        variant="deepGray"
+        variant="gray"
         active={!disabled}
         type={type}
         onClick={onClick}

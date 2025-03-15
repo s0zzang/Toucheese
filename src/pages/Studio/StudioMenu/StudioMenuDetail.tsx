@@ -14,6 +14,7 @@ import useReservationStore from '@store/useReservationStore';
 import { Helmet } from 'react-helmet-async';
 import { defaultUserState } from '@store/useUserStore';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
+import useToast from '@hooks/useToast';
 
 const StudioMenuDetail = () => {
   const { _menuId, _id } = useParams();
@@ -26,6 +27,7 @@ const StudioMenuDetail = () => {
   const { totalPrice, options, menuId } = useReservationStore();
   const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
+  const openToast = useToast();
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -82,9 +84,9 @@ const StudioMenuDetail = () => {
     saveReservationDetails(saveData);
 
     if (user) {
-      window.sessionStorage.removeItem('lastPage');
       navigate(`/studio/${_id}/reservation`);
     } else {
+      openToast('로그인이 필요합니다!');
       window.sessionStorage.setItem('lastPage', pathname);
       navigate('/user/auth');
     }
