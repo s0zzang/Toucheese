@@ -8,14 +8,14 @@ import StudioNavigator from '@components/Navigator/StudioNavigator';
 import { css } from '@emotion/react';
 import useModal from '@hooks/useModal';
 import { useDimSwiperStore } from '@store/useDimSwiperStore';
+import { Hidden } from '@styles/Common';
+import variables from '@styles/Variables';
 import { useQuery } from '@tanstack/react-query';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { IPortfolio, IStudioRes } from 'types/types';
 import DimmedModal from '../components/DimmedModal';
 import PortfolioSwiper from './PortfolioSwiper';
-import { Hidden } from '@styles/Common';
-import { Helmet } from 'react-helmet-async';
-import variables from '@styles/Variables';
 
 interface IPortfolioResponse {
   menuIdList: number[];
