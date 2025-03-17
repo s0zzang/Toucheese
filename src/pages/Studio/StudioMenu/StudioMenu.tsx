@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { IMenuListRes } from 'types/types';
 import Header from '@components/Header/Header';
 import { Helmet } from 'react-helmet-async';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import variables from '@styles/Variables';
 
 const StudioMenu = () => {
   const { _id } = useParams();
@@ -49,7 +51,9 @@ const StudioMenu = () => {
           <meta property="og:description" content="스튜디오 메뉴 목록" />
         </Helmet>
       )}
-      <Header title={`${data ? data[0].studioName : ''}`} backTo="/" />
+      <div css={MenuPCStyle}>
+        <Header title={`${data ? data[0].studioName : ''}`} backTo="/" />
+      </div>
       <StudioNavigator _id={_id || ''} />
       <div css={ItemLIstStyle}>{StudioMenuList}</div>
     </>
@@ -61,4 +65,13 @@ export default StudioMenu;
 const ItemLIstStyle = css`
   display: flex;
   flex-direction: column;
+  ${mqMin(breakPoints.pc)} {
+    gap: 3.4rem;
+    margin-top: 3rem;
+  }
+`;
+const MenuPCStyle = css`
+  ${mqMin(breakPoints.pc)} {
+    display: none;
+  }
 `;
