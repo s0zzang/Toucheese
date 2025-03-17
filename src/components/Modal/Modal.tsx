@@ -194,16 +194,17 @@ const ModalInner = styled.div<IModalStyle>`
   }
 
   ${mqMin(breakPoints.pc)} {
-    background: #fff;
+    background: ${(props) => (props.type !== 'dimmed' ? '#fff' : variables.colors.black)};
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: ${(props) => (props.type !== 'dimmed' ? '100%' : '64vw')};
     max-width: ${(props) => (props.type === 'default' ? '45rem' : '54rem')};
-    min-height: ${(props) => (props.type === 'default' ? '20rem' : '45.6rem')};
+    max-width: ${(props) => props.type === 'dimmed' && '81.2rem'};
+    min-height: ${(props) => (props.type === 'default' ? '20rem' : '40rem')};
     max-height: calc(100vh - 8rem);
     border-radius: 2rem;
   }
@@ -228,8 +229,10 @@ const TitleStyle = styled.div<ITitleStyle>`
 
   ${mqMin(breakPoints.pc)} {
     padding: 2rem ${variables.layoutPadding};
-    border-bottom: 1px solid ${variables.colors.gray300};
     color: ${variables.colors.gray800};
+    border-bottom: ${(props) => props.type !== 'dimmed' && `1px solid ${variables.colors.gray300}`};
+    height: ${(props) => props.type === 'dimmed' && '7.2rem'};
+    flex-shrink: 0;
   }
 `;
 
@@ -283,7 +286,8 @@ const ContentsStyle = styled.div<IContentStyle>`
 
   ${mqMin(breakPoints.pc)} {
     overflow: hidden auto;
-    padding: 1.6rem ${variables.layoutPadding};
+    padding: ${variables.layoutPadding};
+    padding-top: ${(props) => props.type === 'dimmed' && 0};
   }
 `;
 

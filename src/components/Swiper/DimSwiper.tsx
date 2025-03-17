@@ -1,26 +1,20 @@
 /** @jsxImportSource @emotion/react */
 
 import { useDimSwiperStore } from '@store/useDimSwiperStore';
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperClass } from 'swiper/react';
-
 import { css } from '@emotion/react';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { Hidden, TypoBodyMdR } from '@styles/Common';
+import variables from '@styles/Variables';
 import 'swiper/css';
+import 'swiper/css/navigation';
 
 interface IDimSwiper<T extends { id: number }> {
-  children: ReactNode;
+  children: React.ReactNode;
   data: T[];
-  setSlideSet: Dispatch<SetStateAction<T[]>>;
+  setSlideSet: React.Dispatch<React.SetStateAction<T[]>>;
 }
 
 const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: IDimSwiper<T>) => {
@@ -30,6 +24,9 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
   const [lastSlide, setLastSlide] = useState<number>();
   const [activeIndex, setActiveIndex] = useState<number>(1);
   const slideIndexMap = useMemo(() => new Map(), []);
+
+  const prevBtnRef = useRef(null);
+  const nextBtnRef = useRef(null);
 
   const getNewSlideSet = (clickedId: number) => {
     return data.filter(
@@ -71,6 +68,10 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
     initialSlide: selectedId === firstSlide ? 0 : 1,
     centeredSlides: true,
     spaceBetween: 20,
+    navigation: {
+      prevEl: prevBtnRef.current,
+      nextEl: nextBtnRef.current,
+    },
   };
 
   useEffect(() => {
@@ -88,7 +89,7 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
 
   return (
     firstSlide && (
-      <>
+      <div css={dimSwiperBox}>
         <p css={[TypoBodyMdR, TitleStyle]}>
           <h3>
             {activeIndex} <span css={Hidden}>번째</span>{' '}
@@ -97,12 +98,39 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
           {data.length}
         </p>
         <Swiper {...swiperOption}>{children}</Swiper>
-      </>
+        <div>
+          <button className="swiper-button-prev" ref={prevBtnRef}></button>
+          <button className="swiper-button-next" ref={nextBtnRef}></button>
+        </div>
+      </div>
     )
   );
 };
 
 export default DimSwiper;
+
+const dimSwiperBox = css`
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: ${variables.colors.white};
+    width: 4.4rem;
+    aspect-ratio: 1/1;
+    font-size: 3.2rem;
+
+    &::after {
+      font-size: inherit;
+    }
+  }
+
+  .swiper-button-prev {
+    left: 0;
+    transform: translateX(calc(-100% - ${variables.layoutPadding}));
+  }
+  .swiper-button-next {
+    right: 0;
+    transform: translateX(calc(100% + ${variables.layoutPadding}));
+  }
+`;
 
 const TitleStyle = css`
   padding: 1.8rem 0;
@@ -118,6 +146,10 @@ const TitleStyle = css`
   i {
     font-style: normal;
   }
+
+  ${mqMin(breakPoints.pc)} {
+    height: 7.2rem;
+  }
 `;
 
 export const SlideImgBox = css`
@@ -129,5 +161,9 @@ export const SlideImgBox = css`
   img {
     aspect-ratio: 308/340;
     object-fit: scale-down;
+
+    ${mqMin(breakPoints.pc)} {
+      aspect-ratio: 764/404;
+    }
   }
 `;
