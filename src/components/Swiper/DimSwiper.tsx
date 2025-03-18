@@ -1,15 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
-import { useDimSwiperStore } from '@store/useDimSwiperStore';
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Navigation } from 'swiper/modules';
-import { Swiper, SwiperClass } from 'swiper/react';
 import { css } from '@emotion/react';
+import { useDimSwiperStore } from '@store/useDimSwiperStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { Hidden, TypoBodyMdR } from '@styles/Common';
 import variables from '@styles/Variables';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperClass } from 'swiper/react';
+import { NavigationOptions } from 'swiper/types';
 
 interface IDimSwiper<T extends { id: number }> {
   children: React.ReactNode;
@@ -27,6 +28,7 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
 
   const prevBtnRef = useRef(null);
   const nextBtnRef = useRef(null);
+  const [lastSwipeDirection, setLastSwipeDirection] = useState('');
 
   const getNewSlideSet = (clickedId: number) => {
     return data.filter(
@@ -40,9 +42,17 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
     }
   };
 
-  const handleChange = () => {
+  const handleInitNav = (swiper: SwiperClass) => {
+    const navigation = swiper.params.navigation as NavigationOptions;
+    navigation.prevEl = prevBtnRef.current;
+    navigation.nextEl = nextBtnRef.current;
+  };
+
+  const handleChange = (swipe: SwiperClass) => {
     if (!swiperRef || !firstSlide || !lastSlide) return null;
+    console.log(swiperRef.swipeDirection);
     const toNext = swiperRef.swipeDirection === 'next';
+    // const toNext = swiperRef.activeIndex > swiperRef.previousIndex;
     const direction = toNext ? 1 : -1;
 
     // 첫번째, 마지막 슬라이드에서 슬라이드 변경 금지
@@ -63,7 +73,8 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
   const swiperOption = {
     modules: [Navigation],
     onSwiper: (e: SwiperClass) => setSwiperRef(e),
-    onTransitionEnd: handleChange,
+    onBeforeInit: (e: SwiperClass) => handleInitNav(e),
+    onTransitionEnd: (e: SwiperClass) => handleChange(e),
     slidesPerView: 1,
     initialSlide: selectedId === firstSlide ? 0 : 1,
     centeredSlides: true,
@@ -99,8 +110,8 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
         </p>
         <Swiper {...swiperOption}>{children}</Swiper>
         <div>
-          <button className="swiper-button-prev" ref={prevBtnRef}></button>
-          <button className="swiper-button-next" ref={nextBtnRef}></button>
+          <button className="swiper-button swiper-button-prev" ref={prevBtnRef}></button>
+          <button className="swiper-button swiper-button-next" ref={nextBtnRef}></button>
         </div>
       </div>
     )
@@ -110,8 +121,7 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
 export default DimSwiper;
 
 const dimSwiperBox = css`
-  .swiper-button-prev,
-  .swiper-button-next {
+  .swiper-button {
     color: ${variables.colors.white};
     width: 4.4rem;
     aspect-ratio: 1/1;
