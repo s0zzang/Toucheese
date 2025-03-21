@@ -180,7 +180,7 @@ const infoText = css`
   margin-top: 0.8rem;
   padding-left: 2rem;
   ${TypoBodySmR}
-  background: url(/img/icon-info-gray600.svg) no-repeat center left;
+  background: url(/img/icon-info-gray600.svg) no-repeat center left / 1.4rem;
 
   &:first-of-type {
     margin-top: 2rem;
