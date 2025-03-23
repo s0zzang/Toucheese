@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import StudioReviewItem, { Review } from '../StudioReview/components/StudioReviewItem';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 
 const StudioMenuDetailReview = ({
   reviewItem = [],
@@ -23,7 +24,7 @@ const StudioMenuDetailReview = ({
           </div>
           <p>{reviewItem.length}개의 리뷰</p>
         </section>
-        <section>{reviewList}</section>
+        <section css={ReviewList}>{reviewList}</section>
       </div>
     </>
   );
@@ -47,5 +48,12 @@ const ReviewHead = css`
     display: flex;
     align-items: center;
     gap: 0.2rem;
+  }
+`;
+const ReviewList = css`
+  display: flex;
+  flex-direction: column;
+  ${mqMin(breakPoints.pc)} {
+    width: 50vw;
   }
 `;

@@ -70,7 +70,7 @@ const ItemLIstStyle = css`
     margin-top: 3rem;
   }
 `;
-const MenuPCStyle = css`
+export const MenuPCStyle = css`
   ${mqMin(breakPoints.pc)} {
     display: none;
   }

@@ -11,6 +11,7 @@ import {
 } from '@styles/Common';
 import { IMenuListRes } from 'types/types';
 import useReservationStore, { ReservationOption } from '@store/useReservationStore';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 
 const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes }) => {
   const [hours, minutes, seconds] = infoItem.duration
@@ -57,20 +58,22 @@ const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes }) => {
           <ul css={AddOptionsListStyle}>
             {infoItem.additionalOptions.map((item) => (
               <li key={item.id}>
-                <input
-                  type="checkbox"
-                  id={`${item.price}`}
-                  name="OptionPrice"
-                  value={`${item.price}`}
-                  onChange={(e) =>
-                    handleOptionClick(
-                      { option_id: item.id, optionPrice: item.price, optionName: item.name },
-                      e,
-                    )
-                  }
-                  checked={options.some((opt) => opt.option_id === item.id)}
-                />
-                <label htmlFor={`${item.price}`}>{item.name}</label>
+                <div>
+                  <input
+                    type="checkbox"
+                    id={`${item.price}`}
+                    name="OptionPrice"
+                    value={`${item.price}`}
+                    onChange={(e) =>
+                      handleOptionClick(
+                        { option_id: item.id, optionPrice: item.price, optionName: item.name },
+                        e,
+                      )
+                    }
+                    checked={options.some((opt) => opt.option_id === item.id)}
+                  />
+                  <label htmlFor={`${item.price}`}>{item.name}</label>
+                </div>
                 <p>+{item.price.toLocaleString('ko-KR')}원</p>
               </li>
             ))}
@@ -100,12 +103,22 @@ const MenuInfoStyle = css`
     gap: 1rem;
     ${TypoBodyMdR}
 
+    ${mqMin(breakPoints.pc)} {
+      justify-content: flex-start;
+      gap: 0;
+    }
+
     & h3 {
       color: ${variables.colors.gray800};
       background-position: left;
       padding-left: 2rem;
       background-repeat: no-repeat;
       background-size: 1.6rem;
+
+      ${mqMin(breakPoints.pc)} {
+        display: inline-block;
+        width: 26.5rem;
+      }
 
       &.time {
         background-image: url(/img/icon-clock.svg);
@@ -120,6 +133,12 @@ const MenuInfoStyle = css`
         background-image: url(/img/icon-folder.svg);
       }
     }
+
+    & p {
+      ${mqMin(breakPoints.pc)} {
+        flex-grow: 1;
+      }
+    }
   }
 `;
 
@@ -129,11 +148,23 @@ const TotalPriceStyle = css`
   gap: 1rem;
   padding: 1.8rem 0;
 
+  ${mqMin(breakPoints.pc)} {
+    justify-content: flex-start;
+    gap: 0;
+  }
+
   & h3 {
     ${TypoTitleXsM}
+    ${mqMin(breakPoints.pc)} {
+      display: inline-block;
+      width: 26.5rem;
+    }
   }
   & p {
     ${TypoTitleXsB}
+    ${mqMin(breakPoints.pc)} {
+      flex-grow: 1;
+    }
   }
 `;
 
@@ -142,9 +173,17 @@ const AddOptionsWrapperStyle = css`
   flex-direction: column;
   margin-bottom: 2rem;
 
+  ${mqMin(breakPoints.pc)} {
+    justify-content: flex-start;
+  }
+
   & h3 {
     padding: 1.8rem 0;
     ${TypoTitleXsM}
+    ${mqMin(breakPoints.pc)} {
+      display: inline-block;
+      width: 26.5rem;
+    }
   }
 
   .optionList {
@@ -166,8 +205,19 @@ const AddOptionsListStyle = css`
     ${TypoBodyMdM}
   }
 
+  & div {
+    ${mqMin(breakPoints.pc)} {
+      display: inline-block;
+      width: 26.5rem;
+    }
+  }
+
   & p {
     margin-left: auto;
     ${TypoBodyMdSb}
+    ${mqMin(breakPoints.pc)} {
+      margin-left: 0;
+      flex-grow: 1;
+    }
   }
 `;
