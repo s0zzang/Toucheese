@@ -8,7 +8,6 @@ import { IMenuListRes } from 'types/types';
 import Header from '@components/Header/Header';
 import { Helmet } from 'react-helmet-async';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import variables from '@styles/Variables';
 
 const StudioMenu = () => {
   const { _id } = useParams();

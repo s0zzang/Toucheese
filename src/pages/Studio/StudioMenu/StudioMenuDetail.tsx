@@ -157,8 +157,7 @@ const StudioMenuDetail = () => {
           )}
         </div>
       </div>
-
-      {/* <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} /> */}
+      <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
     </>
   );
 };

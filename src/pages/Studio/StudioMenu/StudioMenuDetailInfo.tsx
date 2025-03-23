@@ -97,6 +97,10 @@ const MenuInfoStyle = css`
   flex-direction: column;
   gap: 0.6rem;
 
+  ${mqMin(breakPoints.pc)} {
+    gap: 1.4rem;
+  }
+
   .menuInfoItem {
     display: flex;
     justify-content: space-between;
@@ -198,6 +202,10 @@ const AddOptionsListStyle = css`
   flex-direction: column;
   justify-content: center;
   gap: 2.4rem;
+
+  ${mqMin(breakPoints.pc)} {
+    padding-bottom: 10rem;
+  }
 
   & li {
     display: flex;
