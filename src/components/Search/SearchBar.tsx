@@ -94,7 +94,7 @@ const SearchBar = () => {
             src="/img/icon-search-gray500.svg"
             alt="검색 아이콘(모바일)"
           />
-          <img className="search-pc" src="/img/icon-search.svg" alt="검색 아이콘(PC)" />
+          <img className="search-pc" src="/img/icon-search-gray700.svg" alt="검색 아이콘(PC)" />
         </div>
 
         {inputValue && (

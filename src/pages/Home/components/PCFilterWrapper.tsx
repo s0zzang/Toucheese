@@ -173,6 +173,7 @@ const ButtonWrapperStyle = styled.div`
 `;
 
 const FilterDividerStyle = styled.div`
+  box-shadow: inset 0 0 10px red;
   border-top: 0.1rem solid ${variables.colors.gray300};
   margin: 2rem 0;
 `;
@@ -196,7 +197,7 @@ const FilterChipsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
-  margin-bottom: 1.6rem;
+  margin-top: 2rem;
 `;
 
 const ChipStyle = styled.div`

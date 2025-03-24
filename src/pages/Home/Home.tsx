@@ -15,16 +15,16 @@ import styled from '@emotion/styled';
 import useGetWindowWidth from '@hooks/useGetWindowWidth';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { bg100vw, PCLayout, TypoBodyMdSb } from '@styles/Common';
+import { bg100vw, PCLayout } from '@styles/Common';
 import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { remToPx } from '@utils/remToPx';
 import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { SortBy } from 'types/types';
 import LocalDateSelectionModal from './components/LocalDateSelectionModal';
 import PCFilterWrapper from './components/PCFilterWrapper';
-import { SortBy } from 'types/types';
 
 interface IFixedProps {
   isFixed: boolean;
@@ -198,9 +198,9 @@ const Home = () => {
         >
           {/* PC 필터 영역 */}
           <FilterSectionStyle className="pc" isFixed={isFixed}>
-            <FilterContentStyle>
+            <div>
               <PCFilterWrapper />
-            </FilterContentStyle>
+            </div>
           </FilterSectionStyle>
           <ListStyle>
             <StudioList mode="filter" searchParams={searchParams} />
@@ -309,28 +309,6 @@ const FilterSectionStyle = styled.div<IFixedProps>`
   left: 0;
   width: 19.2rem;
   height: ${(props) => (props.isFixed ? 'calc(100vh - 5.8rem)' : 'calc(100vh - 13.8rem)')};
-`;
-
-const FilterContentStyle = styled.div`
-  .filter-sort,
-  .filter-price,
-  .filter-options {
-    > p {
-      ${TypoBodyMdSb}
-      color: ${variables.colors.gray800};
-      margin-bottom: 0.8rem;
-    }
-  }
-
-  .filter-sort {
-    padding-bottom: 2rem;
-    border-bottom: 0.1rem solid ${variables.colors.gray300};
-  }
-
-  .filter-price {
-    margin-top: 2rem;
-    margin-bottom: 3.4rem;
-  }
 `;
 
 const ListStyle = styled.div`
