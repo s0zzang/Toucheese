@@ -5,8 +5,21 @@ import { Helmet } from 'react-helmet-async';
 import SearchBar from '@components/Search/SearchBar';
 import RecentSearches from '@components/Search/RecentSearches';
 import TrendingStudios from '@components/Search/TrendingStudios';
+import useGetWindowWidth from '@hooks/useGetWindowWidth';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Search = () => {
+  const windowWidth = useGetWindowWidth();
+  const navigate = useNavigate();
+
+  // PC 버전에는 search 페이지가 없으므로 삭제
+  useEffect(() => {
+    if (windowWidth >= 1024) {
+      navigate('/');
+    }
+  }, [windowWidth]);
+
   return (
     <div>
       <Helmet>
