@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import BackButton from '@components/BackButton/BackButton';
 import { css } from '@emotion/react';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoTitleXsSB } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
@@ -25,7 +26,7 @@ const Header = ({ title, backTo, fixed = false, scrollEvent = false }: HeaderPro
   }, [scrollEvent]);
 
   return (
-    <header css={[headerStyle(fixed, scrollY, scrollEvent)]}>
+    <header css={[headerStyle(fixed, scrollY, scrollEvent)]} className="mo">
       <BackButton to={backTo} />
       {title && <h1 css={[TypoTitleXsSB, additionalH1Style]}>{title}</h1>}
     </header>
@@ -52,6 +53,10 @@ const headerStyle = (fix: boolean, scrollY: boolean, scrollEvent: boolean) => cs
   `}
   padding: ${variables.layoutPadding};
   transition: all 0.2s;
+
+  ${mqMin(breakPoints.pc)} {
+    display: none;
+  }
 `;
 
 const additionalH1Style = css`
