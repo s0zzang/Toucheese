@@ -1,28 +1,21 @@
 /** @jsxImportSource @emotion/react */
 
-import Bookmark from '@components/Bookmark/Bookmark';
 import Button from '@components/Button/Button';
 import KakaoMap from '@components/Kakao/KakaoMap';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
-import ShareButton from '@components/Share/ShareButton';
 import { css } from '@emotion/react';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
-import {
-  DividerStyle,
-  TypoBodyMdM,
-  TypoBodyMdR,
-  TypoBodyMdSb,
-  TypoCapSmM,
-  TypoCapSmR,
-  TypoTitleMdSb,
-  TypoTitleXsM,
-} from '@styles/Common';
+import { TypoBodyMdM, TypoBodyMdR, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '@components/Header/Header';
 import Loading from '@components/Loading/Loading';
+import useStudioDataStore from '@store/useStudioDataStore';
+import StudioInfo from '@components/Studio/StudioInfo';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { useMediaQuery } from 'react-responsive';
 
 const StudioMain = () => {
   const { _id } = useParams();
@@ -33,6 +26,15 @@ const StudioMain = () => {
   const [scrollY, setScrollY] = useState(false);
   const navigate = useNavigate();
   const handleClick = () => navigate(`/studio/${_id}/menu`);
+  const { studioDetail, setStudioDetail } = useStudioDataStore();
+  const isPc = useMediaQuery({ minWidth: breakPoints.pc });
+
+  /** 스튜디오 데이터 session Storage에 저장 */
+  useEffect(() => {
+    if (!studioDetail[`${_id}`] && data) {
+      setStudioDetail(`${_id}`, data);
+    }
+  }, [data, useParams, studioDetail, setStudioDetail]);
 
   /** 스튜디오 소개 텍스트 길이 */
   const hasMore: boolean | undefined = data && data.description.length > 100;
@@ -112,9 +114,6 @@ const StudioMain = () => {
     return imageLoadError ? url : webpUrl;
   };
 
-  let today = new Date();
-  const dayIndex = today.getDay() === 0 ? 6 : today.getDay() - 1;
-
   const day = {
     MONDAY: '월요일',
     TUESDAY: '화요일',
@@ -156,95 +155,31 @@ const StudioMain = () => {
 
       <Header title={scrollY ? data?.name : ''} fixed={true} scrollEvent={true} />
 
-      {/* 이미지 */}
-      <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
-        {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
-          <img
-            key={idx}
-            src={getImageUrl(portfolioImg.url)}
-            alt={`포트폴리오 이미지 : ${portfolioImg.url}`}
-          />
-        ))}
-        <div css={portfolioPsitionStyle}>
-          <img src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')} alt="사진5" />
-          <div css={DimOverlayStyle}>
-            <img src="/img/icon-morePreview.svg" alt="더보기" />
-            <span>
-              {data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}
-            </span>
+      <div css={boxLayoutStyle}>
+        {/* 이미지 */}
+        <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
+          {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
+            <img
+              key={idx}
+              src={getImageUrl(portfolioImg.url)}
+              alt={`포트폴리오 이미지 : ${portfolioImg.url}`}
+            />
+          ))}
+          <div css={portfolioPsitionStyle}>
+            <img src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')} alt="사진5" />
+            <div css={DimOverlayStyle}>
+              <img src="/img/icon-morePreview.svg" alt="더보기" />
+              <span>
+                {data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* 스튜디오 정보 */}
-      <div css={StudioInfoTitleStyle}>
-        <div>
-          <h2>{`${data.name}`}</h2>
-          <div className="rating">
-            <img src="/img/icon-rating.svg" alt="리뷰 평점" />
-            <p>{`${data.rating}`}</p>
-            <p>{`(${data.review_count}개의 평가)`}</p>
-          </div>
+        <StudioInfo data={data} id={_id} />
+        <div css={stickyNavStyle}>
+          <StudioNavigator _id={_id || ''} />
         </div>
-        <div css={SocialActionsStyle}>
-          <ShareButton
-            title={data.name}
-            description={data.description}
-            imageUrl={data.portfolios[0]?.url}
-            webUrl={window.location.href}
-          />
-          <Bookmark id={Number(_id)} count={data.bookmark_count} isBookmarked={false} />
-        </div>
-      </div>
-
-      <div css={StudioInfoStyle}>
-        <dl>
-          <div>
-            <dt>
-              <img src="/img/icon-clock.svg" alt="영업시간" />
-            </dt>
-            <dd>
-              <div className="openStatus">
-                {data && data.open ? (
-                  <>
-                    <p>영업중</p>
-                    <time>
-                      {data.openingHours[dayIndex].openTime.slice(0, 5)} -{' '}
-                      {data.openingHours[dayIndex].closeTime.slice(0, 5)}
-                    </time>
-                  </>
-                ) : (
-                  <p>영업 종료</p>
-                )}
-              </div>
-            </dd>
-          </div>
-
-          <div>
-            <dt>
-              <img src="/img/icon-location.svg" alt="주소" />
-            </dt>
-            <dd>
-              <p>
-                {`${data.address}` === 'undefined'
-                  ? '주소 수집중'
-                  : `${data.addressSi} ${data.addressGu} ${data.address}`}
-              </p>
-            </dd>
-          </div>
-          <div>
-            <dt>
-              <img src="/img/icon-call-gray700.svg" alt="연락처" />
-            </dt>
-            <dd>
-              <p>{`${data.phone}`}</p>
-            </dd>
-          </div>
-        </dl>
-      </div>
-
-      <div css={stickyNavStyle}>
-        <StudioNavigator _id={_id || ''} />
       </div>
 
       {/* 홈 기본 정보  - 매장소개 */}
@@ -312,36 +247,40 @@ const StudioMain = () => {
       </div>
 
       {/* 홈 기본정보 - 매장 정보 */}
-      <div css={optionsStyle}>
-        <p>매장 정보</p>
-        <div>
-          {data.options.length === 0
-            ? '수집중'
-            : data.options.map((optionItem) => (
-                <Button
-                  key={optionItem}
-                  text={option[optionItem]}
-                  size="xsmall"
-                  width="fit"
-                  variant="white"
-                  iconSizeWidth="1.5rem"
-                  iconSizeHeight="1.5rem"
-                  icon={<img src={optionIcon[optionItem]} alt="매장정보" />}
-                />
-              ))}
-        </div>
-      </div>
+      {!isPc && (
+        <>
+          <div css={optionsStyle}>
+            <p>매장 정보</p>
+            <div>
+              {data.options.length === 0
+                ? '수집중'
+                : data.options.map((optionItem) => (
+                    <Button
+                      key={optionItem}
+                      text={option[optionItem]}
+                      size="xsmall"
+                      width="fit"
+                      variant="white"
+                      iconSizeWidth="1.5rem"
+                      iconSizeHeight="1.5rem"
+                      icon={<img src={optionIcon[optionItem]} alt="매장정보" />}
+                    />
+                  ))}
+            </div>
+          </div>
 
-      <div css={reservationStyle}>
-        <Button
-          type="button"
-          variant="black"
-          text="예약하기"
-          size="large"
-          width="max"
-          onClick={handleClick}
-        />
-      </div>
+          <div css={reservationStyle}>
+            <Button
+              type="button"
+              variant="black"
+              text="예약하기"
+              size="large"
+              width="max"
+              onClick={handleClick}
+            />
+          </div>
+        </>
+      )}
     </>
   );
 };
@@ -362,6 +301,14 @@ const stickyNavStyle = css`
       opacity: 1;
       transform: translateY(0);
     }
+  }
+`;
+
+const boxLayoutStyle = css`
+  display: flex;
+  flex-direction: column;
+
+  ${mqMin(breakPoints.pc)} {
   }
 `;
 
@@ -425,86 +372,6 @@ const DimOverlayStyle = css`
     color: ${variables.colors.white};
     ${TypoCapSmM}
   }
-`;
-
-const StudioInfoTitleStyle = css`
-  display: flex;
-  justify-content: space-between;
-
-  & > div {
-    margin-bottom: 2rem;
-    & > h2 {
-      ${TypoTitleMdSb}
-      margin-bottom: 0.4rem;
-    }
-
-    & > .rating {
-      display: flex;
-      align-items: center;
-      & > img {
-        margin-right: 0.4rem;
-        width: 1.6rem;
-        height: 1.6rem;
-      }
-
-      & > p + p {
-        margin-left: 0.2rem;
-        color: ${variables.colors.gray800};
-      }
-    }
-  }
-`;
-
-const StudioInfoStyle = css`
-  position: relative;
-
-  dl {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-
-    div {
-      display: flex;
-      align-items: center;
-
-      dt {
-        display: flex;
-        margin-right: 1rem;
-
-        img {
-          width: 1.7rem;
-          height: 1.7rem;
-        }
-      }
-
-      dd {
-        display: flex;
-        align-items: center;
-        ${TypoBodyMdR}
-
-        & > .openStatus {
-          display: flex;
-
-          & > p {
-            ${TypoBodyMdSb}
-            margin-right: 0.8rem;
-          }
-
-          & > time {
-            ${TypoBodyMdR}
-          }
-        }
-      }
-    }
-    ${DividerStyle}
-  }
-`;
-
-const SocialActionsStyle = css`
-  display: flex;
-  gap: 2.4rem;
-  ${TypoCapSmR}
-  color: ${variables.colors.gray700};
 `;
 
 const descriptionStyle = (isOpened: boolean, hasMore: boolean | undefined) => css`
