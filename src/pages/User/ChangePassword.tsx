@@ -23,35 +23,52 @@ const ChangePassword = () => {
   const navigate = useNavigate();
 
   const email = watch('email');
-  const password = watch('password');
+  const newPassword = watch('newPassword');
   const passwordConfirm = watch('passwordConfirm');
 
   useEffect(() => {
     // 모든 조건이 만족하면 활성화
     const passwordValid =
       // O(1) 연산 검증 추가
-      (password ?? '').length >= 8 &&
-      /^[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/.test(password) &&
-      !password.includes(email);
-    const isFormValid = passwordValid && password === passwordConfirm;
+      (newPassword ?? '').length >= 8 &&
+      /^[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/.test(newPassword) &&
+      !newPassword.includes(email);
+    const isFormValid = passwordValid && newPassword === passwordConfirm;
 
     setIsActive(isFormValid);
     setIsDisabled(!isFormValid);
-  }, [email, password, passwordConfirm]);
+  }, [email, newPassword, passwordConfirm]);
 
   const onSubmit = (data: any) => {
     console.log('onsubmit :', data);
   };
 
-  const handleVerifyComplete = async () => {
-    // PATCH api end point 연결
+  const loadSessionStorageData = (key: string) => {
+    /** key에 해당하는 데이터 호출 */
+    const localData = localStorage.getItem(key);
+    if (!localData) {
+      return null;
+    }
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/auth/`, {
-        method: 'PATCH',
+      const parsedData = JSON.parse(localData);
+      return parsedData;
+    } catch (error) {
+      console.error('JSON 파싱 오류', error);
+      return null;
+    }
+  };
+  const userData = loadSessionStorageData('userState');
+  const accessToken = userData.state.accessToken;
+
+  const handleVerifyComplete = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/user/mypage/changepw`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(password),
+        body: JSON.stringify({ newPassword }),
       });
 
       if (!response.ok) {
@@ -82,6 +99,10 @@ const ChangePassword = () => {
   };
   const emailData = loadLocalStorageData('userState');
 
+  console.log('보낼 데이터:', { newPassword });
+  console.log('요청 URL:', `${import.meta.env.VITE_TOUCHEESE_API}/user/mypage/changepw`);
+  console.log('Authorization 헤더:', `Bearer ${accessToken}`);
+
   return (
     <>
       <Helmet>
@@ -103,7 +124,7 @@ const ChangePassword = () => {
             labelName="새 비밀번호"
             type="password"
             placeholder="8자 이상의 비밀번호"
-            register={register('password', {
+            register={register('newPassword', {
               required: '비밀번호를 입력해주세요',
               validate: (value) => {
                 const email = `${emailData.state.email}` || '';
@@ -135,7 +156,7 @@ const ChangePassword = () => {
             placeholder="비밀번호를 재입력하세요"
             register={register('passwordConfirm', {
               required: '비밀번호를 재입력하세요',
-              validate: (value) => value === watch('password') || '비밀번호가 일치하지 않습니다',
+              validate: (value) => value === watch('newPassword') || '비밀번호가 일치하지 않습니다',
             })}
             error={errors.passwordConfirm?.message?.toString()}
           />
