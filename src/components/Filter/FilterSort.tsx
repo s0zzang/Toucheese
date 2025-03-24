@@ -49,7 +49,7 @@ const FilterSort = ({ params }: FilterProps) => {
           margin-bottom: 0.8rem;
         `}
       >
-        매장정렬
+        스튜디오 정렬
       </h2>
 
       <Button

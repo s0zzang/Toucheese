@@ -71,7 +71,7 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
             margin-bottom: 0.8rem;
           `}
         >
-          매장정보 서비스
+          매장 정보·서비스
         </h2>
       )}
       <ServiceAvailabilityContainerStyle isPc={isPc}>
