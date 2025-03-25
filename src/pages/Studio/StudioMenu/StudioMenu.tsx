@@ -20,9 +20,7 @@ const StudioMenu = () => {
       },
     });
 
-    if (!res.ok) {
-      console.error('Failed to fetch data');
-    }
+    if (!res.ok) throw new Error('Failed to fetch data');
 
     const data = await res.json();
     return data;
@@ -51,7 +49,7 @@ const StudioMenu = () => {
           <meta property="og:description" content="스튜디오 메뉴 목록" />
         </Helmet>
       )}
-      <Header title={`${data ? data[0].studioName : ''}`} />
+      <Header title={`${data ? data[0].studioName : ''}`} backTo="/" />
       <StudioNavigator _id={_id || ''} />
       <div css={ItemLIstStyle}>{StudioMenuList}</div>
     </>
@@ -63,5 +61,4 @@ export default StudioMenu;
 const ItemLIstStyle = css`
   display: flex;
   flex-direction: column;
-  margin-top: 0.4rem;
 `;

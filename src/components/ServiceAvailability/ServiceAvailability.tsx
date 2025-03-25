@@ -1,12 +1,23 @@
-import { useState } from 'react';
+/** @jsxImportSource @emotion/react */
+
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
+import { css } from '@emotion/react';
+import { TypoBodyMdSb } from '@styles/Common';
+import variables from '@styles/Variables';
+import { useFilterStore } from '@store/useFilterStore';
+
+interface ServiceAvailabilityProps {
+  isPc?: boolean; // PC 환경인지 여부를 전달받는 prop
+}
 
 /** 필터링 시 매장 서비스 제공 여부를 선택하는 컴포넌트 */
-const ServiceAvailability = () => {
+const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
   const [selectedButtons, setSelectedButtons] = useState<number[]>([]);
+  const { setSelectedServices } = useFilterStore();
   const navigate = useNavigate();
 
   const { closeBottomSheet } = useBottomSheetState(); // 바텀 시트 닫는 함수 호출
@@ -18,6 +29,15 @@ const ServiceAvailability = () => {
       return newSelected; // 선택된 버튼 목록 업데이트
     });
   };
+
+  // PC 모드일 때 선택된 버튼이 변경되면 전역 상태 업데이트
+  useEffect(() => {
+    if (isPc) {
+      const selectedServices = selectedButtons.map((i) => getButtonTitle(i));
+      setSelectedServices(selectedServices);
+      console.log('서비스 선택 변경:', selectedServices);
+    }
+  }, [selectedButtons, isPc, setSelectedServices]);
 
   /** "적용하기" 버튼 클릭 시 선택된 버튼의 제목을 쿼리 파라미터로 변환하여 네비게이션하는 함수 */
   const handleApplyClick = () => {
@@ -43,21 +63,18 @@ const ServiceAvailability = () => {
   };
   return (
     <>
-      <ServiceAvailabilityContainerStyle>
-        <Button
-          icon={<img src="img/icon-photo-edit.svg" alt="1:1보정" />}
-          iconSizeWidth="2.4rem"
-          iconSizeHeight="2.4rem"
-          iconPosition="left"
-          size="medium"
-          text={`1:1 보정`}
-          width="fit"
-          variant="white"
-          disabled={selectedButtons.includes(0)}
-          active={selectedButtons.includes(0)}
-          onClick={() => handleButtonClick(0)}
-          type="button"
-        />
+      {isPc && (
+        <h2
+          css={css`
+            ${TypoBodyMdSb}
+            color: ${variables.colors.gray800};
+            margin-bottom: 0.8rem;
+          `}
+        >
+          매장 정보·서비스
+        </h2>
+      )}
+      <ServiceAvailabilityContainerStyle isPc={isPc}>
         <Button
           icon={<img src="img/icon-original-file.svg" alt="원본 파일 제공" />}
           iconSizeWidth="2.4rem"
@@ -67,9 +84,21 @@ const ServiceAvailability = () => {
           text={`원본파일 제공`}
           width="fit"
           variant="white"
-          disabled={selectedButtons.includes(1)}
           active={selectedButtons.includes(1)}
           onClick={() => handleButtonClick(1)}
+          type="button"
+        />
+        <Button
+          icon={<img src="img/icon-photo-edit.svg" alt="1:1보정" />}
+          iconSizeWidth="2.4rem"
+          iconSizeHeight="2.4rem"
+          iconPosition="left"
+          size="medium"
+          text={`1:1 보정`}
+          width="fit"
+          variant="white"
+          active={selectedButtons.includes(0)}
+          onClick={() => handleButtonClick(0)}
           type="button"
         />
         <Button
@@ -81,21 +110,32 @@ const ServiceAvailability = () => {
           text={`주차`}
           width="fit"
           variant="white"
-          disabled={selectedButtons.includes(2)}
           active={selectedButtons.includes(2)}
           onClick={() => handleButtonClick(2)}
           type="button"
         />
         <Button
-          icon={<img src="img/icon-makeup.svg" alt="헤메코" />}
+          icon={<img src="img/icon-room.svg" alt="탈의실" />}
           iconSizeWidth="2.4rem"
           iconSizeHeight="2.4rem"
+          iconPosition="left"
+          size="medium"
+          text={`탈의실`}
+          width="fit"
+          variant="white"
+          active={selectedButtons.includes(5)}
+          onClick={() => handleButtonClick(5)}
+          type="button"
+        />
+        <Button
+          icon={<img src="img/icon-makeup.svg" alt="헤메코" />}
+          iconSizeWidth="2rem"
+          iconSizeHeight="2rem"
           iconPosition="left"
           size="medium"
           text={`헤어, 메이크업 수정`}
           width="fit"
           variant="white"
-          disabled={selectedButtons.includes(3)}
           active={selectedButtons.includes(3)}
           onClick={() => handleButtonClick(3)}
           type="button"
@@ -109,60 +149,40 @@ const ServiceAvailability = () => {
           text={`정장 대여`}
           width="fit"
           variant="white"
-          disabled={selectedButtons.includes(4)}
           active={selectedButtons.includes(4)}
           onClick={() => handleButtonClick(4)}
           type="button"
         />
         <Button
-          icon={<img src="img/icon-room.svg" alt="탈의실" />}
-          iconSizeWidth="2.4rem"
-          iconSizeHeight="2.4rem"
-          iconPosition="left"
-          size="medium"
-          text={`탈의실`}
-          width="fit"
-          variant="white"
-          disabled={selectedButtons.includes(5)}
-          active={selectedButtons.includes(5)}
-          onClick={() => handleButtonClick(5)}
-          type="button"
-        />
-        <Button
           icon={<img src="img/icon-powder.svg" alt="파우더룸" />}
-          iconSizeWidth="2.4rem"
-          iconSizeHeight="2.4rem"
+          iconSizeWidth="1.4rem"
+          iconSizeHeight="1.4rem"
           iconPosition="left"
           size="medium"
           text={`파우더룸`}
           width="fit"
           variant="white"
-          disabled={selectedButtons.includes(6)}
           active={selectedButtons.includes(6)}
           onClick={() => handleButtonClick(6)}
           type="button"
         />
       </ServiceAvailabilityContainerStyle>
-      <ButtonWrapperStyle>
-        <Button
-          size="large"
-          disabled={false}
-          text={`초기화`}
-          width="fit"
-          variant="gray"
-          onClick={handleResetClick}
-          type="button"
-        />
-        <Button
-          size="large"
-          disabled={false}
-          text={`적용하기`}
-          width="max"
-          variant="black"
-          onClick={handleApplyClick}
-          type="button"
-        />
-      </ButtonWrapperStyle>
+
+      {/* PC 환경이 아닐 때만 버튼들을 렌더링 */}
+      {!isPc && (
+        <ButtonWrapperStyle>
+          <Button iconResetSize="small" variant="gray" onClick={handleResetClick} type="reset" />
+          <Button
+            size="large"
+            disabled={false}
+            text={`적용하기`}
+            width="max"
+            variant="black"
+            onClick={handleApplyClick}
+            type="button"
+          />
+        </ButtonWrapperStyle>
+      )}
     </>
   );
 };
@@ -173,6 +193,29 @@ const ServiceAvailabilityContainerStyle = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
+
+  ${({ isPc }: { isPc?: boolean }) =>
+    isPc &&
+    css`
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+      max-width: none;
+
+      // 첫 번째, 두 번째, 다섯 번째, 여섯 번째 버튼은 한 줄 전체 차지
+      & > button:nth-of-type(1),
+      & > button:nth-of-type(2),
+      & > button:nth-of-type(5),
+      & > button:nth-of-type(6) {
+        grid-column: 1 / -1;
+      }
+
+      // 세 번째, 네 번째 버튼은 2열로 배치
+      & > button:nth-of-type(3),
+      & > button:nth-of-type(4) {
+        grid-column: auto;
+      }
+    `}
 `;
 const ButtonWrapperStyle = styled.div`
   margin-top: 3.2rem;

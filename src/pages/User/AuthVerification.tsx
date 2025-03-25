@@ -171,9 +171,10 @@ const AuthVerification = () => {
           <Button
             onClick={() => navigate('/user/signup')}
             type="submit"
+            width="max"
             text="다음"
             size="large"
-            variant="deepGray"
+            variant="gray"
             disabled={isDisabled}
             active={isActive}
           />
@@ -195,6 +196,7 @@ const buttonStyle = css`
   position: fixed;
   bottom: 3rem;
   width: calc(100% - 3.2rem);
+  left: 0;
 `;
 
 const pageTitleStyle = css`

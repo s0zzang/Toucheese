@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
 import { useToastStore } from '@store/useToastStore';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { createPortal } from 'react-dom';
@@ -34,6 +35,13 @@ const ToastContainerStyle = styled.div`
   right: ${variables.layoutPadding};
   bottom: 4.4rem;
   z-index: 9999;
+
+  ${mqMin(breakPoints.pc)} {
+    left: unset;
+    right: 4rem;
+    bottom: 4rem;
+    width: 32.8rem;
+  }
 `;
 
 const ToastStyle = styled.div`
@@ -50,6 +58,11 @@ const ToastStyle = styled.div`
     fadeIn 0.3s ease forwards,
     slideOut 0.3s ease forwards 2.7s,
     fadeOut 0.3s ease forwards 2.7s;
+
+  ${mqMin(breakPoints.pc)} {
+    width: 100%;
+    padding: 1.2rem 1.6rem;
+  }
 
   @keyframes slideIn {
     from {

@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { css, SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import variables from '@styles/Variables';
 import Header from '@components/Header/Header';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -14,6 +14,7 @@ import useReservationStore from '@store/useReservationStore';
 import { Helmet } from 'react-helmet-async';
 import { defaultUserState } from '@store/useUserStore';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
+import useToast from '@hooks/useToast';
 
 const StudioMenuDetail = () => {
   const { _menuId, _id } = useParams();
@@ -26,6 +27,7 @@ const StudioMenuDetail = () => {
   const { totalPrice, options, menuId } = useReservationStore();
   const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
+  const openToast = useToast();
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -35,9 +37,7 @@ const StudioMenuDetail = () => {
       },
     });
 
-    if (!res.ok) {
-      console.error('Failed to fetch data');
-    }
+    if (!res.ok) throw new Error('Failed to fetch data');
 
     const data = await res.json();
 
@@ -84,9 +84,9 @@ const StudioMenuDetail = () => {
     saveReservationDetails(saveData);
 
     if (user) {
-      window.sessionStorage.removeItem('lastPage');
       navigate(`/studio/${_id}/reservation`);
     } else {
+      openToast('로그인이 필요합니다!');
       window.sessionStorage.setItem('lastPage', pathname);
       navigate('/user/auth');
     }
@@ -107,7 +107,13 @@ const StudioMenuDetail = () => {
           />
         </Helmet>
       )}
-      <Header title={`${scrollY ? data?.name : ''}`} customStyle={HeaderCustomStyle(scrollY)} />
+
+      <Header
+        title={`${scrollY ? data?.name : ''}`}
+        backTo={`/studio/${_id}/menu`}
+        fixed={true}
+        scrollEvent={true}
+      />
       {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />}
       <div css={MenuDescStyle}>
         <h2>{data?.name}</h2>
@@ -140,19 +146,6 @@ const StudioMenuDetail = () => {
 
 export default StudioMenuDetail;
 
-const HeaderCustomStyle = (scrollY: boolean): SerializedStyles => {
-  return css`
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 50;
-    padding: 1.6rem 1rem;
-    ${scrollY && 'background-color: #fff; box-shadow: 0 0.4rem .5rem rgba(0, 0, 0, 0.1);'};
-    transition: all 0.2s;
-  `;
-};
-
 const MenuDescStyle = css`
   display: flex;
   flex-direction: column;
@@ -170,10 +163,19 @@ const MenuDescStyle = css`
 `;
 
 const TabMenuStyle = css`
+  position: sticky;
+  top: 5.5rem;
+  left: 0;
+  right: 0;
+  z-index: 100;
   color: ${variables.colors.gray800};
   display: flex;
-  width: 100%;
   text-align: center;
+  background-color: ${variables.colors.white};
+  width: calc(100% + 3.2rem);
+  margin: 0 calc(-1 * ${variables.layoutPadding});
+  margin-left: -1.6rem;
+  padding: 0 ${variables.layoutPadding};
 
   & li {
     cursor: pointer;

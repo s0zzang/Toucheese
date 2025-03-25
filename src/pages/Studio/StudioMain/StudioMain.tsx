@@ -1,35 +1,62 @@
 /** @jsxImportSource @emotion/react */
-
-import Bookmark from '@components/Bookmark/Bookmark';
 import Button from '@components/Button/Button';
-import Header from '@components/Header/Header';
 import KakaoMap from '@components/Kakao/KakaoMap';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
-import ShareButton from '@components/Share/ShareButton';
 import { css } from '@emotion/react';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
-import {
-  DividerStyle,
-  TypoBodyMdM,
-  TypoBodyMdR,
-  TypoBodyMdSb,
-  TypoCapSmM,
-  TypoCapSmR,
-  TypoTitleMdSb,
-  TypoTitleXsM,
-} from '@styles/Common';
+import { TypoBodyMdM, TypoBodyMdR, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
+import Header from '@components/Header/Header';
+import Loading from '@components/Loading/Loading';
+import useStudioDataStore from '@store/useStudioDataStore';
+import StudioInfo from '@components/Studio/StudioInfo';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { useMediaQuery } from 'react-responsive';
+import StudioInfoDock from '@components/Studio/StudioInfoDock';
+import StudioOptions from '@components/Studio/StudioOptions';
 
 const StudioMain = () => {
   const { _id } = useParams();
   const { data, error } = useGetStudioDetail(`${_id}`);
   const [isOpened, setIsOpened] = useState(false);
   const [isWebPSupported, setIsWebPSupported] = useState(false);
+  const [imageLoadError, setImageLoadError] = useState(false);
+  const [scrollY, setScrollY] = useState(false);
   const navigate = useNavigate();
   const handleClick = () => navigate(`/studio/${_id}/menu`);
+  const { studioDetail, setStudioDetail } = useStudioDataStore();
+  const isPc = useMediaQuery({ minWidth: breakPoints.pc });
+
+  /** 스튜디오 데이터 session Storage에 저장 */
+  useEffect(() => {
+    if (!studioDetail[`${_id}`] && data) {
+      setStudioDetail(`${_id}`, data);
+    }
+  }, [data, useParams, studioDetail, setStudioDetail]);
+
+  /** 스튜디오 소개 텍스트 길이 */
+  const hasMore: boolean | undefined = data && data.description.length > 100;
+
+  /** 스크롤 이벤트 핸들러 */
+  const handleScroll = () => {
+    // 스크롤이 200px 이상일 때 scrollY를 true로 설정
+    if (window.scrollY >= 250) {
+      setScrollY(true);
+    } else {
+      setScrollY(false);
+    }
+  };
+
+  /** 스크롤 이벤트 리스너 */
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   /** webP 지원 여부 확인 후 상태값 저장 */
   useEffect(() => {
@@ -53,21 +80,41 @@ const StudioMain = () => {
     return <div>Error: {error.message}</div>;
   }
   if (!data) {
-    return <div>로딩</div>;
+    return <Loading size="big" phrase="스튜디오를 불러오고 있습니다." />;
   }
 
-  /**이미지 5개 이하일때 대체할 이미지 */
-  const placeHolderImage = '/img/img-nopic.png';
-  const missingImgCount = data.portfolios.length < 5 ? 5 - data.portfolios.length : 0;
+  /** 이미지 5개 이하일 때 대체할 이미지 */
+  const placeHolderImageList = [
+    '/img/img-replace-01.svg',
+    '/img/img-replace-02.svg',
+    '/img/img-replace-03.svg',
+    '/img/img-replace-04.svg',
+    '/img/img-replace-05.svg',
+  ];
+
+  /** 대체이미지 개수 정하기 */
+  const missingImgCount = Math.max(5 - data.portfolios.length, 0);
+
+  /** placeHolderImageList의 뒤에서부터 배열 채우기 */
   const portfolioWithPlaceHolders = [
     ...data.portfolios,
-    ...Array(missingImgCount).fill({ url: placeHolderImage }),
+    ...placeHolderImageList.slice(-missingImgCount).map((url) => ({ url })),
   ];
 
   /** 환경별 이미지 조건부 렌더링 */
-  const getImageUrl = (url: string) => (isWebPSupported ? url.replace(/\.jpeg$/, '.webp') : url);
+  const getImageUrl = (url: string) => {
+    const webpUrl = isWebPSupported ? url.replace(/\.jpeg$/, '.webp') : url;
 
-  let today = new Date();
+    const img = new Image();
+    img.onerror = () => {
+      console.error('WebP 이미지 로드 실패:', webpUrl);
+      setImageLoadError(true);
+    };
+    img.src = webpUrl;
+
+    return imageLoadError ? url : webpUrl;
+  };
+
   const day = {
     MONDAY: '월요일',
     TUESDAY: '화요일',
@@ -76,26 +123,6 @@ const StudioMain = () => {
     FRIDAY: '금요일',
     SATURDAY: '토요일',
     SUNDAY: '일요일',
-  };
-
-  const option = {
-    CHANGING_ROOM: '탈의실',
-    DRESSING_ROOM: '파우더룸',
-    HAIR_MAKEUP: '헤어, 메이크업 수정',
-    INDIVIDUAL_EDITING: '1:1 보정',
-    SUIT_RENTAL_FREE: '정장 대여',
-    ORIGINAL_FILES: '원본파일 제공',
-    PARKING_AREA: '주차',
-  };
-
-  const optionIcon = {
-    CHANGING_ROOM: '/img/icon-room.svg',
-    DRESSING_ROOM: '/img/icon-powder.svg',
-    HAIR_MAKEUP: '/img/icon-makeup.svg',
-    INDIVIDUAL_EDITING: '/img/icon-photo-edit.svg',
-    SUIT_RENTAL_FREE: '/img/icon-suit.svg',
-    ORIGINAL_FILES: '/img/icon-original-file.svg',
-    PARKING_AREA: '/img/icon-park.svg',
   };
 
   return (
@@ -107,191 +134,163 @@ const StudioMain = () => {
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />
       </Helmet>
 
-      <Header customStyle={HeaderStyle} />
+      <main>
+        <section>
+          {/* 모바일 헤더 */}
+          <Header title={scrollY ? data?.name : ''} fixed={true} scrollEvent={true} />
 
-      {/* 이미지 */}
-      <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
-        {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
-          <img
-            key={idx}
-            src={getImageUrl(portfolioImg.url)}
-            alt={`포트폴리오 이미지 : ${portfolioImg.url}`}
-          />
-        ))}
-        <div css={portfolioPsitionStyle}>
-          <img src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')} alt="사진5" />
-          <div css={DimOverlayStyle}>
-            <img src="/img/icon-morePreview.svg" alt="더보기" />
-            <span>
-              {data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* 스튜디오 정보 */}
-      <div css={StudioInfoTitleStyle}>
-        <div>
-          <h2>{`${data.name}`}</h2>
-          <div className="rating">
-            <img src="/img/icon-rating.svg" alt="리뷰 평점" />
-            <p>{`${data.rating}`}</p>
-            <p>{`(${data.review_count}개의 평가)`}</p>
-          </div>
-        </div>
-        <div css={SocialActionsStyle}>
-          <ShareButton
-            title={data.name}
-            description={data.description}
-            imageUrl={data.portfolios[0]?.url}
-            webUrl={window.location.href}
-          />
-          <Bookmark id={Number(_id)} count={data.bookmark_count} isBookmarked={false} />
-        </div>
-      </div>
-
-      <div css={StudioInfoStyle}>
-        <dl>
-          <div>
-            <dt>
-              <img src="/img/icon-clock.svg" alt="영업시간" />
-            </dt>
-            <dd>
-              <div className="openStatus">
-                {data && data.open ? (
-                  <>
-                    <p>영업중</p>
-                    <time>
-                      {data.openingHours[today.getDay() - 1].openTime.slice(0, 5)} -{' '}
-                      {data.openingHours[today.getDay() - 1].closeTime.slice(0, 5)}
-                    </time>
-                  </>
-                ) : (
-                  <p>영업 종료</p>
-                )}
-              </div>
-            </dd>
-          </div>
-
-          <div>
-            <dt>
-              <img src="/img/icon-location.svg" alt="주소" />
-            </dt>
-            <dd>
-              <p>
-                {`${data.address}` === 'undefined'
-                  ? '주소 수집중'
-                  : `${data.addressSi} ${data.addressGu} ${data.address}`}
-              </p>
-            </dd>
-          </div>
-          <div>
-            <dt>
-              <img src="/img/icon-call.svg" alt="연락처" />
-            </dt>
-            <dd>
-              <p>{`${data.phone}`}</p>
-            </dd>
-          </div>
-        </dl>
-      </div>
-
-      {/* 네비게이션 바 */}
-      <StudioNavigator _id={_id || ''} />
-
-      {/* 홈 기본 정보  - 매장소개 */}
-      <div css={descriptionStyle(isOpened)}>
-        <p className="descriptionTitle">매장 소개</p>
-        <p className="textDisplay">{`${data.description}`}</p>
-        <span className="textMore" onClick={() => setIsOpened(!isOpened)}>
-          {isOpened ? '접기' : '더보기'}
-        </span>
-      </div>
-
-      {/* 홈 기본 정보  - 영업 정보 */}
-      <div css={openingHoursStyle}>
-        <p className="openingHoursTitle">영업 정보</p>
-        {data && data.openingHours.length === 0 ? (
-          <p>수집중</p>
-        ) : (
-          data &&
-          data.openingHours.map((openingHour) => (
-            <dl key={openingHour.id}>
-              <dt>{day[openingHour.dayOfWeek as keyof typeof day]}</dt>
-              <dd>
-                {openingHour.closed ? (
-                  <p>정기 휴무</p>
-                ) : (
-                  <>
-                    <time>{openingHour.openTime.slice(0, 5)}</time>
-                    <span>-</span>
-                    <time>{openingHour.closeTime.slice(0, 5)}</time>
-                  </>
-                )}
-              </dd>
-            </dl>
-          ))
-        )}
-
-        <div css={holidayStyle}>
-          {data.openingHours.length !== 0 ? <p className="holidayTitle"> 정기휴무</p> : ''}
-          <div className="holidayMonth">
-            {data.holidays.map((holiday) => (
-              <p key={holiday.id}>
-                {holiday.weekOfMonth === 1
-                  ? '첫'
-                  : holiday.weekOfMonth === 2
-                    ? '둘'
-                    : holiday.weekOfMonth === 3
-                      ? '셋'
-                      : '넷'}
-                째 주 {day[holiday.dayOfWeek as keyof typeof day]}
-              </p>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 홈 기본정보 - 위치 정보 */}
-      <div css={mapStyle}>
-        <p>위치 정보</p>
-        <KakaoMap addressSi={data.addressSi} addressGu={data.addressGu} address={data.address} />
-      </div>
-
-      {/* 홈 기본정보 - 매장 정보 */}
-      <div css={optionsStyle}>
-        <p>매장 정보</p>
-        <div>
-          {data.options.length === 0
-            ? '수집중'
-            : data.options.map((optionItem) => (
-                <Button
-                  key={optionItem}
-                  text={option[optionItem]}
-                  size="xsmall"
-                  width="fit"
-                  variant="white"
-                  iconSizeWidth="1.5rem"
-                  iconSizeHeight="1.5rem"
-                  icon={<img src={optionIcon[optionItem]} alt="매장정보" />}
+          <div css={boxLayoutStyle}>
+            {/* 이미지 */}
+            <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
+              {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
+                <img
+                  key={idx}
+                  src={getImageUrl(portfolioImg.url)}
+                  alt={`포트폴리오 이미지 : ${portfolioImg.url}`}
                 />
               ))}
-        </div>
-      </div>
+              <div css={portfolioPsitionStyle}>
+                <img
+                  src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')}
+                  alt="사진5"
+                />
+                <div css={DimOverlayStyle}>
+                  <img src="/img/icon-morePreview.svg" alt="더보기" />
+                  <span>
+                    {data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}
+                  </span>
+                </div>
+              </div>
+            </div>
 
-      <div css={reservationStyle}>
-        <Button variant="black" text="예약하기" size="large" width="max" onClick={handleClick} />
-      </div>
+            <div className="mo">
+              <StudioInfo data={data} id={_id} />
+            </div>
+
+            <div css={stickyNavStyle}>
+              <StudioNavigator _id={_id || ''} />
+            </div>
+          </div>
+
+          {/* 홈 기본 정보  - 매장소개 */}
+          <div css={descriptionStyle(isOpened, hasMore)}>
+            <p className="descriptionTitle">매장 소개</p>
+            <p className="textDisplay">{`${data.description}`}</p>
+            {hasMore && (
+              <span className="textMore" onClick={() => setIsOpened(!isOpened)}>
+                {isOpened ? '접기' : '더보기'}
+              </span>
+            )}
+          </div>
+
+          {/* 홈 기본 정보  - 영업 정보 */}
+          <div css={openingHoursStyle}>
+            <p className="openingHoursTitle">영업 정보</p>
+            {data && data.openingHours.length === 0 ? (
+              <p>수집중</p>
+            ) : (
+              data &&
+              data.openingHours.map((openingHour) => (
+                <dl key={openingHour.id}>
+                  <dt>{day[openingHour.dayOfWeek as keyof typeof day]}</dt>
+                  <dd>
+                    {openingHour.closed ? (
+                      <p>정기 휴무</p>
+                    ) : (
+                      <>
+                        <time>{openingHour.openTime.slice(0, 5)}</time>
+                        <span>-</span>
+                        <time>{openingHour.closeTime.slice(0, 5)}</time>
+                      </>
+                    )}
+                  </dd>
+                </dl>
+              ))
+            )}
+            {data.openingHours.length !== 0 ? (
+              <div css={holidayStyle}>
+                <p className="holidayTitle"> 정기휴무</p>
+                <div className="holidayMonth">
+                  {data.holidays.map((holiday) => (
+                    <p key={holiday.id}>
+                      {holiday.weekOfMonth === 1
+                        ? '첫'
+                        : holiday.weekOfMonth === 2
+                          ? '둘'
+                          : holiday.weekOfMonth === 3
+                            ? '셋'
+                            : '넷'}
+                      째 주 {day[holiday.dayOfWeek as keyof typeof day]}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              ''
+            )}
+          </div>
+
+          {/* 홈 기본정보 - 위치 정보 */}
+          <div css={mapStyle}>
+            <p>위치 정보</p>
+            <KakaoMap
+              addressSi={data.addressSi}
+              addressGu={data.addressGu}
+              address={data.address}
+            />
+          </div>
+
+          {/* 홈 기본정보 - 매장 정보 */}
+          {!isPc && (
+            <>
+              <StudioOptions data={data} />
+
+              <div css={reservationStyle}>
+                <Button
+                  type="button"
+                  variant="black"
+                  text="예약하기"
+                  size="large"
+                  width="max"
+                  onClick={handleClick}
+                />
+              </div>
+            </>
+          )}
+        </section>
+
+        {/* PC용 */}
+        <StudioInfoDock />
+      </main>
     </>
   );
 };
 
 export default StudioMain;
 
-const HeaderStyle = css`
-  position: absolute;
-  z-index: 1;
-  padding-top: 1.8rem;
+const stickyNavStyle = css`
+  position: sticky;
+  top: 5.6rem;
+  opacity: 0;
+  z-index: 6;
+  transform: translateY(-10px);
+  animation: slideDown 0.3s ease forwards;
+  padding: 0;
+
+  @keyframes slideDown {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+const boxLayoutStyle = css`
+  display: flex;
+  flex-direction: column;
+
+  ${mqMin(breakPoints.pc)} {
+  }
 `;
 
 const portfolioPreviewStyle = css`
@@ -356,87 +355,7 @@ const DimOverlayStyle = css`
   }
 `;
 
-const StudioInfoTitleStyle = css`
-  display: flex;
-  justify-content: space-between;
-
-  & > div {
-    margin-bottom: 2rem;
-    & > h2 {
-      ${TypoTitleMdSb}
-      margin-bottom: 0.4rem;
-    }
-
-    & > .rating {
-      display: flex;
-      align-items: center;
-      & > img {
-        margin-right: 0.4rem;
-        width: 1.6rem;
-        height: 1.6rem;
-      }
-
-      & > p + p {
-        margin-left: 0.2rem;
-        color: ${variables.colors.gray800};
-      }
-    }
-  }
-`;
-
-const StudioInfoStyle = css`
-  position: relative;
-
-  dl {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-
-    div {
-      display: flex;
-      align-items: center;
-
-      dt {
-        display: flex;
-        margin-right: 1rem;
-
-        img {
-          width: 1.7rem;
-          height: 1.7rem;
-        }
-      }
-
-      dd {
-        display: flex;
-        align-items: center;
-        ${TypoBodyMdR}
-
-        & > .openStatus {
-          display: flex;
-
-          & > p {
-            ${TypoBodyMdSb}
-            margin-right: 0.8rem;
-          }
-
-          & > time {
-            ${TypoBodyMdR}
-          }
-        }
-      }
-    }
-    ${DividerStyle}
-  }
-`;
-
-const SocialActionsStyle = css`
-  display: flex;
-  gap: 2.4rem;
-  ${TypoCapSmR}
-  color: ${variables.colors.gray700};
-`;
-
-const descriptionStyle = (isOpened: boolean) => css`
+const descriptionStyle = (isOpened: boolean, hasMore: boolean | undefined) => css`
   padding: 2rem 0;
   border-bottom: 0.1rem solid ${variables.colors.gray300};
 
@@ -464,6 +383,7 @@ const descriptionStyle = (isOpened: boolean) => css`
     ${TypoBodyMdR};
     border-bottom: 0.1rem solid ${variables.colors.gray600};
     cursor: pointer;
+    display: ${hasMore ? 'inline' : 'none'};
   }
 `;
 
@@ -537,23 +457,8 @@ const mapStyle = css`
   }
 `;
 
-const optionsStyle = css`
-  padding: 2rem 0;
-  margin-bottom: 5rem;
-
-  & > p {
-    ${TypoTitleXsM};
-    margin-bottom: 1rem;
-  }
-
-  & > div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-  }
-`;
-
 const reservationStyle = css`
+  border-top: 1px solid ${variables.colors.gray300};
   background-color: ${variables.colors.white};
   padding: 1rem 1.6rem 3rem 1.6rem;
   position: fixed;

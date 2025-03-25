@@ -1,18 +1,21 @@
 /** @jsxImportSource @emotion/react */
 
-import { useDimSwiperStore } from '@store/useDimSwiperStore';
-import { Dispatch, ReactNode, SetStateAction, useEffect, useMemo, useState } from 'react';
-import { Navigation, Virtual } from 'swiper/modules';
-import { Swiper, SwiperClass } from 'swiper/react';
-
 import { css } from '@emotion/react';
+import { useDimSwiperStore } from '@store/useDimSwiperStore';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { Hidden, TypoBodyMdR } from '@styles/Common';
+import variables from '@styles/Variables';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperClass } from 'swiper/react';
+import { NavigationOptions } from 'swiper/types';
 
 interface IDimSwiper<T extends { id: number }> {
-  children: ReactNode;
+  children: React.ReactNode;
   data: T[];
-  setSlideSet: Dispatch<SetStateAction<T[]>>;
+  setSlideSet: React.Dispatch<React.SetStateAction<T[]>>;
 }
 
 const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: IDimSwiper<T>) => {
@@ -22,6 +25,10 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
   const [lastSlide, setLastSlide] = useState<number>();
   const [activeIndex, setActiveIndex] = useState<number>(1);
   const slideIndexMap = useMemo(() => new Map(), []);
+
+  const prevBtnRef = useRef(null);
+  const nextBtnRef = useRef(null);
+  const [lastSwipeDirection, setLastSwipeDirection] = useState('');
 
   const getNewSlideSet = (clickedId: number) => {
     return data.filter(
@@ -35,9 +42,17 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
     }
   };
 
-  const handleChange = () => {
+  const handleInitNav = (swiper: SwiperClass) => {
+    const navigation = swiper.params.navigation as NavigationOptions;
+    navigation.prevEl = prevBtnRef.current;
+    navigation.nextEl = nextBtnRef.current;
+  };
+
+  const handleChange = (swipe: SwiperClass) => {
     if (!swiperRef || !firstSlide || !lastSlide) return null;
+    console.log(swiperRef.swipeDirection);
     const toNext = swiperRef.swipeDirection === 'next';
+    // const toNext = swiperRef.activeIndex > swiperRef.previousIndex;
     const direction = toNext ? 1 : -1;
 
     // 첫번째, 마지막 슬라이드에서 슬라이드 변경 금지
@@ -56,13 +71,18 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
   };
 
   const swiperOption = {
-    modules: [Virtual, Navigation],
+    modules: [Navigation],
     onSwiper: (e: SwiperClass) => setSwiperRef(e),
-    onTransitionEnd: handleChange,
+    onBeforeInit: (e: SwiperClass) => handleInitNav(e),
+    onTransitionEnd: (e: SwiperClass) => handleChange(e),
     slidesPerView: 1,
     initialSlide: selectedId === firstSlide ? 0 : 1,
     centeredSlides: true,
     spaceBetween: 20,
+    navigation: {
+      prevEl: prevBtnRef.current,
+      nextEl: nextBtnRef.current,
+    },
   };
 
   useEffect(() => {
@@ -73,14 +93,14 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
     }
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setSlideSet(getNewSlideSet(selectedId));
     setActiveIndex(slideIndexMap.get(selectedId));
   }, [selectedId]);
 
   return (
     firstSlide && (
-      <>
+      <div css={dimSwiperBox}>
         <p css={[TypoBodyMdR, TitleStyle]}>
           <h3>
             {activeIndex} <span css={Hidden}>번째</span>{' '}
@@ -89,12 +109,38 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
           {data.length}
         </p>
         <Swiper {...swiperOption}>{children}</Swiper>
-      </>
+        <div>
+          <button className="swiper-button swiper-button-prev" ref={prevBtnRef}></button>
+          <button className="swiper-button swiper-button-next" ref={nextBtnRef}></button>
+        </div>
+      </div>
     )
   );
 };
 
 export default DimSwiper;
+
+const dimSwiperBox = css`
+  .swiper-button {
+    color: ${variables.colors.white};
+    width: 4.4rem;
+    aspect-ratio: 1/1;
+    font-size: 3.2rem;
+
+    &::after {
+      font-size: inherit;
+    }
+  }
+
+  .swiper-button-prev {
+    left: 0;
+    transform: translateX(calc(-100% - ${variables.layoutPadding}));
+  }
+  .swiper-button-next {
+    right: 0;
+    transform: translateX(calc(100% + ${variables.layoutPadding}));
+  }
+`;
 
 const TitleStyle = css`
   padding: 1.8rem 0;
@@ -110,6 +156,10 @@ const TitleStyle = css`
   i {
     font-style: normal;
   }
+
+  ${mqMin(breakPoints.pc)} {
+    height: 7.2rem;
+  }
 `;
 
 export const SlideImgBox = css`
@@ -121,5 +171,9 @@ export const SlideImgBox = css`
   img {
     aspect-ratio: 308/340;
     object-fit: scale-down;
+
+    ${mqMin(breakPoints.pc)} {
+      aspect-ratio: 764/404;
+    }
   }
 `;

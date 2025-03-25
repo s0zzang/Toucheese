@@ -4,29 +4,64 @@ import BackButton from '@components/BackButton/BackButton';
 import Button from '@components/Button/Button';
 import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
-import useToast from '@hooks/useToast';
 import useSignupStore from '@store/useSignupStore';
 import { TypoTitleXsM, TypoTitleXsSB } from '@styles/Common';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
 
+interface AuthVerificationType {
+  success: boolean;
+  imp_uid: string;
+  merchant_uid: string;
+  pg_provider: 'inicis_unified';
+  pg_type: 'certification';
+  error_code: string;
+  error_msg: string;
+}
+
 const ChangeProfile = () => {
+  const IMPCode = import.meta.env.VITE_AUTH_IMP_CODE;
+  const channelKey = import.meta.env.VITE_AUTH_CHANNEL_KEY;
+  const AuthRedirectURI = import.meta.env.VITE_AUTH_EDIT_REDIRECT_URI;
+
   /** zustand 스토어에 데이터 저장 */
   const { setSignupData } = useSignupStore();
   const [searchParams] = useSearchParams();
   const [isActive, setIsActive] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const storedData = sessionStorage.getItem('signup-storage');
+  const storedData = localStorage.getItem('userState');
   const parsedData = storedData ? JSON.parse(storedData) : null;
   const storageName = parsedData?.state?.username || '';
   const storagePhone = parsedData?.state?.phone || '';
-  const openToast = useToast();
+
+  // const [username, setUsername] = useState('');
+  // const [phone, setPhone] = useState('');
+  // const [loading, setLoading] = useState(false);
+
+  const handleEditProfile = async () => {
+    // setLoading(true);
+    // try {
+    //   const response = await fetch('/api/user/profile', {
+    //     method: 'PATCH',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ username, phone }),
+    //   });
+    //   if (!response.ok) throw new Error('업데이트 실패');
+    //   console.log('회원정보 수정 성공!');
+    // } catch (error) {
+    //   console.error('회원정보 수정 오류:', error);
+    // } finally {
+    //   setLoading(false);
+    // }
+  };
+
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm({
@@ -38,7 +73,11 @@ const ChangeProfile = () => {
   });
 
   /** 페이지가 처음 로드될 때 zustand 상태를 react-hook-form에 반영 */
-  /** 모바일 - 본인인증 페이지 이동 */
+  /** 본인인증 페이지 이동 */
+  const usernameRef = useRef(storageName);
+  const phoneRef = useRef(storagePhone);
+
+  // 페이지가 처음 로드될 때 zustand 상태를 react-hook-form에 반영
   useLayoutEffect(() => {
     if (searchParams.get('success')) {
       setIsActive(true);
@@ -46,17 +85,71 @@ const ChangeProfile = () => {
       setSignupData({ username: storageName, phone: storagePhone });
       reset();
     }
-  }, []);
+  }, [searchParams, storageName, storagePhone, setSignupData]);
+
+  useEffect(() => {
+    if (storageName && storagePhone) {
+      // form에 값 설정
+      setValue('username', storageName);
+      setValue('phone', storagePhone);
+    }
+  }, [storageName, storagePhone, setValue]);
 
   const handleSave = (data: any) => {
-    setSignupData(data);
-  };
+    // 기존 localStorage 데이터 가져오기
+    const storedData = localStorage.getItem('userState');
+    const parsedData = storedData ? JSON.parse(storedData) : {};
 
-  const handleEditProfile = () => {
-    openToast('개인정보 수정 기능을 구현중입니다');
+    // 기존 데이터와 변경된 유저 정보 병합
+    const updatedData = {
+      ...parsedData, // 기존 데이터 유지
+      state: {
+        ...parsedData.state, // 기존 state 유지
+        username: data.username,
+        phone: data.phone,
+      },
+    };
+
+    // 새로운 데이터 저장
+    localStorage.setItem('userState', JSON.stringify(updatedData));
   };
 
   /** 간편 본인인증 실행 함수 */
+  const handleAuth = () => {
+    const { IMP } = window;
+    IMP.init(IMPCode);
+
+    IMP.certification(
+      {
+        channelKey: channelKey,
+        merchant_uid: 'test_m5nmk62j',
+        m_redirect_url: AuthRedirectURI,
+      },
+      async (res: AuthVerificationType) => {
+        try {
+          /** PC - 본인인증 팝업 */
+          if (res.success) {
+            // 상태 업데이트가 이루어진 후 비동기적으로 reset 호출
+            setIsActive(true);
+            setIsDisabled(false);
+            setSignupData({ username: storageName, phone: storagePhone });
+
+            // 비동기적으로 reset 호출 (setState 후 화면이 렌더링된 후 reset)
+            setTimeout(() => {
+              reset({
+                username: storageName,
+                phone: storagePhone,
+              });
+            }, 0); // setState 후 화면 리렌더링을 보장하기 위해 0ms 후 실행
+          }
+        } catch (err) {
+          console.error(err);
+          setIsActive(false);
+          setIsDisabled(true);
+        }
+      },
+    );
+  };
 
   return (
     <>
@@ -79,8 +172,11 @@ const ChangeProfile = () => {
             labelName="이름"
             type="name"
             onChange={(e) => {
+              usernameRef.current = e.target.value;
               setSignupData({ username: e.target.value });
+              setValue('username', e.target.value);
             }}
+            defaultValue={storageName}
             placeholder="실명을 입력하세요."
             register={register('username', {
               required: '이름은 필수입니다',
@@ -94,14 +190,17 @@ const ChangeProfile = () => {
 
           {/* 휴대폰 번호 */}
           <Input
-            labelName="휴대폰 번호"
             type="phone"
+            labelName="휴대폰"
             onChange={(e) => {
+              phoneRef.current = e.target.value;
               setSignupData({ phone: e.target.value });
+              setValue('phone', e.target.value);
             }}
+            defaultValue={storagePhone}
             placeholder="‘-’구분없이 입력하세요"
             hasCheckButton
-            onCheck={handleEditProfile}
+            onCheck={handleAuth}
             checkButtonText="인증하기"
             register={register('phone', {
               required: '휴대폰 번호는 필수입니다.',
@@ -120,7 +219,7 @@ const ChangeProfile = () => {
             type="submit"
             text="다음"
             size="large"
-            variant="deepGray"
+            variant="gray"
             disabled={isDisabled}
             active={isActive}
           />
@@ -152,6 +251,7 @@ const containerStyle = css`
 const buttonStyle = css`
   position: fixed;
   bottom: 3rem;
+  left: 1.6rem;
   width: calc(100% - 3.2rem);
 `;
 

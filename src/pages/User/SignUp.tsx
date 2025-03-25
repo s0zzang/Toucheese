@@ -22,6 +22,7 @@ const SignUp = () => {
 
   /** zustand 스토어에 데이터 저장 */
   const { setSignupData } = useSignupStore();
+
   const [emailError, setEmailError] = useState<string>('');
   const [isActive, setIsActive] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
@@ -241,9 +242,10 @@ const SignUp = () => {
           <Button
             onClick={handleVerifyComplete}
             type="submit"
+            width="max"
             text="가입하기"
             size="large"
-            variant="deepGray"
+            variant="gray"
             active={isActive}
             disabled={isDisabled}
           />
@@ -265,6 +267,7 @@ const buttonStyle = css`
   position: fixed;
   bottom: 3rem;
   width: calc(100% - 3.2rem);
+  left: 0;
 `;
 
 const pageTitleStyle = css`

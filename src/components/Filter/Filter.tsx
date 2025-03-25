@@ -1,6 +1,7 @@
 import Button from '@components/Button/Button';
-import { Options, SortBy } from '@pages/Home/Home';
+import { Options } from '@pages/Home/Home';
 import { useEffect, useState } from 'react';
+import { SortBy } from 'types/types';
 
 interface FilterProps {
   text: string;
@@ -28,7 +29,9 @@ const Filter = ({ text, onClick, params, paramsKeyword, paramsName }: FilterProp
     } else if (paramsName === 'options') {
       setActiveText(optionsResult ? `매장정보 ${optionsResult.split('%').length}개` : text);
     } else if (paramsName === 'minPrice' || 'maxPrice') {
-      setActiveText(minPriceResult || maxPriceResult ? `${minPriceResult} ~ ${maxPriceResult}원` : text);
+      setActiveText(
+        minPriceResult || maxPriceResult ? `${minPriceResult} ~ ${maxPriceResult}원` : text,
+      );
     }
   }, [params, paramsKeyword, text]);
 
@@ -39,9 +42,9 @@ const Filter = ({ text, onClick, params, paramsKeyword, paramsName }: FilterProp
       variant="white"
       size="xsmall"
       width="fit"
-      icon={<img src="/img/icon-select-arrow.svg" alt="닫기 아이콘" />}
-      iconSizeWidth="1rem"
-      iconSizeHeight="0.4rem"
+      icon={<img src="/img/icon-arrowdown.svg" alt="닫기 아이콘" />}
+      iconSizeWidth="1.1rem"
+      iconSizeHeight="0.6rem"
       iconPosition="right"
       disabled={false}
       active={params.includes(paramsName)}

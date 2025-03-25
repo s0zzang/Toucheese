@@ -2,6 +2,7 @@
 
 import DimSwiper, { SlideImgBox } from '@components/Swiper/DimSwiper';
 import { css } from '@emotion/react';
+import { breakPoints, mqMax } from '@styles/BreakPoint';
 import { TypoBodyMdR } from '@styles/Common';
 import { useState } from 'react';
 import { SwiperSlide } from 'swiper/react';
@@ -28,5 +29,7 @@ const PortfolioSwiper = ({ data, studioName }: { data: IPortfolio[]; studioName:
 export default PortfolioSwiper;
 
 const portfolioSlide = css`
-  margin-top: 4rem;
+  ${mqMax(breakPoints.moMax)} {
+    margin-top: 4rem;
+  }
 `;
