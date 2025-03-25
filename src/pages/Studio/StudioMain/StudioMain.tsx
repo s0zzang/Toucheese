@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-
 import Button from '@components/Button/Button';
 import KakaoMap from '@components/Kakao/KakaoMap';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
@@ -16,6 +15,8 @@ import useStudioDataStore from '@store/useStudioDataStore';
 import StudioInfo from '@components/Studio/StudioInfo';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { useMediaQuery } from 'react-responsive';
+import StudioInfoDock from '@components/Studio/StudioInfoDock';
+import StudioOptions from '@components/Studio/StudioOptions';
 
 const StudioMain = () => {
   const { _id } = useParams();
@@ -124,26 +125,6 @@ const StudioMain = () => {
     SUNDAY: '일요일',
   };
 
-  const option = {
-    CHANGING_ROOM: '탈의실',
-    DRESSING_ROOM: '파우더룸',
-    HAIR_MAKEUP: '헤어, 메이크업 수정',
-    INDIVIDUAL_EDITING: '1:1 보정',
-    SUIT_RENTAL_FREE: '정장 대여',
-    ORIGINAL_FILES: '원본파일 제공',
-    PARKING_AREA: '주차',
-  };
-
-  const optionIcon = {
-    CHANGING_ROOM: '/img/icon-room.svg',
-    DRESSING_ROOM: '/img/icon-powder.svg',
-    HAIR_MAKEUP: '/img/icon-makeup.svg',
-    INDIVIDUAL_EDITING: '/img/icon-photo-edit.svg',
-    SUIT_RENTAL_FREE: '/img/icon-suit.svg',
-    ORIGINAL_FILES: '/img/icon-original-file.svg',
-    PARKING_AREA: '/img/icon-park.svg',
-  };
-
   return (
     <>
       <Helmet>
@@ -153,134 +134,134 @@ const StudioMain = () => {
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />
       </Helmet>
 
-      <Header title={scrollY ? data?.name : ''} fixed={true} scrollEvent={true} />
+      <main>
+        <section>
+          {/* 모바일 헤더 */}
+          <Header title={scrollY ? data?.name : ''} fixed={true} scrollEvent={true} />
 
-      <div css={boxLayoutStyle}>
-        {/* 이미지 */}
-        <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
-          {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
-            <img
-              key={idx}
-              src={getImageUrl(portfolioImg.url)}
-              alt={`포트폴리오 이미지 : ${portfolioImg.url}`}
-            />
-          ))}
-          <div css={portfolioPsitionStyle}>
-            <img src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')} alt="사진5" />
-            <div css={DimOverlayStyle}>
-              <img src="/img/icon-morePreview.svg" alt="더보기" />
-              <span>
-                {data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <StudioInfo data={data} id={_id} />
-        <div css={stickyNavStyle}>
-          <StudioNavigator _id={_id || ''} />
-        </div>
-      </div>
-
-      {/* 홈 기본 정보  - 매장소개 */}
-      <div css={descriptionStyle(isOpened, hasMore)}>
-        <p className="descriptionTitle">매장 소개</p>
-        <p className="textDisplay">{`${data.description}`}</p>
-        {hasMore && (
-          <span className="textMore" onClick={() => setIsOpened(!isOpened)}>
-            {isOpened ? '접기' : '더보기'}
-          </span>
-        )}
-      </div>
-
-      {/* 홈 기본 정보  - 영업 정보 */}
-      <div css={openingHoursStyle}>
-        <p className="openingHoursTitle">영업 정보</p>
-        {data && data.openingHours.length === 0 ? (
-          <p>수집중</p>
-        ) : (
-          data &&
-          data.openingHours.map((openingHour) => (
-            <dl key={openingHour.id}>
-              <dt>{day[openingHour.dayOfWeek as keyof typeof day]}</dt>
-              <dd>
-                {openingHour.closed ? (
-                  <p>정기 휴무</p>
-                ) : (
-                  <>
-                    <time>{openingHour.openTime.slice(0, 5)}</time>
-                    <span>-</span>
-                    <time>{openingHour.closeTime.slice(0, 5)}</time>
-                  </>
-                )}
-              </dd>
-            </dl>
-          ))
-        )}
-        {data.openingHours.length !== 0 ? (
-          <div css={holidayStyle}>
-            <p className="holidayTitle"> 정기휴무</p>
-            <div className="holidayMonth">
-              {data.holidays.map((holiday) => (
-                <p key={holiday.id}>
-                  {holiday.weekOfMonth === 1
-                    ? '첫'
-                    : holiday.weekOfMonth === 2
-                      ? '둘'
-                      : holiday.weekOfMonth === 3
-                        ? '셋'
-                        : '넷'}
-                  째 주 {day[holiday.dayOfWeek as keyof typeof day]}
-                </p>
+          <div css={boxLayoutStyle}>
+            {/* 이미지 */}
+            <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
+              {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
+                <img
+                  key={idx}
+                  src={getImageUrl(portfolioImg.url)}
+                  alt={`포트폴리오 이미지 : ${portfolioImg.url}`}
+                />
               ))}
+              <div css={portfolioPsitionStyle}>
+                <img
+                  src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')}
+                  alt="사진5"
+                />
+                <div css={DimOverlayStyle}>
+                  <img src="/img/icon-morePreview.svg" alt="더보기" />
+                  <span>
+                    {data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mo">
+              <StudioInfo data={data} id={_id} />
+            </div>
+
+            <div css={stickyNavStyle}>
+              <StudioNavigator _id={_id || ''} />
             </div>
           </div>
-        ) : (
-          ''
-        )}
-      </div>
 
-      {/* 홈 기본정보 - 위치 정보 */}
-      <div css={mapStyle}>
-        <p>위치 정보</p>
-        <KakaoMap addressSi={data.addressSi} addressGu={data.addressGu} address={data.address} />
-      </div>
+          {/* 홈 기본 정보  - 매장소개 */}
+          <div css={descriptionStyle(isOpened, hasMore)}>
+            <p className="descriptionTitle">매장 소개</p>
+            <p className="textDisplay">{`${data.description}`}</p>
+            {hasMore && (
+              <span className="textMore" onClick={() => setIsOpened(!isOpened)}>
+                {isOpened ? '접기' : '더보기'}
+              </span>
+            )}
+          </div>
 
-      {/* 홈 기본정보 - 매장 정보 */}
-      {!isPc && (
-        <>
-          <div css={optionsStyle}>
-            <p>매장 정보</p>
-            <div>
-              {data.options.length === 0
-                ? '수집중'
-                : data.options.map((optionItem) => (
-                    <Button
-                      key={optionItem}
-                      text={option[optionItem]}
-                      size="xsmall"
-                      width="fit"
-                      variant="white"
-                      iconSizeWidth="1.5rem"
-                      iconSizeHeight="1.5rem"
-                      icon={<img src={optionIcon[optionItem]} alt="매장정보" />}
-                    />
+          {/* 홈 기본 정보  - 영업 정보 */}
+          <div css={openingHoursStyle}>
+            <p className="openingHoursTitle">영업 정보</p>
+            {data && data.openingHours.length === 0 ? (
+              <p>수집중</p>
+            ) : (
+              data &&
+              data.openingHours.map((openingHour) => (
+                <dl key={openingHour.id}>
+                  <dt>{day[openingHour.dayOfWeek as keyof typeof day]}</dt>
+                  <dd>
+                    {openingHour.closed ? (
+                      <p>정기 휴무</p>
+                    ) : (
+                      <>
+                        <time>{openingHour.openTime.slice(0, 5)}</time>
+                        <span>-</span>
+                        <time>{openingHour.closeTime.slice(0, 5)}</time>
+                      </>
+                    )}
+                  </dd>
+                </dl>
+              ))
+            )}
+            {data.openingHours.length !== 0 ? (
+              <div css={holidayStyle}>
+                <p className="holidayTitle"> 정기휴무</p>
+                <div className="holidayMonth">
+                  {data.holidays.map((holiday) => (
+                    <p key={holiday.id}>
+                      {holiday.weekOfMonth === 1
+                        ? '첫'
+                        : holiday.weekOfMonth === 2
+                          ? '둘'
+                          : holiday.weekOfMonth === 3
+                            ? '셋'
+                            : '넷'}
+                      째 주 {day[holiday.dayOfWeek as keyof typeof day]}
+                    </p>
                   ))}
-            </div>
+                </div>
+              </div>
+            ) : (
+              ''
+            )}
           </div>
 
-          <div css={reservationStyle}>
-            <Button
-              type="button"
-              variant="black"
-              text="예약하기"
-              size="large"
-              width="max"
-              onClick={handleClick}
+          {/* 홈 기본정보 - 위치 정보 */}
+          <div css={mapStyle}>
+            <p>위치 정보</p>
+            <KakaoMap
+              addressSi={data.addressSi}
+              addressGu={data.addressGu}
+              address={data.address}
             />
           </div>
-        </>
-      )}
+
+          {/* 홈 기본정보 - 매장 정보 */}
+          {!isPc && (
+            <>
+              <StudioOptions data={data} />
+
+              <div css={reservationStyle}>
+                <Button
+                  type="button"
+                  variant="black"
+                  text="예약하기"
+                  size="large"
+                  width="max"
+                  onClick={handleClick}
+                />
+              </div>
+            </>
+          )}
+        </section>
+
+        {/* PC용 */}
+        <StudioInfoDock />
+      </main>
     </>
   );
 };
@@ -473,22 +454,6 @@ const mapStyle = css`
   & > p {
     ${TypoTitleXsM};
     margin-bottom: 1rem;
-  }
-`;
-
-const optionsStyle = css`
-  padding: 2rem 0;
-  margin-bottom: 5rem;
-
-  & > p {
-    ${TypoTitleXsM};
-    margin-bottom: 1rem;
-  }
-
-  & > div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
   }
 `;
 
