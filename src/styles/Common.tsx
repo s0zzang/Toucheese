@@ -23,7 +23,7 @@ export const TypoTitleXsM = css`
   }
 `;
 
-export const TypoTitleXsSB = css`
+export const TypoTitleXsSb = css`
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 2.4rem;
@@ -63,6 +63,14 @@ export const TypoTitleMdSb = css`
   }
 `;
 
+export const TypoBodySmSb = css`
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.4rem;
+    line-height: 2rem;
+    font-weight: 600;
+  }
+`;
+
 export const TypoBodySmM = css`
   font-size: 1.2rem;
   font-weight: 500;
@@ -95,7 +103,7 @@ export const TypoBodyMdR = css`
 
 export const TypoBodyMdSb = css`
   font-size: 1.4rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 2rem;
   ${mqMin(breakPoints.pc)} {
     font-size: 1.6rem;
@@ -126,6 +134,14 @@ export const TypoCapSmM = css`
   ${mqMin(breakPoints.pc)} {
     font-size: 1.4rem;
     line-height: 1.6rem;
+  }
+`;
+
+export const TypoCapXsM = css`
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.4rem;
   }
 `;
 

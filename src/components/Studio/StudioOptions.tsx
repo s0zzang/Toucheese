@@ -1,7 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import Button from '@components/Button/Button';
 import { css } from '@emotion/react';
-import { TypoTitleXsM } from '@styles/Common';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { TypoBodyMdSb, TypoTitleXsM } from '@styles/Common';
+import variables from '@styles/Variables';
 import { IStudioDetail } from 'types/types';
 
 const StudioOptions = ({ data }: { data: IStudioDetail }) => {
@@ -55,12 +57,23 @@ const optionsStyle = css`
   & > p {
     ${TypoTitleXsM};
     margin-bottom: 1rem;
+    color: ${variables.colors.black};
   }
 
   & > div {
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    padding: unset;
+
+    & > p {
+      ${TypoBodyMdSb}
+      margin-bottom: 0.8rem;
+      color: ${variables.colors.gray800};
+    }
   }
 `;
 
