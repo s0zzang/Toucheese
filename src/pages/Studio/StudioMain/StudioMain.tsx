@@ -35,7 +35,7 @@ const StudioMain = () => {
     if (!studioDetail[`${_id}`] && data) {
       setStudioDetail(`${_id}`, data);
     }
-  }, [data, useParams, studioDetail, setStudioDetail]);
+  }, [data, _id, studioDetail, setStudioDetail]);
 
   /** 스튜디오 소개 텍스트 길이 */
   const hasMore: boolean | undefined = data && data.description.length > 100;
@@ -128,7 +128,7 @@ const StudioMain = () => {
   return (
     <>
       <Helmet>
-        <title>{`${data.name} - 상세정보`}</title>
+        <title>{`${data?.name} - 상세정보`}</title>
         <meta property="og:title" content="스튜디오 상세정보" />
         <meta property="og:url" content={`${window.location.href}`} />
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />
@@ -270,12 +270,20 @@ export default StudioMain;
 
 const stickyNavStyle = css`
   position: sticky;
-  top: 5.6rem;
+  top: 0;
   opacity: 0;
   z-index: 6;
   transform: translateY(-10px);
   animation: slideDown 0.3s ease forwards;
   padding: 0;
+
+  ${mqMin(breakPoints.pc)} {
+    width: 100%;
+    background-color: ${variables.colors.white};
+    width: calc(100% + ${variables.layoutPadding} * 2);
+    margin-left: -1.6rem;
+    padding: 0 ${variables.layoutPadding};
+  }
 
   @keyframes slideDown {
     to {
@@ -290,6 +298,15 @@ const boxLayoutStyle = css`
   flex-direction: column;
 
   ${mqMin(breakPoints.pc)} {
+    div:nth-of-type(1) {
+      order: 2;
+    }
+    div:nth-of-type(2) {
+      order: 3;
+    }
+    div:nth-of-type(3) {
+      order: 1;
+    }
   }
 `;
 
