@@ -11,7 +11,7 @@ const StudioInfoDock = () => {
 
   return (
     <aside className="pc" css={css``}>
-      <StudioInfo data={data} id={_id} />
+      {data && <StudioInfo data={data} id={_id} />}
     </aside>
   );
 };

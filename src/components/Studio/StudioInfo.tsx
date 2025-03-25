@@ -18,7 +18,6 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
   let today = new Date();
   const dayIndex = today.getDay() === 0 ? 6 : today.getDay() - 1;
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
-  console.log(data);
 
   return (
     <div
