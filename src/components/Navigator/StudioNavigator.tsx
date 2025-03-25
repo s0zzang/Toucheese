@@ -51,7 +51,6 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
 };
 
 const NavStyle = styled.nav`
-  box-shadow: inset 0 0 10px red;
   position: sticky;
   top: 5.6rem;
   width: calc(100% + 3.2rem);
@@ -80,7 +79,6 @@ const LiStyle = styled.li`
 `;
 
 const NavLinkStyle = styled(NavLink)`
-  box-shadow: inset 0 0 1px black;
   position: relative;
   display: block;
   width: 100%;

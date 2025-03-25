@@ -5,6 +5,7 @@ import UserButton from '@components/UserButton/UserButton';
 import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { Hidden } from '@styles/Common';
+import variables from '@styles/Variables';
 import { Link } from 'react-router-dom';
 
 const PCHeader = () => {
@@ -31,9 +32,12 @@ export default PCHeader;
 
 const HeaderStyle = css`
   ${mqMin(breakPoints.pc)} {
+    margin: 0 calc(-1 * ${variables.layoutPadding});
     display: flex;
     align-items: center;
-    padding: 1rem 0;
+    padding: 1rem ${variables.layoutPadding};
+    box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
+    box-sizing: border-box;
   }
 `;
 
