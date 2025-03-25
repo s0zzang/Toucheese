@@ -297,7 +297,7 @@ const ReservationDetail = () => {
               type="button"
               text="취소하기"
               size="large"
-              variant="deepGray"
+              variant="black"
               disabled={isDisabled}
               active={false}
               onClick={() => cancelModal.open()}
