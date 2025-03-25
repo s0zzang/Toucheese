@@ -2,7 +2,6 @@
 import Header from '@components/Header/Header';
 import ReservationNavigator from '@components/Navigator/ReservationNavigator';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useGetReservationList } from '@hooks/useGetReservationList';
 import { TypoBodyMdM, TypoTitleXsM } from '@styles/Common';
@@ -61,7 +60,7 @@ const ReservationList = () => {
   return (
     <>
       <HeaderContainerStyle>
-        <Header title="예약내역" backTo="/user/mypage" customStyle={headerStyle} />
+        <Header title="예약내역" backTo="/user/mypage" />
         <ReservationNavigator status={resStatus} setStatus={setResStatus} />
       </HeaderContainerStyle>
 
@@ -128,12 +127,6 @@ const ContentStyle = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-`;
-const headerStyle = css`
-  position: unset;
-  display: flex;
-  align-items: center;
-  padding: 1.6rem;
 `;
 
 export default ReservationList;
