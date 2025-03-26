@@ -27,7 +27,7 @@ const CancelModal = ({ modalId }: { modalId: number }) => {
   const cancelReasonButton = [
     {
       text: '예약 취소하기',
-      variant: 'deepGray' as 'deepGray',
+      variant: 'black' as 'black',
       active: selectedReason,
       disabled: !selectedReason,
       type: 'submit' as 'submit',
