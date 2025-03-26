@@ -15,6 +15,8 @@ import { Helmet } from 'react-helmet-async';
 import { defaultUserState } from '@store/useUserStore';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import useToast from '@hooks/useToast';
+import { MenuPCStyle } from './StudioMenu';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 
 const StudioMenuDetail = () => {
   const { _menuId, _id } = useParams();
@@ -108,37 +110,53 @@ const StudioMenuDetail = () => {
         </Helmet>
       )}
 
-      <Header
-        title={`${scrollY ? data?.name : ''}`}
-        backTo={`/studio/${_id}/menu`}
-        fixed={true}
-        scrollEvent={true}
-      />
-      {data && <ImageSwiper images={data.menuImages} slidesPerView={1} spaceBetween={0} />}
-      <div css={MenuDescStyle}>
-        <h2>{data?.name}</h2>
-        <p>{data?.description}</p>
+      <div css={MenuPCStyle}>
+        <Header
+          title={`${scrollY ? data?.name : ''}`}
+          backTo={`/studio/${_id}/menu`}
+          fixed={true}
+          scrollEvent={true}
+        />
       </div>
 
-      <ul css={TabMenuStyle}>
-        <li
-          onClick={() => setTabMenuState('info')}
-          className={`${tabMenuState === 'info' && 'active'}`}
-        >
-          정보
-        </li>
-        <li
-          onClick={() => setTabMenuState('review')}
-          className={`${tabMenuState === 'review' && 'active'}`}
-        >
-          리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
-        </li>
-      </ul>
-      {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
-      {data && tabMenuState === 'review' && (
-        <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />
-      )}
+      <div css={[MenuLayoutPCStyle]}>
+        {data && (
+          <div css={MenuCoverPCStyle}>
+            <ImageSwiper
+              images={data.menuImages}
+              slidesPerView={1}
+              spaceBetween={0}
+              imageStyle={MenuImgPCStyle}
+            />
+          </div>
+        )}
 
+        <div css={MenuInfoPCStyle}>
+          <div css={MenuDescStyle}>
+            <h2>{data?.name}</h2>
+            <p>{data?.description}</p>
+          </div>
+
+          <ul css={TabMenuStyle}>
+            <li
+              onClick={() => setTabMenuState('info')}
+              className={`${tabMenuState === 'info' && 'active'}`}
+            >
+              정보
+            </li>
+            <li
+              onClick={() => setTabMenuState('review')}
+              className={`${tabMenuState === 'review' && 'active'}`}
+            >
+              리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
+            </li>
+          </ul>
+          {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
+          {data && tabMenuState === 'review' && (
+            <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />
+          )}
+        </div>
+      </div>
       <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
     </>
   );
@@ -146,11 +164,52 @@ const StudioMenuDetail = () => {
 
 export default StudioMenuDetail;
 
+const MenuLayoutPCStyle = css`
+  ${mqMin(breakPoints.pc)} {
+    width: 100vw;
+    position: relative;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 3.5rem;
+  }
+`;
+
+const MenuInfoPCStyle = css`
+  ${mqMin(breakPoints.pc)} {
+    padding: 5rem 2.4rem;
+    flex-grow: 1;
+  }
+`;
+
+const MenuCoverPCStyle = css`
+  ${mqMin(breakPoints.pc)} {
+    position: sticky;
+    left: 0;
+    top: 0;
+    width: 50.9rem;
+    height: calc(100vh - 8rem);
+    z-index: 10;
+  }
+`;
+const MenuImgPCStyle = css`
+  ${mqMin(breakPoints.pc)} {
+    width: 100%;
+    height: calc(100vh - 8rem);
+    object-fit: cover;
+  }
+`;
+
 const MenuDescStyle = css`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding: 1.8rem 0;
+
+  ${mqMin(breakPoints.pc)} {
+    padding: 0 0 3.4rem;
+  }
 
   & h2 {
     ${TypoTitleSmS}
@@ -166,16 +225,19 @@ const TabMenuStyle = css`
   position: sticky;
   top: 5.5rem;
   left: 0;
-  right: 0;
   z-index: 100;
   color: ${variables.colors.gray800};
   display: flex;
   text-align: center;
   background-color: ${variables.colors.white};
-  width: calc(100% + 3.2rem);
-  margin: 0 calc(-1 * ${variables.layoutPadding});
-  margin-left: -1.6rem;
+  width: 100vw;
+  margin-left: calc(-1 * ${variables.layoutPadding});
   padding: 0 ${variables.layoutPadding};
+
+  ${mqMin(breakPoints.pc)} {
+    top: 0;
+    width: calc(100% + (${variables.layoutPadding} * 2));
+  }
 
   & li {
     cursor: pointer;
