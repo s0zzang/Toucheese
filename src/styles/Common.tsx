@@ -91,6 +91,14 @@ export const TypoBodySmR = css`
   }
 `;
 
+export const TypoBodyMdB = css`
+  ${mqMin(breakPoints.pc)} {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+    font-weight: 700;
+  }
+`;
+
 export const TypoBodyMdR = css`
   font-size: 1.4rem;
   font-weight: 400;

@@ -1,10 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
 import ReservationNavigator from '@components/Navigator/ReservationNavigator';
+import NoResult from '@components/NoResult/NoResult';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
 import styled from '@emotion/styled';
 import { useGetReservationList } from '@hooks/useGetReservationList';
-import { TypoBodyMdM, TypoTitleXsM } from '@styles/Common';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { TypoBodyMdM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 import { IResvItem } from 'types/types';
@@ -40,20 +42,20 @@ const ReservationList = () => {
   switch (resStatus.statusKor) {
     case '이용 예정':
       emptyMessage = (
-        <p css={TypoTitleXsM}>
+        <>
           예약한 사진관이 없습니다.
           <br />
           사진관을 예약하고 인생 사진을
           <br />
           찍어보세요!
-        </p>
+        </>
       );
       break;
     case '이용 완료':
-      emptyMessage = <p css={TypoTitleXsM}>방문하신 사진관이 없습니다.</p>;
+      emptyMessage = <>방문하신 사진관이 없습니다.</>;
       break;
     case '예약 취소':
-      emptyMessage = <p css={TypoTitleXsM}>예약 취소하신 사진관이 없습니다.</p>;
+      emptyMessage = <>예약 취소하신 사진관이 없습니다.</>;
       break;
   }
 
@@ -64,7 +66,7 @@ const ReservationList = () => {
         <ReservationNavigator status={resStatus} setStatus={setResStatus} />
       </HeaderContainerStyle>
 
-      <SectionStyle className={items.length ? '' : 'empty'}>
+      <SectionStyle>
         {items.length ? (
           <ContentStyle>
             <p css={TypoBodyMdM}>총 {items.length}건</p>
@@ -73,7 +75,7 @@ const ReservationList = () => {
             ))}
           </ContentStyle>
         ) : (
-          emptyMessage
+          <NoResult message={emptyMessage} bg="gray100" />
         )}
       </SectionStyle>
     </>
@@ -89,36 +91,16 @@ const HeaderContainerStyle = styled.div`
 `;
 
 const SectionStyle = styled.section`
-  margin: 0 calc(-1 * ${variables.layoutPadding}) -8.8rem;
+  margin: 10rem calc(-1 * ${variables.layoutPadding}) calc(-1 * (4rem + ${variables.headerHeight}));
   background-color: ${variables.colors.gray100};
-  padding: 10rem ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
-  height: calc(100vh);
+  padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
+  height: calc(100vh - 10rem);
   overflow-y: auto;
 
-  &.empty {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: ${variables.colors.gray700};
-
-    & > p {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.733rem;
-      text-align: center;
-
-      &::before {
-        content: '';
-        width: 4.2rem;
-        height: 4.2rem;
-        background-image: url('/img/icon-noreservation.svg');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
-      }
-    }
+  ${mqMin(breakPoints.pc)} {
+    margin: unset;
+    padding: unset;
+    height: calc(100vh - 8rem);
   }
 `;
 

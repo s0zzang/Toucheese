@@ -173,7 +173,6 @@ const ButtonWrapperStyle = styled.div`
 `;
 
 const FilterDividerStyle = styled.div`
-  box-shadow: inset 0 0 10px red;
   border-top: 0.1rem solid ${variables.colors.gray300};
   margin: 2rem 0;
 `;

@@ -51,7 +51,17 @@ const StudioList = ({
         <>
           {data?.content.length === 0 ? (
             <NoResult
-              message={`스튜디오 ${mode === 'filter' ? '조회' : '검색'} 결과가 없습니다.`}
+              message={
+                mode === 'filter' ? (
+                  <>
+                    선택한 필터의 검색 결과가 없습니다.
+                    <br />
+                    다른 필터로 변경해보세요.
+                  </>
+                ) : (
+                  <>스튜디오 검색 결과가 없습니다.</>
+                )
+              }
             />
           ) : (
             <Virtuoso
