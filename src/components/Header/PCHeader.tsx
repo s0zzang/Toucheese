@@ -38,7 +38,7 @@ const HeaderStyle = css`
     top: 0;
     left: 0;
     right: 0;
-    z-index: 999;
+    z-index: 9;
     background-color: ${variables.colors.white};
     box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
     box-sizing: border-box;

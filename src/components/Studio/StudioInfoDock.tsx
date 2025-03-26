@@ -20,7 +20,6 @@ const StudioInfoDock = () => {
           width: 37.6rem;
           background-color: ${variables.colors.white};
           box-shadow: inset 0.1rem 0 ${variables.colors.gray300};
-          z-index: 9;
           padding: 5.8rem ${variables.layoutPadding};
         }
       `}
