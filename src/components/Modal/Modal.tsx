@@ -19,7 +19,7 @@ interface ModalProp {
   buttons?: {
     text: string;
     event: () => void;
-    variant?: 'black' | 'gray' | 'deepGray';
+    variant?: 'black' | 'gray';
     active?: boolean;
     width?: 'max' | 'fit';
     type?: 'button' | 'submit';
@@ -132,7 +132,7 @@ const Modal = ({
                     variant={variant}
                     onClick={event}
                     text={text}
-                    // disabled={false}
+                    disabled={false}
                     active={active}
                     width={width}
                     type={type}
@@ -202,9 +202,9 @@ const ModalInner = styled.div<IModalStyle>`
     display: flex;
     flex-direction: column;
     width: ${(props) => (props.type !== 'dimmed' ? '100%' : '64vw')};
-    max-width: ${(props) => (props.type === 'default' ? '45rem' : '54rem')};
+    max-width: ${(props) => (props.type === 'default' ? '40rem' : '54rem')};
     max-width: ${(props) => props.type === 'dimmed' && '81.2rem'};
-    min-height: ${(props) => (props.type === 'default' ? '20rem' : '40rem')};
+    min-height: ${(props) => (props.type === 'default' ? '18.6rem' : '40rem')};
     max-height: calc(100vh - 8rem);
     border-radius: 2rem;
   }
