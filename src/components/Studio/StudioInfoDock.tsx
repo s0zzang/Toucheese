@@ -16,6 +16,7 @@ const StudioInfoDock = () => {
       className="pc"
       css={css`
         ${mqMin(breakPoints.pc)} {
+          margin-left: auto;
           flex-shrink: 0;
           width: 37.6rem;
           background-color: ${variables.colors.white};
