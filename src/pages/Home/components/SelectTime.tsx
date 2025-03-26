@@ -38,12 +38,12 @@ const SelectTime = ({ type, availableTimeWithDates }: ITimeProp) => {
 
   const morningTimes = useMemo(
     () => getTimes()?.filter(({ time }) => time < '12:00'),
-    [selectedDate],
+    [getTimes()],
   );
 
   const afternoonTimes = useMemo(
     () => getTimes()?.filter(({ time }) => time >= '12:00'),
-    [selectedDate],
+    [getTimes()],
   );
 
   const isLowerThanCurrentTime = (time: string) => {
