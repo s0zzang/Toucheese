@@ -28,7 +28,7 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
 
   const prevBtnRef = useRef(null);
   const nextBtnRef = useRef(null);
-  const [lastSwipeDirection, setLastSwipeDirection] = useState('');
+  // const [lastSwipeDirection, setLastSwipeDirection] = useState('');
 
   const getNewSlideSet = (clickedId: number) => {
     return data.filter(
@@ -50,7 +50,7 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
 
   const handleChange = (swipe: SwiperClass) => {
     if (!swiperRef || !firstSlide || !lastSlide) return null;
-    console.log(swiperRef.swipeDirection);
+    console.log(swipe, swiperRef.swipeDirection);
     const toNext = swiperRef.swipeDirection === 'next';
     // const toNext = swiperRef.activeIndex > swiperRef.previousIndex;
     const direction = toNext ? 1 : -1;
