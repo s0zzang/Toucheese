@@ -44,6 +44,7 @@ const GlobalStyles = css`
     padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
 
     @media (min-width: ${breakPoints.pc}) {
+      padding-top: ${variables.headerHeight};
       padding-bottom: 0;
     }
   }

@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import { changeformatDateForUi } from '@store/useSelectDateStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdR, TypoBodyMdSb, TypoCapSmM, TypoTitleSmS } from '@styles/Common';
+import { TypoBodyMdR, TypoBodySmSb, TypoCapXsM, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useSearchParams } from 'react-router-dom';
 
@@ -33,11 +33,11 @@ const BookingButton = ({ type }: { type: 'mo' | 'pc' }) => {
       `}
     >
       <ButtonTitleStyle windowType={type}>
-        <span css={type === 'mo' ? TypoTitleSmS : TypoBodyMdSb}>
+        <span css={type === 'mo' ? TypoTitleSmS : TypoBodySmSb}>
           {searchParams.get('addressGu') || '서울전체'}
         </span>
       </ButtonTitleStyle>
-      <ButtonDesStyle css={type === 'mo' ? TypoBodyMdR : TypoCapSmM}>
+      <ButtonDesStyle css={type === 'mo' ? TypoBodyMdR : TypoCapXsM}>
         {searchParamsDateTime || '예약 날짜와 시간을 선택해주세요.'}
       </ButtonDesStyle>
     </button>

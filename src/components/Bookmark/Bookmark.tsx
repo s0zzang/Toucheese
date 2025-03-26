@@ -3,7 +3,8 @@ import styled from '@emotion/styled';
 import useBookmark from '@hooks/useBookmark';
 import useToast from '@hooks/useToast';
 import { defaultUserState } from '@store/useUserStore';
-import { Hidden, TypoCapXsR } from '@styles/Common';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { Hidden, TypoBodySmR, TypoCapXsR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { useState } from 'react';
@@ -61,7 +62,7 @@ const Bookmark = ({
         />
         <span css={Hidden}>북마크 {`${bookmark.isActive ? '해제' : '등록'}하기`}</span>
       </button>
-      <p css={TypoCapXsR}>{bookmark.count}</p>
+      <p>{bookmark.count}</p>
     </BookmarkStyle>
   );
 };
@@ -75,6 +76,7 @@ const BookmarkStyle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 0.2rem;
 
     & > img {
       width: 2rem;
@@ -86,5 +88,13 @@ const BookmarkStyle = styled.div`
     color: ${variables.colors.gray600};
     margin: 0 auto;
     text-align: center;
+
+    ${TypoCapXsR}
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    & > p {
+      ${TypoBodySmR}
+    }
   }
 `;
