@@ -2,8 +2,16 @@
 import Bookmark from '@components/Bookmark/Bookmark';
 import ShareButton from '@components/Share/ShareButton';
 import { css } from '@emotion/react';
-import { breakPoints } from '@styles/BreakPoint';
-import { DividerStyle, TypoBodyMdR, TypoBodyMdSb, TypoCapSmR, TypoTitleMdSb } from '@styles/Common';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import {
+  DividerStyle,
+  TypoBodyMdR,
+  TypoBodyMdSb,
+  TypoBodySmR,
+  TypoTitleMdSb,
+  TypoTitleXsR,
+  TypoTitleXsSb,
+} from '@styles/Common';
 import variables from '@styles/Variables';
 import { useMediaQuery } from 'react-responsive';
 import { IStudioDetail } from 'types/types';
@@ -18,12 +26,15 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
   let today = new Date();
   const dayIndex = today.getDay() === 0 ? 6 : today.getDay() - 1;
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
-  console.log(data);
 
   return (
     <div
       css={css`
-        box-shadow: inset 0 0 10px red;
+        ${mqMin(breakPoints.pc)} {
+          position: sticky;
+          top: 13.8rem;
+          right: 0;
+        }
       `}
     >
       {/* 스튜디오 정보 */}
@@ -31,9 +42,12 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
         <div>
           <h2>{`${data.name}`}</h2>
           <div className="rating">
-            <img src="/img/icon-rating.svg" alt="리뷰 평점" />
+            <div className="rating-img">
+              <img src="/img/icon-rating.svg" alt="리뷰 평점" />
+            </div>
+
             <p>{`${data.rating}`}</p>
-            <p>{`(${data.review_count}개의 평가)`}</p>
+            <p>{`(${data.review_count}개의 리뷰)`}</p>
           </div>
         </div>
         <div css={SocialActionsStyle}>
@@ -103,9 +117,9 @@ export default StudioInfo;
 const StudioInfoTitleStyle = css`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 1rem;
 
   & > div {
-    margin-bottom: 2rem;
     & > h2 {
       ${TypoTitleMdSb}
       margin-bottom: 0.4rem;
@@ -114,22 +128,51 @@ const StudioInfoTitleStyle = css`
     & > .rating {
       display: flex;
       align-items: center;
-      & > img {
-        margin-right: 0.4rem;
+      gap: 0.2rem;
+
+      .rating-img {
+        padding: 0.2rem;
         width: 1.6rem;
         height: 1.6rem;
+        box-sizing: border-box;
+
+        img {
+          width: 1.2rem;
+          height: 1.2rem;
+        }
+      }
+
+      & p {
+        ${TypoBodySmR}
       }
 
       & > p + p {
-        margin-left: 0.2rem;
         color: ${variables.colors.gray800};
+      }
+    }
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    margin-bottom: 2rem;
+
+    & > div {
+      & > .rating {
+        & p {
+          ${TypoBodyMdR}
+        }
       }
     }
   }
 `;
 
+const SocialActionsStyle = css`
+  display: flex;
+  gap: 2.4rem;
+`;
+
 const StudioInfoStyle = ({ isPc }: { isPc: boolean }) => css`
   position: relative;
+  margin-bottom: ${isPc ? '6rem' : 0};
 
   dl {
     display: flex;
@@ -153,7 +196,10 @@ const StudioInfoStyle = ({ isPc }: { isPc: boolean }) => css`
       dd {
         display: flex;
         align-items: center;
-        ${TypoBodyMdR}
+
+        p {
+          ${TypoBodyMdR}
+        }
 
         & > .openStatus {
           display: flex;
@@ -172,11 +218,28 @@ const StudioInfoStyle = ({ isPc }: { isPc: boolean }) => css`
 
     ${!isPc && DividerStyle}
   }
-`;
 
-const SocialActionsStyle = css`
-  display: flex;
-  gap: 2.4rem;
-  ${TypoCapSmR}
-  color: ${variables.colors.gray700};
+  ${mqMin(breakPoints.pc)} {
+    dl {
+      div {
+        dd {
+          p {
+            ${TypoTitleXsR}
+          }
+
+          & > .openStatus {
+            & > p {
+              ${TypoTitleXsSb}
+            }
+
+            & > time {
+              ${TypoTitleXsR}
+            }
+          }
+        }
+      }
+
+      ${!isPc && DividerStyle}
+    }
+  }
 `;

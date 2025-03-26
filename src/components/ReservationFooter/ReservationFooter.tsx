@@ -4,6 +4,7 @@ import variables from '@styles/Variables';
 import Button from '@components/Button/Button';
 import { TypoCapSmR, TypoTitleSmS } from '@styles/Common';
 import useReservationStore from '@store/useReservationStore';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 
 interface IReservationButton {
   text: string;
@@ -45,14 +46,14 @@ const FixedBtnBoxStyle = css`
   display: flex;
   gap: 2rem;
   align-items: center;
+  width: 100%;
   position: fixed;
   left: 0;
-  right: 0;
   bottom: 0;
   background-color: ${variables.colors.white};
   padding: 1.6rem;
   border-top: 0.1rem solid ${variables.colors.gray300};
-  z-index: 30;
+  z-index: 300;
 
   .totalPrice {
     display: flex;
@@ -68,5 +69,11 @@ const FixedBtnBoxStyle = css`
     & p {
       ${TypoTitleSmS}
     }
+  }
+  ${mqMin(breakPoints.pc)} {
+    width: calc(100vw - (509px + 35px));
+    left: auto;
+    right: 0;
+    padding: 1.8rem 2.4rem 3rem;
   }
 `;

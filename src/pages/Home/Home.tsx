@@ -40,9 +40,6 @@ export type Options = {
   파우더룸: string;
 };
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-console.log('접속한 기기:', isMobile ? '모바일' : '데스크톱');
-
 const Home = () => {
   const [searchParams] = useSearchParams();
   const [isFixed, setIsFixed] = useState(false);
@@ -66,7 +63,7 @@ const Home = () => {
     const handleScroll = () => {
       if (homeRef.current) {
         const rect = homeRef.current.getBoundingClientRect();
-        const threshold = windowWidth >= 1024 ? remToPx(0) : -1 * remToPx(8.8);
+        const threshold = windowWidth >= 1024 ? remToPx(8) : -1 * remToPx(8.8);
 
         setIsFixed(rect.top <= threshold);
       }
@@ -215,9 +212,10 @@ const Home = () => {
 
 const SectionStyle = styled.section`
   padding-top: 2rem;
+  position: relative;
 
   ${mqMin(breakPoints.pc)} {
-    padding-top: 5.8rem;
+    padding-top: calc(13.8rem - ${variables.headerHeight});
   }
 `;
 
@@ -229,7 +227,8 @@ const NavigatorStyle = styled.div<IFixedProps>`
   z-index: 9;
 
   ${mqMin(breakPoints.pc)} {
-    top: ${(props) => (props.isFixed ? '0' : '8rem')};
+    position: ${(props) => (props.isFixed ? 'fixed' : 'absolute')};
+    top: 8rem;
   }
 `;
 
@@ -302,14 +301,15 @@ const FilterBoxStyle = styled.div`
 `;
 
 const FilterSectionStyle = styled.div<IFixedProps>`
+  z-index: 99999;
   flex-shrink: 0;
   padding-top: 3rem;
-  padding-bottom: 11.2rem;
+  padding-bottom: 8.2rem;
   position: sticky;
-  top: ${(props) => (props.isFixed ? '5.8rem' : '0')};
+  top: 13.8rem;
   left: 0;
   width: 19.2rem;
-  height: ${(props) => (props.isFixed ? 'calc(100vh - 10rem)' : 'calc(100vh - 13.8rem)')};
+  height: calc(100vh - 13.8rem);
 
   overflow-y: auto;
   /* 크롬, 사파리,*/
@@ -328,7 +328,8 @@ const ListStyle = styled.div`
   padding-top: 10.8rem;
 
   ${mqMin(breakPoints.pc)} {
-    padding: 0 1.6rem 3rem;
+    padding: unset;
+    padding-right: 1.6rem;
     flex-grow: 1;
   }
 `;

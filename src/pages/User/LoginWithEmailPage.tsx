@@ -11,6 +11,7 @@ import useToast from '@hooks/useToast';
 import { useUserStore } from '@store/useUserStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { bg100vw, PCLayout } from '@styles/Common';
+import { createPasswordRegex } from 'wj-password-validator';
 
 const LoginWithEmailPage = () => {
   const navigate = useNavigate();
@@ -21,6 +22,15 @@ const LoginWithEmailPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  // validation 설정 부분
+  const passwordPattern = createPasswordRegex({
+    minLength: 8,
+    uppercase: true,
+    lowercase: true,
+    digits: true,
+    specialChar: true,
+  });
 
   //TODO - 리액트 쿼리 뮤테이트로 변경 해야함
   const handleLogin = async (data: any) => {
@@ -99,13 +109,9 @@ const LoginWithEmailPage = () => {
               placeholder="8자 이상의 비밀번호"
               register={register('password', {
                 required: '비밀번호를 입력해주세요',
-                minLength: {
-                  value: 8,
-                  message: '아이디와 비밀번호를 확인해주세요.',
-                },
                 pattern: {
-                  value: /[!@#$%^&*(),.?":{}|<>]/,
-                  message: '특수문자를 하나 이상 포함해야 합니다',
+                  value: new RegExp(passwordPattern),
+                  message: '비밀번호는 8자 이상, 대소문자, 숫자, 특수문자를 포함해야 합니다',
                 },
               })}
               error={errors.password?.message?.toString()}

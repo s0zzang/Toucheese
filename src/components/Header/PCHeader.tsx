@@ -4,25 +4,27 @@ import SearchBar from '@components/Search/SearchBar';
 import UserButton from '@components/UserButton/UserButton';
 import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { Hidden } from '@styles/Common';
+import { Hidden, PCLayout } from '@styles/Common';
 import variables from '@styles/Variables';
 import { Link } from 'react-router-dom';
 
 const PCHeader = () => {
   return (
     <header className="pc" css={HeaderStyle}>
-      <Link css={homeLogoStyle} to="/">
-        <span css={Hidden}>홈으로</span>
-        <img src="/img/logo-pc.svg" alt="터치즈 홈" />
-      </Link>
+      <div css={HeaderContentsStyle}>
+        <Link css={homeLogoStyle} to="/">
+          <span css={Hidden}>홈으로</span>
+          <img src="/img/logo-pc.svg" alt="터치즈 홈" />
+        </Link>
 
-      <div css={inputContainerStyle}>
-        <div css={inputStyle}>
-          <SearchBar />
+        <div css={inputContainerStyle}>
+          <div css={inputStyle}>
+            <SearchBar />
+          </div>
         </div>
-      </div>
-      <div css={userBtnStyle}>
-        <UserButton />
+        <div css={userBtnStyle}>
+          <UserButton />
+        </div>
       </div>
     </header>
   );
@@ -32,12 +34,24 @@ export default PCHeader;
 
 const HeaderStyle = css`
   ${mqMin(breakPoints.pc)} {
-    margin: 0 calc(-1 * ${variables.layoutPadding});
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9;
+    background-color: ${variables.colors.white};
+    box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
+    box-sizing: border-box;
+  }
+`;
+
+const HeaderContentsStyle = css`
+  ${mqMin(breakPoints.pc)} {
+    ${PCLayout}
+
     display: flex;
     align-items: center;
     padding: 1rem ${variables.layoutPadding};
-    box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
-    box-sizing: border-box;
   }
 `;
 

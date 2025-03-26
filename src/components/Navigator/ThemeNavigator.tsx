@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoTitleXsB, TypoTitleXsM } from '@styles/Common';
+import { TypoBodyMdB, TypoBodyMdM, TypoTitleXsB, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -32,7 +32,6 @@ const ThemeNavigator = () => {
           <li key={theme}>
             <ThemeButtonStyle
               isActive={activeTheme === theme}
-              css={activeTheme === theme ? TypoTitleXsB : TypoTitleXsM}
               onClick={() => setActiveTheme(theme)}
             >
               {theme}
@@ -77,6 +76,7 @@ const ThemeButtonStyle = styled.button<{ isActive: boolean }>`
     props.isActive ? `${variables.colors.white}` : `${variables.colors.gray500}`};
   position: relative;
   padding: ${(props) => (props.isActive ? '0.3rem 0.9rem 0.3rem 0.8rem' : '0.3rem 0.4rem')};
+  ${(props) => (props.isActive ? TypoTitleXsB : TypoTitleXsM)}
 
   &::after {
     content: '';
@@ -87,5 +87,9 @@ const ThemeButtonStyle = styled.button<{ isActive: boolean }>`
     background: url('/img/icon-nav-badge.svg') no-repeat center / contain;
     top: 0.3rem;
     right: 0.4rem;
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    ${(props) => (props.isActive ? TypoBodyMdB : TypoBodyMdM)}
   }
 `;

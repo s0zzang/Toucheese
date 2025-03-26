@@ -82,7 +82,7 @@ const NavLinkStyle = styled(NavLink)`
   position: relative;
   display: block;
   width: 100%;
-  padding: 0.7rem 0;
+  padding: 1rem 0;
   text-align: center;
   color: ${variables.colors.gray600};
 

@@ -1,22 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import Button from '@components/Button/Button';
+import Header from '@components/Header/Header';
 import KakaoMap from '@components/Kakao/KakaoMap';
+import Loading from '@components/Loading/Loading';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
+import StudioInfo from '@components/Studio/StudioInfo';
+import StudioInfoDock from '@components/Studio/StudioInfoDock';
+import StudioOptions from '@components/Studio/StudioOptions';
 import { css } from '@emotion/react';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
+import useStudioDataStore from '@store/useStudioDataStore';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdM, TypoBodyMdR, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate, useParams } from 'react-router-dom';
-import Header from '@components/Header/Header';
-import Loading from '@components/Loading/Loading';
-import useStudioDataStore from '@store/useStudioDataStore';
-import StudioInfo from '@components/Studio/StudioInfo';
-import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { useMediaQuery } from 'react-responsive';
-import StudioInfoDock from '@components/Studio/StudioInfoDock';
-import StudioOptions from '@components/Studio/StudioOptions';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const StudioMain = () => {
   const { _id } = useParams();
@@ -35,7 +35,7 @@ const StudioMain = () => {
     if (!studioDetail[`${_id}`] && data) {
       setStudioDetail(`${_id}`, data);
     }
-  }, [data, useParams, studioDetail, setStudioDetail]);
+  }, [data, _id, studioDetail, setStudioDetail]);
 
   /** 스튜디오 소개 텍스트 길이 */
   const hasMore: boolean | undefined = data && data.description.length > 100;
@@ -128,14 +128,26 @@ const StudioMain = () => {
   return (
     <>
       <Helmet>
-        <title>{`${data.name} - 상세정보`}</title>
+        <title>{`${data?.name} - 상세정보`}</title>
         <meta property="og:title" content="스튜디오 상세정보" />
         <meta property="og:url" content={`${window.location.href}`} />
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />
       </Helmet>
 
-      <main>
-        <section>
+      <main
+        css={css`
+          ${mqMin(breakPoints.pc)} {
+            display: flex;
+          }
+        `}
+      >
+        <section
+          css={css`
+            ${mqMin(breakPoints.pc)} {
+              flex-grow: 1;
+            }
+          `}
+        >
           {/* 모바일 헤더 */}
           <Header title={scrollY ? data?.name : ''} fixed={true} scrollEvent={true} />
 
@@ -270,12 +282,20 @@ export default StudioMain;
 
 const stickyNavStyle = css`
   position: sticky;
-  top: 5.6rem;
+  top: 0;
   opacity: 0;
   z-index: 6;
   transform: translateY(-10px);
   animation: slideDown 0.3s ease forwards;
   padding: 0;
+
+  ${mqMin(breakPoints.pc)} {
+    width: 100%;
+    background-color: ${variables.colors.white};
+    width: calc(100% + ${variables.layoutPadding} * 2);
+    margin-left: -1.6rem;
+    padding: 0 ${variables.layoutPadding};
+  }
 
   @keyframes slideDown {
     to {
@@ -290,6 +310,15 @@ const boxLayoutStyle = css`
   flex-direction: column;
 
   ${mqMin(breakPoints.pc)} {
+    div:nth-of-type(1) {
+      order: 2;
+    }
+    div:nth-of-type(2) {
+      order: 3;
+    }
+    div:nth-of-type(3) {
+      order: 1;
+    }
   }
 `;
 

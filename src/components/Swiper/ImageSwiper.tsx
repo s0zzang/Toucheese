@@ -5,6 +5,7 @@ import { Mousewheel, Pagination } from 'swiper/modules';
 import variables from '@styles/Variables';
 import { IPortfolio, IReviewImages } from 'types/types';
 import 'swiper/css';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 
 interface ImageSwiperProps extends SwiperProps {
   images: IPortfolio[] | IReviewImages[];
@@ -49,17 +50,21 @@ const ImageSwiper = ({
         mousewheel={mousewheel}
         spaceBetween={spaceBetween}
         slidesPerView={slidesPerView}
-        breakpoints={{
-          768: {
-            slidesPerView: 5.5,
-          },
-          1280: {
-            slidesPerView: 7,
-            allowTouchMove: false,
-            mousewheel: false,
-            pagination: false,
-          },
-        }}
+        breakpoints={
+          slidesPerView === 1
+            ? {}
+            : {
+                768: {
+                  slidesPerView: 5.5,
+                },
+                1280: {
+                  slidesPerView: 7,
+                  allowTouchMove: false,
+                  mousewheel: false,
+                  pagination: false,
+                },
+              }
+        }
         pagination={isPaginationActive ? { clickable: true, type: 'bullets' } : undefined}
         {...props}
       >
@@ -77,7 +82,14 @@ export default ImageSwiper;
 
 //단일이미지
 const containerFullStyle = css`
+  width: calc(100vw + ${variables.layoutPadding});
   margin-left: calc(-1 * ${variables.layoutPadding});
+
+  ${mqMin(breakPoints.pc)} {
+    width: auto;
+    height: auto;
+    margin-left: 0;
+  }
 `;
 
 //다중이미지
@@ -104,24 +116,27 @@ const containerDefaultStyle = css`
 `;
 
 const swiperStyle = css`
-  width: calc(100% + ${variables.layoutPadding});
-
   & .swiper-pagination.swiper-pagination-horizontal {
     position: absolute;
     z-index: 10;
     bottom: 15px;
     left: 50%;
     width: 8rem;
+    height: 0.2rem;
     display: flex;
     justify-content: center;
     transform: translateX(-50%);
+    ${mqMin(breakPoints.pc)} {
+      width: 16rem;
+      height: 0.4rem;
+    }
   }
 
   & .swiper-pagination.swiper-pagination-horizontal .swiper-pagination-bullet {
     background-color: ${variables.colors.white};
     opacity: 0.8;
     width: 100%;
-    height: 0.2rem;
+    height: 100%;
     margin: 0;
     transition: all 0.3s ease;
     border-radius: 0;
@@ -139,7 +154,7 @@ const defaultImageStyle = css`
   height: auto;
   object-fit: cover;
 
-  @media (min-width: 1280px) {
+  ${mqMin(breakPoints.pc)} {
     width: 140px;
     height: 176px;
   }
