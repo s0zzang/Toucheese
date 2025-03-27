@@ -1,22 +1,26 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import variables from '@styles/Variables';
 import Header from '@components/Header/Header';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
-import StudioMenuDetailInfo from './StudioMenuDetailInfo';
-import { useEffect, useState } from 'react';
-import StudioMenuDetailReview from './StudioMenuDetailReview';
-import { IMenuListRes, IUser } from 'types/types';
+import Modal from '@components/Modal/Modal';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
-import useReservationStore from '@store/useReservationStore';
-import { Helmet } from 'react-helmet-async';
-import { defaultUserState } from '@store/useUserStore';
-import { getLocalStorageItem } from '@utils/getLocalStorageItem';
+import { css } from '@emotion/react';
+import useIsMobile from '@hooks/useIsMobile';
+import useModal from '@hooks/useModal';
 import useToast from '@hooks/useToast';
-import { MenuPCStyle } from './StudioMenu';
+import ScheduleInner from '@pages/Reservation/components/ScheduleInner';
+import useReservationStore from '@store/useReservationStore';
+import { defaultUserState } from '@store/useUserStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
+import variables from '@styles/Variables';
+import { getLocalStorageItem } from '@utils/getLocalStorageItem';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { IMenuListRes, IUser } from 'types/types';
+import { MenuPCStyle } from './StudioMenu';
+import StudioMenuDetailInfo from './StudioMenuDetailInfo';
+import StudioMenuDetailReview from './StudioMenuDetailReview';
 
 const StudioMenuDetail = () => {
   const { _menuId, _id } = useParams();
@@ -30,6 +34,8 @@ const StudioMenuDetail = () => {
   const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
   const openToast = useToast();
+  const isMobile = useIsMobile();
+  const scheduleModal = useModal();
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -86,7 +92,8 @@ const StudioMenuDetail = () => {
     saveReservationDetails(saveData);
 
     if (user) {
-      navigate(`/studio/${_id}/reservation`);
+      if (isMobile) navigate(`/studio/${_id}/reservation`);
+      else scheduleModal.open();
     } else {
       openToast('로그인이 필요합니다!');
       window.sessionStorage.setItem('lastPage', pathname);
@@ -158,6 +165,10 @@ const StudioMenuDetail = () => {
         </div>
       </div>
       <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
+
+      <Modal modalId={1} type="fullscreen" title="예약하기">
+        <ScheduleInner _id={_id!} />
+      </Modal>
     </>
   );
 };
