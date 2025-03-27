@@ -3,7 +3,7 @@ import BackButton from '@components/BackButton/BackButton';
 import Button from '@components/Button/Button';
 import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
-import { TypoTitleXsM, TypoTitleXsSB } from '@styles/Common';
+import { TypoTitleXsM, TypoTitleXsSb } from '@styles/Common';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
@@ -156,7 +156,7 @@ const buttonStyle = css`
 `;
 
 const pageTitleStyle = css`
-  ${TypoTitleXsSB}
+  ${TypoTitleXsSb}
   padding: 1rem 0;
   display: flex;
   align-items: center;

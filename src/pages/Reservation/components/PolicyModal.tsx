@@ -2,7 +2,7 @@
 
 import Modal from '@components/Modal/Modal';
 import styled from '@emotion/styled';
-import { TypoBodySmM, TypoBodySmR, TypoTitleXsSB } from '@styles/Common';
+import { TypoBodySmM, TypoBodySmR, TypoTitleXsSb } from '@styles/Common';
 import variables from '@styles/Variables';
 
 const PolicyModal = () => {
@@ -10,7 +10,7 @@ const PolicyModal = () => {
     <Modal type="fullscreen" title="개인정보 수집, 제공 동의" withBtn={false}>
       <section>
         <ContentStyle>
-          <h2 css={TypoTitleXsSB}>개인정보 수집 및 이용 동의</h2>
+          <h2 css={TypoTitleXsSb}>개인정보 수집 및 이용 동의</h2>
           <div>
             <h3 css={TypoBodySmM}>개인정보 수집 항목 및 방법</h3>
             <p css={TypoBodySmR}>
@@ -64,7 +64,7 @@ const PolicyModal = () => {
           </div>
         </ContentStyle>
         <ContentStyle>
-          <h2 css={TypoTitleXsSB}>개인정보 제3자 제공 동의</h2>
+          <h2 css={TypoTitleXsSb}>개인정보 제3자 제공 동의</h2>
           <div>
             <p css={TypoBodySmR}>
               회사는 회원의 개인정보를 사전 동의 없이 외부에 공개하거나 제공하지 않습니다. 다만,
