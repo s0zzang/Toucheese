@@ -229,6 +229,7 @@ const NavigatorStyle = styled.div<IFixedProps>`
   ${mqMin(breakPoints.pc)} {
     position: ${(props) => (props.isFixed ? 'fixed' : 'absolute')};
     top: 8rem;
+    z-index: 5;
   }
 `;
 
