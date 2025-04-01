@@ -57,10 +57,18 @@ const StudioItem = ({
       <ItemImageStyle>
         {item.portfolios.length >= 4 ? (
           isPc ? (
-            <div>
+            <div
+              css={css`
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 0.2rem;
+              `}
+            >
               {getImages(item.portfolios).map((image, index) => (
                 <img
                   css={css`
+                    width: 14rem;
                     aspect-ratio: 140 / 176;
                   `}
                   src={image}
