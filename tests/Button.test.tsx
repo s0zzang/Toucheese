@@ -5,7 +5,7 @@ import Button from '@components/Button/Button';
 
 /**test 01 기본 props 렌더링 */
 it('render with default props', () => {
-  render(<Button text="Button Click" />);
+  render(<Button variant="primary" text="Button Click" />);
 
   /**렌터링 버튼에서 Button Click 찾기 */
   // const buttonClick = screen.getByText('Button Click');

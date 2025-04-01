@@ -1,5 +1,6 @@
 import Error from '@components/Error/Error';
 import Layout from '@components/Layout/Layout';
+import StudioDetailLayout from '@pages/Studio/StudioDetailLayout';
 
 import StudioReviewWritePage from '@pages/Studio/StudioReview/StudioReviewWritePage';
 import Auth from '@pages/User/Auth';
@@ -115,43 +116,30 @@ const router = createBrowserRouter([
       },
       {
         path: 'studio/:_id',
+        element: <StudioDetailLayout />,
         children: [
           { index: true, element: <StudioMain /> },
-          {
-            path: 'menu',
-            children: [
-              { index: true, element: <StudioMenu /> },
-              { path: ':_menuId', element: <StudioMenuDetail /> },
-            ],
-          },
+          { path: 'menu', element: <StudioMenu /> },
           { path: 'portfolio', element: <StudioPortfolio /> },
           {
             path: 'review',
             children: [
-              {
-                index: true,
-                element: <StudioReview />,
-              },
+              { index: true, element: <StudioReview /> },
               { path: 'photos', element: <StudioReviewPhotos /> },
             ],
           },
-          {
-            path: 'reservation',
-            children: [
-              {
-                index: true,
-                element: <ReservationSchedule />,
-              },
-              {
-                path: 'payment',
-                element: <ReservationCheck />,
-              },
-              {
-                path: 'complete',
-                element: <ReservationComplete />,
-              },
-            ],
-          },
+        ],
+      },
+      {
+        path: 'studio/:_id/menu/:_menuId',
+        element: <StudioMenuDetail />,
+      },
+      {
+        path: 'studio/:_id/reservation',
+        children: [
+          { index: true, element: <ReservationSchedule /> },
+          { path: 'payment', element: <ReservationCheck /> },
+          { path: 'complete', element: <ReservationComplete /> },
         ],
       },
       {

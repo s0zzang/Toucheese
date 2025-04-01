@@ -5,7 +5,6 @@ import KakaoMap from '@components/Kakao/KakaoMap';
 import Loading from '@components/Loading/Loading';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
 import StudioInfo from '@components/Studio/StudioInfo';
-import StudioInfoDock from '@components/Studio/StudioInfoDock';
 import StudioOptions from '@components/Studio/StudioOptions';
 import { css } from '@emotion/react';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
@@ -134,146 +133,120 @@ const StudioMain = () => {
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />
       </Helmet>
 
-      <main
-        css={css`
-          ${mqMin(breakPoints.pc)} {
-            display: flex;
-          }
-        `}
-      >
-        <section
-          css={css`
-            ${mqMin(breakPoints.pc)} {
-              flex-grow: 1;
-            }
-          `}
-        >
-          {/* 모바일 헤더 */}
-          <Header title={scrollY ? data?.name : ''} fixed={true} scrollEvent={true} />
+      {/* 모바일 헤더 */}
+      <Header title={scrollY ? data?.name : ''} fixed={true} scrollEvent={true} />
 
-          <div css={boxLayoutStyle}>
-            {/* 이미지 */}
-            <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
-              {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
-                <img
-                  key={idx}
-                  src={getImageUrl(portfolioImg.url)}
-                  alt={`포트폴리오 이미지 : ${portfolioImg.url}`}
-                />
-              ))}
-              <div css={portfolioPsitionStyle}>
-                <img
-                  src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')}
-                  alt="사진5"
-                />
-                <div css={DimOverlayStyle}>
-                  <img src="/img/icon-morePreview.svg" alt="더보기" />
-                  <span>
-                    {data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="mo">
-              <StudioInfo data={data} id={_id} />
-            </div>
-
-            <div css={stickyNavStyle}>
-              <StudioNavigator _id={_id || ''} />
-            </div>
-          </div>
-
-          {/* 홈 기본 정보  - 매장소개 */}
-          <div css={descriptionStyle(isOpened, hasMore)}>
-            <p className="descriptionTitle">매장 소개</p>
-            <p className="textDisplay">{`${data.description}`}</p>
-            {hasMore && (
-              <span className="textMore" onClick={() => setIsOpened(!isOpened)}>
-                {isOpened ? '접기' : '더보기'}
+      <div css={boxLayoutStyle}>
+        {/* 이미지 */}
+        <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
+          {portfolioWithPlaceHolders.slice(0, 4).map((portfolioImg, idx) => (
+            <img
+              key={idx}
+              src={getImageUrl(portfolioImg.url)}
+              alt={`포트폴리오 이미지 : ${portfolioImg.url}`}
+            />
+          ))}
+          <div css={portfolioPsitionStyle}>
+            <img src={portfolioWithPlaceHolders[4].url.replace(/\.jpeg$/, '.webp')} alt="사진5" />
+            <div css={DimOverlayStyle}>
+              <img src="/img/icon-morePreview.svg" alt="더보기" />
+              <span>
+                {data && data.portfolios.length >= 5 ? `+ ${data.portfolios.length - 5}` : ''}
               </span>
-            )}
+            </div>
           </div>
+        </div>
 
-          {/* 홈 기본 정보  - 영업 정보 */}
-          <div css={openingHoursStyle}>
-            <p className="openingHoursTitle">영업 정보</p>
-            {data && data.openingHours.length === 0 ? (
-              <p>수집중</p>
-            ) : (
-              data &&
-              data.openingHours.map((openingHour) => (
-                <dl key={openingHour.id}>
-                  <dt>{day[openingHour.dayOfWeek as keyof typeof day]}</dt>
-                  <dd>
-                    {openingHour.closed ? (
-                      <p>정기 휴무</p>
-                    ) : (
-                      <>
-                        <time>{openingHour.openTime.slice(0, 5)}</time>
-                        <span>-</span>
-                        <time>{openingHour.closeTime.slice(0, 5)}</time>
-                      </>
-                    )}
-                  </dd>
-                </dl>
-              ))
-            )}
-            {data.openingHours.length !== 0 ? (
-              <div css={holidayStyle}>
-                <p className="holidayTitle"> 정기휴무</p>
-                <div className="holidayMonth">
-                  {data.holidays.map((holiday) => (
-                    <p key={holiday.id}>
-                      {holiday.weekOfMonth === 1
-                        ? '첫'
-                        : holiday.weekOfMonth === 2
-                          ? '둘'
-                          : holiday.weekOfMonth === 3
-                            ? '셋'
-                            : '넷'}
-                      째 주 {day[holiday.dayOfWeek as keyof typeof day]}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              ''
-            )}
+        <div className="mo">
+          <StudioInfo data={data} id={_id} />
+        </div>
+
+        <div css={stickyNavStyle}>
+          <StudioNavigator _id={_id || ''} />
+        </div>
+      </div>
+
+      {/* 홈 기본 정보  - 매장소개 */}
+      <div css={descriptionStyle(isOpened, hasMore)}>
+        <p className="descriptionTitle">매장 소개</p>
+        <p className="textDisplay">{`${data.description}`}</p>
+        {hasMore && (
+          <span className="textMore" onClick={() => setIsOpened(!isOpened)}>
+            {isOpened ? '접기' : '더보기'}
+          </span>
+        )}
+      </div>
+
+      {/* 홈 기본 정보  - 영업 정보 */}
+      <div css={openingHoursStyle}>
+        <p className="openingHoursTitle">영업 정보</p>
+        {data && data.openingHours.length === 0 ? (
+          <p>수집중</p>
+        ) : (
+          data &&
+          data.openingHours.map((openingHour) => (
+            <dl key={openingHour.id}>
+              <dt>{day[openingHour.dayOfWeek as keyof typeof day]}</dt>
+              <dd>
+                {openingHour.closed ? (
+                  <p>정기 휴무</p>
+                ) : (
+                  <>
+                    <time>{openingHour.openTime.slice(0, 5)}</time>
+                    <span>-</span>
+                    <time>{openingHour.closeTime.slice(0, 5)}</time>
+                  </>
+                )}
+              </dd>
+            </dl>
+          ))
+        )}
+        {data.openingHours.length !== 0 ? (
+          <div css={holidayStyle}>
+            <p className="holidayTitle"> 정기휴무</p>
+            <div className="holidayMonth">
+              {data.holidays.map((holiday) => (
+                <p key={holiday.id}>
+                  {holiday.weekOfMonth === 1
+                    ? '첫'
+                    : holiday.weekOfMonth === 2
+                      ? '둘'
+                      : holiday.weekOfMonth === 3
+                        ? '셋'
+                        : '넷'}
+                  째 주 {day[holiday.dayOfWeek as keyof typeof day]}
+                </p>
+              ))}
+            </div>
           </div>
+        ) : (
+          ''
+        )}
+      </div>
 
-          {/* 홈 기본정보 - 위치 정보 */}
-          <div css={mapStyle}>
-            <p>위치 정보</p>
-            <KakaoMap
-              addressSi={data.addressSi}
-              addressGu={data.addressGu}
-              address={data.address}
+      {/* 홈 기본정보 - 위치 정보 */}
+      <div css={mapStyle}>
+        <p>위치 정보</p>
+        <KakaoMap addressSi={data.addressSi} addressGu={data.addressGu} address={data.address} />
+      </div>
+
+      {/* 홈 기본정보 - 매장 정보 */}
+      {!isPc && (
+        <>
+          <StudioOptions data={data} />
+
+          <div css={reservationStyle}>
+            <Button
+              type="button"
+              variant="black"
+              text="예약하기"
+              size="large"
+              width="max"
+              onClick={handleClick}
             />
           </div>
-
-          {/* 홈 기본정보 - 매장 정보 */}
-          {!isPc && (
-            <>
-              <StudioOptions data={data} />
-
-              <div css={reservationStyle}>
-                <Button
-                  type="button"
-                  variant="black"
-                  text="예약하기"
-                  size="large"
-                  width="max"
-                  onClick={handleClick}
-                />
-              </div>
-            </>
-          )}
-        </section>
-
-        {/* PC용 */}
-        <StudioInfoDock />
-      </main>
+        </>
+      )}
     </>
   );
 };

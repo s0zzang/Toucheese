@@ -5,7 +5,7 @@ import Button from '@components/Button/Button';
 import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import useSignupStore from '@store/useSignupStore';
-import { TypoTitleXsM, TypoTitleXsSB } from '@styles/Common';
+import { TypoTitleXsM, TypoTitleXsSb } from '@styles/Common';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
@@ -256,7 +256,7 @@ const buttonStyle = css`
 `;
 
 const pageTitleStyle = css`
-  ${TypoTitleXsSB}
+  ${TypoTitleXsSb}
   height: 5rem;
   display: flex;
   align-items: center;

@@ -11,7 +11,7 @@ import {
   TypoCapSmR,
   TypoTitleXsM,
   TypoTitleXsR,
-  TypoTitleXsSB,
+  TypoTitleXsSb,
 } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
@@ -119,7 +119,7 @@ const ReservationCheck = () => {
 
       {/* 예약정보 */}
       <section css={paddingTopStyle}>
-        <h2 css={[TypoTitleXsSB, titleAlignStyle, firstTitleAlignStyle]}>예약정보</h2>
+        <h2 css={[TypoTitleXsSb, titleAlignStyle, firstTitleAlignStyle]}>예약정보</h2>
         <div css={boxStyle}>
           <h4
             css={css`
@@ -147,7 +147,7 @@ const ReservationCheck = () => {
 
       {/* 예약자정보 */}
       <section>
-        <h2 css={[TypoTitleXsSB, titleAlignStyle]}>예약자정보</h2>
+        <h2 css={[TypoTitleXsSb, titleAlignStyle]}>예약자정보</h2>
         <p css={TypoTitleXsM}>{username}</p>
         <p css={TypoTitleXsM}>{phone}</p>
         <div css={checkboxWrapperStyle}>
@@ -217,7 +217,7 @@ const ReservationCheck = () => {
           </section>
         )}
         <section>
-          <h2 css={[TypoTitleXsSB, titleAlignStyle]}>요청사항</h2>
+          <h2 css={[TypoTitleXsSb, titleAlignStyle]}>요청사항</h2>
           <div css={textareaBox}>
             <textarea
               css={textRequestsStyle}
@@ -232,7 +232,7 @@ const ReservationCheck = () => {
 
       {/* 결제정보*/}
       <section css={paymentSectionStyle}>
-        <h2 css={[TypoTitleXsSB, titleAlignStyle]}>결제정보</h2>
+        <h2 css={[TypoTitleXsSb, titleAlignStyle]}>결제정보</h2>
         <div css={[boxStyle, TypoBodySmR]}>
           <div css={[PriceInforowStyle, options.length > 0 && basicPriceStyle]}>
             <span>기본 가격</span>
@@ -261,7 +261,7 @@ const ReservationCheck = () => {
           )}
 
           <hr css={hrStyle} />
-          <div css={[PriceInforowStyle, TypoTitleXsSB, totalPriceStyle]}>
+          <div css={[PriceInforowStyle, TypoTitleXsSb, totalPriceStyle]}>
             <span>총 결제금액</span>
             <span>{totalPrice.toLocaleString()}원</span>
           </div>
@@ -270,7 +270,7 @@ const ReservationCheck = () => {
 
       {/* 결제수단 */}
       <section>
-        <h2 css={[TypoTitleXsSB, titleAlignStyle]}>결제수단</h2>
+        <h2 css={[TypoTitleXsSb, titleAlignStyle]}>결제수단</h2>
         <div css={[TypoTitleXsR, radioGroupStyle]}>
           <li css={radioLabelStyle}>
             <input

@@ -15,7 +15,7 @@ import {
   TypoBodySmR,
   TypoTitleSmS,
   TypoTitleXsM,
-  TypoTitleXsSB,
+  TypoTitleXsSb,
 } from '@styles/Common';
 import variables from '@styles/Variables';
 import LocationModal from './components/LocationModal';
@@ -161,7 +161,7 @@ const ReservationDetail = () => {
         </section>
 
         <section css={sectionStyle}>
-          <h2 css={[TypoTitleXsSB, titleStyle, addTitleStyle]}>예약정보</h2>
+          <h2 css={[TypoTitleXsSb, titleStyle, addTitleStyle]}>예약정보</h2>
           <div>
             <div>
               <div css={itemStyle}>
@@ -200,7 +200,7 @@ const ReservationDetail = () => {
           </div>
         </section>
         <section css={sectionStyle}>
-          <h2 css={[TypoTitleXsSB, titleStyle]}>예약자정보</h2>
+          <h2 css={[TypoTitleXsSb, titleStyle]}>예약자정보</h2>
           <div>
             <div>
               <div css={itemStyle}>
@@ -216,13 +216,13 @@ const ReservationDetail = () => {
         </section>
         {note && (
           <section css={sectionStyle}>
-            <h2 css={[TypoTitleXsSB, titleStyle]}>요청사항</h2>
+            <h2 css={[TypoTitleXsSb, titleStyle]}>요청사항</h2>
             <div css={requestsStyle}>{note}</div>
           </section>
         )}
 
         <section css={sectionStyle}>
-          <h2 css={[TypoTitleXsSB, titleStyle]}>
+          <h2 css={[TypoTitleXsSb, titleStyle]}>
             {' '}
             {status === 'CANCELED' ? '환불정보' : '결제정보'}
           </h2>
@@ -267,7 +267,7 @@ const ReservationDetail = () => {
 
         {status !== 'CANCELED' && (
           <section css={sectionStyle}>
-            <h2 css={[TypoTitleXsSB, titleStyle]}>취소/환불 규정</h2>
+            <h2 css={[TypoTitleXsSb, titleStyle]}>취소/환불 규정</h2>
             <div>
               <p css={[TypoBodySmM, isDisabled && redTextStyle]}>{getCancellationMessage(date)}</p>
               <div css={[refundInfoRowStyle, refundInfoFirstLineStyle]}>
