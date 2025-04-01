@@ -4,7 +4,6 @@ import NoPic from '@components/NoPic/NoPic';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import PortfolioSwiper from '@pages/Studio/StudioPortfolio/PortfolioSwiper';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
