@@ -302,7 +302,6 @@ const FilterBoxStyle = styled.div`
 `;
 
 const FilterSectionStyle = styled.div<IFixedProps>`
-  z-index: 99999;
   flex-shrink: 0;
   padding-top: 3rem;
   padding-bottom: 8.2rem;
