@@ -66,6 +66,7 @@ const StudioItem = ({
             >
               {getImages(item.portfolios).map((image, index) => (
                 <img
+                  key={`${item.id}-image-${index}`}
                   css={css`
                     width: 14rem;
                     aspect-ratio: 140 / 176;
