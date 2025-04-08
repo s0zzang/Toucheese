@@ -34,8 +34,6 @@ const StudioMenuDetail = () => {
   const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
   const openToast = useToast();
-  const isMobile = useIsMobile();
-  const scheduleModal = useModal();
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -92,8 +90,7 @@ const StudioMenuDetail = () => {
     saveReservationDetails(saveData);
 
     if (user) {
-      if (isMobile) navigate(`/studio/${_id}/reservation`);
-      else scheduleModal.open();
+      navigate(`/studio/${_id}/reservation`);
     } else {
       openToast('로그인이 필요합니다!');
       window.sessionStorage.setItem('lastPage', pathname);
@@ -165,10 +162,6 @@ const StudioMenuDetail = () => {
         </div>
       </div>
       <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
-
-      <Modal modalId={1} type="fullscreen" title="예약하기">
-        <ScheduleInner _id={_id!} />
-      </Modal>
     </>
   );
 };
