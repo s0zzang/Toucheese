@@ -1,13 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
-import Modal from '@components/Modal/Modal';
 import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { css } from '@emotion/react';
-import useIsMobile from '@hooks/useIsMobile';
-import useModal from '@hooks/useModal';
 import useToast from '@hooks/useToast';
-import ScheduleInner from '@pages/Reservation/components/ScheduleInner';
 import useReservationStore from '@store/useReservationStore';
 import { defaultUserState } from '@store/useUserStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
