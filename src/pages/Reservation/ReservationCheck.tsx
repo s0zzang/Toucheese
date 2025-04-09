@@ -19,8 +19,10 @@ import { useForm } from 'react-hook-form';
 import Payment from './components/Payment';
 import useReservationStore from '@store/useReservationStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
-import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
+import { useSelectDateStore } from '@store/useSelectDateStore';
 import { useUserStore } from '@store/useUserStore';
+import ReservationInfo from './components/ReservationInfo';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 
 interface FormValues {
   visitorName: string;
@@ -39,7 +41,7 @@ const ReservationCheck = () => {
 
   const { time } = useSelectTimeStore();
   const { date } = useSelectDateStore();
-  const { studioName, totalPrice, options, menuName, basicPrice, menuImage, menuId, requests } =
+  const { totalPrice, options, menuName, basicPrice, menuImage, menuId, requests } =
     useReservationStore();
   const { username, phone, user_id } = useUserStore();
   const [isDifferentVisitor, setIsDifferentVisitor] = useState(false);
@@ -118,36 +120,11 @@ const ReservationCheck = () => {
       <Header title="결제하기" />
 
       {/* 예약정보 */}
-      <section css={paddingTopStyle}>
-        <h2 css={[TypoTitleXsSb, titleAlignStyle, firstTitleAlignStyle]}>예약정보</h2>
-        <div css={boxStyle}>
-          <h4
-            css={css`
-              color: ${variables.colors.gray800};
-              font-size: 1.2rem;
-            `}
-          >
-            {studioName}
-          </h4>
-          <p css={TypoTitleXsM}>{changeformatDateForUi({ date, time })}</p>
-          <hr css={hrStyle} />
-          <div css={flexRow}>
-            <div>
-              <p css={TypoTitleXsM}>{menuName}</p>
-              <div css={textWrapperStyle}>
-                {options.map((option) => (
-                  <span key={option.option_id}>{option.optionName}</span>
-                ))}
-              </div>
-            </div>
-            <img src={menuImage} alt="포트폴리오 이미지" css={imgStyle} />
-          </div>
-        </div>
-      </section>
+      <ReservationInfo />
 
       {/* 예약자정보 */}
       <section>
-        <h2 css={[TypoTitleXsSb, titleAlignStyle]}>예약자정보</h2>
+        <h2 css={reservationTitleAlignStyle}>예약자정보</h2>
         <p css={TypoTitleXsM}>{username}</p>
         <p css={TypoTitleXsM}>{phone}</p>
         <div css={checkboxWrapperStyle}>
@@ -217,7 +194,7 @@ const ReservationCheck = () => {
           </section>
         )}
         <section>
-          <h2 css={[TypoTitleXsSb, titleAlignStyle]}>요청사항</h2>
+          <h2 css={reservationTitleAlignStyle}>요청사항</h2>
           <div css={textareaBox}>
             <textarea
               css={textRequestsStyle}
@@ -232,8 +209,8 @@ const ReservationCheck = () => {
 
       {/* 결제정보*/}
       <section css={paymentSectionStyle}>
-        <h2 css={[TypoTitleXsSb, titleAlignStyle]}>결제정보</h2>
-        <div css={[boxStyle, TypoBodySmR]}>
+        <h2 css={reservationTitleAlignStyle}>결제정보</h2>
+        <div css={[reservationBoxStyle, TypoBodySmR]}>
           <div css={[PriceInforowStyle, options.length > 0 && basicPriceStyle]}>
             <span>기본 가격</span>
             <span>{menuName}</span>
@@ -260,7 +237,7 @@ const ReservationCheck = () => {
             </div>
           )}
 
-          <hr css={hrStyle} />
+          <hr css={reservationHrStyle} />
           <div css={[PriceInforowStyle, TypoTitleXsSb, totalPriceStyle]}>
             <span>총 결제금액</span>
             <span>{totalPrice.toLocaleString()}원</span>
@@ -270,7 +247,7 @@ const ReservationCheck = () => {
 
       {/* 결제수단 */}
       <section>
-        <h2 css={[TypoTitleXsSb, titleAlignStyle]}>결제수단</h2>
+        <h2 css={reservationTitleAlignStyle}>결제수단</h2>
         <div css={[TypoTitleXsR, radioGroupStyle]}>
           <li css={radioLabelStyle}>
             <input
@@ -344,7 +321,7 @@ const ReservationCheck = () => {
               <span>이용 7일 전까지</span>
               <span>결제 금액에 대한 취소 수수료 없음</span>
             </div>
-            <hr css={hrStyle} />
+            <hr css={reservationHrStyle} />
             <div css={refundInfoRowStyle}>
               <span>이용 7일 전 ~ 이용 당일</span>
               <span>취소 불가</span>
@@ -377,61 +354,34 @@ const ReservationCheck = () => {
 
 export default ReservationCheck;
 
-const paddingTopStyle = css`
-  padding-top: ${variables.headerHeight};
-`;
-
-const titleAlignStyle = css`
+export const reservationTitleAlignStyle = css`
   height: 4.2rem;
   line-height: 4.2rem;
   margin-top: 0.4rem;
+  ${TypoTitleXsSb}
 `;
 
-const firstTitleAlignStyle = css`
-  margin-top: 0;
-`;
-
-const boxStyle = css`
+export const reservationBoxStyle = css`
   border: 1px solid ${variables.colors.gray400};
   border-radius: 0.6rem;
   padding: 1rem 1.4rem;
+
+  ${mqMin(breakPoints.pc)} {
+    padding: 1.4rem 1.6rem;
+  }
 `;
 
-const hrStyle = css`
+export const reservationHrStyle = css`
   border: none;
   border-bottom: 0.1rem solid ${variables.colors.gray400};
-`;
+  margin: 1rem 0;
 
-//예약정보
-const flexRow = css`
-  display: flex;
-`;
-
-const imgStyle = css`
-  width: 6rem;
-  height: 7.2rem;
-  margin-left: auto;
-  object-fit: cover;
-`;
-
-const textWrapperStyle = css`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 0.5rem;
-  span {
-    position: relative;
-    color: ${variables.colors.gray900};
-    font-size: 1.2rem;
-  }
-  span:not(:last-child)::after {
-    content: '|';
-    margin-left: 0.6rem;
-    color: #ccc;
+  ${mqMin(breakPoints.pc)} {
+    margin: 1.5rem 0;
   }
 `;
 
-//예약자정보
+// 예약자정보
 const checkboxWrapperStyle = css`
   width: 13rem;
   height: 3rem;

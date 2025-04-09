@@ -1,13 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
-import Modal from '@components/Modal/Modal';
-import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
+import ReservationFooter, {
+  reservationFooterWrStyle,
+} from '@components/ReservationFooter/ReservationFooter';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { css } from '@emotion/react';
-import useIsMobile from '@hooks/useIsMobile';
-import useModal from '@hooks/useModal';
 import useToast from '@hooks/useToast';
-import ScheduleInner from '@pages/Reservation/components/ScheduleInner';
 import useReservationStore from '@store/useReservationStore';
 import { defaultUserState } from '@store/useUserStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
@@ -34,8 +32,6 @@ const StudioMenuDetail = () => {
   const { accessToken: user } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const { pathname } = useLocation();
   const openToast = useToast();
-  const isMobile = useIsMobile();
-  const scheduleModal = useModal();
 
   const fetchMenuDetail = async () => {
     const res = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/studio/detail/menu/${_menuId}`, {
@@ -92,8 +88,7 @@ const StudioMenuDetail = () => {
     saveReservationDetails(saveData);
 
     if (user) {
-      if (isMobile) navigate(`/studio/${_id}/reservation`);
-      else scheduleModal.open();
+      navigate(`/studio/${_id}/reservation`);
     } else {
       openToast('로그인이 필요합니다!');
       window.sessionStorage.setItem('lastPage', pathname);
@@ -138,37 +133,35 @@ const StudioMenuDetail = () => {
           </div>
         )}
 
-        <div css={MenuInfoPCStyle}>
-          <div css={MenuDescStyle}>
-            <h2>{data?.name}</h2>
-            <p>{data?.description}</p>
+        <div css={reservationFooterWrStyle}>
+          <div css={MenuInfoPCStyle} className="contentBox">
+            <div css={MenuDescStyle}>
+              <h2>{data?.name}</h2>
+              <p>{data?.description}</p>
+            </div>
+            <ul css={TabMenuStyle}>
+              <li
+                onClick={() => setTabMenuState('info')}
+                className={`${tabMenuState === 'info' && 'active'}`}
+              >
+                정보
+              </li>
+              <li
+                onClick={() => setTabMenuState('review')}
+                className={`${tabMenuState === 'review' && 'active'}`}
+              >
+                리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
+              </li>
+            </ul>
+            {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
+            {data && tabMenuState === 'review' && (
+              <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />
+            )}
           </div>
 
-          <ul css={TabMenuStyle}>
-            <li
-              onClick={() => setTabMenuState('info')}
-              className={`${tabMenuState === 'info' && 'active'}`}
-            >
-              정보
-            </li>
-            <li
-              onClick={() => setTabMenuState('review')}
-              className={`${tabMenuState === 'review' && 'active'}`}
-            >
-              리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
-            </li>
-          </ul>
-          {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
-          {data && tabMenuState === 'review' && (
-            <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />
-          )}
+          <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
         </div>
       </div>
-      <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
-
-      <Modal modalId={1} type="fullscreen" title="예약하기">
-        <ScheduleInner _id={_id!} />
-      </Modal>
     </>
   );
 };
