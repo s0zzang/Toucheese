@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
-import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
+import ReservationFooter, {
+  reservationFooterWrStyle,
+} from '@components/ReservationFooter/ReservationFooter';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { css } from '@emotion/react';
 import useToast from '@hooks/useToast';
@@ -131,33 +133,35 @@ const StudioMenuDetail = () => {
           </div>
         )}
 
-        <div css={MenuInfoPCStyle}>
-          <div css={MenuDescStyle}>
-            <h2>{data?.name}</h2>
-            <p>{data?.description}</p>
+        <div css={reservationFooterWrStyle}>
+          <div css={MenuInfoPCStyle} className="contentBox">
+            <div css={MenuDescStyle}>
+              <h2>{data?.name}</h2>
+              <p>{data?.description}</p>
+            </div>
+            <ul css={TabMenuStyle}>
+              <li
+                onClick={() => setTabMenuState('info')}
+                className={`${tabMenuState === 'info' && 'active'}`}
+              >
+                정보
+              </li>
+              <li
+                onClick={() => setTabMenuState('review')}
+                className={`${tabMenuState === 'review' && 'active'}`}
+              >
+                리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
+              </li>
+            </ul>
+            {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
+            {data && tabMenuState === 'review' && (
+              <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />
+            )}
           </div>
 
-          <ul css={TabMenuStyle}>
-            <li
-              onClick={() => setTabMenuState('info')}
-              className={`${tabMenuState === 'info' && 'active'}`}
-            >
-              정보
-            </li>
-            <li
-              onClick={() => setTabMenuState('review')}
-              className={`${tabMenuState === 'review' && 'active'}`}
-            >
-              리뷰 {data?.reviewCount ? data?.reviewCount : '0'}
-            </li>
-          </ul>
-          {data && tabMenuState === 'info' && <StudioMenuDetailInfo infoItem={data} />}
-          {data && tabMenuState === 'review' && (
-            <StudioMenuDetailReview reviewItem={data?.reviews.content} rating={data?.avgScore} />
-          )}
+          <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
         </div>
       </div>
-      <ReservationFooter text="예약하기" type="button" onClick={handleReservartionNext} />
     </>
   );
 };
