@@ -22,6 +22,7 @@ import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import { useSelectDateStore } from '@store/useSelectDateStore';
 import { useUserStore } from '@store/useUserStore';
 import ReservationInfo from './components/ReservationInfo';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 
 interface FormValues {
   visitorName: string;
@@ -364,11 +365,20 @@ export const reservationBoxStyle = css`
   border: 1px solid ${variables.colors.gray400};
   border-radius: 0.6rem;
   padding: 1rem 1.4rem;
+
+  ${mqMin(breakPoints.pc)} {
+    padding: 1.4rem 1.6rem;
+  }
 `;
 
 export const reservationHrStyle = css`
   border: none;
   border-bottom: 0.1rem solid ${variables.colors.gray400};
+  margin: 1rem 0;
+
+  ${mqMin(breakPoints.pc)} {
+    margin: 1.5rem 0;
+  }
 `;
 
 // 예약자정보

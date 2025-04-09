@@ -4,13 +4,14 @@ import { css } from '@emotion/react';
 import useReservationStore from '@store/useReservationStore';
 import { changeformatDateForUi, useSelectDateStore } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
-import { TypoTitleXsM } from '@styles/Common';
+import { TypoBodySmR, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import {
   reservationBoxStyle,
   reservationHrStyle,
   reservationTitleAlignStyle,
 } from '../ReservationCheck';
+import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 
 const ReservationInfo = () => {
   const { studioName, options, menuName, menuImage } = useReservationStore();
@@ -18,41 +19,56 @@ const ReservationInfo = () => {
   const { date } = useSelectDateStore();
 
   return (
-    <>
-      <section css={paddingTopStyle}>
-        <h2 css={[reservationTitleAlignStyle, firstTitleAlignStyle]}>예약정보</h2>
-        <div css={reservationBoxStyle}>
-          <h4
-            css={css`
-              color: ${variables.colors.gray800};
-              font-size: 1.2rem;
-            `}
-          >
-            {studioName}
-          </h4>
-          <p css={TypoTitleXsM}>{changeformatDateForUi({ date, time })}</p>
-          <hr css={reservationHrStyle} />
-          <div css={flexRow}>
-            <div>
-              <p css={TypoTitleXsM}>{menuName}</p>
-              <div css={textWrapperStyle}>
+    <section css={reservationInfoStyle}>
+      <h2 css={[reservationTitleAlignStyle, firstTitleAlignStyle]}>예약정보</h2>
+
+      <div css={reservationBoxStyle}>
+        <dl>
+          <dt>사진관 이름</dt>
+          <dd>
+            <h3 css={studioNameStyle}>{studioName}</h3>
+          </dd>
+          <dt css={marginTop}>예약 일시</dt>
+          <dd>
+            <h3 css={TypoTitleXsM}>{changeformatDateForUi({ date, time })}</h3>
+          </dd>
+        </dl>
+
+        <hr css={reservationHrStyle} />
+
+        <div css={flexRow}>
+          <dl>
+            <dt>예약 촬영</dt>
+            <dd>
+              <h3 css={TypoTitleXsM}>{menuName}</h3>
+            </dd>
+            <dt css={marginTop}>추가 옵션</dt>
+            <dd>
+              <h3 css={textWrapperStyle}>
                 {options.map((option) => (
                   <span key={option.option_id}>{option.optionName}</span>
                 ))}
-              </div>
-            </div>
-            <img src={menuImage} alt="포트폴리오 이미지" css={imgStyle} />
-          </div>
+              </h3>
+            </dd>
+          </dl>
+          <img src={menuImage} alt="포트폴리오 이미지" css={imgStyle} />
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 
 export default ReservationInfo;
 
-const paddingTopStyle = css`
-  padding-top: ${variables.headerHeight};
+const studioNameStyle = css`
+  ${mqMax(breakPoints.moMax)} {
+    color: ${variables.colors.gray800};
+    font-size: 1.2rem;
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    ${TypoTitleXsM}
+  }
 `;
 
 const firstTitleAlignStyle = css`
@@ -65,9 +81,13 @@ const flexRow = css`
 
 const imgStyle = css`
   width: 6rem;
-  height: 7.2rem;
+  aspect-ratio: 60/72;
   margin-left: auto;
   object-fit: cover;
+
+  ${mqMin(breakPoints.pc)} {
+    width: 14rem;
+  }
 `;
 
 const textWrapperStyle = css`
@@ -78,11 +98,30 @@ const textWrapperStyle = css`
   span {
     position: relative;
     color: ${variables.colors.gray900};
-    font-size: 1.2rem;
+    ${TypoBodySmR}
   }
   span:not(:last-child)::after {
     content: '|';
     margin-left: 0.6rem;
     color: #ccc;
+    font-size: 0.8em;
   }
+`;
+
+const reservationInfoStyle = css`
+  dl {
+    dt {
+      ${TypoBodySmR}
+      color: ${variables.colors.gray700};
+      padding-bottom: 0.2rem;
+
+      ${mqMax(breakPoints.moMax)} {
+        display: none;
+      }
+    }
+  }
+`;
+
+const marginTop = css`
+  margin-top: 0.8rem;
 `;
