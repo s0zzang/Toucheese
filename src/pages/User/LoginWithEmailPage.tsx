@@ -27,7 +27,7 @@ const LoginWithEmailPage = () => {
   // validation 설정 부분
   const passwordPattern = createPasswordRegex({
     minLength: 8,
-    uppercase: true,
+    // uppercase: true,
     lowercase: true,
     digits: true,
     specialChar: true,
