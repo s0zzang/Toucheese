@@ -15,7 +15,7 @@ import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { IMenuListRes, IUser } from 'types/types';
+import { IMenuListRes, IPortfolio, IUser } from 'types/types';
 import { MenuPCStyle } from './StudioMenu';
 import StudioMenuDetailInfo from './StudioMenuDetailInfo';
 import StudioMenuDetailReview from './StudioMenuDetailReview';
@@ -96,6 +96,22 @@ const StudioMenuDetail = () => {
     }
   };
 
+  //메뉴 이미지가 존재하지 않을 경우 기본 이미지 데이터
+  const menuImgNopic: IPortfolio[] = [
+    {
+      id: 1,
+      studio: 'nopic-menu-img',
+      vibe: 'nnopic-menu-imgopic',
+      name: 'nopic-menu-img',
+      url: '/img/img-menu-nopic.png',
+      menuId: null,
+      menuName: null,
+      description: 'nopic-menu-img',
+      created_at: null,
+      updated_at: null,
+    },
+  ];
+
   return (
     <>
       {data && (
@@ -123,9 +139,9 @@ const StudioMenuDetail = () => {
 
       <div css={[MenuLayoutPCStyle]}>
         {data && (
-          <div css={MenuCoverPCStyle}>
+          <div css={MenuCoverStyle}>
             <ImageSwiper
-              images={data.menuImages}
+              images={data && data?.menuImages.length > 0 ? data?.menuImages : menuImgNopic}
               slidesPerView={1}
               spaceBetween={0}
               imageStyle={MenuImgPCStyle}
@@ -134,7 +150,7 @@ const StudioMenuDetail = () => {
         )}
 
         <div css={reservationFooterWrStyle}>
-          <div css={MenuInfoPCStyle} className="contentBox">
+          <div css={MenuInfoPCStyle} className="content-box">
             <div css={MenuDescStyle}>
               <h2>{data?.name}</h2>
               <p>{data?.description}</p>
@@ -187,21 +203,21 @@ const MenuInfoPCStyle = css`
   }
 `;
 
-const MenuCoverPCStyle = css`
+const MenuCoverStyle = css`
   ${mqMin(breakPoints.pc)} {
     position: sticky;
     left: 0;
-    top: 0;
+    top: 8rem;
     width: 50.9rem;
-    height: calc(100vh - 8rem);
+    height: 64rem;
     z-index: 10;
   }
 `;
 const MenuImgPCStyle = css`
   ${mqMin(breakPoints.pc)} {
     width: 100%;
-    height: calc(100vh - 8rem);
-    object-fit: cover;
+    height: 64rem;
+    object-fit: contain;
   }
 `;
 
@@ -234,9 +250,10 @@ const TabMenuStyle = css`
   display: flex;
   text-align: center;
   background-color: ${variables.colors.white};
-  width: 100vw;
+  width: calc(100% + calc(${variables.layoutPadding} * 2));
   margin-left: calc(-1 * ${variables.layoutPadding});
   padding: 0 ${variables.layoutPadding};
+  box-sizing: border-box;
 
   ${mqMin(breakPoints.pc)} {
     top: 0;
