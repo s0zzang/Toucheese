@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { DividerStyle, TypoCapSmM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
-import { breakPoints, mqMin } from '@styles/BreakPoint';
 
 // 대체 이미지 경로 (실제 프로젝트에 맞게 수정 필요)
 const PLACEHOLDER_IMAGE = '/img/img-replace-05.svg';
@@ -18,7 +17,6 @@ const StudioReviewImageList = ({
   pageId: string | undefined;
 }) => {
   const navigate = useNavigate();
-  const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
   // 이미지 데이터가 없는 경우 처리
   if (!samplePhotoList || samplePhotoList.length === 0) {

@@ -1,9 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
-import { useState, useRef, useEffect, useLayoutEffect } from 'react';
-import { useMediaQuery } from 'react-responsive';
-import { breakPoints } from '@styles/BreakPoint';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 interface DropdownProps {
   options: string[];
@@ -25,7 +23,6 @@ const Dropdown = ({ options, selectedOption, onSelect }: DropdownProps) => {
     left: '0',
   });
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);
