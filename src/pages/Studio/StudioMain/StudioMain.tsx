@@ -35,8 +35,6 @@ const StudioMain = () => {
     }
   }, [useParams]);
 
-  console.log(studioData);
-
   /** 스튜디오 소개 텍스트 길이 */
   const hasMore: boolean | undefined = studioData && studioData.description.length > 100;
 
