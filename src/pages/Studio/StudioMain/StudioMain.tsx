@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
+import { IStudioDetail } from 'types/types';
 
 const StudioMain = () => {
   const { _id } = useParams();
@@ -25,10 +26,14 @@ const StudioMain = () => {
   const handleClick = () => navigate(`/studio/${_id}/menu`);
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
-  const sessionData = sessionStorage.getItem('studio-storage');
-  const parsed = sessionData && JSON.parse(sessionData);
-  const studioData = parsed.state.studioDetail[`${_id}`];
-  console.log(studioData);
+  const [studioData, setStudioData] = useState<IStudioDetail>();
+
+  useEffect(() => {
+    const sessionData = sessionStorage.getItem('studio-storage');
+    if (sessionData) {
+      setStudioData(JSON.parse(sessionData).state.studioDetail[`${_id}`]);
+    }
+  }, [useParams]);
 
   /** 스튜디오 소개 텍스트 길이 */
   const hasMore: boolean | undefined = studioData && studioData.description.length > 100;
