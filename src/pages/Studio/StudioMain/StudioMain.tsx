@@ -10,7 +10,7 @@ import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdM, TypoBodyMdR, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
-import { Key, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
