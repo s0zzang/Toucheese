@@ -10,7 +10,7 @@ import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdM, TypoBodyMdR, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -33,10 +33,28 @@ const StudioMain = () => {
     if (sessionData) {
       setStudioData(JSON.parse(sessionData).state.studioDetail[`${_id}`]);
     }
-  }, [useParams]);
+  }, [_id]);
 
-  /** 스튜디오 소개 텍스트 길이 */
-  const hasMore: boolean | undefined = studioData && studioData.description.length > 100;
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const [hasMore, setHasMore] = useState(false);
+
+  const checkOverflow = () => {
+    // p태그 DOM 요소 참조
+    const el = descRef.current;
+    if (el) {
+      // -webkit-line-clamp의 높이와 본문의 길이 크기 비교
+      const isOverflowing = el.scrollHeight > el.clientHeight;
+      // 더보기 필요 여부를 저장
+      setHasMore(isOverflowing);
+    }
+  };
+
+  useEffect(() => {
+    checkOverflow(); // 초기 체크
+
+    window.addEventListener('resize', checkOverflow); // 창 크기 변경 시 재확인
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, [studioData?.description]);
 
   /** 스크롤 이벤트 핸들러 */
   const handleScroll = () => {
@@ -128,10 +146,8 @@ const StudioMain = () => {
         <meta property="og:url" content={`${window.location.href}`} />
         <meta property="og:description" content="스튜디오의 영업시간과 정보" />
       </Helmet>
-
       {/* 모바일 헤더 */}
       <Header title={scrollY ? studioData?.name : ''} fixed={true} scrollEvent={true} />
-
       <div css={boxLayoutStyle}>
         {/* 이미지 */}
         <div css={portfolioPreviewStyle} onClick={() => navigate(`/studio/${_id}/portfolio`)}>
@@ -163,18 +179,18 @@ const StudioMain = () => {
           <StudioNavigator _id={_id || ''} />
         </div>
       </div>
-
       {/* 홈 기본 정보  - 매장소개 */}
       <div css={descriptionStyle(isOpened, hasMore)}>
         <p className="descriptionTitle">매장 소개</p>
-        <p className="textDisplay">{`${studioData.description}`}</p>
+        <p ref={descRef} className="textDisplay">
+          {studioData?.description}
+        </p>
         {hasMore && (
           <span className="textMore" onClick={() => setIsOpened(!isOpened)}>
             {isOpened ? '접기' : '더보기'}
           </span>
         )}
       </div>
-
       {studioData && (
         <>
           {/* 홈 기본 정보  - 영업 정보 */}
