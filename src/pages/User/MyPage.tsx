@@ -13,6 +13,7 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { useGetReservationList } from '@hooks/useGetReservationList';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 
 const MyPage = () => {
   const { username, email } = getLocalStorageItem<IUser>('userState', defaultUserState);
@@ -20,14 +21,16 @@ const MyPage = () => {
 
   const { data } = useGetReservationList('RESERVED');
 
-  // 임시 로그아웃
-  const logout = useUserStore((state) => state.resetUser);
-  const navigate = useNavigate();
+  //현재 날짜와 예약 날짜 비교 함수
+  const filterReservations = data?.filter((item) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  const handleClick = () => {
-    logout();
-    navigate('/');
-  };
+    const reservationDate = new Date(item.date);
+    reservationDate.setHours(0, 0, 0, 0);
+
+    return reservationDate >= today;
+  });
 
   return (
     <>
@@ -50,11 +53,19 @@ const MyPage = () => {
           centeredSlides={true}
           spaceBetween={10}
           slidesPerView={1.08}
+          breakpoints={{
+            1024: {
+              slidesPerView: 3,
+              slidesPerGroup: 3,
+              centeredSlides: false,
+              spaceBetween: 16,
+            },
+          }}
           pagination={{
             clickable: true,
           }}
         >
-          {(data?.length ? data : [null]).map((item, i) => (
+          {(filterReservations?.length ? filterReservations : [null]).map((item, i) => (
             <SwiperSlide key={`${item ? item.reservationId : i}`}>
               <ReservationCard isMyPage={pathname.includes('mypage')} data={item} />
             </SwiperSlide>
@@ -73,10 +84,6 @@ const MyPage = () => {
           <Link to="/user/bookmarks">찜한 사진관</Link>
         </li>
       </ul>
-
-      <button type="button" onClick={handleClick}>
-        로그아웃
-      </button>
     </>
   );
 };
@@ -87,6 +94,9 @@ const CustomDividerStyle = css`
   &::after {
     width: 100%;
     max-width: calc(100vw + (${variables.layoutPadding} * 2));
+    ${mqMin(breakPoints.pc)} {
+      margin-top: 3rem;
+    }
   }
 `;
 
@@ -97,6 +107,10 @@ const MyInfoStyle = css`
   padding: 1.6rem 0;
   align-items: flex-start;
   margin-top: 5.4rem;
+  ${mqMin(breakPoints.pc)} {
+    padding: 4rem 2.4rem;
+    margin-top: 0;
+  }
 
   & a {
     ${TypoTitleMdSb}
@@ -130,6 +144,9 @@ const MyPageMenuStyle = css`
       display: flex;
       gap: 1.6rem;
       align-items: center;
+      ${mqMin(breakPoints.pc)} {
+        padding: 1.6rem 2.4rem;
+      }
 
       &::after {
         content: '';
@@ -170,9 +187,20 @@ const MyPageMenuStyle = css`
 const ReservationCardSwiperStyle = (data: boolean) => css`
   width: 100vw;
   margin-left: calc(-1 * ${variables.layoutPadding});
+  ${mqMin(breakPoints.pc)} {
+    width: 100%;
+    margin-left: 0;
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+  }
 
   .mypageSwiper .swiper-wrapper {
-    ${data && `padding-bottom: 1.6rem;`};
+    padding-bottom: 1rem;
+    ${data &&
+    `padding-bottom: 1.6rem;   
+    ${mqMin(breakPoints.pc)} {
+      padding-bottom: 2.4rem;
+    }`};
   }
 
   .mypageSwiper .swiper-pagination {
