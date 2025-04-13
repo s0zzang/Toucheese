@@ -42,10 +42,7 @@ const MyPage = () => {
 
       <div
         css={[
-          ReservationCardSwiperStyle(
-            Boolean(data && data?.length > 1),
-            Boolean(filterReservations?.length === 0),
-          ),
+          ReservationCardSwiperStyle(Boolean(data && data?.length > 1)),
           DividerStyle,
           CustomDividerStyle,
         ]}
@@ -186,7 +183,7 @@ const MyPageMenuStyle = css`
   }
 `;
 
-const ReservationCardSwiperStyle = (data: boolean, state: boolean) => css`
+const ReservationCardSwiperStyle = (data: boolean) => css`
   width: 100vw;
   margin-left: calc(-1 * ${variables.layoutPadding});
   ${mqMin(breakPoints.pc)} {
