@@ -83,11 +83,12 @@ const ReservationDetail = () => {
   useEffect(() => {
     if (!_id) return;
 
-    fetch(`${import.meta.env.VITE_TOUCHEESE_API}/reservation/check?reservationId=${_id}`, {
-      method: 'GET',
+    fetch(`${import.meta.env.VITE_TOUCHEESE_API}/reservation/check`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ reservationId: _id }),
     })
       .then(async (res) => {
         if (!res.ok) {
