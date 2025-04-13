@@ -2,11 +2,11 @@
 import Header from '@components/Header/Header';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
 import { css } from '@emotion/react';
-import { defaultUserState, useUserStore } from '@store/useUserStore';
+import { defaultUserState } from '@store/useUserStore';
 import { DividerStyle, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { IUser } from 'types/types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
@@ -42,7 +42,10 @@ const MyPage = () => {
 
       <div
         css={[
-          ReservationCardSwiperStyle(Boolean(data && data?.length > 1)),
+          ReservationCardSwiperStyle(
+            Boolean(data && data?.length > 1),
+            Boolean(filterReservations?.length === 0),
+          ),
           DividerStyle,
           CustomDividerStyle,
         ]}
@@ -55,7 +58,7 @@ const MyPage = () => {
           slidesPerView={1.08}
           breakpoints={{
             1024: {
-              slidesPerView: 3,
+              slidesPerView: filterReservations?.length ? 3 : 1,
               slidesPerGroup: 3,
               centeredSlides: false,
               spaceBetween: 16,
@@ -95,7 +98,7 @@ const CustomDividerStyle = css`
     width: 100%;
     max-width: calc(100vw + (${variables.layoutPadding} * 2));
     ${mqMin(breakPoints.pc)} {
-      margin-top: 3rem;
+      margin-top: 5rem;
     }
   }
 `;
@@ -106,7 +109,6 @@ const MyInfoStyle = css`
   gap: 0.4rem;
   padding: 1.6rem 0;
   align-items: flex-start;
-  margin-top: 5.4rem;
   ${mqMin(breakPoints.pc)} {
     padding: 4rem 2.4rem;
     margin-top: 0;
@@ -184,7 +186,7 @@ const MyPageMenuStyle = css`
   }
 `;
 
-const ReservationCardSwiperStyle = (data: boolean) => css`
+const ReservationCardSwiperStyle = (data: boolean, state: boolean) => css`
   width: 100vw;
   margin-left: calc(-1 * ${variables.layoutPadding});
   ${mqMin(breakPoints.pc)} {
@@ -195,12 +197,15 @@ const ReservationCardSwiperStyle = (data: boolean) => css`
   }
 
   .mypageSwiper .swiper-wrapper {
-    padding-bottom: 1rem;
+    ${mqMin(breakPoints.pc)} {
+      box-sizing: border-box;
+    }
+
     ${data &&
-    `padding-bottom: 1.6rem;   
+    ` padding-bottom: 1.6rem;   
     ${mqMin(breakPoints.pc)} {
       padding-bottom: 2.4rem;
-    }`};
+    };`}
   }
 
   .mypageSwiper .swiper-pagination {
