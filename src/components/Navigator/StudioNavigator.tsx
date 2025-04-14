@@ -22,7 +22,6 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
           <NavLinkStyle
             to={`/studio/${_id}/menu`}
             className={({ isActive }) => (isActive ? 'active' : '')}
-            end
           >
             <span css={TypoTitleXsM}>메뉴</span>
           </NavLinkStyle>
@@ -31,7 +30,6 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
           <NavLinkStyle
             to={`/studio/${_id}/portfolio`}
             className={({ isActive }) => (isActive ? 'active' : '')}
-            end
           >
             <span css={TypoTitleXsM}>포트폴리오</span>
           </NavLinkStyle>
@@ -40,7 +38,6 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
           <NavLinkStyle
             to={`/studio/${_id}/review`}
             className={({ isActive }) => (isActive ? 'active' : '')}
-            end
           >
             <span css={TypoTitleXsM}>리뷰</span>
           </NavLinkStyle>
