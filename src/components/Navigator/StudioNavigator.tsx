@@ -11,7 +11,6 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
   // URL에서 "/studio/{id}/menu"와 같은 경로 추출
   const pathSegments = location.pathname.split('/'); // 경로를 '/'로 분리
   const currentLocation = pathSegments[pathSegments.length - 1];
-  console.log();
 
   return (
     <NavStyle>
