@@ -3,9 +3,16 @@ import styled from '@emotion/styled';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 const StudioNavigator = ({ _id }: { _id: string }) => {
+  const location = useLocation();
+
+  // URL에서 "/studio/{id}/menu"와 같은 경로 추출
+  const pathSegments = location.pathname.split('/'); // 경로를 '/'로 분리
+  const currentLocation = pathSegments[pathSegments.length - 1];
+  console.log();
+
   return (
     <NavStyle>
       <UlStyle>
@@ -13,6 +20,7 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
           <NavLinkStyle
             to={`/studio/${_id}`}
             className={({ isActive }) => (isActive ? 'active' : '')}
+            replace
             end
           >
             <span css={TypoTitleXsM}>홈</span>
@@ -22,6 +30,7 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
           <NavLinkStyle
             to={`/studio/${_id}/menu`}
             className={({ isActive }) => (isActive ? 'active' : '')}
+            replace={isNaN(Number(currentLocation))}
           >
             <span css={TypoTitleXsM}>메뉴</span>
           </NavLinkStyle>
@@ -30,6 +39,8 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
           <NavLinkStyle
             to={`/studio/${_id}/portfolio`}
             className={({ isActive }) => (isActive ? 'active' : '')}
+            // 숫자로 바꿨을 때 NaN이면 replace
+            replace={isNaN(Number(currentLocation))}
           >
             <span css={TypoTitleXsM}>포트폴리오</span>
           </NavLinkStyle>
@@ -38,6 +49,7 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
           <NavLinkStyle
             to={`/studio/${_id}/review`}
             className={({ isActive }) => (isActive ? 'active' : '')}
+            replace={isNaN(Number(currentLocation))}
           >
             <span css={TypoTitleXsM}>리뷰</span>
           </NavLinkStyle>
