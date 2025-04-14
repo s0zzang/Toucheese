@@ -10,7 +10,9 @@ import {
 } from '@store/useSelectDateStore';
 import {
   DividerStyle,
+  PCLayout,
   TypoBodyMdM,
+  TypoBodyMdR,
   TypoBodySmM,
   TypoBodySmR,
   TypoTitleSmS,
@@ -25,6 +27,7 @@ import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 
 interface IReservationData {
   studioId: string;
@@ -34,13 +37,15 @@ interface IReservationData {
   additionalMenuNames: string[];
   additionalMenuPrices: string[];
   menuName: string;
-  menuImage: string;
+  menuImageUrl: string;
   note: string;
   status: 'WAITING' | 'RESERVED' | 'COMPLETED' | 'CANCELED';
   basicPrice: number;
   totalPrice: number;
   userName: string;
   userPhone: string;
+  paymentMethod: string;
+  date: string;
 }
 
 const ReservationDetail = () => {
@@ -50,35 +55,6 @@ const ReservationDetail = () => {
   const { data: studioDetail } = useGetStudioDetail(reservationData?.studioId || '');
   const locationModal = useModal(3);
   const cancelModal = useModal(4);
-
-  // 취소 가능 날짜 계산
-  const { date } = useSelectDateStore(); //임시
-
-  const calculateSevenDaysBefore = (date: string): string => {
-    const targetDate = new Date(date);
-    targetDate.setDate(targetDate.getDate() - 8);
-    return `${targetDate.getFullYear()}-${lessThan10Add0(targetDate.getMonth() + 1)}-${lessThan10Add0(targetDate.getDate())}`;
-  };
-
-  const getCancellationMessage = (date: string): string => {
-    const sevenDaysBefore = calculateSevenDaysBefore(date);
-    const isDeadlinePassed = isPastDeadline(sevenDaysBefore);
-
-    if (isDeadlinePassed) {
-      return '규정에 따라 예약취소가 불가합니다. 사진관에 문의해주세요.';
-    } else {
-      const formattedDate = changeformatDateForUi({ date: sevenDaysBefore, time: [] });
-      return `${formattedDate} 23:59까지 예약취소가 가능합니다.`;
-    }
-  };
-
-  const isPastDeadline = (date: string): boolean => {
-    const deadlineDate = new Date(`${date}T23:59:59`);
-    const now = new Date();
-    return now > deadlineDate;
-  };
-  const sevenDaysBefore = calculateSevenDaysBefore(date);
-  const isDisabled = isPastDeadline(sevenDaysBefore);
 
   useEffect(() => {
     if (!_id) return;
@@ -110,54 +86,113 @@ const ReservationDetail = () => {
     return null;
   }
 
+  const formattedStartTime = reservationData?.startTime.slice(0, 5);
+
+  const trimDate = reservationData?.date.includes('T')
+    ? reservationData.date.split('T')[0]
+    : reservationData?.date;
+
+  const days = ['일', '월', '화', '수', '목', '금', '토'];
+  const dayOfWeek = `(${days[new Date(trimDate).getDay()]})`;
+
+  // 취소 가능 날짜 계산
+  const calculateSevenDaysBefore = (trimDate: string): string => {
+    const targetDate = new Date(trimDate);
+    targetDate.setDate(targetDate.getDate() - 8);
+    return `${targetDate.getFullYear()}-${lessThan10Add0(targetDate.getMonth() + 1)}-${lessThan10Add0(targetDate.getDate())}`;
+  };
+
+  const getCancellationMessage = (trimDate: string): string => {
+    const sevenDaysBefore = calculateSevenDaysBefore(trimDate);
+    const isDeadlinePassed = isPastDeadline(sevenDaysBefore);
+
+    if (isDeadlinePassed) {
+      return '규정에 따라 예약취소가 불가합니다. 사진관에 문의해주세요.';
+    } else {
+      const formattedDate = changeformatDateForUi({ date: sevenDaysBefore, time: [] });
+      return `${formattedDate} 23:59까지 예약취소가 가능합니다.`;
+    }
+  };
+
+  const isPastDeadline = (trimDate: string): boolean => {
+    const deadlineDate = new Date(`${trimDate}T23:59:59`);
+    const now = new Date();
+    return now > deadlineDate;
+  };
+  const sevenDaysBefore = calculateSevenDaysBefore(trimDate);
+  const isDisabled = isPastDeadline(sevenDaysBefore);
+
   const {
     studioId,
     studioName,
-    startTime,
     additionalMenuNames,
     additionalMenuPrices,
     menuName,
-    menuImage,
+    menuImageUrl,
     note,
     status,
     basicPrice,
     totalPrice,
     userName,
     userPhone,
+    paymentMethod,
+    date,
   } = reservationData;
 
   return (
     <>
       <Header title="예약상세" />
+
       <div css={containerStyle}>
         <section css={DividerStyle}>
           <div css={studioInfoStyle}>
             <div css={studioInfoTextStyle}>
               <StatusChip state={status} />
               <h2 css={TypoTitleSmS}>{studioName}</h2>
-              <p css={TypoBodyMdM}>2025.01.08 {startTime}</p>
+              <p css={TypoBodyMdM}>
+                {trimDate}&nbsp;
+                {dayOfWeek}&nbsp;
+                {formattedStartTime}
+              </p>
             </div>
-            <img src={menuImage} alt="포트폴리오 이미지" css={imgStyle} />
+            <img src={menuImageUrl} alt="포트폴리오 이미지" css={imgStyle} />
           </div>
-          <div css={buttonContainerStyle}>
-            <a css={buttonStyle} href={`tel:${studioDetail?.phone}`}>
-              <img
-                src="/img/icon-call-gray800.svg"
-                alt="전화버튼아래화살표"
-                css={buttonIconStyle}
-              />
-              <p css={TypoBodySmR}>전화</p>
-            </a>
-            <button
-              css={buttonStyle}
-              onClick={() => {
-                locationModal.open();
-              }}
-            >
-              <img src="/img/icon-location.svg" alt="위치버튼아래화살표" css={buttonIconStyle} />
-              <p css={TypoBodySmR}>위치</p>
-            </button>
-            <LocationModal modalId={3} id="146" />
+          <div>
+            <div css={pcPhoneAddressContainerStyle}>
+              <div>
+                <a css={[buttonStyle, mobilePhoneTextStyle]} href={`tel:${studioDetail?.phone}`}>
+                  <img
+                    src="/img/icon-call-gray800.svg"
+                    alt="전화버튼아래화살표"
+                    css={buttonIconStyle}
+                  />
+                  <p css={TypoBodySmR}>전화</p>
+                </a>
+                <p css={[pcPhoneTextStyle, TypoBodyMdR]}>{studioDetail?.phone}</p>
+              </div>
+
+              <div css={addressLocationContainerStyle}>
+                <p css={pcAddressStyle}>
+                  {studioDetail?.addressSi}&nbsp;
+                  {studioDetail?.addressGu}&nbsp;
+                  {studioDetail?.address}
+                </p>
+                <button
+                  css={buttonStyle}
+                  onClick={() => {
+                    locationModal.open();
+                  }}
+                >
+                  <img
+                    src="/img/icon-location.svg"
+                    alt="위치버튼아래화살표"
+                    css={buttonIconStyle}
+                  />
+                  <p css={TypoBodySmR}>위치</p>
+                </button>
+              </div>
+            </div>
+            <LocationModal modalId={3} id={String(reservationData.studioId)} />
           </div>
         </section>
 
@@ -261,7 +296,7 @@ const ReservationDetail = () => {
 
             <div css={itemStyle}>
               <span>결제 수단</span>
-              <span>네이버페이</span>
+              <span>{paymentMethod}</span>
             </div>
           </div>
         </section>
@@ -282,7 +317,7 @@ const ReservationDetail = () => {
             </div>
           </section>
         )}
-        <div css={cancelStyle}>
+        <div css={[cancelStyle, TypoTitleXsM]}>
           {status === 'CANCELED' ? (
             <Button
               type="button"
@@ -296,7 +331,7 @@ const ReservationDetail = () => {
           ) : (
             <Button
               type="button"
-              text="취소하기"
+              text="예약 취소하기"
               size="large"
               variant="black"
               disabled={isDisabled}
@@ -317,6 +352,13 @@ const containerStyle = css`
   flex-direction: column;
   gap: 1rem;
   padding-top: ${variables.headerHeight};
+
+  ${mqMin(breakPoints.pc)} {
+    ${PCLayout}
+    padding: 0 32.8rem;
+    margin-top: 3rem;
+    margin-bottom: 9rem;
+  }
 `;
 
 const studioInfoStyle = css`
@@ -331,9 +373,48 @@ const studioInfoTextStyle = css`
   align-items: flex-start;
 `;
 
-const buttonContainerStyle = css`
-  display: flex;
-  gap: 1rem;
+const pcPhoneAddressContainerStyle = css`
+  ${mqMax(breakPoints.pc)} {
+    display: flex;
+    gap: 1rem;
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
+const mobilePhoneTextStyle = css`
+  ${mqMax(breakPoints.pc)} {
+    display: flex;
+  }
+  ${mqMin(breakPoints.pc)} {
+    display: none;
+  }
+`;
+
+const pcPhoneTextStyle = css`
+  ${mqMax(breakPoints.pc)} {
+    display: none;
+  }
+  ${mqMin(breakPoints.pc)} {
+    display: block;
+  }
+`;
+
+const addressLocationContainerStyle = css`
+  ${mqMin(breakPoints.pc)} {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+`;
+
+const pcAddressStyle = css`
+  ${mqMax(breakPoints.pc)} {
+    display: none;
+  }
 `;
 const buttonStyle = css`
   display: flex;
@@ -433,9 +514,14 @@ const cancelStyle = css`
   width: 100%;
   left: 0;
   z-index: 9;
+  ${mqMin(breakPoints.pc)} {
+    border: 0.1rem solid ${variables.colors.gray300};
+  }
 
   & > button {
-    ${TypoTitleXsM}
+    ${mqMin(breakPoints.pc)} {
+      width: calc(100% - 65.2rem);
+    }
   }
 `;
 export default ReservationDetail;
