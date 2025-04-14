@@ -60,7 +60,6 @@ const NavStyle = styled.nav`
   z-index: 5;
 
   ${mqMin(breakPoints.pc)} {
-    position: static;
     width: 36rem;
     margin: unset;
     padding: unset;
