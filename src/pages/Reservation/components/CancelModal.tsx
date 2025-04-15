@@ -12,38 +12,44 @@ import { useNavigate } from 'react-router-dom';
 const CancelModal = ({ reservationId, modalId }: { reservationId: string; modalId: number }) => {
   const cancelReasonModal = useModal(modalId);
   const cancelConfirmModal = useModal(2);
-  const [selectedReason, setSelectedReason] = useState(false);
+  const [selectedReason, setSelectedReason] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
   const navigate = useNavigate();
 
   const postCancel = async () => {
     const URL = `${import.meta.env.VITE_TOUCHEESE_API}/reservation/cancel/${reservationId}`;
+    const body = { reason: selectedReason, detailReason: textareaValue };
 
     const response = await fetch(URL, {
+      body: JSON.stringify(body),
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
     });
     if (!response.ok) throw new Error('Failed to fetch data');
-    console.log(textareaValue);
     return await response.json();
+  };
+
+  const successCancel = () => {
+    setSelectedReason('');
+    setTextareaValue('');
+    navigate(`/reservation/${reservationId}/canceled`);
   };
 
   const { mutate: cancelReservation } = useMutation({
     mutationFn: postCancel,
-    onSuccess: () => navigate(`/reservation/${reservationId}/canceled`),
+    onSuccess: () => successCancel(),
   });
 
   const cancelReasonButton = [
     {
       text: '예약 취소하기',
       variant: 'gray' as 'gray',
-      active: selectedReason,
+      active: !!selectedReason,
       disabled: !selectedReason,
       type: 'submit' as 'submit',
       event: () => {
-        setSelectedReason(false);
         cancelConfirmModal.open();
       },
     },
@@ -69,8 +75,6 @@ const CancelModal = ({ reservationId, modalId }: { reservationId: string; modalI
     },
   ];
 
-  const handleChangeReason = () => setSelectedReason(true);
-
   return (
     <>
       <Modal type="fullscreen" title="예약취소" buttons={cancelReasonButton} modalId={modalId}>
@@ -86,12 +90,18 @@ const CancelModal = ({ reservationId, modalId }: { reservationId: string; modalI
                   name="cancelReason"
                   id="scheduleChange"
                   value="일정 변경"
-                  onChange={() => handleChangeReason()}
+                  onChange={(e) => setSelectedReason(e.target.value)}
                 />
                 <label htmlFor="scheduleChange">일정 변경</label>
               </li>
               <li>
-                <input type="radio" name="cancelReason" id="rebook" value="다른 옵션으로 재예약" />
+                <input
+                  type="radio"
+                  name="cancelReason"
+                  id="rebook"
+                  value="다른 옵션으로 재예약"
+                  onChange={(e) => setSelectedReason(e.target.value)}
+                />
                 <label htmlFor="rebook">다른 옵션으로 재예약</label>
               </li>
               <li>
@@ -100,7 +110,10 @@ const CancelModal = ({ reservationId, modalId }: { reservationId: string; modalI
                   name="cancelReason"
                   id="useAnotherStudio"
                   value="다른 사진관 이용"
-                  onChange={() => handleChangeReason()}
+                  onChange={(e) => {
+                    console.log('xxx');
+                    setSelectedReason(e.target.value);
+                  }}
                 />
                 <label htmlFor="useAnotherStudio">다른 사진관 이용</label>
               </li>
@@ -110,7 +123,7 @@ const CancelModal = ({ reservationId, modalId }: { reservationId: string; modalI
                   name="cancelReason"
                   id="changeOfMind"
                   value="단순 변심"
-                  onChange={() => handleChangeReason()}
+                  onChange={(e) => setSelectedReason(e.target.value)}
                 />
                 <label htmlFor="changeOfMind">단순 변심</label>
               </li>
@@ -120,7 +133,7 @@ const CancelModal = ({ reservationId, modalId }: { reservationId: string; modalI
                   name="cancelReason"
                   id="etc"
                   value="기타"
-                  onChange={() => handleChangeReason()}
+                  onChange={(e) => setSelectedReason(e.target.value)}
                 />
                 <label htmlFor="etc">기타</label>
               </li>
