@@ -44,7 +44,8 @@ const CancelModal = ({ modalId }: { modalId: number }) => {
         cancelConfirmModal.close();
         cancelReasonModal.close();
       },
-      variant: 'gray' as 'gray',
+      variant: 'lightGray' as 'lightGray',
+      active: false,
     },
     {
       text: '예약 취소',
