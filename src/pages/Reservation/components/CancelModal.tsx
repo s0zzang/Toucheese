@@ -7,31 +7,43 @@ import useModal from '@hooks/useModal';
 import { TypoTitleSmS, TypoTitleXsR } from '@styles/Common';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const CancelModal = ({ modalId }: { modalId: number }) => {
+const CancelModal = ({ reservationId, modalId }: { reservationId: string; modalId: number }) => {
   const cancelReasonModal = useModal(modalId);
   const cancelConfirmModal = useModal(2);
-  const [textareaValue, setTextareaValue] = useState('');
   const [selectedReason, setSelectedReason] = useState(false);
+  const [textareaValue, setTextareaValue] = useState('');
+  const navigate = useNavigate();
 
-  const { mutate } = useMutation({
-    // mutationFn:  ,
-  });
+  const postCancel = async () => {
+    const URL = `${import.meta.env.VITE_TOUCHEESE_API}/reservation/cancel/${reservationId}`;
 
-  const handleCancel = () => {
-    console.log('취소 API 작업');
-    console.log(textareaValue); // 빌드 오류 방지
-    mutate();
+    const response = await fetch(URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) throw new Error('Failed to fetch data');
+    console.log(textareaValue);
+    return await response.json();
   };
+
+  const { mutate: cancelReservation } = useMutation({
+    mutationFn: postCancel,
+    onSuccess: () => navigate(`/reservation/${reservationId}/canceled`),
+  });
 
   const cancelReasonButton = [
     {
       text: '예약 취소하기',
-      variant: 'black' as 'black',
+      variant: 'gray' as 'gray',
       active: selectedReason,
       disabled: !selectedReason,
       type: 'submit' as 'submit',
       event: () => {
+        setSelectedReason(false);
         cancelConfirmModal.open();
       },
     },
@@ -50,7 +62,7 @@ const CancelModal = ({ modalId }: { modalId: number }) => {
     {
       text: '예약 취소',
       event: () => {
-        handleCancel();
+        cancelReservation();
         cancelConfirmModal.close();
         cancelReasonModal.close();
       },
