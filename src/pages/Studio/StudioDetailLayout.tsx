@@ -65,7 +65,7 @@ const StudioDetailLayout = () => {
                   }
                 `}
               >
-                <StudioNavigator _id={_id} />
+                <StudioNavigator _id={_id} type="pcOnly" />
               </div>
             )}
             <div
