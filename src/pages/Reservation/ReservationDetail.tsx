@@ -305,7 +305,7 @@ const ReservationDetail = () => {
             />
           )}
         </div>
-        <CancelModal modalId={4} />
+        <CancelModal reservationId={_id!} modalId={4} />
         <BottomSheet />
       </div>
     </>
