@@ -31,9 +31,7 @@ const fetchReservationList = async (
       throw new Error('Failed: Unknown error');
     }
 
-    const data = await response.json().catch(() => {
-      return null;
-    });
+    const data = await response.json();
 
     return data;
   } catch (error) {
