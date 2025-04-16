@@ -75,7 +75,6 @@ const StudioPortfolio = () => {
       )}
 
       <Header title={isSuccess ? portfolios.studioName : ''} fixed={true} />
-      <StudioNavigator _id={_id} />
 
       <div css={studioPaddingTop}>
         <h2 css={Hidden}>
@@ -149,5 +148,5 @@ const listStyle = css`
 `;
 
 const studioPaddingTop = css`
-  padding-top: ${variables.headerHeight};
+  padding-top: ${variables.headerBottomPadding};
 `;
