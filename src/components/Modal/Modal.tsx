@@ -160,6 +160,8 @@ const ModalStyle = styled.section<IModalStyle>`
       props.type === 'fullscreen' ? variables.colors.white : ' rgba(0, 0, 0, 0.85)'};
     padding: 0 ${variables.layoutPadding} 10rem;
     padding-top: ${(props) => props.type === 'dimmed' && variables.headerHeight};
+    padding-bottom: ${(props) => props.type === 'dimmed' && '3rem'};
+    overflow: ${(props) => props.type === 'dimmed' && 'visible'};
     display: flex;
     flex-direction: column;
     justify-content: ${(props) => (props.type !== 'fullscreen' ? '' : 'space-between')};
@@ -167,7 +169,7 @@ const ModalStyle = styled.section<IModalStyle>`
 
   ${mqMin(breakPoints.pc)} {
     &:last-of-type {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.5);
     }
   }
 `;
@@ -185,6 +187,13 @@ const ModalInner = styled.div<IModalStyle>`
       display: flex;
       flex-direction: column;
   `}
+  ${(props) =>
+    props.type === 'dimmed' &&
+    `
+      display: flex;
+      flex-direction: column;
+      overflow: auto auto;
+  `}
 
   ${mqMax(breakPoints.moMax)} {
     background: ${(props) => props.type !== 'dimmed' && '#fff'};
@@ -195,6 +204,7 @@ const ModalInner = styled.div<IModalStyle>`
 
   ${mqMin(breakPoints.pc)} {
     background: ${(props) => (props.type !== 'dimmed' ? '#fff' : variables.colors.black)};
+    overflow: ${(props) => props.type === 'dimmed' && 'visible'};
     position: absolute;
     top: 50%;
     left: 50%;
@@ -287,9 +297,9 @@ const ContentsStyle = styled.div<IContentStyle>`
   ${(props) => props.type === 'default' && `color: ${variables.colors.gray800}`}
 
   ${mqMin(breakPoints.pc)} {
-    overflow: hidden auto;
     padding: ${variables.layoutPadding};
     padding-top: ${(props) => props.type === 'dimmed' && 0};
+    overflow: ${(props) => (props.type === 'dimmed' ? 'auto auto' : 'hidden auto')};
   }
 `;
 
