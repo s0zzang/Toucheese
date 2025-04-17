@@ -5,7 +5,7 @@ import { TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { NavLink, useLocation } from 'react-router-dom';
 
-const StudioNavigator = ({ _id }: { _id: string }) => {
+const StudioNavigator = ({ _id, type = 'mobileOnly' }: { _id: string; type?: string }) => {
   const location = useLocation();
 
   // URL에서 "/studio/{id}/menu"와 같은 경로 추출
@@ -13,7 +13,7 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
   const currentLocation = pathSegments[pathSegments.length - 1];
 
   return (
-    <NavStyle>
+    <NavStyle type={type}>
       <UlStyle>
         <LiStyle>
           <NavLinkStyle
@@ -58,7 +58,7 @@ const StudioNavigator = ({ _id }: { _id: string }) => {
   );
 };
 
-const NavStyle = styled.nav`
+const NavStyle = styled.nav<{ type: string }>`
   position: sticky;
   top: 5.6rem;
   width: calc(100% + 3.2rem);
@@ -68,6 +68,7 @@ const NavStyle = styled.nav`
   z-index: 5;
 
   ${mqMin(breakPoints.pc)} {
+    display: ${({ type }) => type === 'mobileOnly' && 'none'};
     width: 36rem;
     margin: unset;
     padding: unset;
