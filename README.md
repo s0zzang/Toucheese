@@ -1,8 +1,8 @@
 # Toucheese-FE
 
-<img src='https://github-production-user-asset-6210df.s3.amazonaws.com/92114270/430810646-5601ae0a-b773-47c0-b81c-5804fdcb32ce.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250407%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250407T062321Z&X-Amz-Expires=300&X-Amz-Signature=5611e0bf049b1969c5e78bfd40ad608c1b427a0bc101e0b45b118b69025cd976&X-Amz-SignedHeaders=host' />
+<img src='https://github.com/user-attachments/assets/e004498a-a77b-4453-bbed-79d4de958884' />
 
-다양한 스튜디오를 한 곳에서 모아보고 비교하며 간편하게 예약할 수 있는 스튜디오 예약 플랫폼
+### 다양한 스튜디오를 한 곳에서 모아보고 비교하며 간편하게 예약할 수 있는 스튜디오 예약 플랫폼
 
 <br />
 
@@ -54,7 +54,7 @@ pw: 1q2w3e4r1!
   - 개인/팀 단위 스프린트 회고를 통해 작업 중 개선사항을 다음 스프린트에 반영
 - QA사항을 다음 스프린트에 즉각 반영하여 서비스 품질 향상 및 사용자 경험 개선
 
-내용은 괜찮은듯 넘어갈까요
+<br />
 
 ### 3. 이슈 관리 및 코드 리뷰
 
