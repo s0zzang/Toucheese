@@ -118,7 +118,10 @@ const StudioInfoTitleStyle = css`
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
-  padding-top: 2rem;
+
+  ${mqMin(breakPoints.pc)} {
+    padding-top: 2rem;
+  }
 
   & > div {
     min-width: 0;

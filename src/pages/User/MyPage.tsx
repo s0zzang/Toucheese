@@ -3,22 +3,27 @@ import Header from '@components/Header/Header';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
 import { css } from '@emotion/react';
 import { loadUserFromStorage, useUserStore } from '@store/useUserStore';
+import { useEffect } from 'react';
+import { useGetReservationList } from '@hooks/useGetReservationList';
+import useToast from '@hooks/useToast';
+import { defaultUserState } from '@store/useUserStore';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { DividerStyle, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
 import variables from '@styles/Variables';
-import { Link, useLocation } from 'react-router-dom';
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { getLocalStorageItem } from '@utils/getLocalStorageItem';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { useGetReservationList } from '@hooks/useGetReservationList';
-import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { useEffect } from 'react';
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { IUser } from 'types/types';
+
 
 const MyPage = () => {
   const { username, email } = useUserStore();
   const { pathname } = useLocation();
-  const { data } = useGetReservationList('RESERVED');
+
+
 
   // 암호화 된 유저 정보 복호화
   useEffect(() => {
@@ -26,6 +31,22 @@ const MyPage = () => {
   }, []);
 
   //현재 날짜와 예약 날짜 비교 함수
+
+  const openToast = useToast();
+  const navigate = useNavigate();
+
+  const { data, error } = useGetReservationList('RESERVED');
+
+  if (error) {
+    if (error.message === '403') {
+      openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
+      navigate('/user/auth');
+    } else {
+      throw new Error(error.message);
+    }
+  }
+
+  // 현재 날짜와 예약 날짜 비교 함수
   const filterReservations = data?.filter((item) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
