@@ -2,24 +2,28 @@
 import Header from '@components/Header/Header';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
 import { css } from '@emotion/react';
-import { defaultUserState } from '@store/useUserStore';
+import { loadUserFromStorage, useUserStore } from '@store/useUserStore';
 import { DividerStyle, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
 import variables from '@styles/Variables';
-import { getLocalStorageItem } from '@utils/getLocalStorageItem';
 import { Link, useLocation } from 'react-router-dom';
-import { IUser } from 'types/types';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { useGetReservationList } from '@hooks/useGetReservationList';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { useEffect } from 'react';
 
 const MyPage = () => {
-  const { username, email } = getLocalStorageItem<IUser>('userState', defaultUserState);
+  const { username, email } = useUserStore();
   const { pathname } = useLocation();
-
   const { data } = useGetReservationList('RESERVED');
+
+  // 암호화 된 유저 정보 복호화
+  useEffect(() => {
+    loadUserFromStorage();
+  }, []);
 
   //현재 날짜와 예약 날짜 비교 함수
   const filterReservations = data?.filter((item) => {
