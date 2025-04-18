@@ -65,6 +65,7 @@ export const pcFlexLayout = css`
       flex-grow: 1;
 
       .content-box {
+        min-height: calc(100vh - ${variables.headerHeight} - 8.1rem);
         padding: ${variables.headerBottomPadding} ${variables.layoutPadding};
       }
     }
