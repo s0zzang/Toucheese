@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
-import ReservationFooter, {
-  reservationFooterWrStyle,
-} from '@components/ReservationFooter/ReservationFooter';
+import ReservationFooter from '@components/ReservationFooter/ReservationFooter';
 import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { css } from '@emotion/react';
 import useToast from '@hooks/useToast';
@@ -149,7 +147,7 @@ const StudioMenuDetail = () => {
           </div>
         )}
 
-        <div css={reservationFooterWrStyle}>
+        <div>
           <div css={MenuInfoPCStyle} className="content-box">
             <div css={MenuDescStyle}>
               <h2>{data?.name}</h2>
