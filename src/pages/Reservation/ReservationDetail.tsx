@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
+import BottomSheet from '@components/BottomSheet/BottomSheet';
 import Button from '@components/Button/Button';
 import Header from '@components/Header/Header';
 import StatusChip from '@components/ReservationCard/StatusChip';
 import { css } from '@emotion/react';
-import {
-  changeformatDateForUi,
-  lessThan10Add0,
-  useSelectDateStore,
-} from '@store/useSelectDateStore';
+import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
+import useModal from '@hooks/useModal';
+import { changeformatDateForUi, lessThan10Add0 } from '@store/useSelectDateStore';
+import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import {
   DividerStyle,
   PCLayout,
@@ -20,14 +20,10 @@ import {
   TypoTitleXsSb,
 } from '@styles/Common';
 import variables from '@styles/Variables';
-import LocationModal from './components/LocationModal';
-import useModal from '@hooks/useModal';
-import CancelModal from './components/CancelModal';
-import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { useGetStudioDetail } from '@hooks/useGetStudioDetail';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
+import { useNavigate, useParams } from 'react-router-dom';
+import CancelModal from './components/CancelModal';
+import LocationModal from './components/LocationModal';
 
 interface IReservationData {
   studioId: string;

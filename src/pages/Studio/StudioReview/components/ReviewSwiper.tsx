@@ -4,7 +4,7 @@ import DimSwiper, { SlideImgBox } from '@components/Swiper/DimSwiper';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdM, TypoTitleSmS, TypoTitleXsM } from '@styles/Common';
+import { TypoBodyMdM, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { formatTimeAgo } from '@utils/formatTimeAgo';
 import { useState } from 'react';
