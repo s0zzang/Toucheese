@@ -1,15 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { Theme } from '@pages/User/BookmarkedStudios';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useState } from 'react';
 
-type Theme = '전체' | '몽환' | '내추럴' | '러블리' | '시크' | '청순' | '상큼';
-
-const BookmarkNavigator = () => {
-  const [activeTheme, setActiveTheme] = useState<Theme>('전체');
-  const themes: Theme[] = ['전체', '몽환', '내추럴', '러블리', '시크', '청순', '상큼'];
+const BookmarkNavigator = ({
+  theme,
+  handleTheme,
+}: {
+  theme: Theme;
+  handleTheme: (theme: Theme) => void;
+}) => {
+  const themeList: Theme[] = ['전체', '몽환', '내추럴', '러블리', '시크', '청순', '상큼'];
 
   return (
     <div
@@ -28,9 +31,9 @@ const BookmarkNavigator = () => {
           }
         `}
       >
-        {themes.map((theme) => (
+        {themeList.map((item) => (
           <li
-            key={theme}
+            key={item}
             css={css`
               flex-shrink: 0;
               flex-grow: 1;
@@ -41,11 +44,11 @@ const BookmarkNavigator = () => {
           >
             <button
               type="button"
-              className={theme === activeTheme ? 'isActive' : ''}
-              onClick={() => setActiveTheme(theme)}
+              className={item === theme ? 'isActive' : ''}
+              onClick={() => handleTheme(item)}
               css={buttonStyle}
             >
-              <span>{theme}</span>
+              <span>{item}</span>
             </button>
           </li>
         ))}
