@@ -656,7 +656,6 @@ const termsSectionStyle = css`
 
   ${mqMin(breakPoints.pc)} {
     padding-top: 3.4rem;
-    margin-bottom: -6rem;
   }
 
   &::before {
