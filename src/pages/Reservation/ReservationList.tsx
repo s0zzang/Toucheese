@@ -10,6 +10,7 @@ import useToast from '@hooks/useToast';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { bg100vw, PCLayout, TypoBodyMdM, TypoTitleMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
+import { sortReservations } from '@utils/sortReservations';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
@@ -108,19 +109,9 @@ const ReservationList = () => {
           <MyPageContentStyle>
             <h2 css={TypoBodyMdM}>총 {items.length}건</h2>
             <div className="content-box">
-              {items
-                .sort((a, b) => {
-                  // 1. date 비교
-                  if (a.date !== b.date) {
-                    return a.date < b.date ? -1 : 1; // date가 빠른 순으로 정렬
-                  }
-
-                  // 2. startTime 비교 (date가 같을 때)
-                  return a.startTime < b.startTime ? -1 : 1;
-                })
-                .map((item) => (
-                  <ReservationCard key={item.reservationId} data={item} />
-                ))}
+              {sortReservations<IResvItem>(items).map((item) => (
+                <ReservationCard key={item.reservationId} data={item} />
+              ))}
             </div>
           </MyPageContentStyle>
         ) : (
