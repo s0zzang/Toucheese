@@ -15,12 +15,17 @@ import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { IResvItem } from 'types/types';
 
-export interface ResStatus {
+interface ResStatus {
   statusKor: '이용 예정' | '이용 완료' | '예약 취소';
   statusEng: 'DEFAULT' | 'COMPLETED' | 'CANCELED';
 }
 
 const ReservationList = () => {
+  const STATUS: ResStatus[] = [
+    { statusKor: '이용 예정', statusEng: 'DEFAULT' },
+    { statusKor: '이용 완료', statusEng: 'COMPLETED' },
+    { statusKor: '예약 취소', statusEng: 'CANCELED' },
+  ];
   const [resStatus, setResStatus] = useState<ResStatus>({
     statusKor: '이용 예정',
     statusEng: 'DEFAULT',
@@ -76,21 +81,10 @@ const ReservationList = () => {
   }
 
   return (
-    <main
-      css={css`
-        ${PCLayout}
-        ${bg100vw(variables.colors.gray100)}
-      `}
-    >
-      <HeaderContainerStyle>
+    <main>
+      <MyPageHeaderContainerStyle>
         {isPc ? (
-          <div
-            css={css`
-              padding: 4rem 0 2rem;
-            `}
-          >
-            <h1 css={TypoTitleMdSb}>예약내역</h1>
-          </div>
+          <h1 className="pcLayout">예약내역</h1>
         ) : (
           <Header title="예약내역" backTo="/user/mypage" />
         )}
@@ -101,28 +95,19 @@ const ReservationList = () => {
             }
           `}
         >
-          <ReservationNavigator status={resStatus} setStatus={setResStatus} />
+          <ReservationNavigator<ResStatus>
+            STATUS={STATUS}
+            status={resStatus}
+            setStatus={setResStatus}
+          />
         </div>
-      </HeaderContainerStyle>
+      </MyPageHeaderContainerStyle>
 
-      <SectionStyle>
+      <MyPageSectionStyle>
         {items.length ? (
-          <ContentStyle>
-            <p css={TypoBodyMdM}>총 {items.length}건</p>
-            <div
-              css={css`
-                margin-top: 0.8rem;
-                display: flex;
-                flex-direction: column;
-                gap: 0.8rem;
-
-                ${mqMin(breakPoints.pc)} {
-                  margin-top: 1.6rem;
-                  display: grid;
-                  grid-template-columns: repeat(3, minmax(0, 1fr));
-                }
-              `}
-            >
+          <MyPageContentStyle>
+            <h2 css={TypoBodyMdM}>총 {items.length}건</h2>
+            <div className="content-box">
               {items
                 .sort((a, b) => {
                   // 1. date 비교
@@ -137,32 +122,34 @@ const ReservationList = () => {
                   <ReservationCard key={item.reservationId} data={item} />
                 ))}
             </div>
-          </ContentStyle>
+          </MyPageContentStyle>
         ) : (
           <NoResult message={emptyMessage} bg="gray100" />
         )}
-      </SectionStyle>
+      </MyPageSectionStyle>
     </main>
   );
 };
 
-const HeaderContainerStyle = styled.div`
+export const MyPageHeaderContainerStyle = styled.div`
   background-color: ${variables.colors.white};
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 9;
+
+  .pcLayout {
+    ${TypoTitleMdSb}
+    padding: 4rem 0 2rem;
+  }
 
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
     ${bg100vw(variables.colors.white)}
     padding: 0 ${variables.layoutPadding};
-    box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
     position: fixed;
     top: 8rem;
-    left: 0;
-    right: 0;
-    z-index: 9;
 
     &::before {
       box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
@@ -170,12 +157,11 @@ const HeaderContainerStyle = styled.div`
   }
 `;
 
-const SectionStyle = styled.section`
+export const MyPageSectionStyle = styled.section`
+  ${bg100vw(variables.colors.gray100)}
   margin: 10rem calc(-1 * ${variables.layoutPadding}) calc(-1 * (4rem + ${variables.headerHeight}));
-  background-color: ${variables.colors.gray100};
   padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
   min-height: calc(100vh - 10rem);
-  overflow-y: auto;
 
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
@@ -188,8 +174,21 @@ const SectionStyle = styled.section`
   }
 `;
 
-const ContentStyle = styled.div`
+export const MyPageContentStyle = styled.div`
   padding-top: 2.4rem;
+
+  .content-box {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    ${mqMin(breakPoints.pc)} {
+      margin-top: 1.6rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    }
+  }
 `;
 
 export default ReservationList;
