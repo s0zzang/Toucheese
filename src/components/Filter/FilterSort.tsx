@@ -78,24 +78,16 @@ const FilterSort = ({ params }: FilterProps) => {
           </DropdownList>
         </DropdownWrapper>
       )}
-
-      <FilterDividerStyle />
     </>
   );
 };
 
 export default FilterSort;
 
-const FilterDividerStyle = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${variables.colors.gray300};
-  margin: 2rem 0;
-`;
-
 const buttonpropstyle = css`
   justify-content: start;
   ${TypoBodyMdR}
+  position: relative;
 
   & > div > img {
     position: absolute;

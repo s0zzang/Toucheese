@@ -137,7 +137,7 @@ const containerStyle = css`
     border: none;
 
     &:focus {
-      outline: 1px solid ${variables.colors.gray500};
+      border-color: ${variables.colors.gray500};
     }
 
     ${mqMin(breakPoints.pc)} {

@@ -180,7 +180,7 @@ const inputStyle = (error?: string, isValid?: boolean, borderRadius?: string) =>
     ${error && `animation: shake 0.3s ease-in-out 2;`}
   }
   &:focus {
-    outline: 0.8px solid ${error ? 'red' : isValid ? 'green' : variables.colors.primary};
+    border-color: ${error ? 'red' : isValid ? 'green' : variables.colors.primary};
   }
 
   @keyframes shake {

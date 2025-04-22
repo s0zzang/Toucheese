@@ -201,9 +201,7 @@ const Home = () => {
         >
           {/* PC 필터 영역 */}
           <FilterSectionStyle className="pc" isFixed={isFixed}>
-            <div>
-              <PCFilterWrapper />
-            </div>
+            <PCFilterWrapper />
           </FilterSectionStyle>
           <ListStyle>
             <StudioList mode="filter" searchParams={searchParams} />
@@ -309,25 +307,11 @@ const FilterBoxStyle = styled.div`
 
 const FilterSectionStyle = styled.div<IFixedProps>`
   flex-shrink: 0;
-  padding-top: 3rem;
-  padding-bottom: 8.2rem;
   position: sticky;
   top: 13.8rem;
   left: 0;
-  width: 19.2rem;
+  width: 27.4rem;
   height: calc(100vh - 13.8rem);
-
-  overflow-y: auto;
-  /* 크롬, 사파리,*/
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* 엣지 */
-  -ms-overflow-style: none;
-
-  /* 파이어폭스 */
-  scrollbar-width: none;
 `;
 
 const ListStyle = styled.div`
