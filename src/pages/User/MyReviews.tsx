@@ -5,6 +5,7 @@ import ReservationNavigator from '@components/Navigator/ReservationNavigator';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
 import { css } from '@emotion/react';
 import { useGetReservationList } from '@hooks/useGetReservationList';
+import useToast from '@hooks/useToast';
 import {
   MyPageContentStyle,
   MyPageHeaderContainerStyle,
@@ -12,8 +13,11 @@ import {
 } from '@pages/Reservation/ReservationList';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdM } from '@styles/Common';
+import { sortReservations } from '@utils/sortReservations';
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
+import { IResvItem } from 'types/types';
 
 interface MyReviewStatus {
   statusKor: '리뷰 남기기' | '나의 리뷰';
@@ -25,13 +29,21 @@ const MyReviews = () => {
     { statusKor: '리뷰 남기기', statusEng: 'COMPLETED' },
     { statusKor: '나의 리뷰', statusEng: 'COMPLETED' },
   ];
-  const [resStatus, setResStatus] = useState<MyReviewStatus>({
-    statusKor: '리뷰 남기기',
-    statusEng: 'COMPLETED',
-  });
+  const [resStatus, setResStatus] = useState<MyReviewStatus>(STATUS[0]);
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
-  const { data } = useGetReservationList('COMPLETED');
+  const { data, error } = useGetReservationList('COMPLETED');
+  const openToast = useToast();
+  const navigate = useNavigate();
+
+  if (error) {
+    if (error.message === '403') {
+      openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
+      navigate('/user/auth');
+    } else {
+      throw new Error(error.message);
+    }
+  }
 
   return (
     <main>
@@ -62,19 +74,9 @@ const MyReviews = () => {
           <MyPageContentStyle>
             <h2 css={TypoBodyMdM}>총 {data.length}건</h2>
             <div className="content-box">
-              {data
-                .sort((a, b) => {
-                  // 1. date 비교
-                  if (a.date !== b.date) {
-                    return a.date < b.date ? -1 : 1; // date가 빠른 순으로 정렬
-                  }
-
-                  // 2. startTime 비교 (date가 같을 때)
-                  return a.startTime < b.startTime ? -1 : 1;
-                })
-                .map((item) => (
-                  <ReservationCard key={item.reservationId} data={item} />
-                ))}
+              {sortReservations<IResvItem>(data).map((item) => (
+                <ReservationCard key={item.reservationId} data={item} />
+              ))}
             </div>
           </MyPageContentStyle>
         )}
