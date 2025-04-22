@@ -3,21 +3,33 @@ import Header from '@components/Header/Header';
 import BookmarkNavigator from '@components/Navigator/BookmarkNavigator';
 import { css } from '@emotion/react';
 import useGetBookmarkList from '@hooks/useGetBookmarkList';
+import useToast from '@hooks/useToast';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { bg100vw, PCLayout, TypoTitleMdSb } from '@styles/Common';
+import { bg100vw, Hidden, PCLayout, TypoTitleMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
+import BookmarkedStudioList from './components/BookmarkedStudioList';
 
 export type Theme = '전체' | '몽환' | '내추럴' | '러블리' | '시크' | '청순' | '상큼';
 
 const BookmarkedStudios = () => {
   const [activeTheme, setActiveTheme] = useState<Theme>('전체');
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
+  const openToast = useToast();
+  const navigate = useNavigate();
 
-  const { data } = useGetBookmarkList(activeTheme);
+  const { data, error, refetch } = useGetBookmarkList(activeTheme);
 
-  console.log(data);
+  if (error) {
+    if (error.message === '403') {
+      openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
+      navigate('/user/auth');
+    } else {
+      throw new Error(error.message);
+    }
+  }
 
   // 선택한 테마의 탭 UI를 활성화하고, 북마크 목록을 갱신
   const handleTheme = (theme: Theme) => {
@@ -48,16 +60,16 @@ const BookmarkedStudios = () => {
       </section>
       <section
         css={css`
-          box-shadow: inset 0 0 10px red;
           margin-top: 10rem;
-          padding: 1.8rem 0;
+          padding-bottom: 3rem;
 
           ${mqMin(breakPoints.pc)} {
-            margin-top: unset;
+            margin-top: 13.85rem;
           }
         `}
       >
-        {activeTheme} 스튜디오 목록
+        <h2 css={Hidden}>총 {data ? data.length : 0}건</h2>
+        {data && <BookmarkedStudioList data={data} handleUnbookmark={refetch} />}
       </section>
     </main>
   );
@@ -74,9 +86,15 @@ const headerStyle = css`
   right: 0;
 
   ${mqMin(breakPoints.pc)} {
-    padding-top: unset;
+    ${PCLayout}
     ${bg100vw(variables.colors.white)}
+    padding: 0 ${variables.layoutPadding};
     box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
+    position: fixed;
+    top: 8rem;
+    left: 0;
+    right: 0;
+    z-index: 9;
 
     &::before {
       box-shadow: inset 0 -0.1rem ${variables.colors.gray300};

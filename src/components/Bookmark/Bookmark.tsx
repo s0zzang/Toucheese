@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import useBookmark from '@hooks/useBookmark';
 import useToast from '@hooks/useToast';
 import { defaultUserState } from '@store/useUserStore';
@@ -20,10 +20,14 @@ const Bookmark = ({
   id,
   count: initialCount,
   isBookmarked: initialBookmark,
+  type = 'default',
+  handleUnbookmark,
 }: {
   id: number;
   count: number;
   isBookmarked: boolean;
+  type: 'default' | 'bookmark';
+  handleUnbookmark?: () => void;
 }) => {
   const [bookmark, setBookmark] = useState<IBookmarkState>({
     isActive: initialBookmark,
@@ -45,6 +49,10 @@ const Bookmark = ({
         isActive: !state.isActive,
         count: state.isActive ? state.count - 1 : state.count + 1,
       }));
+
+      if (handleUnbookmark) {
+        handleUnbookmark();
+      }
     }
     // 로그인 되지 않은 상태면 로그인 페이지로 이동
     else {
@@ -54,7 +62,7 @@ const Bookmark = ({
   };
 
   return (
-    <BookmarkStyle>
+    <div css={BookmarkStyle({ type })}>
       <button type="button" onClick={handleClick}>
         <img
           src={`/img/icon-bookmark-${bookmark.isActive ? 'active' : 'inactive'}.svg`}
@@ -63,13 +71,13 @@ const Bookmark = ({
         <span css={Hidden}>북마크 {`${bookmark.isActive ? '해제' : '등록'}하기`}</span>
       </button>
       <p>{bookmark.count}</p>
-    </BookmarkStyle>
+    </div>
   );
 };
 
 export default Bookmark;
 
-const BookmarkStyle = styled.div`
+const BookmarkStyle = ({ type }: { type: 'default' | 'bookmark' }) => css`
   & > button {
     width: 2.4rem;
     height: 2.4rem;
@@ -82,6 +90,17 @@ const BookmarkStyle = styled.div`
       width: 2rem;
       height: 1.8rem;
     }
+
+    ${mqMin(breakPoints.pc)} {
+      width: ${type === 'bookmark' ? '3.6rem' : '2.4rem'};
+      height: ${type === 'bookmark' ? '3.6rem' : '2.4rem'};
+      margin-bottom: ${type === 'bookmark' ? 'unset' : '0.2rem'};
+
+      & > img {
+        width: ${type === 'bookmark' ? '3rem' : '2rem'};
+        height: ${type === 'bookmark' ? '2.6rem' : '1.8rem'};
+      }
+    }
   }
 
   & > p {
@@ -90,10 +109,8 @@ const BookmarkStyle = styled.div`
     text-align: center;
 
     ${TypoCapXsR}
-  }
 
-  ${mqMin(breakPoints.pc)} {
-    & > p {
+    ${mqMin(breakPoints.pc)} {
       ${TypoBodySmR}
     }
   }
