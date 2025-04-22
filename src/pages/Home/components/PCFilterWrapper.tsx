@@ -173,7 +173,7 @@ const ButtonWrapperStyle = styled.div`
 `;
 
 const FilterDividerStyle = styled.div`
-  border-top: 0.1rem solid ${variables.colors.gray300};
+  border-top: 1px solid ${variables.colors.gray300};
   margin: 2rem 0;
 `;
 
@@ -207,7 +207,7 @@ const ChipStyle = styled.div`
   height: 3.2rem;
   border: 1px solid;
   border-color: ${variables.colors.gray400};
-  border-radius: 0.8rem;
+  border-radius: ${variables.borderRadius};
 
   span {
     color: ${variables.colors.gray900};

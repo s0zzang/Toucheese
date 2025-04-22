@@ -88,7 +88,7 @@ export default FilterSort;
 
 const FilterDividerStyle = styled.div`
   width: 100%;
-  height: 0.1rem;
+  height: 1px;
   background-color: ${variables.colors.gray300};
   margin: 2rem 0;
 `;
@@ -112,11 +112,12 @@ const DropdownWrapper = styled.div`
 
 const DropdownList = styled.ul`
   position: absolute;
+  top: -1px;
   width: 100%;
   background: white;
-  border: 0.1rem solid ${variables.colors.gray400};
+  border: 1px solid ${variables.colors.gray400};
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 0.6rem;
+  border-radius: ${variables.borderRadius};
   z-index: 10;
 `;
 

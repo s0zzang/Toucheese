@@ -76,10 +76,10 @@ const headerStyle = css`
   ${mqMin(breakPoints.pc)} {
     padding-top: unset;
     ${bg100vw(variables.colors.white)}
-    box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
+    box-shadow: inset 0 -1px ${variables.colors.gray300};
 
     &::before {
-      box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
+      box-shadow: inset 0 -1px ${variables.colors.gray300};
     }
   }
 `;

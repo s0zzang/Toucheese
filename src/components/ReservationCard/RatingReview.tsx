@@ -49,7 +49,7 @@ const CardRatingStar = css`
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  border-top: 0.1rem solid ${variables.colors.gray300};
+  border-top: 1px solid ${variables.colors.gray300};
   padding-top: 1rem;
 
   & p {

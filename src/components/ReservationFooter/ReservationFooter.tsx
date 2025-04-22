@@ -52,7 +52,7 @@ const FixedBtnBoxStyle = css`
   bottom: 0;
   background-color: ${variables.colors.white};
   padding: 1.6rem;
-  border-top: 0.1rem solid ${variables.colors.gray300};
+  border-top: 1px solid ${variables.colors.gray300};
   z-index: 300;
 
   .totalPrice {

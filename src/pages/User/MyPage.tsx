@@ -18,12 +18,9 @@ import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { IUser } from 'types/types';
 
-
 const MyPage = () => {
   const { username, email } = useUserStore();
   const { pathname } = useLocation();
-
-
 
   // 암호화 된 유저 정보 복호화
   useEffect(() => {
@@ -164,7 +161,7 @@ const MyPageMenuStyle = css`
     & a {
       ${TypoTitleXsR};
       padding: 1.6rem 0;
-      border-bottom: 0.1rem solid ${variables.colors.gray300};
+      border-bottom: 1px solid ${variables.colors.gray300};
       display: flex;
       gap: 1.6rem;
       align-items: center;

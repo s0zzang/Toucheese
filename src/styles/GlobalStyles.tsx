@@ -23,11 +23,13 @@ const GlobalStyles = css`
     --layoutPadding: 1.6rem;
     --headerHeight: 5.6rem;
     --maxWidth: 100%;
+    --borderRadius: 0.6rem;
 
     @media (min-width: ${breakPoints.pc}) {
       --layoutPadding: 2.4rem;
       --headerHeight: 8rem;
       --maxWidth: 1280px;
+      --borderRadius: 0.8rem;
 
       overflow-x: clip;
       max-width: calc(var(--maxWidth) + calc(var(--layoutPadding) * 2));
@@ -303,7 +305,7 @@ const GlobalStyles = css`
   textarea {
     position: relative;
     border: 1px solid ${variables.colors.gray400};
-    border-radius: 0.6rem;
+    border-radius: ${variables.borderRadius};
     padding: 1rem 1.2rem 2.6rem;
     min-height: 7.6rem;
     ${TypoBodyMdR}

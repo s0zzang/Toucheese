@@ -24,7 +24,7 @@ const BookmarkNavigator = ({
         css={css`
           width: 100%;
           display: flex;
-          box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
+          box-shadow: inset 0 -1px ${variables.colors.gray300};
 
           ${mqMin(breakPoints.pc)} {
             width: 47.8rem;

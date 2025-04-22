@@ -79,11 +79,11 @@ const CardStyle = (isMyPage: boolean | undefined) => css`
   display: flex;
   flex-direction: column;
   background-color: ${variables.colors.white};
-  border-radius: 0.6rem;
+  border-radius: ${variables.borderRadius};
   gap: 0.8rem;
   ${isMyPage
-    ? `border: 0.1rem solid ${variables.colors.primary600}`
-    : `border: 0.1rem solid ${variables.colors.gray400}`};
+    ? `border: 1px solid ${variables.colors.primary600}`
+    : `border: 1px solid ${variables.colors.gray400}`};
   padding: 1.4rem;
 `;
 
@@ -134,7 +134,7 @@ const AlarmStyle = css`
   gap: 0.4rem;
   align-items: center;
   padding-bottom: 0.8rem;
-  border-bottom: 0.1rem solid ${variables.colors.gray300};
+  border-bottom: 1px solid ${variables.colors.gray300};
 
   & p {
     ${TypoBodyMdM}
@@ -152,8 +152,8 @@ const EmptyCardStyle = css`
   align-items: center;
   justify-content: center;
   gap: 1.6rem;
-  border-radius: 0.6rem;
-  border: 0.1rem solid ${variables.colors.gray400};
+  border-radius: ${variables.borderRadius};
+  border: 1px solid ${variables.colors.gray400};
   min-height: 14rem;
   text-align: center;
 
@@ -166,9 +166,9 @@ const EmptyCardStyle = css`
     display: flex;
     gap: 0.4rem;
     padding: 0.8rem 1rem;
-    border-radius: 0.6rem;
+    border-radius: ${variables.borderRadius};
     background-color: ${variables.colors.primary50};
-    border: 0.1rem solid ${variables.colors.primary600};
+    border: 1px solid ${variables.colors.primary600};
 
     &::before {
       content: '';

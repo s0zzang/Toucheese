@@ -161,7 +161,7 @@ const OptionItem = styled.li<{ isSelected: boolean }>`
   padding: 0.8rem 1rem;
   cursor: pointer;
   background-color: ${({ isSelected }) => (isSelected ? variables.colors.gray100 : '')};
-  border-radius: 0.8rem;
+  border-radius: ${variables.borderRadius};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

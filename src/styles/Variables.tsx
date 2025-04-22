@@ -41,7 +41,7 @@ const variables = {
 
   layoutPadding: 'var(--layoutPadding)',
   TransitionDuration: '0.3s',
-  borderRadius: '.8rem',
+  borderRadius: 'var(--borderRadius)',
   borderRadiusLarge: '2rem',
   headerHeight: 'var(--headerHeight)',
   headerBottomPadding: '3rem',

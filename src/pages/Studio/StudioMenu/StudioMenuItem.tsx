@@ -49,7 +49,7 @@ const MenuItemWrapperStyle = css`
   gap: 1.4rem;
   padding: 1.4rem 0;
   box-sizing: border-box;
-  border-bottom: 0.1rem solid ${variables.colors.gray300};
+  border-bottom: 1px solid ${variables.colors.gray300};
   cursor: pointer;
 
   ${mqMin(breakPoints.pc)} {

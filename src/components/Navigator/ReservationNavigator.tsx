@@ -68,7 +68,7 @@ const LiStyle = styled.li<{ length: number }>`
     content: '';
     position: absolute;
     background-color: ${variables.colors.gray300};
-    height: 0.1rem;
+    height: 1px;
     left: 0;
     right: 0;
     bottom: 0;

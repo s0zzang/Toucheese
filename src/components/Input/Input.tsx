@@ -170,7 +170,7 @@ const inputStyle = (error?: string, isValid?: boolean, borderRadius?: string) =>
     height: 5.6rem;
     box-sizing: border-box;
     padding: 1rem 6rem 1rem 1rem;
-    border: 1px solid ${error ? 'red' : isValid ? 'green' : variables.colors.gray300};
+    border: 1px solid ${error ? 'red' : isValid ? 'green' : variables.colors.gray400};
     border-radius: ${borderRadius};
     background-color: ${variables.colors.white};
     font-size: 1.6rem;
@@ -256,8 +256,8 @@ const containerStyle = css`
 const buttonUnActive = css`
   height: 5.6rem;
   background-color: ${variables.colors.gray200};
-  border: solid 0.1rem ${variables.colors.gray400};
-  border-radius: 0.6rem;
+  border: solid 1px ${variables.colors.gray400};
+  border-radius: ${variables.borderRadius};
   padding: 0 1.6rem 0 1.6rem;
   color: ${variables.colors.gray600};
   ${TypoBodySmM}
@@ -267,8 +267,8 @@ const buttonUnActive = css`
 const buttonActive = css`
   height: 5.6rem;
   background-color: ${variables.colors.primary50};
-  border: solid 0.1rem ${variables.colors.primary500};
-  border-radius: 0.6rem;
+  border: solid 1px ${variables.colors.primary500};
+  border-radius: ${variables.borderRadius};
   padding: 0 1.6rem 0 1.6rem;
   color: ${variables.colors.gray900};
   ${TypoBodySmM}
