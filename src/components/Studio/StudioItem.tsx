@@ -11,6 +11,17 @@ import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { IMenus, IPortfolio, IStudioItem } from 'types/types';
 
+// 최저가 계산 함수
+export const getMinPrice = (menu: IMenus[]) => {
+  let minPrice = 1e9;
+
+  menu.forEach((item) => {
+    if (item.price < minPrice) minPrice = item.price;
+  });
+
+  return minPrice.toLocaleString('ko-KR');
+};
+
 const StudioItem = ({
   item,
   isFirst,
@@ -26,17 +37,6 @@ const StudioItem = ({
   // 스튜디오 클릭 시 navigate
   const handleClick = () => {
     navigate(`/studio/${item.id}`);
-  };
-
-  // 최저가 계산 함수
-  const getMinPrice = (menu: IMenus[]) => {
-    let minPrice = 1e9;
-
-    menu.forEach((item) => {
-      if (item.price < minPrice) minPrice = item.price;
-    });
-
-    return minPrice.toLocaleString('ko-KR');
   };
 
   // 이미지 5개 불러오기
@@ -123,7 +123,12 @@ const StudioItem = ({
           </InfoContainerStyle>
         </ItemInfoStyle>
         <BookmarkStyle>
-          <Bookmark id={item.id} count={item.bookmark_count} isBookmarked={item.bookmark} />
+          <Bookmark
+            id={item.id}
+            count={item.bookmark_count}
+            isBookmarked={item.bookmark}
+            type="default"
+          />
         </BookmarkStyle>
       </ItemContentStyle>
     </DivStyle>

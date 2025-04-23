@@ -1,9 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
+import { css, SerializedStyles } from '@emotion/react';
 import { TypoCapXsR } from '@styles/Common';
 import variables from '@styles/Variables';
 
-const RatingReview = ({ ratingValue = 0 }) => {
+interface RatingReviewProps {
+  ratingValue?: number;
+  customStyle?: SerializedStyles;
+}
+
+const RatingReview = ({ ratingValue = 0, customStyle }: RatingReviewProps) => {
   let ratingComment = '';
 
   switch (ratingValue) {
@@ -28,7 +33,7 @@ const RatingReview = ({ ratingValue = 0 }) => {
   }
 
   return (
-    <div css={CardRatingStar}>
+    <div css={[CardRatingStar, customStyle]}>
       <p>{ratingComment}</p>
       <div className="ratingBox">
         {Array.from({ length: 5 }).map((_, i) => (
