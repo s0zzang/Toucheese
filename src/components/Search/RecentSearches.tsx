@@ -74,7 +74,7 @@ export default RecentSearches;
 
 const containerStyle = css`
   padding: 0.5rem 0 2rem;
-  border-bottom: 0.1rem solid ${variables.colors.gray200};
+  border-bottom: 1px solid ${variables.colors.gray200};
 `;
 
 const titleSectionStyle = css`
@@ -109,15 +109,15 @@ const searchListStyle = css`
 const searchItemStyle = css`
   margin-right: 1rem;
   padding: 0.4rem 0.5rem 0.4rem 0.9rem;
-  border: 0.1rem solid ${variables.colors.gray400};
-  border-radius: 0.6rem;
+  border: 1px solid ${variables.colors.gray400};
+  border-radius: ${variables.borderRadius};
   display: flex;
   align-items: center;
   height: 3rem;
   gap: 0.2rem;
 
   span {
-    margin-top: 0.1rem;
+    margin-top: 1px;
   }
 
   ${mqMin(breakPoints.pc)} {

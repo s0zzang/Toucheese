@@ -137,7 +137,7 @@ const StudioItem = ({
 
 const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
   padding: 1.6rem 0;
-  border-bottom: 0.1rem solid ${variables.colors.gray300};
+  border-bottom: 1px solid ${variables.colors.gray300};
 
   ${({ isLast }) =>
     isLast &&

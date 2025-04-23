@@ -380,7 +380,7 @@ export const reservationTitleAlignStyle = css`
 
 export const reservationBoxStyle = css`
   border: 1px solid ${variables.colors.gray400};
-  border-radius: 0.6rem;
+  border-radius: ${variables.borderRadius};
   padding: 1rem 1.4rem;
 
   ${mqMin(breakPoints.pc)} {
@@ -390,7 +390,7 @@ export const reservationBoxStyle = css`
 
 export const reservationHrStyle = css`
   border: none;
-  border-bottom: 0.1rem solid ${variables.colors.gray400};
+  border-bottom: 1px solid ${variables.colors.gray400};
   margin: 1rem 0;
 
   ${mqMin(breakPoints.pc)} {
@@ -444,9 +444,9 @@ const labelStyle = css`
   line-height: 1.2rem;
   color: ${variables.colors.gray900};
   border: 1px solid ${variables.colors.gray500};
-  border-radius: 0.6rem;
+  border-radius: ${variables.borderRadius};
   cursor: pointer;
-  gap: 0.1rem;
+  gap: 1px;
 
   & img {
     margin: 0 0.24rem;
@@ -554,7 +554,7 @@ const paymentSectionStyle = css`
 const textRequestsStyle = css`
   color: ${variables.colors.gray600};
   border: 1px solid ${variables.colors.gray400};
-  border-radius: 0.6rem;
+  border-radius: ${variables.borderRadius};
   padding: 1rem 1.2rem;
   height: 9.6rem;
 
@@ -729,7 +729,7 @@ const modalTitleColor = css`
 `;
 const refundPolicyTableStyle = css`
   border: 1px solid ${variables.colors.gray400};
-  border-radius: 0.6rem;
+  border-radius: ${variables.borderRadius};
   padding: 1rem 1.4rem;
   margin-top: 0.5rem;
 `;

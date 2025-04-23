@@ -139,11 +139,12 @@ export const MyPageHeaderContainerStyle = styled.div`
     ${PCLayout}
     ${bg100vw(variables.colors.white)}
     padding: 0 ${variables.layoutPadding};
+    box-shadow: inset 0 -1px ${variables.colors.gray300};
     position: fixed;
     top: 8rem;
 
     &::before {
-      box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
+      box-shadow: inset 0 -1px ${variables.colors.gray300};
     }
   }
 `;

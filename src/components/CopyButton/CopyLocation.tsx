@@ -64,8 +64,8 @@ const buttonStyle = css`
   align-items: center;
 
   justify-content: center;
-  border-radius: 0.6rem;
-  border: 0.1rem solid ${variables.colors.gray400};
+  border-radius: ${variables.borderRadius};
+  border: 1px solid ${variables.colors.gray400};
   cursor: pointer;
   width: 7.4rem;
   height: 3rem;

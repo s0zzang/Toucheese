@@ -158,7 +158,7 @@ const MyPageMenuStyle = css`
     & a {
       ${TypoTitleXsR};
       padding: 1.6rem 0;
-      border-bottom: 0.1rem solid ${variables.colors.gray300};
+      border-bottom: 1px solid ${variables.colors.gray300};
       display: flex;
       gap: 1.6rem;
       align-items: center;

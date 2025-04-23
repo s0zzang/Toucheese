@@ -448,7 +448,7 @@ const buttonStyle = css`
   align-items: center;
   justify-content: center;
   border: 1px solid ${variables.colors.gray400};
-  border-radius: 0.6rem;
+  border-radius: ${variables.borderRadius};
   box-sizing: border-box;
   width: 5.7rem;
   height: 3.2rem;
@@ -542,7 +542,7 @@ const cancelStyle = css`
   left: 0;
   z-index: 9;
   ${mqMin(breakPoints.pc)} {
-    border: 0.1rem solid ${variables.colors.gray300};
+    border: 1px solid ${variables.colors.gray300};
   }
 
   & > button {

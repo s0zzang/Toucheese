@@ -56,12 +56,12 @@ const StudioDetailLayout = () => {
                   right: 0;
                   z-index: 9;
                   padding-left: ${variables.layoutPadding};
-                  box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
+                  box-shadow: inset 0 -1px ${variables.colors.gray300};
 
                   ::before {
                     left: 0;
                     transform: translateX(-100%);
-                    box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
+                    box-shadow: inset 0 -1px ${variables.colors.gray300};
                   }
                 `}
               >
