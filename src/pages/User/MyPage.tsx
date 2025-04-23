@@ -9,6 +9,7 @@ import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { DividerStyle, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -55,6 +56,10 @@ const MyPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>마이페이지 | 터치즈</title>
+        <meta property="og:title" content={'마이페이지 | 터치즈'} />
+      </Helmet>
       <Header title="마이페이지" />
       <div css={MyInfoStyle}>
         <Link to="/user/profile">{username}님 환영해요!</Link>

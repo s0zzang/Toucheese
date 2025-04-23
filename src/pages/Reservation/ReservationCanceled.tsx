@@ -2,6 +2,7 @@ import { useGetReservationData } from '@hooks/useGetReservationData';
 import useToast from '@hooks/useToast';
 import { useNavigate, useParams } from 'react-router-dom';
 import CompleteMessage from './components/CompleteMessage';
+import { Helmet } from 'react-helmet-async';
 
 const ReservationCanceled = () => {
   const { _id } = useParams() as { _id: string };
@@ -17,7 +18,19 @@ const ReservationCanceled = () => {
     navigate('/user/auth');
   }
 
-  return <>{data && <CompleteMessage type="canceled" data={data} resetInfo={() => {}} />}</>;
+  return (
+    <>
+      {data && (
+        <>
+          <Helmet>
+            <title>{data.studioName} - 예약 완료</title>
+            <meta property="og:title" content={'예약 내역 | 터치즈'} />
+          </Helmet>
+          <CompleteMessage type="canceled" data={data} resetInfo={() => {}} />
+        </>
+      )}
+    </>
+  );
 };
 
 export default ReservationCanceled;
