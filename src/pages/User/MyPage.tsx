@@ -2,28 +2,22 @@
 import Header from '@components/Header/Header';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
 import { css } from '@emotion/react';
-import { loadUserFromStorage, useUserStore } from '@store/useUserStore';
-import { useEffect } from 'react';
 import { useGetReservationList } from '@hooks/useGetReservationList';
 import useToast from '@hooks/useToast';
-import { defaultUserState } from '@store/useUserStore';
+import { loadUserFromStorage, useUserStore } from '@store/useUserStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { DividerStyle, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
 import variables from '@styles/Variables';
-import { getLocalStorageItem } from '@utils/getLocalStorageItem';
+import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { IUser } from 'types/types';
-
 
 const MyPage = () => {
   const { username, email } = useUserStore();
   const { pathname } = useLocation();
-
-
 
   // 암호화 된 유저 정보 복호화
   useEffect(() => {
