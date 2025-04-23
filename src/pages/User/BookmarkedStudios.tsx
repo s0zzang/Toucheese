@@ -88,7 +88,11 @@ const headerStyle = css`
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
     ${bg100vw(variables.colors.white)}
+    padding: 0 ${variables.layoutPadding};
     box-shadow: inset 0 -1px ${variables.colors.gray300};
+    position: fixed;
+    top: 8rem;
+    z-index: 9;
 
     &::before {
       box-shadow: inset 0 -1px ${variables.colors.gray300};
