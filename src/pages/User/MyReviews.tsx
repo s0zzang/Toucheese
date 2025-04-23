@@ -14,7 +14,7 @@ import {
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdM } from '@styles/Common';
 import { sortReservations } from '@utils/sortReservations';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { IResvItem } from 'types/types';
@@ -36,14 +36,16 @@ const MyReviews = () => {
   const openToast = useToast();
   const navigate = useNavigate();
 
-  if (error) {
-    if (error.message === '403') {
-      openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
-      navigate('/user/auth');
-    } else {
-      throw new Error(error.message);
+  useEffect(() => {
+    if (error) {
+      if (error.message === '403') {
+        openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
+        navigate('/user/auth');
+      } else {
+        throw new Error(error.message);
+      }
     }
-  }
+  }, [error]);
 
   return (
     <main>
