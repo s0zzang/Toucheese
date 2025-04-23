@@ -51,7 +51,7 @@ const ToastStyle = styled.div`
   padding: 1.4rem ${variables.layoutPadding};
   box-shadow:
     0 0.4rem 0.8rem rgba(0, 0, 0, 0.15),
-    0 1px 0.3rem rgba(0, 0, 0, 0.3);
+    0 1px 3px rgba(0, 0, 0, 0.3);
 
   animation:
     slideIn 0.3s ease forwards,

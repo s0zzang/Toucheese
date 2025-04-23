@@ -140,12 +140,12 @@ const infoStyle = css`
 
       h3 {
         ${TypoTitleSmS}
-        margin-bottom: 0.2rem;
+        margin-bottom: 2px;
       }
 
       .info-rating {
         display: flex;
-        gap: 0.2rem;
+        gap: 2px;
         align-items: center;
 
         div {
@@ -175,7 +175,7 @@ const infoStyle = css`
         margin-bottom: 0.4rem;
         display: flex;
         align-items: center;
-        gap: 0.2rem;
+        gap: 2px;
 
         ${mqMin(breakPoints.pc)} {
           margin-bottom: 0.8rem;
