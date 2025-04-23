@@ -52,7 +52,7 @@ const NavStyle = styled.nav`
 
   ${mqMin(breakPoints.pc)} {
     width: unset;
-    margin: 0.3rem 0;
+    margin: 3px 0;
   }
 `;
 
@@ -64,7 +64,7 @@ const ThemeListStyle = styled.ul`
   cursor: pointer;
 
   ${mqMin(breakPoints.pc)} {
-    gap: 0.85rem;
+    gap: 1.1rem;
     justify-content: center;
   }
 `;
@@ -75,7 +75,7 @@ const ThemeButtonStyle = styled.button<{ isActive: boolean }>`
   color: ${(props) =>
     props.isActive ? `${variables.colors.white}` : `${variables.colors.gray500}`};
   position: relative;
-  padding: ${(props) => (props.isActive ? '0.3rem 0.9rem 0.3rem 0.8rem' : '0.3rem 0.4rem')};
+  padding: ${(props) => (props.isActive ? '3px 9px 3px 8px' : '3px 4px')};
   ${(props) => (props.isActive ? TypoTitleXsB : TypoTitleXsM)}
 
   &::after {
@@ -85,8 +85,8 @@ const ThemeButtonStyle = styled.button<{ isActive: boolean }>`
     width: 0.6rem;
     height: 0.6rem;
     background: url('/img/icon-nav-badge.svg') no-repeat center / contain;
-    top: 0.3rem;
-    right: 0.4rem;
+    top: 3px;
+    right: 4px;
   }
 
   ${mqMin(breakPoints.pc)} {

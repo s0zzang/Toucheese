@@ -121,7 +121,7 @@ const NavLinkStyle = styled(NavLink)`
     content: '';
     position: absolute;
     background-color: ${variables.colors.black};
-    height: 0.2rem;
+    height: 2px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -130,7 +130,7 @@ const NavLinkStyle = styled(NavLink)`
   &.active > span::after {
     content: '';
     position: absolute;
-    right: -0.55rem;
+    right: -5.5px;
     top: 0rem;
     width: 0.6rem;
     height: 0.6rem;

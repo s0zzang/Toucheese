@@ -84,7 +84,7 @@ const BookmarkStyle = ({ type }: { type: 'default' | 'bookmark' }) => css`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 0.2rem;
+    margin-bottom: 2px;
 
     & > img {
       width: 2rem;
@@ -94,7 +94,7 @@ const BookmarkStyle = ({ type }: { type: 'default' | 'bookmark' }) => css`
     ${mqMin(breakPoints.pc)} {
       width: ${type === 'bookmark' ? '3.6rem' : '2.4rem'};
       height: ${type === 'bookmark' ? '3.6rem' : '2.4rem'};
-      margin-bottom: ${type === 'bookmark' ? 'unset' : '0.2rem'};
+      margin-bottom: ${type === 'bookmark' ? 'unset' : '2px'};
 
       & > img {
         width: ${type === 'bookmark' ? '3rem' : '2rem'};

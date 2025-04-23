@@ -61,7 +61,7 @@ const StudioItem = ({
                 width: 100%;
                 display: flex;
                 align-items: center;
-                gap: 0.2rem;
+                gap: 2px;
               `}
             >
               {getImages(item.portfolios).map((image, index) => (
@@ -188,7 +188,7 @@ const InfoContainerStyle = styled.div`
   & > div {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 3px;
 
     & > img {
       flex-shrink: 0;
