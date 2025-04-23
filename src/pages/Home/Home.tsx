@@ -52,6 +52,10 @@ const Home = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    if (!isPc) {
+      setIsFixed(false);
+    }
   }, [isPc]);
 
   useEffect(() => {
