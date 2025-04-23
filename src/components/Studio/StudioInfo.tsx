@@ -57,7 +57,12 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
             imageUrl={data.portfolios[0]?.url}
             webUrl={window.location.href}
           />
-          <Bookmark id={Number(id)} count={data.bookmark_count} isBookmarked={false} />
+          <Bookmark
+            id={Number(id)}
+            count={data.bookmark_count}
+            isBookmarked={false}
+            type="default"
+          />
         </div>
       </div>
       <div css={StudioInfoStyle({ isPc })}>

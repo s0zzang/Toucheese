@@ -42,7 +42,7 @@ const fetchBookmarkList = async (
   }
 };
 
-const useGetBookmarkList = (theme: Theme): UseQueryResult<IStudioItem> => {
+const useGetBookmarkList = (theme: Theme): UseQueryResult<IStudioItem[]> => {
   const { accessToken } = getLocalStorageItem<IUser>('userState', defaultUserState);
 
   if (!accessToken) {
