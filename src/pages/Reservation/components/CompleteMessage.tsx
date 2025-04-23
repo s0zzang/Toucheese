@@ -262,7 +262,7 @@ const StepStyle = styled.li<IStepStyle>`
 const ReservationInfoStyle = styled.div`
   padding: ${variables.layoutPadding};
   background-color: ${variables.colors.gray100};
-  border-radius: 0.8rem;
+  border-radius: ${variables.borderRadius};
 
   & > .title-style {
     display: flex;
@@ -320,7 +320,7 @@ const ReservationInfoStyle = styled.div`
 
               &::after {
                 content: '';
-                width: 0.1rem;
+                width: 1px;
                 height: 1rem;
                 background-color: ${variables.colors.gray400};
               }
@@ -342,7 +342,7 @@ const FooterButtonStyle = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  box-shadow: inset 0 0.1rem ${variables.colors.gray300};
+  box-shadow: inset 0 1px ${variables.colors.gray300};
   padding: 1.8rem ${variables.layoutPadding} 3rem;
   display: flex;
   align-items: center;

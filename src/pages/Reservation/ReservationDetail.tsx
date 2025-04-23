@@ -20,10 +20,11 @@ import {
   TypoTitleXsSb,
 } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import CancelModal from './components/CancelModal';
+import { useEffect, useState } from 'react';
+import RatingReview from '@components/ReservationCard/RatingReview';
 import LocationModal from './components/LocationModal';
+import CancelModal from './components/CancelModal';
 
 interface IReservationData {
   studioId: string;
@@ -191,14 +192,30 @@ const ReservationDetail = () => {
             <LocationModal modalId={3} id={String(reservationData.studioId)} />
           </div>
         </section>
-
+        {status === 'COMPLETED' && (
+          <div
+            css={DividerStyle}
+            onClick={() => navigate(`/reservation/${_id}/review/write`)}
+            style={{ cursor: 'pointer' }}
+          >
+            <RatingReview customStyle={ratingReviewStyle} />
+          </div>
+        )}
         <section css={sectionStyle}>
           <h2 css={[TypoTitleXsSb, titleStyle, addTitleStyle]}>예약정보</h2>
           <div>
             <div>
               <div css={itemStyle}>
                 <span>이용 상태</span>
-                <span>사진관에서 예약 확인중</span>
+                {status === 'COMPLETED' ? (
+                  <span>이용완료</span>
+                ) : status === 'CANCELED' ? (
+                  <span>예약취소</span>
+                ) : status === 'WAITING' ? (
+                  <span>사진관에서 예약 확인중</span>
+                ) : (
+                  <span>예약확정</span>
+                )}
               </div>
               {status === 'CANCELED' && (
                 <>
@@ -314,27 +331,18 @@ const ReservationDetail = () => {
           </section>
         )}
         <div css={[cancelStyle, TypoTitleXsM]}>
-          {status === 'CANCELED' ? (
-            <Button
-              type="button"
-              text="다시 예약하기"
-              size="large"
-              variant="black"
-              disabled={false}
-              active={true}
-              onClick={() => navigate(`/studio/${studioId}`)}
-            />
-          ) : (
-            <Button
-              type="button"
-              text="예약 취소하기"
-              size="large"
-              variant="black"
-              disabled={isDisabled}
-              active={false}
-              onClick={() => cancelModal.open()}
-            />
-          )}
+          <Button
+            type="button"
+            text={status === 'COMPLETED' || status === 'CANCELED' ? '다시 예약하기' : '예약 취소'}
+            disabled={status === 'COMPLETED' || status === 'CANCELED' ? false : isDisabled}
+            variant="black"
+            size="large"
+            onClick={
+              status === 'COMPLETED' || status === 'CANCELED'
+                ? () => navigate(`/studio/${studioId}`)
+                : () => cancelModal.open()
+            }
+          />
         </div>
         <CancelModal reservationId={_id!} modalId={4} />
         <BottomSheet />
@@ -412,12 +420,35 @@ const pcAddressStyle = css`
     display: none;
   }
 `;
+
+const ratingReviewStyle = css`
+  border-top: none;
+
+  .ratingBox {
+    display: flex;
+    gap: 0.4rem;
+
+    img {
+      width: 2rem;
+
+      ${mqMin(breakPoints.pc)} {
+        width: 2.4rem;
+      }
+    }
+  }
+
+  p {
+    ${variables.colors.gray600};
+    ${TypoBodyMdR}
+  }
+`;
+
 const buttonStyle = css`
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid ${variables.colors.gray400};
-  border-radius: 0.6rem;
+  border-radius: ${variables.borderRadius};
   box-sizing: border-box;
   width: 5.7rem;
   height: 3.2rem;
@@ -511,7 +542,7 @@ const cancelStyle = css`
   left: 0;
   z-index: 9;
   ${mqMin(breakPoints.pc)} {
-    border: 0.1rem solid ${variables.colors.gray300};
+    border: 1px solid ${variables.colors.gray300};
   }
 
   & > button {

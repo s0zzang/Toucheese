@@ -15,13 +15,18 @@ describe('Bookmark Test', () => {
     const count = 297;
     const isBookmarked = false;
 
-    render(<Bookmark id={id} count={count} isBookmarked={isBookmarked} />);
+    render(<Bookmark id={id} count={count} isBookmarked={isBookmarked} type="default" />);
 
-    const img = screen.getByRole('img', { name: new RegExp(`북마크 ${isBookmarked ? '해제' : '등록'}`, 'i') });
+    const img = screen.getByRole('img', {
+      name: new RegExp(`북마크 ${isBookmarked ? '해제' : '등록'}`, 'i'),
+    });
     const cnt = screen.getByText(count);
 
     // isBookmarked 상태에 따라 이미지가 일치하는지 확인
-    expect(img).toHaveAttribute('src', `/img/icon-bookmark-${isBookmarked ? 'active' : 'inactive'}.svg`);
+    expect(img).toHaveAttribute(
+      'src',
+      `/img/icon-bookmark-${isBookmarked ? 'active' : 'inactive'}.svg`,
+    );
     // 북마크 수가 잘 렌더링 되는지 확인
     expect(cnt).toBeInTheDocument();
   });
@@ -33,7 +38,7 @@ describe('Bookmark Test', () => {
     const isBookmarked = false;
     const user = userEvent.setup();
 
-    render(<Bookmark id={id} count={count} isBookmarked={isBookmarked} />);
+    render(<Bookmark id={id} count={count} isBookmarked={isBookmarked} type="default" />);
 
     // 북마크 버튼이 잘 렌더링 되는지 확인
     const button = screen.getByRole('button', { name: new RegExp(`북마크 등록`, 'i') });
@@ -62,7 +67,7 @@ describe('Bookmark Test', () => {
     const isBookmarked = true;
     const user = userEvent.setup();
 
-    render(<Bookmark id={id} count={count} isBookmarked={isBookmarked} />);
+    render(<Bookmark id={id} count={count} isBookmarked={isBookmarked} type="default" />);
 
     // 북마크 버튼이 잘 렌더링 되는지 확인
     const button = screen.getByRole('button', { name: new RegExp(`북마크 해제`, 'i') });

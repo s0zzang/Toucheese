@@ -72,7 +72,7 @@ const Profile = () => {
           <hr
             css={css`
               border: none;
-              border-bottom: 0.1rem solid ${variables.colors.gray300};
+              border-bottom: 1px solid ${variables.colors.gray300};
               margin: 0.4rem;
             `}
           />
@@ -111,7 +111,7 @@ const Profile = () => {
           <hr
             css={css`
               border: none;
-              border-bottom: 0.1rem solid ${variables.colors.gray300};
+              border-bottom: 1px solid ${variables.colors.gray300};
               margin: 0.4rem;
             `}
           />
