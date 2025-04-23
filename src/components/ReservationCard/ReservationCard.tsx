@@ -43,10 +43,10 @@ const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
           <div css={ReservationInfoStyle}>
             <div className="cardInfo">
               <StatusChip state={data.status} />
-              <p className="cardName">
-                {data.studioName} <span>|</span> {data.menuName}
-              </p>
-              <p className="cardDate">{`${convertToDateFormat(new Date(data.date))} (${getDay(new Date(data.date))}) ${data.startTime.split(':').slice(0, 2).join(':')}`}</p>
+              <div className="cardName">
+                <h3>{data.studioName}</h3> <span>|</span> <h4>{data.menuName}</h4>
+              </div>
+              <h4 className="cardDate">{`${convertToDateFormat(new Date(data.date))} (${getDay(new Date(data.date))}) ${data.startTime.split(':').slice(0, 2).join(':')}`}</h4>
             </div>
 
             <div className="cardCover">

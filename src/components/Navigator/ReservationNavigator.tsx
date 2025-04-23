@@ -1,22 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
-import { ResStatus } from '@pages/Reservation/ReservationList';
 import { TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { Dispatch, SetStateAction } from 'react';
 
-const STATUS: ResStatus[] = [
-  { statusKor: '이용 예정', statusEng: 'DEFAULT' },
-  { statusKor: '이용 완료', statusEng: 'COMPLETED' },
-  { statusKor: '예약 취소', statusEng: 'CANCELED' },
-];
-
-const ReservationNavigator = ({
+const ReservationNavigator = <T extends { statusKor: string; statusEng: string }>({
+  STATUS,
   status,
   setStatus,
 }: {
-  status: ResStatus;
-  setStatus: Dispatch<SetStateAction<ResStatus>>;
+  STATUS: T[];
+  status: T;
+  setStatus: Dispatch<SetStateAction<T>>;
 }) => {
   return (
     <nav>
