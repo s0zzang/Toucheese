@@ -7,7 +7,7 @@ import useToast from '@hooks/useToast';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { bg100vw, Hidden, PCLayout, TypoTitleMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import BookmarkedStudioList from './components/BookmarkedStudioList';
@@ -22,14 +22,16 @@ const BookmarkedStudios = () => {
 
   const { data, error, refetch } = useGetBookmarkList(activeTheme);
 
-  if (error) {
-    if (error.message === '403') {
-      openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
-      navigate('/user/auth');
-    } else {
-      throw new Error(error.message);
+  useEffect(() => {
+    if (error) {
+      if (error.message === '403') {
+        openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
+        navigate('/user/auth');
+      } else {
+        throw new Error(error.message);
+      }
     }
-  }
+  }, [error]);
 
   // 선택한 테마의 탭 UI를 활성화하고, 북마크 목록을 갱신
   const handleTheme = (theme: Theme) => {

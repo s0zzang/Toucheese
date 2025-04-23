@@ -39,14 +39,16 @@ const ReservationList = () => {
   // resStatus 변경 시 api 호출
   const { data, error } = useGetReservationList(resStatus.statusEng);
 
-  if (error) {
-    if (error.message === '403') {
-      openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
-      navigate('/user/auth');
-    } else {
-      throw new Error(error.message);
+  useEffect(() => {
+    if (error) {
+      if (error.message === '403') {
+        openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
+        navigate('/user/auth');
+      } else {
+        throw new Error(error.message);
+      }
     }
-  }
+  }, [error]);
 
   // resStatus 변경 시 아이템 초기화
   useEffect(() => {
