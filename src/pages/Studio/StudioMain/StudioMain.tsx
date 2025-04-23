@@ -391,7 +391,7 @@ const DimOverlayStyle = css`
 
 const descriptionStyle = (isOpened: boolean, hasMore: boolean | undefined) => css`
   padding: 2rem 0;
-  border-bottom: 0.1rem solid ${variables.colors.gray300};
+  border-bottom: 1px solid ${variables.colors.gray300};
 
   & > .descriptionTitle {
     ${TypoTitleXsM};
@@ -415,7 +415,7 @@ const descriptionStyle = (isOpened: boolean, hasMore: boolean | undefined) => cs
   & > .textMore {
     color: ${variables.colors.gray600};
     ${TypoBodyMdR};
-    border-bottom: 0.1rem solid ${variables.colors.gray600};
+    border-bottom: 1px solid ${variables.colors.gray600};
     cursor: pointer;
     display: ${hasMore ? 'inline' : 'none'};
   }
@@ -423,7 +423,7 @@ const descriptionStyle = (isOpened: boolean, hasMore: boolean | undefined) => cs
 
 const openingHoursStyle = css`
   padding: 2rem 0;
-  border-bottom: 0.1rem solid ${variables.colors.gray300};
+  border-bottom: 1px solid ${variables.colors.gray300};
 
   & > .openingHoursTitle {
     ${TypoTitleXsM};
@@ -483,7 +483,7 @@ const holidayStyle = css`
 
 const mapStyle = css`
   padding: 2rem 0;
-  border-bottom: 0.1rem solid ${variables.colors.gray300};
+  border-bottom: 1px solid ${variables.colors.gray300};
 
   & > p {
     ${TypoTitleXsM};

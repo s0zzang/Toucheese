@@ -44,7 +44,7 @@ const HeaderStyle = css`
     right: 0;
     z-index: 99;
     background-color: ${variables.colors.white};
-    box-shadow: inset 0 -0.1rem ${variables.colors.gray300};
+    box-shadow: inset 0 -1px ${variables.colors.gray300};
     box-sizing: border-box;
   }
 `;

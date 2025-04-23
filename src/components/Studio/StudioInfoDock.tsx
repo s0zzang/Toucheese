@@ -22,7 +22,7 @@ const StudioInfoDock = () => {
           width: 42.4rem;
           flex-shrink: 0;
           background-color: ${variables.colors.white};
-          box-shadow: inset 0.1rem 0 ${variables.colors.gray300};
+          box-shadow: inset 1px 0 ${variables.colors.gray300};
           padding: 5.8rem ${variables.layoutPadding};
           box-sizing: border-box;
           z-index: 9;

@@ -47,7 +47,7 @@ const LocationBox = styled.section`
 const ListItem = styled.button<{ isSelected: boolean }>`
   ${TypoBodyMdM}
   cursor: pointer;
-  border: 0.1rem solid ${variables.colors.gray400};
+  border: 1px solid ${variables.colors.gray400};
   height: 5.6rem;
   padding: 0 2rem;
   text-align: center;
@@ -57,6 +57,6 @@ const ListItem = styled.button<{ isSelected: boolean }>`
     props.isSelected &&
     `
     background-color: ${variables.colors.primary50};
-    border: 0.1rem solid ${variables.colors.primary600};
+    border: 1px solid ${variables.colors.primary600};
   `}
 `;

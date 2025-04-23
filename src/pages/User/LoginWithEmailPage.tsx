@@ -119,7 +119,7 @@ const LoginWithEmailPage = () => {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border-radius: 0.8rem;
+                border-radius: ${variables.borderRadius};
                 margin-top: 4.8rem;
                 height: 4.8rem;
                 padding: 12 0px;

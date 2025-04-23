@@ -8,7 +8,7 @@ import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import variables from '@styles/Variables';
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import { Hidden } from '@styles/Common';
 import { useFilterStore } from '@store/useFilterStore';
 import { formatPrice } from '@utils/formatPrice';
@@ -85,41 +85,43 @@ const PCFilterWrapper = () => {
   };
 
   return (
-    <>
-      <FilterSort params={searchParams} />
-      <FilterChipsContainer>
-        {/* 가격 필터 칩 */}
-        {(searchParams.get('minPrice') || searchParams.get('maxPrice')) && (
-          <ChipStyle>
-            <span>
-              {formatPrice(searchParams.get('minPrice') || '0')} -{' '}
-              {formatPrice(searchParams.get('maxPrice') || '')}원
-            </span>
-            <button onClick={() => handleRemoveFilter('price')}>
-              <img src="/img/icon-close-small.svg" alt="가격 필터 삭제" />
-            </button>
-          </ChipStyle>
-        )}
-
-        {/* 서비스 필터 칩 */}
-        {searchParams
-          .get('options')
-          ?.split('%')
-          .map((service) => (
-            <ChipStyle key={service}>
-              <span>{service}</span>
-              <button onClick={() => handleRemoveFilter('service', service)}>
-                <img src="img/icon-close-small.svg" alt="서비스 필터 삭제" />
+    <div css={filterWrap}>
+      <div className="filter-box">
+        <FilterSort params={searchParams} />
+        <FilterDividerStyle />
+        <FilterChipsContainer>
+          {/* 가격 필터 칩 */}
+          {(searchParams.get('minPrice') || searchParams.get('maxPrice')) && (
+            <ChipStyle>
+              <span>
+                {formatPrice(searchParams.get('minPrice') || '0')} -{' '}
+                {formatPrice(searchParams.get('maxPrice') || '')}원
+              </span>
+              <button onClick={() => handleRemoveFilter('price')}>
+                <img src="/img/icon-close-small.svg" alt="가격 필터 삭제" />
               </button>
             </ChipStyle>
-          ))}
-      </FilterChipsContainer>
-      {hasActiveFilters() && <FilterDividerStyle />}
-      {/* 가격 조정 필터 PC */}
-      <FilterPriceSlidePC />
-      {/* 매장 옵션 제공 PC */}
-      <FilterDividerStyle />
-      <ServiceAvailability isPc={true} />
+          )}
+          {/* 서비스 필터 칩 */}
+          {searchParams
+            .get('options')
+            ?.split('%')
+            .map((service) => (
+              <ChipStyle key={service}>
+                <span>{service}</span>
+                <button onClick={() => handleRemoveFilter('service', service)}>
+                  <img src="img/icon-close-small.svg" alt="서비스 필터 삭제" />
+                </button>
+              </ChipStyle>
+            ))}
+        </FilterChipsContainer>
+        {hasActiveFilters() && <FilterDividerStyle />}
+        {/* 가격 조정 필터 PC */}
+        <FilterPriceSlidePC />
+        {/* 매장 옵션 제공 PC */}
+        <FilterDividerStyle />
+        <ServiceAvailability isPc={true} />
+      </div>
 
       <FilterButtonBoxStyle>
         <ButtonWrapperStyle onClick={handleReset} className={isAnimating ? 'rotateIcon' : ''}>
@@ -148,20 +150,42 @@ const PCFilterWrapper = () => {
           onClick={handleApplyFilter}
         />
       </FilterButtonBoxStyle>
-    </>
+    </div>
   );
 };
 
 export default PCFilterWrapper;
 
+const filterWrap = css`
+  padding-top: 3.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: inherit;
+
+  .filter-box {
+    flex-grow: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding: 2px;
+    s
+
+    /* 크롬, 사파리,*/
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* 엣지 */
+    -ms-overflow-style: none;
+
+    /* 파이어폭스 */
+    scrollbar-width: none;
+  }
+`;
+
 const FilterButtonBoxStyle = styled.div`
   background-color: ${variables.colors.white};
-  padding: 1.6rem 0 2.6rem;
-  position: fixed;
-  width: 19.2rem;
-  z-index: 9;
-  bottom: 0;
-
+  padding: 2rem 0 2.6rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -173,8 +197,8 @@ const ButtonWrapperStyle = styled.div`
 `;
 
 const FilterDividerStyle = styled.div`
-  border-top: 0.1rem solid ${variables.colors.gray300};
-  margin: 2rem 0;
+  border-top: 1px solid ${variables.colors.gray300};
+  margin: 1.6rem 0;
 `;
 
 const rotateIcon = keyframes`
@@ -207,7 +231,7 @@ const ChipStyle = styled.div`
   height: 3.2rem;
   border: 1px solid;
   border-color: ${variables.colors.gray400};
-  border-radius: 0.8rem;
+  border-radius: ${variables.borderRadius};
 
   span {
     color: ${variables.colors.gray900};

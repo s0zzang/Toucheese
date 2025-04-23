@@ -185,7 +185,7 @@ const TitleStyle = css`
 export const SlideImgBox = css`
   background: #0f0f0f;
   padding: 1rem;
-  border-radius: 0.6rem;
+  border-radius: ${variables.borderRadius};
   margin-bottom: 1rem;
 
   img {
