@@ -8,13 +8,15 @@ import { TypoTitleXsM, TypoTitleXsSb } from '@styles/Common';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
+import { loadUserFromStorage, useUserStore } from '@store/useUserStore';
 import { useNavigate } from 'react-router-dom';
 
 const PasswordConfirm = () => {
   const [isActive, setIsActive] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-  const navigate = useNavigate();
   const openToast = useToast();
+  const { email } = useUserStore();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -29,26 +31,13 @@ const PasswordConfirm = () => {
     setIsDisabled(!password);
   }, [password]);
 
-  const loadSessionStorageData = (key: string) => {
-    /** key에 해당하는 데이터 호출 */
-    const localData = localStorage.getItem(key);
-    if (!localData) {
-      return null;
-    }
-
-    try {
-      const parsedData = JSON.parse(localData);
-      return parsedData;
-    } catch (error) {
-      console.error('JSON 파싱 오류', error);
-      return null;
-    }
-  };
+  useEffect(() => {
+    loadUserFromStorage();
+  }, []);
 
   const handleEditUser = async () => {
-    const userData = loadSessionStorageData('userState');
     const formData = {
-      email: userData?.state.email,
+      email,
       password,
     };
 
@@ -113,7 +102,7 @@ const PasswordConfirm = () => {
         <div css={buttonStyle}>
           <Button
             onClick={handleEditUser}
-            type="submit"
+            type="button"
             text="다음"
             width="max"
             size="large"
