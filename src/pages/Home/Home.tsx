@@ -150,12 +150,18 @@ const Home = () => {
               ${bg100vw(variables.colors.black)}
               display: flex;
               align-items: center;
-              gap: 5.2rem;
+              gap: 1.6rem;
               padding: 0 ${variables.layoutPadding};
             }
           `}
         >
-          <BookingButton type="pc" />
+          <div
+            css={css`
+              width: 28rem;
+            `}
+          >
+            <BookingButton type="pc" />
+          </div>
           <ThemeNavigator />
         </div>
 
@@ -314,7 +320,7 @@ const FilterSectionStyle = styled.div<IFixedProps>`
   position: sticky;
   top: 13.8rem;
   left: 0;
-  width: 27.4rem;
+  width: 28rem;
   height: calc(100vh - 13.8rem);
 `;
 

@@ -68,8 +68,8 @@ const StudioItem = ({
                 <img
                   key={`${item.id}-image-${index}`}
                   css={css`
-                    width: 14rem;
-                    aspect-ratio: 140 / 176;
+                    width: calc((100% - 12px) / 7);
+                    aspect-ratio: 127 / 160;
                   `}
                   src={image}
                   alt={`이미지 ${index + 1}`}
@@ -85,7 +85,7 @@ const StudioItem = ({
                 object-fit: cover;
 
                 ${mqMin(breakPoints.pc)} {
-                  aspect-ratio: 140 / 176;
+                  aspect-ratio: 141 / 177;
                 }
               `}
             />
@@ -136,6 +136,7 @@ const StudioItem = ({
 };
 
 const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
+  width: 100%;
   padding: 1.6rem 0;
   border-bottom: 1px solid ${variables.colors.gray300};
 
@@ -150,8 +151,21 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
   }
 
   ${mqMin(breakPoints.pc)} {
-    padding: 3.4rem 0;
+    padding: unset;
+    padding-bottom: 3.4rem;
     border-bottom: unset;
+
+    ${({ isFirst }) =>
+      isFirst &&
+      `
+        padding-top: 3rem;
+    `}
+
+    ${({ isLast }) =>
+      isLast &&
+      `
+        padding-bottom: unset;
+    `}
   }
 `;
 
@@ -160,6 +174,7 @@ const ItemImageStyle = styled.div`
 
   ${mqMin(breakPoints.pc)} {
     margin-bottom: 1rem;
+    width: 100%;
   }
 `;
 

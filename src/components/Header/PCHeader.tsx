@@ -38,6 +38,7 @@ export default PCHeader;
 
 const HeaderStyle = css`
   ${mqMin(breakPoints.pc)} {
+    ${PCLayout}
     position: fixed;
     top: 0;
     left: 0;
@@ -51,18 +52,16 @@ const HeaderStyle = css`
 
 const HeaderContentsStyle = css`
   ${mqMin(breakPoints.pc)} {
-    ${PCLayout}
-
     display: flex;
-    gap: 1.6rem;
+    gap: 3.2rem;
     align-items: center;
     padding: 1rem ${variables.layoutPadding};
   }
 `;
 
 const logoContainerStyle = css`
+  width: 28rem;
   flex-shrink: 0;
-  flex-grow: 1;
 `;
 
 const homeLogoStyle = css`
@@ -77,7 +76,8 @@ const homeLogoStyle = css`
 `;
 
 const inputContainerStyle = css`
-  flex-grow: 2;
+  flex-grow: 1;
+  max-width: 60.8rem;
   display: flex;
   align-items: center;
 `;
@@ -88,7 +88,7 @@ const inputStyle = css`
 `;
 
 const buttonContainerStyle = css`
-  flex-grow: 1;
+  margin-left: auto;
   flex-shrink: 0;
   display: flex;
 `;
