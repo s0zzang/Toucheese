@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import BookmarkedStudioList from './components/BookmarkedStudioList';
+import { Helmet } from 'react-helmet-async';
 
 export type Theme = '전체' | '몽환' | '내추럴' | '러블리' | '시크' | '청순' | '상큼';
 
@@ -39,41 +40,50 @@ const BookmarkedStudios = () => {
   };
 
   return (
-    <main
-      css={css`
-        ${mqMin(breakPoints.pc)} {
-          ${PCLayout}
-        }
-      `}
-    >
-      <section css={headerStyle} className="bookmarked-header">
-        <Header title="찜한 사진관" backTo="/user/mypage" fixed={true} />
-        {isPc && (
-          <h1
-            css={css`
-              padding: 4rem 0 2rem;
-              ${TypoTitleMdSb}
-            `}
-          >
-            찜한 내역
-          </h1>
-        )}
-        <BookmarkNavigator theme={activeTheme} handleTheme={handleTheme} />
-      </section>
-      <section
+    <>
+      <Helmet>
+        <title>찜한 사진관 {activeTheme === '전체' ? '| 터치즈' : `- ${activeTheme}`}</title>
+        <meta
+          property="og:title"
+          content={`찜한 사진관 ${activeTheme === '전체' ? '| 터치즈' : `- ${activeTheme}`}`}
+        />
+      </Helmet>
+      <main
         css={css`
-          margin-top: 10rem;
-          padding-bottom: 3rem;
-
           ${mqMin(breakPoints.pc)} {
-            margin-top: 13.85rem;
+            ${PCLayout}
           }
         `}
       >
-        <h2 css={Hidden}>총 {data ? data.length : 0}건</h2>
-        {data && <BookmarkedStudioList data={data} handleUnbookmark={refetch} />}
-      </section>
-    </main>
+        <section css={headerStyle} className="bookmarked-header">
+          <Header title="찜한 사진관" backTo="/user/mypage" fixed={true} />
+          {isPc && (
+            <h1
+              css={css`
+                padding: 4rem 0 2rem;
+                ${TypoTitleMdSb}
+              `}
+            >
+              찜한 내역
+            </h1>
+          )}
+          <BookmarkNavigator theme={activeTheme} handleTheme={handleTheme} />
+        </section>
+        <section
+          css={css`
+            margin-top: 10rem;
+            padding-bottom: 3rem;
+
+            ${mqMin(breakPoints.pc)} {
+              margin-top: 13.85rem;
+            }
+          `}
+        >
+          <h2 css={Hidden}>총 {data ? data.length : 0}건</h2>
+          {data && <BookmarkedStudioList data={data} handleUnbookmark={refetch} />}
+        </section>
+      </main>
+    </>
   );
 };
 
