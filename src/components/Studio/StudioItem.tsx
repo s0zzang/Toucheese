@@ -45,7 +45,7 @@ const StudioItem = ({
     const portfolios = isPc ? photos.slice(0, 7) : photos.slice(0, 5);
 
     portfolios.forEach((photo: IPortfolio) => {
-      images.push(photo.url);
+      images.push(photo.url.replace(/\.jpeg$/, '.webp'));
     });
 
     return images;
