@@ -183,6 +183,7 @@ const Payment = ({
   const requestKakaoPay = () => {
     window.IMP.request_pay(
       {
+        pg: 'kakaopay',
         channelKey: import.meta.env.VITE_PORTONE_KAKAO_CHANNEL_KEY,
         pay_method: 'EASY_PAY',
         merchant_uid: 'order_' + new Date().getTime(),
