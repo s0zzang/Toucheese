@@ -355,7 +355,6 @@ const containerStyle = css`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-top: ${variables.headerHeight};
 
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
