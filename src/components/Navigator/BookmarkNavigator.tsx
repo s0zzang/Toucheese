@@ -37,9 +37,6 @@ const BookmarkNavigator = ({
             css={css`
               flex-shrink: 0;
               flex-grow: 1;
-
-              ${mqMin(breakPoints.pc)} {
-              }
             `}
           >
             <button
@@ -72,7 +69,7 @@ const buttonStyle = css`
 
   &.isActive {
     color: ${variables.colors.black};
-    box-shadow: inset 0 -0.2rem ${variables.colors.black};
+    box-shadow: inset 0 -2px ${variables.colors.black};
   }
 
   & > span {
@@ -83,7 +80,7 @@ const buttonStyle = css`
   &.isActive > span::after {
     content: '';
     position: absolute;
-    right: -0.55rem;
+    right: -5.5px;
     top: 0rem;
     width: 0.6rem;
     height: 0.6rem;

@@ -12,6 +12,7 @@ import { bg100vw, PCLayout, TypoBodyMdM, TypoTitleMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
 import { sortReservations } from '@utils/sortReservations';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { IResvItem } from 'types/types';
@@ -39,14 +40,16 @@ const ReservationList = () => {
   // resStatus 변경 시 api 호출
   const { data, error } = useGetReservationList(resStatus.statusEng);
 
-  if (error) {
-    if (error.message === '403') {
-      openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
-      navigate('/user/auth');
-    } else {
-      throw new Error(error.message);
+  useEffect(() => {
+    if (error) {
+      if (error.message === '403') {
+        openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
+        navigate('/user/auth');
+      } else {
+        throw new Error(error.message);
+      }
     }
-  }
+  }, [error]);
 
   // resStatus 변경 시 아이템 초기화
   useEffect(() => {
@@ -82,43 +85,49 @@ const ReservationList = () => {
   }
 
   return (
-    <main>
-      <MyPageHeaderContainerStyle>
-        {isPc ? (
-          <h1 className="pcLayout">예약내역</h1>
-        ) : (
-          <Header title="예약내역" backTo="/user/mypage" />
-        )}
-        <div
-          css={css`
-            ${mqMin(breakPoints.pc)} {
-              width: 28.7rem;
-            }
-          `}
-        >
-          <ReservationNavigator<ResStatus>
-            STATUS={STATUS}
-            status={resStatus}
-            setStatus={setResStatus}
-          />
-        </div>
-      </MyPageHeaderContainerStyle>
+    <>
+      <Helmet>
+        <title>예약 내역 - {resStatus.statusKor}</title>
+        <meta property="og:title" content={`예약 내역 - ${resStatus.statusKor} `} />
+      </Helmet>
+      <main>
+        <MyPageHeaderContainerStyle>
+          {isPc ? (
+            <h1 className="pcLayout">예약내역</h1>
+          ) : (
+            <Header title="예약내역" backTo="/user/mypage" />
+          )}
+          <div
+            css={css`
+              ${mqMin(breakPoints.pc)} {
+                width: 28.7rem;
+              }
+            `}
+          >
+            <ReservationNavigator<ResStatus>
+              STATUS={STATUS}
+              status={resStatus}
+              setStatus={setResStatus}
+            />
+          </div>
+        </MyPageHeaderContainerStyle>
 
-      <MyPageSectionStyle>
-        {items.length ? (
-          <MyPageContentStyle>
-            <h2 css={TypoBodyMdM}>총 {items.length}건</h2>
-            <div className="content-box">
-              {sortReservations<IResvItem>(items).map((item) => (
-                <ReservationCard key={item.reservationId} data={item} />
-              ))}
-            </div>
-          </MyPageContentStyle>
-        ) : (
-          <NoResult message={emptyMessage} bg="gray100" />
-        )}
-      </MyPageSectionStyle>
-    </main>
+        <MyPageSectionStyle>
+          {items.length ? (
+            <MyPageContentStyle>
+              <h2 css={TypoBodyMdM}>총 {items.length}건</h2>
+              <div className="content-box">
+                {sortReservations<IResvItem>(items).map((item) => (
+                  <ReservationCard key={item.reservationId} data={item} />
+                ))}
+              </div>
+            </MyPageContentStyle>
+          ) : (
+            <NoResult message={emptyMessage} bg="gray100" />
+          )}
+        </MyPageSectionStyle>
+      </main>
+    </>
   );
 };
 

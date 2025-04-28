@@ -35,7 +35,6 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
     if (isPc) {
       const selectedServices = selectedButtons.map((i) => getButtonTitle(i));
       setSelectedServices(selectedServices);
-      console.log('서비스 선택 변경:', selectedServices);
     }
   }, [selectedButtons, isPc, setSelectedServices]);
 

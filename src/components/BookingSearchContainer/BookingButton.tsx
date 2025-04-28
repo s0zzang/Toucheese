@@ -28,7 +28,8 @@ const BookingButton = ({ type }: { type: 'mo' | 'pc' }) => {
       onClick={() => modal.open()}
       css={css`
         ${mqMin(breakPoints.pc)} {
-          margin: 1.1rem 0 1.2rem;
+          width: 15.6rem;
+          margin: 1.1rem 3.6rem 1.2rem 0;
         }
       `}
     >
@@ -55,6 +56,9 @@ const BookingButton = ({ type }: { type: 'mo' | 'pc' }) => {
                 font-size: 1.2rem;
                 font-weight: 500;
                 line-height: 1.4rem;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
               `
         }
       >

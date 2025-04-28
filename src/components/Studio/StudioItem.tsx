@@ -45,7 +45,7 @@ const StudioItem = ({
     const portfolios = isPc ? photos.slice(0, 7) : photos.slice(0, 5);
 
     portfolios.forEach((photo: IPortfolio) => {
-      images.push(photo.url);
+      images.push(photo.url.replace(/\.jpeg$/, '.webp'));
     });
 
     return images;
@@ -61,15 +61,15 @@ const StudioItem = ({
                 width: 100%;
                 display: flex;
                 align-items: center;
-                gap: 0.2rem;
+                gap: 2px;
               `}
             >
               {getImages(item.portfolios).map((image, index) => (
                 <img
                   key={`${item.id}-image-${index}`}
                   css={css`
-                    width: 14rem;
-                    aspect-ratio: 140 / 176;
+                    width: calc((100% - 12px) / 7);
+                    aspect-ratio: 127 / 160;
                   `}
                   src={image}
                   alt={`이미지 ${index + 1}`}
@@ -85,7 +85,7 @@ const StudioItem = ({
                 object-fit: cover;
 
                 ${mqMin(breakPoints.pc)} {
-                  aspect-ratio: 140 / 176;
+                  aspect-ratio: 141 / 177;
                 }
               `}
             />
@@ -136,6 +136,7 @@ const StudioItem = ({
 };
 
 const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
+  width: 100%;
   padding: 1.6rem 0;
   border-bottom: 1px solid ${variables.colors.gray300};
 
@@ -150,8 +151,21 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
   }
 
   ${mqMin(breakPoints.pc)} {
-    padding: 3.4rem 0;
+    padding: unset;
+    padding-bottom: 3.4rem;
     border-bottom: unset;
+
+    ${({ isFirst }) =>
+      isFirst &&
+      `
+        padding-top: 3rem;
+    `}
+
+    ${({ isLast }) =>
+      isLast &&
+      `
+        padding-bottom: unset;
+    `}
   }
 `;
 
@@ -160,6 +174,7 @@ const ItemImageStyle = styled.div`
 
   ${mqMin(breakPoints.pc)} {
     margin-bottom: 1rem;
+    width: 100%;
   }
 `;
 
@@ -188,7 +203,7 @@ const InfoContainerStyle = styled.div`
   & > div {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 3px;
 
     & > img {
       flex-shrink: 0;

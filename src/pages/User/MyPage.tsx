@@ -9,6 +9,7 @@ import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { DividerStyle, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -31,14 +32,16 @@ const MyPage = () => {
 
   const { data, error } = useGetReservationList('RESERVED');
 
-  if (error) {
-    if (error.message === '403') {
-      openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
-      navigate('/user/auth');
-    } else {
-      throw new Error(error.message);
+  useEffect(() => {
+    if (error) {
+      if (error.message === '403') {
+        openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
+        navigate('/user/auth');
+      } else {
+        throw new Error(error.message);
+      }
     }
-  }
+  }, [error]);
 
   // 현재 날짜와 예약 날짜 비교 함수
   const filterReservations = data?.filter((item) => {
@@ -53,6 +56,10 @@ const MyPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>마이페이지 | 터치즈</title>
+        <meta property="og:title" content={'마이페이지 | 터치즈'} />
+      </Helmet>
       <Header title="마이페이지" />
       <div css={MyInfoStyle}>
         <Link to="/user/profile">{username}님 환영해요!</Link>
