@@ -322,6 +322,7 @@ const FilterSectionStyle = styled.div<IFixedProps>`
   left: 0;
   width: 28rem;
   height: calc(100vh - 13.8rem);
+  margin-bottom: -3rem;
 `;
 
 const ListStyle = styled.div`
@@ -330,7 +331,6 @@ const ListStyle = styled.div`
   ${mqMin(breakPoints.pc)} {
     padding: unset;
     padding-right: 1.6rem;
-    padding-bottom: 3rem;
     flex-grow: 1;
   }
 `;
