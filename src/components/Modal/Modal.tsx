@@ -3,6 +3,7 @@
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
+import useTabFocus from '@hooks/useTabFocus';
 import { useModalStore } from '@store/useModalStore';
 import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import { Hidden, TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
@@ -35,7 +36,7 @@ interface ITitleStyle {
 }
 
 interface ICloseBtnStyle {
-  mode: 'dimmed' | 'fullscreen';
+  mode: 'default' | 'dimmed' | 'fullscreen';
 }
 
 interface IContentStyle {
@@ -65,6 +66,8 @@ const Modal = ({
   const { close } = useModal(modalId);
   const handleClose = () => close();
 
+  const { modalRef } = useTabFocus(handleClose);
+
   const handleDimClick = (e: React.MouseEvent) => {
     const eventTarget = e.target as HTMLElement;
     if (!eventTarget.classList.contains('modal-box')) return;
@@ -80,7 +83,15 @@ const Modal = ({
 
   return (
     isOpen && (
-      <ModalStyle type={type} className="modal-box" onClick={(e) => handleDimClick(e)}>
+      <ModalStyle
+        type={type}
+        className="modal-box"
+        onClick={(e) => handleDimClick(e)}
+        tabIndex={0}
+        role="dialog"
+        aria-modal="true"
+        ref={modalRef}
+      >
         <ModalInner type={type}>
           {/* default 모달 헤더 */}
           {type === 'default' && <TitleStyleDefault>{title}</TitleStyleDefault>}
@@ -89,27 +100,13 @@ const Modal = ({
           {type === 'fullscreen' && (
             <TitleStyle type="fullscreen">
               {isOpen}
-              {isCloseBtn ? (
-                <CloseXBtnStyle type="button" onClick={handleClose}>
-                  <span css={Hidden}>모달 닫기</span>
-                </CloseXBtnStyle>
-              ) : (
-                <CloseBtnStyle type="button" mode="fullscreen" onClick={handleClose}>
-                  <span css={Hidden}>모달 닫기</span>
-                </CloseBtnStyle>
-              )}
               {title && <h2 css={TypoTitleSmS}>{title}</h2>}
             </TitleStyle>
           )}
 
           {/* Dim 처리 모달 헤더 */}
           {type === 'dimmed' && (
-            <TitleStyle type="dimmed">
-              {title && <h2 css={TypoBodyMdR}>{title}</h2>}
-              <CloseBtnStyle type="button" mode="dimmed" onClick={handleClose}>
-                <span css={Hidden}>모달 닫기</span>
-              </CloseBtnStyle>
-            </TitleStyle>
+            <TitleStyle type="dimmed">{title && <h2 css={TypoBodyMdR}>{title}</h2>}</TitleStyle>
           )}
 
           {/* Content */}
@@ -140,6 +137,17 @@ const Modal = ({
                 ),
               )}
             </ButtonBoxStyle>
+          )}
+
+          {/* close button */}
+          {isCloseBtn ? (
+            <CloseXBtnStyle type="button" onClick={handleClose}>
+              <span css={Hidden}>모달 닫기</span>
+            </CloseXBtnStyle>
+          ) : (
+            <CloseBtnStyle type="button" mode={type} onClick={handleClose}>
+              <span css={Hidden}>모달 닫기</span>
+            </CloseBtnStyle>
           )}
         </ModalInner>
       </ModalStyle>
@@ -253,22 +261,25 @@ const TitleStyleDefault = styled.h2`
 `;
 
 const CloseBtnStyle = styled.button<ICloseBtnStyle>`
+  display: ${({ mode }) => mode === 'default' && 'none'};
   width: 2.4rem;
   aspect-ratio: 1/1;
   position: absolute;
   z-index: 9;
 
   ${mqMax(breakPoints.moMax)} {
-    background: ${(props) =>
-      props.mode === 'fullscreen'
+    background: ${({ mode }) =>
+      mode === 'fullscreen'
         ? 'url(/img/icon-arrowback.svg) no-repeat center / 1.1rem 1.9rem'
         : 'url(/img/icon-close-white.svg) no-repeat center / 1.2rem'};
-    left: ${(props) => props.mode === 'fullscreen' && 0};
-    right: ${(props) => props.mode === 'dimmed' && 0};
+    top: 1.4rem;
+    left: ${({ mode }) => mode === 'fullscreen' && '2rem'};
+    right: ${({ mode }) => mode === 'dimmed' && '2rem'};
   }
 
   ${mqMin(breakPoints.pc)} {
     background: url(/img/icon-close-gray800.svg) no-repeat center / 1.6rem;
+    top: 2rem;
     right: ${variables.layoutPadding};
   }
 `;
@@ -279,13 +290,11 @@ const CloseXBtnStyle = styled.button`
   background: url(/img/icon-close-gray800.svg) no-repeat center / 1.6rem;
   position: absolute;
   z-index: 9;
-
-  ${mqMax(breakPoints.moMax)} {
-    right: 0;
-  }
+  top: 1.4rem;
+  right: ${variables.layoutPadding};
 
   ${mqMin(breakPoints.pc)} {
-    right: ${variables.layoutPadding};
+    top: 2rem;
   }
 `;
 
