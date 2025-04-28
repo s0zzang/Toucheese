@@ -17,15 +17,9 @@ const StudioInfoDock = () => {
       className="pc"
       css={css`
         ${mqMin(breakPoints.pc)} {
-          margin-left: auto;
-          margin-right: calc(-1 * ${variables.layoutPadding});
-          width: 42.4rem;
-          flex-shrink: 0;
+          width: 100%;
+          margin-right: calc(${variables.layoutPadding});
           background-color: ${variables.colors.white};
-          box-shadow: inset 1px 0 ${variables.colors.gray300};
-          padding: 5.8rem ${variables.layoutPadding};
-          box-sizing: border-box;
-          z-index: 9;
         }
       `}
     >

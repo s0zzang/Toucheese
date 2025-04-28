@@ -80,7 +80,26 @@ const StudioDetailLayout = () => {
           </section>
 
           {/* PC용 */}
-          <StudioInfoDock />
+          <div
+            css={css`
+              flex-shrink: 0;
+              position: sticky;
+              top: 8rem;
+              right: 0;
+              width: 42.4rem;
+              height: calc(100vh - 8rem);
+              z-index: 9;
+              padding-top: 5.8rem;
+              padding-left: ${variables.layoutPadding};
+              margin-right: calc(-1 * ${variables.layoutPadding});
+              margin-bottom: -3rem;
+              background-color: ${variables.colors.white};
+              box-shadow: inset 1px 0 ${variables.colors.gray300};
+              box-sizing: border-box;
+            `}
+          >
+            <StudioInfoDock />
+          </div>
         </main>
       ) : (
         <Loading size="big" phrase="스튜디오 정보를 불러오고 있습니다." />
