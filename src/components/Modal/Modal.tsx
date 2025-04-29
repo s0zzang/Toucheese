@@ -41,6 +41,7 @@ interface ICloseBtnStyle {
 
 interface IContentStyle {
   type: 'default' | 'dimmed' | 'fullscreen';
+  isButton: boolean;
 }
 
 /**
@@ -92,13 +93,13 @@ const Modal = ({
         aria-modal="true"
         ref={modalRef}
       >
-        <ModalInner type={type}>
+        <ModalInner type={type} className="modal-inner">
           {/* default 모달 헤더 */}
           {type === 'default' && <TitleStyleDefault>{title}</TitleStyleDefault>}
 
           {/* FullScreen 모달 헤더 */}
           {type === 'fullscreen' && (
-            <TitleStyle type="fullscreen">
+            <TitleStyle type="fullscreen" className="modal-title">
               {isOpen}
               {title && <h2 css={TypoTitleSmS}>{title}</h2>}
             </TitleStyle>
@@ -106,11 +107,15 @@ const Modal = ({
 
           {/* Dim 처리 모달 헤더 */}
           {type === 'dimmed' && (
-            <TitleStyle type="dimmed">{title && <h2 css={TypoBodyMdR}>{title}</h2>}</TitleStyle>
+            <TitleStyle type="dimmed" className="modal-title">
+              {title && <h2 css={TypoBodyMdR}>{title}</h2>}
+            </TitleStyle>
           )}
 
           {/* Content */}
-          <ContentsStyle type={type}>{children}</ContentsStyle>
+          <ContentsStyle type={type} isButton={buttons.length > 0} className="modal-content">
+            {children}
+          </ContentsStyle>
 
           {/* Buttons */}
           {withBtn && (
@@ -167,6 +172,7 @@ const ModalStyle = styled.section<IModalStyle>`
     background: ${(props) =>
       props.type === 'fullscreen' ? variables.colors.white : ' rgba(0, 0, 0, 0.85)'};
     padding: 0 ${variables.layoutPadding} 10rem;
+    padding: ${(props) => props.type === 'fullscreen' && 0};
     padding-top: ${(props) => props.type === 'dimmed' && variables.headerHeight};
     padding-bottom: ${(props) => props.type === 'dimmed' && '3rem'};
     overflow: ${(props) => props.type === 'dimmed' && 'visible'};
@@ -208,6 +214,8 @@ const ModalInner = styled.div<IModalStyle>`
     height: ${(props) => props.type !== 'default' && '100%'};
     padding: ${(props) => props.type === 'default' && '3rem 2rem 2rem'};
     gap: ${(props) => props.type === 'default' && '.6rem'};
+    display: flex;
+    flex-direction: column;
   }
 
   ${mqMin(breakPoints.pc)} {
@@ -299,11 +307,17 @@ const CloseXBtnStyle = styled.button`
 `;
 
 const ContentsStyle = styled.div<IContentStyle>`
-  padding: ${(props) => props.type === 'fullscreen' && '1rem 0'};
+  padding: ${(props) => props.type === 'fullscreen' && `1rem ${variables.layoutPadding} 4rem`};
   flex-grow: 1;
 
   ${(props) => props.type === 'default' && TypoBodyMdR}
   ${(props) => props.type === 'default' && `color: ${variables.colors.gray800}`}
+  ${({ type, isButton }) =>
+    type === 'fullscreen' &&
+    `
+    max-height: ${isButton ? 'calc(100svh - 5.2rem - 4.8rem - 5rem);' : 'calc(100svh - 5.2rem);'}; 
+    overflow-y: auto;
+  `}
 
   ${mqMin(breakPoints.pc)} {
     padding: ${variables.layoutPadding};
