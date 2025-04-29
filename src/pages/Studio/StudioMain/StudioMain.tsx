@@ -2,7 +2,6 @@
 import Button from '@components/Button/Button';
 import Header from '@components/Header/Header';
 import KakaoMap from '@components/Kakao/KakaoMap';
-import Loading from '@components/Loading/Loading';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
 import StudioInfo from '@components/Studio/StudioInfo';
 import StudioOptions from '@components/Studio/StudioOptions';
@@ -13,7 +12,7 @@ import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useMediaQuery } from 'react-responsive';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { IStudioDetail } from 'types/types';
 
 const StudioMain = () => {
@@ -26,14 +25,7 @@ const StudioMain = () => {
   const handleClick = () => navigate(`/studio/${_id}/menu`);
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
-  const [studioData, setStudioData] = useState<IStudioDetail>();
-
-  useEffect(() => {
-    const sessionData = sessionStorage.getItem('studio-storage');
-    if (sessionData) {
-      setStudioData(JSON.parse(sessionData).state.studioDetail[`${_id}`]);
-    }
-  }, [_id]);
+  const studioData = useOutletContext<IStudioDetail>();
 
   const descRef = useRef<HTMLParagraphElement>(null);
   const [hasMore, setHasMore] = useState(false);
@@ -91,10 +83,6 @@ const StudioMain = () => {
         () => false,
       );
   };
-
-  if (!studioData) {
-    return <Loading size="big" phrase="스튜디오를 불러오고 있습니다." />;
-  }
 
   /** 이미지 5개 이하일 때 대체할 이미지 */
   const placeHolderImageList = [
