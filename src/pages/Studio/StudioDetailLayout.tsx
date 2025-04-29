@@ -46,7 +46,7 @@ const StudioDetailLayout = () => {
                 }
               `}
             >
-              <Outlet context={isPc && data} />
+              <Outlet context={data} />
             </div>
           </section>
 
@@ -84,18 +84,20 @@ background-color: ${variables.colors.white};
 `;
 
 const dockStyle = css`
-  flex-shrink: 0;
-  position: sticky;
-  top: 8rem;
-  right: 0;
-  width: 42.4rem;
-  height: calc(100vh - 8rem);
-  z-index: 9;
-  padding-top: 5.8rem;
-  padding-left: ${variables.layoutPadding};
-  margin-right: calc(-1 * ${variables.layoutPadding});
-  margin-bottom: -3rem;
-  background-color: ${variables.colors.white};
-  box-shadow: inset 1px 0 ${variables.colors.gray300};
-  box-sizing: border-box;
+  ${mqMin(breakPoints.pc)} {
+    flex-shrink: 0;
+    position: sticky;
+    top: 8rem;
+    right: 0;
+    width: 42.4rem;
+    height: calc(100vh - 8rem);
+    z-index: 9;
+    padding-top: 5.8rem;
+    padding-left: ${variables.layoutPadding};
+    margin-right: calc(-1 * ${variables.layoutPadding});
+    margin-bottom: -3rem;
+    background-color: ${variables.colors.white};
+    box-shadow: inset 1px 0 ${variables.colors.gray300};
+    box-sizing: border-box;
+  }
 `;
