@@ -29,6 +29,10 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
   const dateLocationModal = useModal(modalId);
+  const closeModal = (type = 'apply') => {
+    setParams(type === 'reset');
+    dateLocationModal.close();
+  };
   const dateTimeModal = useModal(2);
   const locationModal = useModal(3);
   const dateLocationButtons = [
@@ -38,6 +42,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
         setDate('reset');
         setTime('reset', 'filter');
         setSelectedLocation('서울전체');
+        closeModal('reset');
       },
       variant: 'lightGray' as 'lightGray',
       width: 'fit' as 'fit',
@@ -45,14 +50,11 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
     },
     {
       text: '적용하기',
-      event: () => {
-        setParams();
-        dateLocationModal.close();
-      },
+      event: () => closeModal(),
     },
   ];
 
-  const setParams = () => {
+  const setParams = (isReset = false) => {
     const newParams = new URLSearchParams(searchParams);
 
     // 시간을 다중 선택한 경우, times=시간1&times=시간2 형태로 데이터 요청
@@ -67,7 +69,7 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
     if (selectedLocation === '서울전체') newParams.delete('addressGu');
     else newParams.set('addressGu', selectedLocation + '');
 
-    navigate(`?${newParams.toString()}`);
+    navigate(isReset ? '/' : `?${newParams.toString()}`);
   };
 
   const handleOpenLocation = () => {
