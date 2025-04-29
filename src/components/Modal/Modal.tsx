@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import Button from '@components/Button/Button';
+import { SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
 import useTabFocus from '@hooks/useTabFocus';
@@ -25,6 +26,7 @@ interface ModalProp {
     width?: 'max' | 'fit';
     type?: 'button' | 'submit';
   }[];
+  additionalStyle?: SerializedStyles;
 }
 
 interface IModalStyle {
@@ -60,6 +62,7 @@ const Modal = ({
   children,
   withBtn = true,
   buttons = [],
+  additionalStyle,
 }: ModalProp) => {
   const modals = useModalStore((state) => state.modals);
   const isOpen = modals[modalId];
@@ -82,6 +85,8 @@ const Modal = ({
     else htmlStyle.overflowY = 'auto';
   }, [isOpen]);
 
+  console.log(additionalStyle);
+
   return (
     isOpen && (
       <ModalStyle
@@ -93,7 +98,7 @@ const Modal = ({
         aria-modal="true"
         ref={modalRef}
       >
-        <ModalInner type={type} className="modal-inner">
+        <ModalInner type={type} className="modal-inner" css={additionalStyle}>
           {/* default 모달 헤더 */}
           {type === 'default' && <TitleStyleDefault>{title}</TitleStyleDefault>}
 
