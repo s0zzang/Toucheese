@@ -328,7 +328,7 @@ const ButtonBoxStyle = styled.div<IModalStyle>`
       `
       padding: 2rem 1.6rem 3rem;
       justify-content: space-between;
-      gap: 1.4rem;
+      gap: .8rem;
       position: fixed;
       bottom: 0;
       left: 0;
