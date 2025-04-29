@@ -6,8 +6,6 @@ import useModal from '@hooks/useModal';
 import { useSelectDateStore } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import SelectTime from './SelectTime';
-import { css } from '@emotion/react';
-import { breakPoints, mqMin } from '@styles/BreakPoint';
 
 const DateBottomSheet = ({}: {}) => {
   const dateTimeModal = useModal(2);
@@ -35,7 +33,7 @@ const DateBottomSheet = ({}: {}) => {
 
   return (
     <Modal type="fullscreen" title="날짜, 시간 선택" modalId={2} buttons={dateTimeButtons}>
-      <div css={modalInner}>
+      <div>
         <Calendar />
         <SelectTime type="filter" />
       </div>
@@ -44,10 +42,3 @@ const DateBottomSheet = ({}: {}) => {
 };
 
 export default DateBottomSheet;
-
-const modalInner = css`
-  ${mqMin(breakPoints.pc)} {
-    max-width: 44.4rem;
-    margin: 0 auto;
-  }
-`;
