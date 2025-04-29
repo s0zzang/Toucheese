@@ -95,10 +95,10 @@ const LocalDateSelectionModal = ({ modalId }: { modalId: number }) => {
       >
         <>
           <InputBoxStyle>
-            <button type="button" onClick={handleOpenLocation}>
+            <button type="button" onClick={handleOpenLocation} data-tab="focus">
               {selectedLocation ? selectedLocation : '지역 선택'}
             </button>
-            <button type="button" onClick={handleOpenDate}>
+            <button type="button" onClick={handleOpenDate} data-tab="focus">
               {date ? changeformatDateForUi({ date, time }) : '예약 날짜 선택'}
             </button>
           </InputBoxStyle>
