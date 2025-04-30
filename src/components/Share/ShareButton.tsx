@@ -14,11 +14,12 @@ export interface ShareProps {
   description: string;
   imageUrl: string;
   webUrl: string;
+  modalId: number;
 }
 
-const ShareButton = ({ title, description, imageUrl, webUrl }: ShareProps) => {
+const ShareButton = ({ modalId, title, description, imageUrl, webUrl }: ShareProps) => {
   const { openBottomSheet } = useBottomSheetState();
-  const modal = useModal();
+  const modal = useModal(modalId);
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
   const handleOpenShare = () => {
@@ -44,7 +45,13 @@ const ShareButton = ({ title, description, imageUrl, webUrl }: ShareProps) => {
       </button>
       <p>공유</p>
       {isPc ? (
-        <ShareModal title={title} description={description} imageUrl={imageUrl} webUrl={webUrl} />
+        <ShareModal
+          modalId={modalId}
+          title={title}
+          description={description}
+          imageUrl={imageUrl}
+          webUrl={webUrl}
+        />
       ) : (
         <BottomSheet />
       )}
