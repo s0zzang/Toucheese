@@ -104,6 +104,7 @@ export interface IStudioDetail extends IStudioInfo {
   openingHours: IOpeningHours[];
   holidays: IHolidays[];
   open: boolean;
+  bookmarked: boolean;
 }
 
 export interface IStudioRes<T> {
