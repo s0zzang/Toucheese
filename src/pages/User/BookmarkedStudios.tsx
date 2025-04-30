@@ -72,7 +72,6 @@ const BookmarkedStudios = () => {
         <section
           css={css`
             margin-top: 10rem;
-            padding-bottom: 3rem;
 
             ${mqMin(breakPoints.pc)} {
               margin-top: 13.85rem;

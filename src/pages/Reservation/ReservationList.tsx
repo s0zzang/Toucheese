@@ -90,7 +90,11 @@ const ReservationList = () => {
         <title>예약 내역 - {resStatus.statusKor}</title>
         <meta property="og:title" content={`예약 내역 - ${resStatus.statusKor} `} />
       </Helmet>
-      <main>
+      <main
+        css={css`
+          margin-bottom: -3rem;
+        `}
+      >
         <MyPageHeaderContainerStyle>
           {isPc ? (
             <h1 className="pcLayout">예약내역</h1>
@@ -159,6 +163,8 @@ export const MyPageHeaderContainerStyle = styled.div`
 `;
 
 export const MyPageSectionStyle = styled.section`
+  box-shadow: inset 0 0 20px blue;
+
   ${bg100vw(variables.colors.gray100)}
   margin: 10rem calc(-1 * ${variables.layoutPadding}) calc(-1 * (4rem + ${variables.headerHeight}));
   padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
