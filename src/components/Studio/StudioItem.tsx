@@ -5,7 +5,7 @@ import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoTitleSmS } from '@styles/Common';
+import { TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
@@ -70,6 +70,7 @@ const StudioItem = ({
                   css={css`
                     width: calc((100% - 12px) / 7);
                     aspect-ratio: 127 / 160;
+                    object-fit: cover;
                   `}
                   src={image}
                   alt={`이미지 ${index + 1}`}
@@ -100,24 +101,32 @@ const StudioItem = ({
           <TitleStyle css={TypoTitleSmS}>{`${item.name}`}</TitleStyle>
           <InfoContainerStyle>
             <div>
-              <img src="/img/icon-rating.svg" alt="평점" />
+              <div className="icon-container">
+                <img className="rating" src="/img/icon-rating.svg" alt="평점" />
+              </div>
               <p>
                 {item.rating}
                 <span>{` (${item.review_count}개의 평가)`}</span>
               </p>
             </div>
             <div>
-              <img className="price" src="/img/icon-price.svg" alt="가격" />
+              <div className="icon-container">
+                <img className="price" src="/img/icon-price.svg" alt="가격" />
+              </div>
               <p>{`${getMinPrice(item.menus)}원~`}</p>
             </div>
           </InfoContainerStyle>
           <InfoContainerStyle>
             <div>
-              <img className="location" src="/img/icon-location.svg" alt="주소" />
+              <div className="icon-container">
+                <img className="location" src="/img/icon-location.svg" alt="주소" />
+              </div>
               <p className="location">{`${item.addressGu} ${item.address}`}</p>
             </div>
             <div>
-              <img src="/img/icon-clock.svg" alt="영업 시간" />
+              <div className="icon-container">
+                <img className="time" src="/img/icon-clock.svg" alt="영업 시간" />
+              </div>
               <p>{`${item.open_time.slice(0, -3)} - ${item.close_time.slice(0, -3)}`}</p>
             </div>
           </InfoContainerStyle>
@@ -199,31 +208,72 @@ const InfoContainerStyle = styled.div`
   align-items: center;
   gap: 1rem;
   margin-bottom: 0.4rem;
+  ${TypoBodyMdR}
 
   & > div {
     display: flex;
     align-items: center;
     gap: 3px;
 
-    & > img {
+    .icon-container {
       flex-shrink: 0;
-      width: 1.3rem;
-      height: 1.3rem;
+      width: 1.6rem;
+      height: 1.6rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-      &.price {
-        width: 1.3rem;
-        height: 1.1rem;
+      & > img {
+        &.rating {
+          width: 1.2rem;
+          height: 1.2rem;
+        }
+
+        &.price {
+          width: 1.3rem;
+          height: 1.1rem;
+        }
+
+        &.location {
+          width: 1.1rem;
+          height: 1.3rem;
+        }
+
+        &.time {
+          width: 1.3rem;
+          height: 1.3rem;
+        }
       }
 
-      &.location {
-        width: 1.1rem;
-        height: 1.3rem;
+      ${mqMin(breakPoints.pc)} {
+        width: 1.8rem;
+        height: 1.8rem;
+
+        & > img {
+          &.rating {
+            width: 1.4rem;
+            height: 1.4rem;
+          }
+
+          &.price {
+            width: 1.5rem;
+            height: 1.2rem;
+          }
+
+          &.location {
+            width: 1.2rem;
+            height: 1.5rem;
+          }
+
+          &.time {
+            width: 1.5rem;
+            height: 1.5rem;
+          }
+        }
       }
     }
 
     & > p {
-      line-height: 2rem;
-
       & > span {
         color: ${variables.colors.gray800};
       }
