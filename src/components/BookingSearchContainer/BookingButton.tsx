@@ -26,6 +26,7 @@ const BookingButton = ({ type }: { type: 'mo' | 'pc' }) => {
       type="button"
       className={type}
       onClick={() => modal.open()}
+      data-tab="focus"
       css={css`
         ${mqMin(breakPoints.pc)} {
           width: 15.6rem;

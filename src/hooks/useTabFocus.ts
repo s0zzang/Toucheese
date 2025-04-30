@@ -1,14 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const useTabFocus = (onClose: () => void) => {
   const modalRef = useRef<HTMLInputElement>(null);
-  const prevActElRef = useRef<HTMLElement | null>(null);
+  const [prevActEl, setPrevActEl] = useState<EventTarget | null>(null);
   const focusableElSelector =
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
   useEffect(() => {
     if (!modalRef.current) return;
-    prevActElRef.current = document.activeElement as HTMLElement;
 
     const focusableEls = modalRef.current.querySelectorAll(
       focusableElSelector,
@@ -17,31 +16,39 @@ const useTabFocus = (onClose: () => void) => {
     const lastEl = focusableEls[focusableEls.length - 1];
 
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose?.();
       if (event.key === 'Tab') {
-        // 요소가 하나일 경우, 탭 키를 눌러도 포커스가 이동하지 않도록 처리
         if (focusableEls.length === 1) event.preventDefault();
-        // Shift + Tab: 첫 번째 요소로 포커스 이동
         else if (event.shiftKey && document.activeElement === firstEl) {
           lastEl.focus();
           event.preventDefault();
-          // Tab: 마지막 요소로 포커스 이동
         } else if (!event.shiftKey && document.activeElement === lastEl) {
           firstEl.focus();
           event.preventDefault();
         }
       }
+    };
 
-      if (event.key === 'Escape') onClose?.();
+    const handleKeyUp = (event: KeyboardEvent) => {
+      const button = event.target;
+
+      if (event.key === 'Enter' && button instanceof HTMLElement) {
+        if (button.dataset.tab === 'focus') {
+          firstEl?.focus();
+          setPrevActEl(button);
+        }
+      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    firstEl?.focus();
+    document.addEventListener('keyup', handleKeyUp);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      prevActElRef.current?.focus();
+      document.removeEventListener('keyup', handleKeyUp);
+      if (prevActEl instanceof HTMLElement) prevActEl?.focus();
     };
-  }, [onClose]);
+  }, [document.activeElement]);
 
   return { modalRef };
 };
