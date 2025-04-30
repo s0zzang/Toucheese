@@ -51,7 +51,7 @@ const FixedBtnBoxStyle = css`
   left: 0;
   bottom: 0;
   background-color: ${variables.colors.white};
-  padding: 1.6rem;
+  padding: 1.8rem ${variables.layoutPadding} 3rem;
   border-top: 1px solid ${variables.colors.gray300};
   z-index: 9;
 

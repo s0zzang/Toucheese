@@ -50,6 +50,7 @@ export default ReservationSchedule;
 
 export const pcFlexLayout = css`
   ${mqMin(breakPoints.pc)} {
+    margin-bottom: -3rem;
     display: flex;
     gap: 3.5rem;
     align-content: flex-start;
