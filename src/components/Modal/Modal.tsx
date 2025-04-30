@@ -85,8 +85,6 @@ const Modal = ({
     else htmlStyle.overflowY = 'auto';
   }, [isOpen]);
 
-  console.log(additionalStyle);
-
   return (
     isOpen && (
       <ModalStyle
