@@ -92,7 +92,6 @@ const PhotoContainerStyle = styled.div`
   ${mqMin(breakPoints.pc)} {
     & > div {
       width: calc(20% - 0.16rem);
-      aspect-ratio: 155/193;
       overflow: hidden;
     }
   }
@@ -101,7 +100,6 @@ const PhotoContainerStyle = styled.div`
 const ImageListLastContentStyle = styled.div`
   position: relative;
   width: calc(20% - 0.16rem);
-  aspect-ratio: 128/162;
   cursor: pointer;
   overflow: hidden;
 

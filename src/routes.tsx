@@ -39,7 +39,6 @@ const ReservationCanceled = lazy(() => import('@pages/Reservation/ReservationCan
 const router = createBrowserRouter([
   {
     path: '/',
-<<<<<<< Updated upstream
     element: <Layout />,
     errorElement: <Error />,
     children: [
@@ -161,8 +160,6 @@ const router = createBrowserRouter([
         ],
       },
     ],
-=======
-    element: <Home />,
   },
   {
     path: 'search',
@@ -171,7 +168,6 @@ const router = createBrowserRouter([
   {
     path: 'search/results',
     element: <SearchResults />,
->>>>>>> Stashed changes
   },
 ]);
 
