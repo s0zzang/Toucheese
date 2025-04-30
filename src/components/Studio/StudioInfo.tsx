@@ -60,7 +60,7 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
           <Bookmark
             id={Number(id)}
             count={data.bookmark_count}
-            isBookmarked={false}
+            isBookmarked={data.bookmarked}
             type="default"
           />
         </div>
