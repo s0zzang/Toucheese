@@ -330,6 +330,7 @@ const ListStyle = styled.div`
 
   ${mqMin(breakPoints.pc)} {
     padding: unset;
+    padding-top: 3rem;
     padding-right: 1.6rem;
     flex-grow: 1;
   }
