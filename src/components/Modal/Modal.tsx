@@ -278,11 +278,6 @@ const TitleStyleDefault = styled.h2`
 `;
 
 const CloseBtnStyle = styled.button<ICloseBtnStyle>`
-  /* ${({ mode }) =>
-    mode === 'default' &&
-    `
-    display: none;
-  `} */
   display: ${({ mode }) => mode === 'default' && 'none'};
   width: 2.4rem;
   aspect-ratio: 1/1;
@@ -301,6 +296,7 @@ const CloseBtnStyle = styled.button<ICloseBtnStyle>`
 
   ${mqMin(breakPoints.pc)} {
     background: url(/img/icon-close-gray800.svg) no-repeat center / 1.6rem;
+    ${({ mode }) => mode === 'dimmed' && `background-image: url(/img/icon-close-white.svg);`}
     top: 2.5rem;
     right: ${variables.layoutPadding};
   }
