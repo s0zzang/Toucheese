@@ -301,7 +301,7 @@ const CloseBtnStyle = styled.button<ICloseBtnStyle>`
 
   ${mqMin(breakPoints.pc)} {
     background: url(/img/icon-close-gray800.svg) no-repeat center / 1.6rem;
-    top: 2rem;
+    top: 2.5rem;
     right: ${variables.layoutPadding};
   }
 `;
