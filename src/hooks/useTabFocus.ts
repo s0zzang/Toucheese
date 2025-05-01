@@ -12,9 +12,10 @@ const useTabFocus = (onClose: () => void) => {
   useEffect(() => {
     if (!focusRef.current) return;
 
-    const focusableEls = focusRef.current.querySelectorAll(
+    const focusableElList = focusRef.current.querySelectorAll(
       focusableSelector,
     ) as NodeListOf<HTMLElement>;
+    const focusableEls = [...focusableElList].filter((el) => el.offsetParent !== null);
     const firstEl = focusableEls[0];
     const lastEl = focusableEls[focusableEls.length - 1];
 
@@ -38,9 +39,13 @@ const useTabFocus = (onClose: () => void) => {
     const handleFocus = (e: KeyboardEvent) => {
       if (e.key !== 'Enter') return;
       if (!(e.target instanceof HTMLElement)) return;
-      const { dataset, textContent } = e.target;
+      const { dataset, textContent, type } = e.target as HTMLButtonElement;
 
-      if (textContent?.includes('적용하기') || textContent?.includes('초기화')) {
+      if (
+        textContent?.includes('적용하기') ||
+        textContent?.includes('초기화') ||
+        type === 'submit'
+      ) {
         firstEl?.focus();
       } else if (dataset.tab === 'focus') {
         firstEl?.focus();
