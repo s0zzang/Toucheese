@@ -1,54 +1,62 @@
 import { useEffect, useRef, useState } from 'react';
+import useModalObserver from './useModalObserver';
 
 const useTabFocus = (onClose: () => void) => {
-  const modalRef = useRef<HTMLInputElement>(null);
-  const [prevActEl, setPrevActEl] = useState<EventTarget | null>(null);
-  const focusableElSelector =
+  const modalRef = useRef<HTMLDivElement>(null);
+  const { prevModalLength, curModalLength } = useModalObserver();
+  const [prevActEl, setPrevActEl] = useState<HTMLElement | null>(null);
+
+  const focusableSelector =
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
   useEffect(() => {
     if (!modalRef.current) return;
 
     const focusableEls = modalRef.current.querySelectorAll(
-      focusableElSelector,
-    ) as NodeListOf<HTMLInputElement>;
+      focusableSelector,
+    ) as NodeListOf<HTMLElement>;
     const firstEl = focusableEls[0];
     const lastEl = focusableEls[focusableEls.length - 1];
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose?.();
-      if (event.key === 'Tab') {
-        if (focusableEls.length === 1) event.preventDefault();
-        else if (event.shiftKey && document.activeElement === firstEl) {
+    // tab trap
+    const handleTabTrap = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose?.();
+      if (e.key === 'Tab') {
+        if (focusableEls.length === 1) {
+          e.preventDefault();
+        } else if (e.shiftKey && document.activeElement === firstEl) {
           lastEl.focus();
-          event.preventDefault();
-        } else if (!event.shiftKey && document.activeElement === lastEl) {
+          e.preventDefault();
+        } else if (!e.shiftKey && document.activeElement === lastEl) {
           firstEl.focus();
-          event.preventDefault();
+          e.preventDefault();
         }
       }
     };
 
-    const handleKeyUp = (event: KeyboardEvent) => {
-      const button = event.target;
+    // focus
+    const handleFocus = (e: KeyboardEvent) => {
+      if (e.key !== 'Enter') return;
+      if (!(e.target instanceof HTMLElement)) return;
+      const { dataset, textContent } = e.target;
 
-      if (event.key === 'Enter' && button instanceof HTMLElement) {
-        if (button.dataset.tab === 'focus') {
-          firstEl?.focus();
-          setPrevActEl(button);
-        }
+      if (textContent?.includes('적용하기') || textContent?.includes('초기화')) {
+        firstEl?.focus();
+      } else if (dataset.tab === 'focus') {
+        firstEl?.focus();
+        setPrevActEl(prevActEl || e.target);
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('keydown', handleTabTrap);
+    document.addEventListener('keyup', handleFocus);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('keyup', handleKeyUp);
-      if (prevActEl instanceof HTMLElement) prevActEl?.focus();
+      document.removeEventListener('keydown', handleTabTrap);
+      document.removeEventListener('keyup', handleFocus);
+      if (document.activeElement === document.body) prevActEl?.focus();
     };
-  }, [document.activeElement]);
+  }, [prevModalLength, curModalLength]);
 
   return { modalRef };
 };
