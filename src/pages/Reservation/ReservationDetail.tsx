@@ -335,7 +335,7 @@ const ReservationDetail = () => {
           <Button
             type="button"
             text={status === 'COMPLETED' || status === 'CANCELED' ? '다시 예약하기' : '예약 취소'}
-            // disabled={status === 'COMPLETED' || status === 'CANCELED' ? false : isDisabled}
+            disabled={status === 'COMPLETED' || status === 'CANCELED' ? false : isDisabled}
             variant="black"
             size="large"
             data-tab="focus"
