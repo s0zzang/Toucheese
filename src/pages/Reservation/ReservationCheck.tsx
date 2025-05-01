@@ -118,7 +118,7 @@ const ReservationCheck = () => {
 
   return (
     <>
-      <Header title="결제하기" />
+      <Header title="결제하기" fixed={true} />
 
       <div css={pcFlexLayout}>
         <div className="left-box">
