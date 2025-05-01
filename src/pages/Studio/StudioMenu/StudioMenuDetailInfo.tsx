@@ -31,25 +31,25 @@ const StudioMenuDetailInfo = ({ infoItem }: { infoItem: IMenuListRes }) => {
         <section css={MenuInfoStyle}>
           <div className="menuInfoItem">
             <h3 className="time">예상 소요 시간</h3>
-            <p>약 {infoItem.duration ? totalMinutes : 60}분</p>
+            <h4>약 {infoItem.duration ? totalMinutes : 60}분</h4>
           </div>
           <div className="menuInfoItem">
             <h3 className="camera">기본 촬영 수</h3>
-            <p>{infoItem.pictureNum ? infoItem.pictureNum : `70-80컷`}</p>
+            <h4>{infoItem.pictureNum ? infoItem.pictureNum : `70-80컷`}</h4>
           </div>
           <div className="menuInfoItem">
             <h3 className="crop">인화 사이즈</h3>
-            <p>{infoItem.pictureSize ? infoItem.pictureSize : '4x6in'}</p>
+            <h4>{infoItem.pictureSize ? infoItem.pictureSize : '4x6in'}</h4>
           </div>
           <div className="menuInfoItem">
             <h3 className="folder">기본 제공 파일</h3>
-            <p>{infoItem.offerFile ? infoItem.offerFile : '3포즈 리터칭 JPG파일'}</p>
+            <h4>{infoItem.offerFile ? infoItem.offerFile : '3포즈 리터칭 JPG파일'}</h4>
           </div>
         </section>
 
         <section css={[TotalPriceStyle, DividerStyle]}>
           <h3>기본 가격</h3>
-          <p>{infoItem.price.toLocaleString('ko-KR')}원</p>
+          <h4>{infoItem.price.toLocaleString('ko-KR')}원</h4>
         </section>
 
         <section css={AddOptionsWrapperStyle}>
@@ -164,7 +164,7 @@ const TotalPriceStyle = css`
       width: 26.5rem;
     }
   }
-  & p {
+  & h4 {
     ${TypoTitleXsB}
     ${mqMin(breakPoints.pc)} {
       flex-grow: 1;
