@@ -15,7 +15,9 @@ const useTabFocus = (onClose: () => void) => {
     const focusableElList = focusRef.current.querySelectorAll(
       focusableSelector,
     ) as NodeListOf<HTMLElement>;
-    const focusableEls = [...focusableElList].filter((el) => el.offsetParent !== null);
+    const focusableEls = [...focusableElList].filter(
+      (el) => el.offsetParent !== null && !(el as HTMLButtonElement).disabled,
+    );
     const firstEl = focusableEls[0];
     const lastEl = focusableEls[focusableEls.length - 1];
 
