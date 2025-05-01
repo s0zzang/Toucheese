@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
+import { KeyboardEvent } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { IMenus, IPortfolio, IStudioItem } from 'types/types';
@@ -51,8 +52,22 @@ const StudioItem = ({
     return images;
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (!isPc) return;
+
+    if (e.code === 'Enter') {
+      navigate(`/studio/${item.id}`);
+    }
+  };
+
   return (
-    <DivStyle isFirst={isFirst} isLast={isLast} onClick={handleClick}>
+    <DivStyle
+      isFirst={isFirst}
+      isLast={isLast}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+    >
       <ItemImageStyle>
         {item.portfolios.length >= 4 ? (
           isPc ? (
@@ -161,19 +176,13 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
 
   ${mqMin(breakPoints.pc)} {
     padding: unset;
-    padding-bottom: 3.4rem;
+    margin-bottom: 3.4rem;
     border-bottom: unset;
-
-    ${({ isFirst }) =>
-      isFirst &&
-      `
-        padding-top: 3rem;
-    `}
 
     ${({ isLast }) =>
       isLast &&
       `
-        padding-bottom: unset;
+        margin-bottom: unset;
     `}
   }
 `;
