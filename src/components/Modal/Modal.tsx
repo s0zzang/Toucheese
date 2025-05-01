@@ -26,6 +26,7 @@ interface ModalProp {
     active?: boolean;
     width?: 'max' | 'fit';
     type?: 'button' | 'submit';
+    dataTab?: string;
   }[];
   additionalStyle?: SerializedStyles;
 }
@@ -72,7 +73,7 @@ const Modal = ({
   const { close } = useModal(modalId);
   const handleClose = () => close();
 
-  const { modalRef } = useTabFocus(handleClose);
+  const { focusRef } = useTabFocus(close);
 
   const handleDimClick = (e: React.MouseEvent) => {
     const eventTarget = e.target as HTMLElement;
@@ -96,7 +97,7 @@ const Modal = ({
         role="dialog"
         aria-modal="true"
         data-id={modalId}
-        ref={modalRef}
+        ref={focusRef}
       >
         <ModalInner type={type} className="modal-inner" css={additionalStyle}>
           {/* default 모달 헤더 */}
@@ -133,6 +134,7 @@ const Modal = ({
                   width = 'max',
                   active = true,
                   type = 'button',
+                  dataTab,
                 }) => (
                   <Button
                     key={text}
@@ -143,6 +145,7 @@ const Modal = ({
                     active={active}
                     width={width}
                     type={type}
+                    data-tab={dataTab}
                   />
                 ),
               )}
@@ -275,6 +278,11 @@ const TitleStyleDefault = styled.h2`
 `;
 
 const CloseBtnStyle = styled.button<ICloseBtnStyle>`
+  /* ${({ mode }) =>
+    mode === 'default' &&
+    `
+    display: none;
+  `} */
   display: ${({ mode }) => mode === 'default' && 'none'};
   width: 2.4rem;
   aspect-ratio: 1/1;

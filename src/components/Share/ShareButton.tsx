@@ -40,7 +40,7 @@ const ShareButton = ({ modalId, title, description, imageUrl, webUrl }: SharePro
 
   return (
     <ShareButtonStyle>
-      <button onClick={handleOpenShare}>
+      <button onClick={handleOpenShare} data-tab="focus">
         <img src="/img/icon-share.svg" alt="공유하기" />
       </button>
       <p>공유</p>
