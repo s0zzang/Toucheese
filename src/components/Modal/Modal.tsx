@@ -10,6 +10,7 @@ import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import { Hidden, TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ModalProp {
   type: 'default' | 'dimmed' | 'fullscreen';
@@ -64,6 +65,7 @@ const Modal = ({
   buttons = [],
   additionalStyle,
 }: ModalProp) => {
+  const modalPortal = document.getElementById('modal-portal') as HTMLElement;
   const modals = useModalStore((state) => state.modals);
   const isOpen = modals[modalId];
   const isModalOpen = Object.values(modals).filter((boolean) => boolean).length;
@@ -85,15 +87,15 @@ const Modal = ({
     else htmlStyle.overflowY = 'auto';
   }, [isOpen]);
 
-  return (
+  return createPortal(
     isOpen && (
       <ModalStyle
         type={type}
         className="modal-box"
         onClick={(e) => handleDimClick(e)}
-        tabIndex={0}
         role="dialog"
         aria-modal="true"
+        data-id={modalId}
         ref={modalRef}
       >
         <ModalInner type={type} className="modal-inner" css={additionalStyle}>
@@ -159,7 +161,8 @@ const Modal = ({
           )}
         </ModalInner>
       </ModalStyle>
-    )
+    ),
+    modalPortal,
   );
 };
 
