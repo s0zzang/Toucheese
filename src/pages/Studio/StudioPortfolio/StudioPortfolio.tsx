@@ -114,7 +114,13 @@ const StudioPortfolio = () => {
           {portfolios && portfolios.portfolioDtos.content.length ? (
             <MasonryList>
               {portfolios.portfolioDtos.content.map(({ url, studio, id }) => (
-                <div key={`${studio}-${id}`} onClick={() => handleClick(id)}>
+                <div
+                  key={`${studio}-${id}`}
+                  onClick={() => handleClick(id)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleClick(id)}
+                  tabIndex={0}
+                  data-tab="focus"
+                >
                   <img src={url} alt={`${studio}-${id}`} />
                 </div>
               ))}

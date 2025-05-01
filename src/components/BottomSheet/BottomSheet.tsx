@@ -1,9 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react';
+import useTabFocus from '@hooks/useTabFocus';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 const BottomSheet = () => {
   const { isOpen, children, title, closeBottomSheet } = useBottomSheetState();
@@ -14,6 +16,9 @@ const BottomSheet = () => {
   const sheet = useRef<HTMLDivElement>(null); // 바텀시트 전체
   const content = useRef<HTMLDivElement>(null); // 바텀시트 컨텐츠
   const startY = useRef<number | null>(null); //초기 터치&마우스 Y좌표
+
+  const modalPortal = document.getElementById('modal-portal') as HTMLElement;
+  const { focusRef } = useTabFocus(closeBottomSheet);
 
   //바텀 시트 나오면 배경 스크롤 금지
   useEffect(() => {
@@ -108,9 +113,9 @@ const BottomSheet = () => {
     };
   }, [isDrag, translateY, sheetHeight, closeBottomSheet]);
 
-  return (
+  return createPortal(
     isOpen && (
-      <div css={DimStyle}>
+      <div css={DimStyle} ref={focusRef}>
         <div
           css={[SheetStyle(sheetHeight, translateY)]}
           ref={sheet}
@@ -129,7 +134,8 @@ const BottomSheet = () => {
           </div>
         </div>
       </div>
-    )
+    ),
+    modalPortal,
   );
 };
 

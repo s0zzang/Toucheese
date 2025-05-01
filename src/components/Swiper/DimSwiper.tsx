@@ -99,13 +99,13 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
   return (
     firstSlide && (
       <div css={dimSwiperBox}>
-        <p css={[TypoBodyMdR, TitleStyle]}>
+        <div css={[TypoBodyMdR, TitleStyle]}>
           <h3>
             {activeIndex} <span css={Hidden}>번째</span>{' '}
           </h3>
           <i>/</i>
           {data.length}
-        </p>
+        </div>
         <Swiper {...swiperOption}>{children}</Swiper>
         <div className="swiper-buttons">
           <button

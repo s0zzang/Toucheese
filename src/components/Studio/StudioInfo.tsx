@@ -52,6 +52,7 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
         </div>
         <div css={SocialActionsStyle}>
           <ShareButton
+            modalId={100}
             title={data.name}
             description={data.description}
             imageUrl={data.portfolios[0]?.url}

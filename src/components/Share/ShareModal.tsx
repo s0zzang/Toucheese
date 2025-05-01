@@ -5,9 +5,10 @@ import ShareOptions from './ShareOptions';
 import { ShareProps } from './ShareButton';
 import { css } from '@emotion/react';
 
-const ShareModal = ({ title, description, imageUrl, webUrl }: ShareProps) => {
+const ShareModal = ({ modalId, title, description, imageUrl, webUrl }: ShareProps) => {
   return (
     <Modal
+      modalId={modalId}
       type="fullscreen"
       title="공유 옵션 선택"
       withBtn={false}

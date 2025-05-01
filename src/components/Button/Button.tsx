@@ -33,6 +33,7 @@ interface ButtonProps {
   iconSizeWidth?: string;
   iconSizeHeight?: string;
   style?: CSSObject;
+  dataTab?: string;
 }
 
 /**  버튼 컴포넌트 사용
@@ -73,6 +74,7 @@ const Button = ({
   size = 'large',
   style,
   iconResetSize,
+  dataTab,
 }: ButtonProps) => {
   const isIconReset = type === 'reset' && iconResetSize;
 
@@ -334,7 +336,13 @@ ${width === 'fit' &&
   `;
 
   return (
-    <button type={type} css={[styles, style]} disabled={disabled} onClick={handleButtonClick}>
+    <button
+      type={type}
+      css={[styles, style]}
+      disabled={disabled}
+      onClick={handleButtonClick}
+      data-tab={dataTab}
+    >
       <div css={iconWrapperStyles}>
         {isIconReset ? (
           <img

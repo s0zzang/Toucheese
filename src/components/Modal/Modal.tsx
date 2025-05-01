@@ -10,6 +10,7 @@ import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import { Hidden, TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ModalProp {
   type: 'default' | 'dimmed' | 'fullscreen';
@@ -25,6 +26,7 @@ interface ModalProp {
     active?: boolean;
     width?: 'max' | 'fit';
     type?: 'button' | 'submit';
+    dataTab?: string;
   }[];
   additionalStyle?: SerializedStyles;
 }
@@ -64,13 +66,14 @@ const Modal = ({
   buttons = [],
   additionalStyle,
 }: ModalProp) => {
+  const modalPortal = document.getElementById('modal-portal') as HTMLElement;
   const modals = useModalStore((state) => state.modals);
   const isOpen = modals[modalId];
   const isModalOpen = Object.values(modals).filter((boolean) => boolean).length;
   const { close } = useModal(modalId);
   const handleClose = () => close();
 
-  const { modalRef } = useTabFocus(handleClose);
+  const { focusRef } = useTabFocus(close);
 
   const handleDimClick = (e: React.MouseEvent) => {
     const eventTarget = e.target as HTMLElement;
@@ -85,18 +88,16 @@ const Modal = ({
     else htmlStyle.overflowY = 'auto';
   }, [isOpen]);
 
-  console.log(additionalStyle);
-
-  return (
+  return createPortal(
     isOpen && (
       <ModalStyle
         type={type}
         className="modal-box"
         onClick={(e) => handleDimClick(e)}
-        tabIndex={0}
         role="dialog"
         aria-modal="true"
-        ref={modalRef}
+        data-id={modalId}
+        ref={focusRef}
       >
         <ModalInner type={type} className="modal-inner" css={additionalStyle}>
           {/* default 모달 헤더 */}
@@ -133,6 +134,7 @@ const Modal = ({
                   width = 'max',
                   active = true,
                   type = 'button',
+                  dataTab,
                 }) => (
                   <Button
                     key={text}
@@ -143,6 +145,7 @@ const Modal = ({
                     active={active}
                     width={width}
                     type={type}
+                    data-tab={dataTab}
                   />
                 ),
               )}
@@ -161,7 +164,8 @@ const Modal = ({
           )}
         </ModalInner>
       </ModalStyle>
-    )
+    ),
+    modalPortal,
   );
 };
 
@@ -292,7 +296,8 @@ const CloseBtnStyle = styled.button<ICloseBtnStyle>`
 
   ${mqMin(breakPoints.pc)} {
     background: url(/img/icon-close-gray800.svg) no-repeat center / 1.6rem;
-    top: 2rem;
+    ${({ mode }) => mode === 'dimmed' && `background-image: url(/img/icon-close-white.svg);`}
+    top: 2.5rem;
     right: ${variables.layoutPadding};
   }
 `;

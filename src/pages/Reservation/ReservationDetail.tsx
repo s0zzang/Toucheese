@@ -179,6 +179,7 @@ const ReservationDetail = () => {
                   onClick={() => {
                     locationModal.open();
                   }}
+                  data-tab="focus"
                 >
                   <img
                     src="/img/icon-location.svg"
@@ -337,6 +338,7 @@ const ReservationDetail = () => {
             disabled={status === 'COMPLETED' || status === 'CANCELED' ? false : isDisabled}
             variant="black"
             size="large"
+            data-tab="focus"
             onClick={
               status === 'COMPLETED' || status === 'CANCELED'
                 ? () => navigate(`/studio/${studioId}`)
