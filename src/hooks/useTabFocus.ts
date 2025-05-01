@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import useModalObserver from './useModalObserver';
+import useFocusObserver from './useTabFocusObserver';
 
 const useTabFocus = (onClose: () => void) => {
-  const modalRef = useRef<HTMLDivElement>(null);
-  const { prevModalLength, curModalLength } = useModalObserver();
+  const focusRef = useRef<HTMLDivElement>(null);
+  const { prevFocusLength, curFocusLength } = useFocusObserver();
   const [prevActEl, setPrevActEl] = useState<HTMLElement | null>(null);
 
   const focusableSelector =
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
   useEffect(() => {
-    if (!modalRef.current) return;
+    if (!focusRef.current) return;
 
-    const focusableEls = modalRef.current.querySelectorAll(
+    const focusableEls = focusRef.current.querySelectorAll(
       focusableSelector,
     ) as NodeListOf<HTMLElement>;
     const firstEl = focusableEls[0];
@@ -56,9 +56,9 @@ const useTabFocus = (onClose: () => void) => {
       document.removeEventListener('keyup', handleFocus);
       if (document.activeElement === document.body) prevActEl?.focus();
     };
-  }, [prevModalLength, curModalLength]);
+  }, [prevFocusLength, curFocusLength]);
 
-  return { modalRef };
+  return { focusRef };
 };
 
 export default useTabFocus;
