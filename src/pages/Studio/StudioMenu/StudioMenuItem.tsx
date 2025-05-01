@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdM, TypoBodyMdSb, TypoCapSmR } from '@styles/Common';
+import { TypoBodyMdM, TypoBodyMdSb, TypoBodySmR, TypoCapSmR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 import { IMenuListRes } from 'types/types';
@@ -127,6 +127,7 @@ const MenuHeadStyle = css`
     color: ${variables.colors.gray800};
 
     ${mqMin(breakPoints.pc)} {
+      ${TypoBodySmR}
       -webkit-line-clamp: 4;
     }
   }
