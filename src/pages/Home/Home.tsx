@@ -15,7 +15,7 @@ import styled from '@emotion/styled';
 import useGetWindowWidth from '@hooks/useGetWindowWidth';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { bg100vw, PCLayout } from '@styles/Common';
+import { bg100vw, Hidden, PCLayout } from '@styles/Common';
 import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { remToPx } from '@utils/remToPx';
@@ -142,6 +142,7 @@ const Home = () => {
         <meta property="og:description" content="터치즈에서 원하는 스튜디오를 검색해보세요!" />
       </Helmet>
 
+      <h1 css={Hidden}>스튜디오 목록</h1>
       <NavigatorStyle isFixed={isFixed}>
         <div
           css={css`
