@@ -10,8 +10,13 @@ const StudioMenuDetailReview = ({
   reviewItem: Review[];
   rating: number;
 }) => {
-  const reviewList = reviewItem.map((item) => (
-    <StudioReviewItem key={item.id} review={item} showMenuName={false} />
+  const reviewList = reviewItem.map((item, i) => (
+    <StudioReviewItem
+      key={item.id}
+      review={item}
+      showMenuName={false}
+      isLast={i === reviewItem.length - 1}
+    />
   ));
 
   return (
@@ -54,6 +59,6 @@ const ReviewList = css`
   display: flex;
   flex-direction: column;
   ${mqMin(breakPoints.pc)} {
-    width: 50vw;
+    width: 100%;
   }
 `;
