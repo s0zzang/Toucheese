@@ -40,7 +40,7 @@ const StudioItem = ({
     navigate(`/studio/${item.id}`);
   };
 
-  // 이미지 5개 불러오기
+  // 이미지 불러오기
   const getImages = (photos: IPortfolio[]) => {
     let images: string[] = [];
     const portfolios = isPc ? photos.slice(0, 7) : photos.slice(0, 5);
@@ -69,48 +69,40 @@ const StudioItem = ({
       tabIndex={0}
     >
       <ItemImageStyle>
-        {item.portfolios.length >= 4 ? (
-          isPc ? (
-            <div
-              css={css`
-                width: 100%;
-                display: flex;
-                align-items: center;
-                gap: 2px;
-              `}
-            >
-              {getImages(item.portfolios).map((image, index) => (
-                <img
-                  key={`${item.id}-image-${index}`}
-                  css={css`
-                    width: calc((100% - 12px) / 7);
-                    aspect-ratio: 127 / 160;
-                    object-fit: cover;
-                  `}
-                  src={image}
-                  alt={`이미지 ${index + 1}`}
-                />
-              ))}
-            </div>
-          ) : (
-            <ImageSwiper
-              images={item.portfolios}
-              imageStyle={css`
-                width: 100%;
-                aspect-ratio: 94 / 118;
-                object-fit: cover;
-
-                ${mqMin(breakPoints.pc)} {
-                  aspect-ratio: 141 / 177;
-                }
-              `}
-            />
-          )
+        {isPc ? (
+          <div
+            css={css`
+              width: 100%;
+              display: flex;
+              align-items: center;
+              gap: 2px;
+            `}
+          >
+            {getImages(item.portfolios).map((image, index) => (
+              <img
+                key={`${item.id}-image-${index}`}
+                css={css`
+                  width: calc((100% - 12px) / 7);
+                  aspect-ratio: 127 / 160;
+                  object-fit: cover;
+                `}
+                src={image}
+                alt={`이미지 ${index + 1}`}
+              />
+            ))}
+            {item.portfolios.length < 7 && <NoPic type={7 - item.portfolios.length} />}
+          </div>
         ) : (
-          <NoPic />
+          <ImageSwiper
+            images={item.portfolios}
+            imageStyle={css`
+              width: 100%;
+              aspect-ratio: 94 / 118;
+              object-fit: cover;
+            `}
+          />
         )}
       </ItemImageStyle>
-
       <ItemContentStyle>
         <ItemInfoStyle>
           <TitleStyle css={TypoTitleSmS}>{`${item.name}`}</TitleStyle>
