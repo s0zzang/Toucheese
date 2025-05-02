@@ -142,7 +142,7 @@ const Home = () => {
         <meta property="og:description" content="터치즈에서 원하는 스튜디오를 검색해보세요!" />
       </Helmet>
 
-      <h1 css={Hidden}>스튜디오 목록</h1>
+      <h1 css={Hidden}>스튜디오 고르기</h1>
       <NavigatorStyle isFixed={isFixed}>
         <div
           css={css`

@@ -63,7 +63,7 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
   return (
     <>
       {isPc && (
-        <h2
+        <h3
           css={css`
             ${TypoBodyMdSb}
             color: ${variables.colors.gray800};
@@ -71,7 +71,7 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
           `}
         >
           매장 정보·서비스
-        </h2>
+        </h3>
       )}
       <ServiceAvailabilityContainerStyle>
         <Button

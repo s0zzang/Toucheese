@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import Loading from '@components/Loading/Loading';
 import NoResult from '@components/NoResult/NoResult';
 import { useGetStudios } from '@hooks/useGetStudios';
@@ -6,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { IStudioItem } from 'types/types';
 import StudioItem from './StudioItem';
+import { Hidden } from '@styles/Common';
 
 const StudioList = ({
   mode,
@@ -64,21 +67,24 @@ const StudioList = ({
               }
             />
           ) : (
-            <Virtuoso
-              data={items}
-              useWindowScroll
-              totalCount={items.length}
-              endReached={loadMore}
-              overscan={10}
-              itemContent={(index, item) => (
-                <StudioItem
-                  key={item.id}
-                  item={item}
-                  isFirst={index === 0}
-                  isLast={index === items.length - 1}
-                />
-              )}
-            />
+            <>
+              <h2 css={Hidden}>스튜디오 목록</h2>
+              <Virtuoso
+                data={items}
+                useWindowScroll
+                totalCount={items.length}
+                endReached={loadMore}
+                overscan={10}
+                itemContent={(index, item) => (
+                  <StudioItem
+                    key={item.id}
+                    item={item}
+                    isFirst={index === 0}
+                    isLast={index === items.length - 1}
+                  />
+                )}
+              />
+            </>
           )}
         </>
       )}
