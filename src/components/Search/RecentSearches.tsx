@@ -2,7 +2,7 @@
 import EmptyMessage from '@components/Message/EmptyMessage';
 import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdM, TypoCapSmM, TypoTitleXsB } from '@styles/Common';
+import { Hidden, TypoBodyMdM, TypoCapSmM, TypoTitleXsB } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -34,9 +34,10 @@ const RecentSearches = () => {
 
   return (
     <div css={containerStyle}>
+      <h2 css={Hidden}>스튜디오 검색</h2>
       <div css={titleSectionStyle}>
-        <h2 css={TypoTitleXsB}>최근 검색어</h2>
-        <button onClick={clearAllSearchTerms} css={[allClearButtonStyle, TypoCapSmM]}>
+        <h3 css={TypoTitleXsB}>최근 검색어</h3>
+        <button type="button" onClick={clearAllSearchTerms} css={[allClearButtonStyle, TypoCapSmM]}>
           모두 지우기
         </button>
       </div>
@@ -45,18 +46,15 @@ const RecentSearches = () => {
           <EmptyMessage message="최근 검색어가 없습니다." />
         ) : (
           recentSearches.map((search, index) => (
-            <div key={index} css={[searchItemStyle, TypoBodyMdM]}>
-              <span
-                onClick={() => {
-                  handleClickSearchItem(search);
-                }}
-              >
-                {search}
-              </span>
+            <div
+              key={index}
+              css={[searchItemStyle, TypoBodyMdM]}
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && handleClickSearchItem(search)}
+            >
+              <span onClick={() => handleClickSearchItem(search)}>{search}</span>
               <button
-                onClick={() => {
-                  removeSearchTerm(index);
-                }}
+                onClick={() => removeSearchTerm(index)}
                 css={deleteButtonStyle}
                 aria-label={`${search} 삭제`}
               >
@@ -103,6 +101,10 @@ const searchListStyle = css`
     flex-wrap: wrap;
     gap: 0.6rem;
     overflow-x: hidden;
+    padding-left: 2px;
+    padding-bottom: 2px;
+    margin-left: -2px;
+    margin-bottom: -2px;
   }
 `;
 
