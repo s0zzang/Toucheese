@@ -22,7 +22,7 @@ const FilterPriceSlidePC = () => {
 
   return (
     <div>
-      <h2
+      <h3
         css={css`
           ${TypoBodyMdSb}
           color: ${variables.colors.gray800};
@@ -30,7 +30,7 @@ const FilterPriceSlidePC = () => {
         `}
       >
         가격
-      </h2>
+      </h3>
       <div css={inputBox}>
         <Input
           labelName="최소가격"

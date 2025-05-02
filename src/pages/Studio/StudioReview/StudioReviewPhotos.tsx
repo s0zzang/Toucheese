@@ -74,7 +74,7 @@ const StudioReviewPhotos = () => {
         </Helmet>
       )}
 
-      <Header title="리뷰 사진 모아보기" />
+      <Header title="리뷰 사진 모아보기" fixed={true} />
       <div css={studioPaddingTop}>
         <StudioReviewPhotosContainerStyle>
           <ButtonWrapperStyle>

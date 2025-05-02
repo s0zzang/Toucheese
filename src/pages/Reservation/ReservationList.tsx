@@ -7,7 +7,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useGetReservationList } from '@hooks/useGetReservationList';
 import useToast from '@hooks/useToast';
-import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import { bg100vw, PCLayout, TypoBodyMdM, TypoTitleMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
 import { sortReservations } from '@utils/sortReservations';
@@ -99,7 +99,7 @@ const ReservationList = () => {
           {isPc ? (
             <h1 className="pcLayout">예약내역</h1>
           ) : (
-            <Header title="예약내역" backTo="/user/mypage" />
+            <Header title="예약내역" backTo="/user/mypage" fixed={true} />
           )}
           <div
             css={css`
@@ -146,6 +146,12 @@ export const MyPageHeaderContainerStyle = styled.div`
   .pcLayout {
     ${TypoTitleMdSb}
     padding: 4rem 0 2rem;
+  }
+
+  ${mqMax(breakPoints.moMax)} {
+    & > div {
+      padding-top: ${variables.headerHeight};
+    }
   }
 
   ${mqMin(breakPoints.pc)} {

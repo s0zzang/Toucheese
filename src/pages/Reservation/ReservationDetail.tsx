@@ -138,7 +138,7 @@ const ReservationDetail = () => {
 
   return (
     <>
-      <Header title="예약상세" />
+      <Header title="예약상세" fixed={true} />
 
       <div css={containerStyle}>
         <section css={DividerStyle}>
@@ -357,6 +357,7 @@ const containerStyle = css`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding-top: ${variables.headerHeight};
 
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}

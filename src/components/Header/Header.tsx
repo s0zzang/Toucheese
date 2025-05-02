@@ -51,7 +51,7 @@ const headerStyle = (fix: boolean, scrollY: boolean, scrollEvent: boolean) => cs
   left: 0;
   right: 0;
   `}
-  padding: ${variables.layoutPadding};
+  padding:${fix ? variables.layoutPadding : `${variables.layoutPadding} 0`};
   transition: all 0.2s;
 
   ${mqMin(breakPoints.pc)} {

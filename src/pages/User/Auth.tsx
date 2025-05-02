@@ -49,7 +49,7 @@ const Auth = () => {
           </div>
 
           <div css={LoginPageDesStyle}>
-            <h1>터치즈에서 간편하게</h1>
+            <h2>터치즈에서 간편하게</h2>
             <p>내 인생 사진관 찾고 예약까지!</p>
           </div>
 
@@ -69,13 +69,13 @@ const Auth = () => {
               >
                 이미 가입하셨나요?
               </span>
-              <span
+              <h3
                 css={css`
                   color: ${variables.colors.black};
                 `}
               >
                 로그인 하기
-              </span>
+              </h3>
             </div>
           </Link>
         </div>
@@ -136,7 +136,7 @@ const HeaderWrapperStyle = css`
 `;
 
 const LoginPageDesStyle = css`
-  h1 {
+  h2 {
     font-size: 2.2rem;
     font-weight: 700;
     opacity: 0;

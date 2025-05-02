@@ -113,7 +113,9 @@ const StudioItem = ({
 
       <ItemContentStyle>
         <ItemInfoStyle>
-          <TitleStyle css={TypoTitleSmS}>{`${item.name}`}</TitleStyle>
+          <TitleStyle css={TypoTitleSmS}>
+            <h3>{item.name}</h3>
+          </TitleStyle>
           <InfoContainerStyle>
             <div>
               <div className="icon-container">
