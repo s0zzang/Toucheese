@@ -1,65 +1,105 @@
 /** @jsxImportSource @emotion/react */
-import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdM, TypoTitleXsR } from '@styles/Common';
+import { TypoBodySmR, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 
-const NoPic = () => {
+const NoPic = ({ type }: { type: number }) => {
   return (
-    <DivStyle>
-      <p>멋진 사진을 준비 중입니다. 기대해 주세요!</p>
-    </DivStyle>
+    <div css={DivStyle(type)}>
+      {type > 2 ? (
+        <p>
+          멋진 사진을 준비 중입니다.
+          <br />
+          기대해 주세요!
+        </p>
+      ) : (
+        <p>
+          멋진 사진을
+          <br />
+          기대해 주세요!
+        </p>
+      )}
+    </div>
   );
 };
 
-const DivStyle = styled.div`
+const DivStyle = (type: number) => css`
+  ${TypoCapSmM}
+  background-color: ${variables.colors.gray200};
+  color: ${variables.colors.gray600};
+  padding: 0 ${variables.layoutPadding};
   width: 100%;
   height: 11.8rem;
-  padding: 0 2.141rem 0 ${variables.layoutPadding};
-  background-color: ${variables.colors.gray200};
   display: flex;
-  overflow: hidden;
+  align-items: center;
 
-  & p {
-    flex-grow: 1;
-    flex-shrink: 0;
-    max-width: 18rem;
-
-    color: ${variables.colors.gray700};
-    margin: auto 0;
-    ${TypoBodyMdM}
-  }
-
-  &::after {
-    content: '';
-    width: 9.752rem;
-    height: 9.494rem;
-    background: url('/img/icon-nopic-mo.svg') no-repeat center / contain;
-    margin-top: auto;
-    margin-bottom: -2.55px;
-    margin-left: auto;
+  p {
+    word-break: break-all;
   }
 
   ${mqMin(breakPoints.pc)} {
-    height: 17.6rem;
-    padding: ${variables.layoutPadding};
-    flex-direction: column-reverse;
-    gap: 1.4rem;
+    ${TypoTitleXsM}
+    height: unset;
 
-    & p {
-      flex-grow: unset;
-      max-width: unset;
-      margin: unset;
-      ${TypoTitleXsR}
-      color: ${variables.colors.gray600};
+    ${type === 7 && `width: 100%; height: 16rem;`}
+    ${type === 6 && `width: calc(((100% - 12px) / 7) * 6 + 10px); aspect-ratio: 772 / 160;`}
+    ${type === 5 && `width: calc(((100% - 12px) / 7) * 5 + 8px); aspect-ratio: 643 / 160;`}
+    ${type === 4 &&
+    `width: calc(((100% - 12px) / 7) * 4 + 6px); aspect-ratio: 514 / 160; box-shadow: inset 0 0 10px red;`}
+    ${type === 3 && `width: calc(((100% - 12px) / 7) * 3 + 4px); aspect-ratio: 385 / 160;`}
+    ${type === 2 &&
+    `width: calc(((100% - 12px) / 7) * 2 + 2px); aspect-ratio: 256 / 160; position: relative;`}
+    ${type === 1 &&
+    `width: calc(((100% - 12px) / 7) * 1); aspect-ratio: 127 / 160; flex-direction: column; gap: 1rem; justify-content: center; text-align: center; padding: 0 0.8rem;`}
+    ${type === 1 && TypoBodySmR}
+
+    p {
+      ${type === 2 &&
+      `position: absolute; top: 3.2rem; left: ${variables.layoutPadding}; z-index: 1;`}
     }
 
     &::after {
       content: '';
-      width: 26.5rem;
-      height: 7.6rem;
-      background: url('/img/icon-nopic-pc.svg') no-repeat center / 100%;
-      margin: 1.4rem 0 0 0.3rem;
+      margin-left: auto;
+      margin-right: 2.6rem;
+
+      ${(type === 6 || type === 7) &&
+      `background: url('/img/icon-nopic-6.svg') no-repeat center / contain; 
+        width: 46.434rem;
+        height: 14.478rem;
+      `}
+
+      ${type === 5 &&
+      `background: url('/img/icon-nopic-5.svg') no-repeat center / contain;
+        width: 31.708rem;
+        height: 14.478rem;
+      `}
+
+      ${(type === 4 || type === 3) &&
+      `background: url('/img/icon-nopic-2.svg') no-repeat center / contain;
+        width: 23.181rem;
+        height: 14.478rem;
+      `}
+
+      ${type === 3 && `margin-right: -0.4rem;`}
+
+      ${type === 2 &&
+      `background: url('/img/icon-nopic-2.svg') no-repeat center / contain;
+        width: 16.242rem;
+        height: 10.144rem;
+        margin: unset;
+        position: absolute;
+        bottom: 1.4rem;
+        right: 1.3rem;
+      `}
+
+      ${type === 1 &&
+      `background: url('/img/icon-nopic-1.svg') no-repeat center / contain;
+        width: 6.37rem;
+        height: 4.679rem;
+        margin: 0 auto;
+      `}
     }
   }
 `;
