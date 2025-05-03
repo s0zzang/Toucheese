@@ -324,7 +324,7 @@ const portfolioPreviewStyle = css`
   grid-template-columns: 2fr 1fr 1fr;
   grid-template-rows: repeat(2, 1fr);
   width: calc(100% + 3.2rem);
-  margin-left: -1.6rem;
+  margin-left: -${variables.layoutPadding};
   margin-bottom: 2rem;
 
   & > img {
