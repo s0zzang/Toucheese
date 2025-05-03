@@ -56,7 +56,7 @@ const StudioDetailLayout = () => {
           </aside>
         </main>
       ) : (
-        <Loading size="big" phrase="스튜디오 정보를 불러오고 있습니다." />
+        <Loading size="small" phrase="스튜디오 정보를 불러오고 있습니다." />
       )}
     </>
   );
