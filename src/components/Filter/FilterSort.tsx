@@ -104,6 +104,7 @@ const DropdownWrapper = styled.div`
 
 const DropdownList = styled.ul`
   position: absolute;
+  margin-top: 0.6rem;
   top: -1px;
   width: 100%;
   background: white;

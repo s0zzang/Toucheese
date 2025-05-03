@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css, CSSObject, keyframes } from '@emotion/react';
-import { PCLayout, TypoBodyMdM, TypoBodyMdR, TypoBodySmM, TypoTitleXsM } from '@styles/Common';
+import { PCLayout, TypoBodyMdM, TypoBodyMdR, TypoBodySmR, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import React, { useState } from 'react';
 
@@ -34,6 +34,7 @@ interface ButtonProps {
   iconSizeHeight?: string;
   style?: CSSObject;
   dataTab?: string;
+  iconGap?: string;
 }
 
 /**  버튼 컴포넌트 사용
@@ -60,6 +61,7 @@ interface ButtonProps {
 
 const Button = ({
   icon,
+  iconGap = '0.8rem',
   iconSizeWidth = '2rem',
   iconSizeHeight = '2rem',
   iconPosition = 'non',
@@ -145,7 +147,7 @@ const Button = ({
   const iconWrapperStyles = css`
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: ${iconGap};
 
     ${iconPosition === 'right' && `flex-direction: row-reverse;`}
     ${iconPosition === 'left' && ` flex-direction: row;`}
@@ -155,9 +157,9 @@ const Button = ({
   // ----------------------------- 버튼 사이즈 -----------------------------
   const sizeStyles = {
     xsmall: css`
-      ${TypoBodySmM};
+      ${TypoBodySmR};
       height: 3.2rem;
-      padding: 0 1rem;
+      padding: 0.6rem 1rem;
     `,
     small: css`
       ${TypoBodyMdR};

@@ -43,6 +43,7 @@ const Filter = ({ text, onClick, params, paramsKeyword, paramsName }: FilterProp
       size="xsmall"
       width="fit"
       icon={<img src="/img/icon-arrowdown.svg" alt="닫기 아이콘" />}
+      iconGap="0.5rem"
       iconSizeWidth="1.1rem"
       iconSizeHeight="0.6rem"
       iconPosition="right"
