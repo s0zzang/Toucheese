@@ -149,7 +149,7 @@ const Home = () => {
             ${mqMin(breakPoints.pc)} {
               ${PCLayout}
               ${bg100vw(variables.colors.black)}
-              display: flex;
+                display: flex;
               align-items: center;
               gap: 1.6rem;
               padding: 0 ${variables.layoutPadding};

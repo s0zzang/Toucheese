@@ -23,21 +23,22 @@ export const getMinPrice = (menu: IMenus[]) => {
   return minPrice.toLocaleString('ko-KR');
 };
 
-const StudioItem = ({
-  item,
-  isFirst,
-  isLast,
-}: {
-  item: IStudioItem;
-  isFirst: boolean;
-  isLast: boolean;
-}) => {
+const StudioItem = ({ item, isLast }: { item: IStudioItem; isLast: boolean }) => {
   const navigate = useNavigate();
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
   // 스튜디오 클릭 시 navigate
   const handleClick = () => {
     navigate(`/studio/${item.id}`);
+  };
+
+  // 탭 키 이동 후 Enter 시 navigate
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (!isPc) return;
+
+    if (e.code === 'Enter') {
+      navigate(`/studio/${item.id}`);
+    }
   };
 
   // 이미지 불러오기
@@ -52,111 +53,98 @@ const StudioItem = ({
     return images;
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (!isPc) return;
-
-    if (e.code === 'Enter') {
-      navigate(`/studio/${item.id}`);
-    }
-  };
-
   return (
-    <DivStyle
-      isFirst={isFirst}
-      isLast={isLast}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-    >
-      <ItemImageStyle>
-        {isPc ? (
-          <div
-            css={css`
-              width: 100%;
-              display: flex;
-              align-items: center;
-              gap: 2px;
-            `}
-          >
-            {getImages(item.portfolios).map((image, index) => (
-              <img
-                key={`${item.id}-image-${index}`}
-                css={css`
-                  width: calc((100% - 12px) / 7);
-                  aspect-ratio: 127 / 160;
-                  object-fit: cover;
-                `}
-                src={image}
-                alt={`이미지 ${index + 1}`}
-              />
-            ))}
-            {item.portfolios.length < 7 && <NoPic type={7 - item.portfolios.length} />}
-          </div>
-        ) : (
-          <ImageSwiper
-            images={item.portfolios}
-            imageStyle={css`
-              width: 100%;
-              aspect-ratio: 94 / 118;
-              object-fit: cover;
-            `}
-          />
-        )}
-      </ItemImageStyle>
-      <ItemContentStyle>
-        <ItemInfoStyle>
-          <TitleStyle css={TypoTitleSmS}>
-            <h3>{item.name}</h3>
-          </TitleStyle>
-          <InfoContainerStyle>
-            <div>
-              <div className="icon-container">
-                <img className="rating" src="/img/icon-rating.svg" alt="평점" />
-              </div>
-              <p>
-                {item.rating}
-                <span>{` (${item.review_count}개의 평가)`}</span>
-              </p>
+    <DivStyle isLast={isLast}>
+      <div onClick={handleClick} onKeyDown={handleKeyDown} tabIndex={0}>
+        <ItemImageStyle>
+          {isPc ? (
+            <div
+              css={css`
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 2px;
+              `}
+            >
+              {getImages(item.portfolios).map((image, index) => (
+                <img
+                  key={`${item.id}-image-${index}`}
+                  css={css`
+                    width: calc((100% - 12px) / 7);
+                    aspect-ratio: 127 / 160;
+                    object-fit: cover;
+                  `}
+                  src={image}
+                  alt={`이미지 ${index + 1}`}
+                />
+              ))}
+              {item.portfolios.length < 7 && <NoPic type={7 - item.portfolios.length} />}
             </div>
-            <div>
-              <div className="icon-container">
-                <img className="price" src="/img/icon-price.svg" alt="가격" />
+          ) : (
+            <ImageSwiper
+              images={item.portfolios}
+              imageStyle={css`
+                width: 100%;
+                aspect-ratio: 94 / 118;
+                object-fit: cover;
+              `}
+            />
+          )}
+        </ItemImageStyle>
+        <ItemContentStyle>
+          <ItemInfoStyle>
+            <TitleStyle css={TypoTitleSmS}>{item.name}</TitleStyle>
+            <InfoContainerStyle>
+              <div>
+                <div className="icon-container">
+                  <img className="rating" src="/img/icon-rating.svg" alt="평점" />
+                </div>
+                <p>
+                  {item.rating}
+                  <span>{` (${item.review_count}개의 평가)`}</span>
+                </p>
               </div>
-              <p>{`${getMinPrice(item.menus)}원~`}</p>
-            </div>
-          </InfoContainerStyle>
-          <InfoContainerStyle>
-            <div>
-              <div className="icon-container">
-                <img className="location" src="/img/icon-location.svg" alt="주소" />
+              <div>
+                <div className="icon-container">
+                  <img className="price" src="/img/icon-price.svg" alt="가격" />
+                </div>
+                <p>{`${getMinPrice(item.menus)}원~`}</p>
               </div>
-              <p className="location">{`${item.addressGu} ${item.address}`}</p>
-            </div>
-            <div>
-              <div className="icon-container">
-                <img className="time" src="/img/icon-clock.svg" alt="영업 시간" />
+            </InfoContainerStyle>
+            <InfoContainerStyle>
+              <div>
+                <div className="icon-container">
+                  <img className="location" src="/img/icon-location.svg" alt="주소" />
+                </div>
+                <p className="location">{`${item.addressGu} ${item.address}`}</p>
               </div>
-              <p>{`${item.open_time.slice(0, -3)} - ${item.close_time.slice(0, -3)}`}</p>
-            </div>
-          </InfoContainerStyle>
-        </ItemInfoStyle>
-        <BookmarkStyle>
-          <Bookmark
-            id={item.id}
-            count={item.bookmark_count}
-            isBookmarked={item.bookmark}
-            type="default"
-          />
-        </BookmarkStyle>
-      </ItemContentStyle>
+              <div>
+                <div className="icon-container">
+                  <img className="time" src="/img/icon-clock.svg" alt="영업 시간" />
+                </div>
+                <p>{`${item.open_time.slice(0, -3)} - ${item.close_time.slice(0, -3)}`}</p>
+              </div>
+            </InfoContainerStyle>
+          </ItemInfoStyle>
+          <BookmarkStyle>
+            <Bookmark
+              id={item.id}
+              count={item.bookmark_count}
+              isBookmarked={item.bookmark}
+              type="default"
+            />
+          </BookmarkStyle>
+        </ItemContentStyle>
+      </div>
     </DivStyle>
   );
 };
 
-const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
+const DivStyle = styled.div<{ isLast: boolean }>`
   width: 100%;
   padding: 1.6rem 0;
   border-bottom: 1px solid ${variables.colors.gray300};
+  cursor: pointer;
 
   ${({ isLast }) =>
     isLast &&
@@ -164,20 +152,16 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
       border-bottom: unset;
   `}
 
-  &:hover {
-    cursor: pointer;
-  }
-
   ${mqMin(breakPoints.pc)} {
     padding: unset;
-    margin-bottom: 3.4rem;
+    padding-bottom: 3.4rem;
     border-bottom: unset;
 
     ${({ isLast }) =>
       isLast &&
       `
-        margin-bottom: unset;
-    `}
+      padding-bottom: unset;
+  `}
   }
 `;
 
@@ -201,7 +185,7 @@ const ItemInfoStyle = styled.div`
   flex-grow: 1;
 `;
 
-const TitleStyle = styled.p`
+const TitleStyle = styled.h3`
   margin-bottom: 0.5rem;
 `;
 

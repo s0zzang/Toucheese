@@ -3,12 +3,12 @@
 import Loading from '@components/Loading/Loading';
 import NoResult from '@components/NoResult/NoResult';
 import { useGetStudios } from '@hooks/useGetStudios';
+import { Hidden } from '@styles/Common';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { useEffect, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { IStudioItem } from 'types/types';
 import StudioItem from './StudioItem';
-import { Hidden } from '@styles/Common';
 
 const StudioList = ({
   mode,
@@ -76,12 +76,7 @@ const StudioList = ({
                 endReached={loadMore}
                 overscan={10}
                 itemContent={(index, item) => (
-                  <StudioItem
-                    key={item.id}
-                    item={item}
-                    isFirst={index === 0}
-                    isLast={index === items.length - 1}
-                  />
+                  <StudioItem key={item.id} item={item} isLast={index === items.length - 1} />
                 )}
               />
             </>

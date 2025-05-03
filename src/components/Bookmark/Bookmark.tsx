@@ -7,7 +7,8 @@ import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { Hidden, TypoBodySmR, TypoCapXsR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { getLocalStorageItem } from '@utils/getLocalStorageItem';
-import { useState } from 'react';
+import { KeyboardEvent, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { IUser } from 'types/types';
 
@@ -37,6 +38,7 @@ const Bookmark = ({
   const { accessToken } = getLocalStorageItem<IUser>('userState', defaultUserState);
   const openToast = useToast();
   const navigate = useNavigate();
+  const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
   // 북마크 설정/해제 api 호출
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -61,9 +63,34 @@ const Bookmark = ({
     }
   };
 
+  const handleKeyDown = async (e: KeyboardEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (!isPc) return;
+
+    if (e.code === 'Enter') {
+      if (accessToken) {
+        await handleBookmark(accessToken, id);
+        setBookmark((state) => ({
+          ...state,
+          isActive: !state.isActive,
+          count: state.isActive ? state.count - 1 : state.count + 1,
+        }));
+
+        if (handleUnbookmark) {
+          handleUnbookmark();
+        }
+      }
+      // 로그인 되지 않은 상태면 로그인 페이지로 이동
+      else {
+        openToast('좋아요를 누르시려면 로그인이 필요합니다!');
+        navigate('/user/auth');
+      }
+    }
+  };
+
   return (
     <div css={BookmarkStyle({ type })}>
-      <button type="button" onClick={handleClick}>
+      <button type="button" onClick={handleClick} onKeyDown={handleKeyDown}>
         <img
           src={`/img/icon-bookmark-${bookmark.isActive ? 'active' : 'inactive'}.svg`}
           alt={`북마크 ${bookmark.isActive ? '해제' : '등록'}`}
@@ -85,6 +112,7 @@ const BookmarkStyle = ({ type }: { type: 'default' | 'bookmark' }) => css`
     align-items: center;
     justify-content: center;
     margin-bottom: 2px;
+    cursor: pointer;
 
     & > img {
       width: 2rem;
