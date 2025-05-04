@@ -6,7 +6,9 @@ import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import useToast from '@hooks/useToast';
 import useSignupStore from '@store/useSignupStore';
-import { TypoTitleXsM, TypoTitleXsSb } from '@styles/Common';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { PCLayout, TypoTitleMdSb, TypoTitleXsM, TypoTitleXsSb } from '@styles/Common';
+import variables from '@styles/Variables';
 import { encryptUserData } from '@utils/encryptUserData';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -169,84 +171,126 @@ const ChangeProfile = () => {
         <meta property="og:description" content="사용자 개인정보 변경" />
       </Helmet>
 
-      <div css={headerStyle}>
-        <BackButton />
-        <h1>개인정보 변경</h1>
+      <div css={changeProfileWrapper}>
+        <div css={MOheaderStyle}>
+          <BackButton />
+          <h1>개인정보 변경</h1>
+        </div>
+        <div css={PCheaderStyle}>
+          <h1>개인정보 변경</h1>
+        </div>
+
+        <h2 css={pageTitleStyle}>개인정보</h2>
+        <form noValidate onSubmit={handleSubmit(handleSave)} css={formStyle}>
+          <div css={containerStyle}>
+            {/* 이름 */}
+            <Input
+              labelName="이름"
+              type="name"
+              onChange={(e) => {
+                usernameRef.current = e.target.value;
+                setSignupData({ username: e.target.value });
+                setValue('username', e.target.value);
+              }}
+              defaultValue={storageName}
+              placeholder="실명을 입력하세요."
+              register={register('username', {
+                required: '이름은 필수입니다',
+                minLength: {
+                  value: 2,
+                  message: '이름은 2자 이상이어야 합니다',
+                },
+              })}
+              error={errors.username?.message?.toString()}
+            />
+
+            {/* 휴대폰 번호 */}
+            <Input
+              type="phone"
+              labelName="휴대폰"
+              onChange={(e) => {
+                phoneRef.current = e.target.value;
+                setSignupData({ phone: e.target.value });
+                setValue('phone', e.target.value);
+              }}
+              defaultValue={storagePhone}
+              placeholder="‘-’구분없이 입력하세요"
+              hasCheckButton
+              onCheck={handleAuth}
+              checkButtonText="인증하기"
+              register={register('phone', {
+                required: '휴대폰 번호는 필수입니다.',
+                minLength: {
+                  value: 11,
+                  message: '올바른 휴대폰 번호 형식이 아닙니다.',
+                },
+              })}
+              error={errors.phone?.message?.toString()}
+            />
+          </div>
+
+          <div css={buttonStyle}>
+            <Button
+              onClick={handleEditProfile}
+              type="submit"
+              text="변경하기"
+              size="large"
+              variant="gray"
+              disabled={isDisabled}
+              active={isActive}
+            />
+          </div>
+        </form>
       </div>
-      <h2 css={pageTitleStyle}>개인정보</h2>
-      <form noValidate onSubmit={handleSubmit(handleSave)} css={formStyle}>
-        <div css={containerStyle}>
-          {/* 이름 */}
-          <Input
-            labelName="이름"
-            type="name"
-            onChange={(e) => {
-              usernameRef.current = e.target.value;
-              setSignupData({ username: e.target.value });
-              setValue('username', e.target.value);
-            }}
-            defaultValue={storageName}
-            placeholder="실명을 입력하세요."
-            register={register('username', {
-              required: '이름은 필수입니다',
-              minLength: {
-                value: 2,
-                message: '이름은 2자 이상이어야 합니다',
-              },
-            })}
-            error={errors.username?.message?.toString()}
-          />
-
-          {/* 휴대폰 번호 */}
-          <Input
-            type="phone"
-            labelName="휴대폰"
-            onChange={(e) => {
-              phoneRef.current = e.target.value;
-              setSignupData({ phone: e.target.value });
-              setValue('phone', e.target.value);
-            }}
-            defaultValue={storagePhone}
-            placeholder="‘-’구분없이 입력하세요"
-            hasCheckButton
-            onCheck={handleAuth}
-            checkButtonText="인증하기"
-            register={register('phone', {
-              required: '휴대폰 번호는 필수입니다.',
-              minLength: {
-                value: 11,
-                message: '올바른 휴대폰 번호 형식이 아닙니다.',
-              },
-            })}
-            error={errors.phone?.message?.toString()}
-          />
-        </div>
-
-        <div css={buttonStyle}>
-          <Button
-            onClick={handleEditProfile}
-            type="submit"
-            text="다음"
-            size="large"
-            variant="gray"
-            disabled={isDisabled}
-            active={isActive}
-          />
-        </div>
-      </form>
     </>
   );
 };
 
 export default ChangeProfile;
 
-const headerStyle = css`
+const changeProfileWrapper = css`
   display: flex;
-  margin-bottom: 2rem;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: ${variables.headerHeight};
+
+  ${mqMin(breakPoints.pc)} {
+    ${PCLayout}
+    min-width:  60.8rem;
+    max-width: 60.8rem;
+    padding: 4rem 1.6rem 0;
+    margin: 0 auto 0 31rem;
+  }
+`;
+
+const MOheaderStyle = css`
+  position: relative;
+  display: flex;
+  height: 5rem;
+  align-items: center;
 
   h1 {
     ${TypoTitleXsM}
-    margin-left: 0.8rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    display: none;
+  }
+`;
+const PCheaderStyle = css`
+  display: none;
+
+  h1 {
+    ${TypoTitleMdSb}
+    margin-bottom: 4.2rem;
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    margin-bottom: 3.2rem;
+    display: contents;
   }
 `;
 
@@ -260,8 +304,18 @@ const containerStyle = css`
 const buttonStyle = css`
   position: fixed;
   bottom: 3rem;
-  left: 1.6rem;
-  width: calc(100% - 3.2rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - ${variables.layoutPadding}*2);
+  padding: 0;
+
+  ${mqMin(breakPoints.pc)} {
+    left: 34rem;
+    transform: none;
+    width: calc(100vw - 32rem);
+    max-width: 60.8rem;
+    min-width: 60.8rem;
+  }
 `;
 
 const pageTitleStyle = css`
