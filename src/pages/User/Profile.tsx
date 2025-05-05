@@ -4,7 +4,8 @@ import Button from '@components/Button/Button';
 import { css } from '@emotion/react';
 import useToast from '@hooks/useToast';
 import { loadUserFromStorage, useUserStore } from '@store/useUserStore';
-import { TypoBodyMdR, TypoTitleXsB, TypoTitleXsM } from '@styles/Common';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { PCLayout, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsB, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -43,9 +44,12 @@ const Profile = () => {
   }, [searchParams]);
 
   return (
-    <>
-      <div css={headerStyle}>
+    <div css={profileWrapper}>
+      <div css={MOheaderStyle}>
         <BackButton />
+        <h1>내정보 관리</h1>
+      </div>
+      <div css={PCheaderStyle}>
         <h1>내정보 관리</h1>
       </div>
       <div
@@ -136,17 +140,50 @@ const Profile = () => {
         <li>|</li>
         <button type="button">회원 탈퇴</button>
       </div>
-    </>
+    </div>
   );
 };
 
-const headerStyle = css`
+const profileWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: ${variables.headerHeight};
+
+  ${mqMin(breakPoints.pc)} {
+    ${PCLayout}
+    min-width:  60.8rem;
+    max-width: 60.8rem;
+    padding: 4rem 1.6rem 0;
+    margin: 0 auto 0 31rem;
+  }
+`;
+
+const MOheaderStyle = css`
   display: flex;
   margin-bottom: 2rem;
 
   h1 {
     ${TypoTitleXsM}
     margin-left: 0.8rem;
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    display: none;
+  }
+`;
+
+const PCheaderStyle = css`
+  display: none;
+
+  h1 {
+    ${TypoTitleMdSb}
+    margin-bottom: 4.2rem;
+  }
+
+  ${mqMin(breakPoints.pc)} {
+    margin-bottom: 3.2rem;
+    display: contents;
   }
 `;
 
@@ -189,12 +226,11 @@ const accoutStyle = css`
   bottom: 4rem;
   left: 50%;
   transform: translateX(-50%);
-`;
 
-// const ButtonStyle = css`
-//   padding: 0 4.6rem;
-//   margin: auto;
-//   margin-top: 2.8rem;
-// `;
+  ${mqMin(breakPoints.pc)} {
+    left: 0;
+    margin-left: 64rem;
+  }
+`;
 
 export default Profile;
