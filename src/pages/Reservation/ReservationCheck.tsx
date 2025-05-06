@@ -24,6 +24,7 @@ import { useUserStore } from '@store/useUserStore';
 import ReservationInfo from './components/ReservationInfo';
 import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import { pcFlexLayout } from './ReservationSchedule';
+import { useNavigate } from 'react-router-dom';
 
 interface FormValues {
   visitorName: string;
@@ -33,6 +34,7 @@ interface FormValues {
 }
 
 const ReservationCheck = () => {
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState('카카오페이');
   const [isAgreed, setIsAgreed] = useState(false);
 
@@ -134,7 +136,11 @@ const ReservationCheck = () => {
               <h2 css={reservationTitleAlignStyle}>예약자정보</h2>
               <div css={userInfoWrapperStyle}>
                 <p css={[TypoTitleXsM]}>{username}</p>
-                <button type="button" css={[infoChangeBtnStyle, TypoCapSmM]}>
+                <button
+                  type="button"
+                  css={[infoChangeBtnStyle, TypoCapSmM]}
+                  onClick={() => navigate('/user/profile/edit')}
+                >
                   변경하기
                 </button>
               </div>
@@ -642,6 +648,18 @@ const radioLabelStyle = css`
   display: flex;
   align-items: center;
   cursor: pointer;
+
+  input {
+    margin: 0 0.8rem 0 0;
+    flex-shrink: 0;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    margin: 0;
+  }
 `;
 
 const payIconStyle = css`
