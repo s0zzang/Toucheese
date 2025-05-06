@@ -24,6 +24,8 @@ const KakaoMap = ({ addressSi, addressGu, address }: KakaoMapProps) => {
     lng: 0,
   });
 
+  const [isSearching, setIsSearching] = useState(true);
+
   const fullAddress = `${addressSi} ${addressGu} ${address}`;
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const KakaoMap = ({ addressSi, addressGu, address }: KakaoMapProps) => {
         const { x, y } = result[0];
         setPosition({ lat: parseFloat(y), lng: parseFloat(x) });
       }
+      setIsSearching(false);
     });
   }, [loading, error, fullAddress]);
 
@@ -43,6 +46,10 @@ const KakaoMap = ({ addressSi, addressGu, address }: KakaoMapProps) => {
     const kakaoMapUrl = `https://map.kakao.com/link/search/${encodeURIComponent(fullAddress)}`;
     window.open(kakaoMapUrl, '_blank');
   };
+
+  if (loading || isSearching) {
+    return <div>Loading...</div>;
+  }
 
   if (error) {
     return <div>{error.message}</div>;
@@ -75,7 +82,7 @@ export default KakaoMap;
 const mapContainerStyle = css`
   position: relative;
   width: 100%;
-  height: 70vh;
+  aspect-ratio: 16 / 9;
 `;
 
 const viewMapButtonStyle = css`
