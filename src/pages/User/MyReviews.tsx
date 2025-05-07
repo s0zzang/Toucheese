@@ -53,7 +53,7 @@ const MyReviews = () => {
         {isPc ? (
           <h1 className="pcLayout">내 리뷰</h1>
         ) : (
-          <Header title="내 리뷰" backTo="/user/mypage" />
+          <Header title="내 리뷰" backTo="/user/mypage" fixed={true} />
         )}
 
         <div
