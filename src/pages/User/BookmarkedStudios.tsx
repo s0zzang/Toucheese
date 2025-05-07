@@ -12,6 +12,8 @@ import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import BookmarkedStudioList from './components/BookmarkedStudioList';
 import { Helmet } from 'react-helmet-async';
+import NoResult from '@components/NoResult/NoResult';
+import Loading from '@components/Loading/Loading';
 
 export type Theme = '전체' | '몽환' | '내추럴' | '러블리' | '시크' | '청순' | '상큼';
 
@@ -22,6 +24,8 @@ const BookmarkedStudios = () => {
   const navigate = useNavigate();
 
   const { data, error, refetch } = useGetBookmarkList(activeTheme);
+
+  console.log(data);
 
   useEffect(() => {
     if (error) {
@@ -78,8 +82,24 @@ const BookmarkedStudios = () => {
             }
           `}
         >
-          <h2 css={Hidden}>총 {data ? data.length : 0}건</h2>
-          {data && <BookmarkedStudioList data={data} handleUnbookmark={refetch} />}
+          {data ? (
+            data.length > 0 ? (
+              <>
+                <h2 css={Hidden}>총 {data ? data.length : 0}건</h2>
+                <BookmarkedStudioList data={data} handleUnbookmark={refetch} />
+              </>
+            ) : (
+              <div
+                css={css`
+                  ${bg100vw(variables.colors.gray100)}
+                `}
+              >
+                <NoResult message="찜한 사진관이 없습니다!" bg="gray100" />
+              </div>
+            )
+          ) : (
+            <Loading size="small" phrase="찜한 사진관을 불러오는 중입니다!" />
+          )}
         </section>
       </main>
     </>
