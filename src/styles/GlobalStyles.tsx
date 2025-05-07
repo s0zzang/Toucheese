@@ -263,6 +263,12 @@ const GlobalStyles = css`
     border-radius: 0.2em;
   }
 
+  input[type='checkbox']:focus,
+  input[type='radio']:focus {
+    outline: none !important;
+    border-color: ${variables.colors.primary800} !important;
+  }
+
   input[type='checkbox'],
   input[type='radio'] {
     all: unset;
