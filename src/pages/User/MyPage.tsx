@@ -8,7 +8,7 @@ import { loadUserFromStorage, useUserStore } from '@store/useUserStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { DividerStyle, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsR } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import 'swiper/css';
@@ -26,13 +26,10 @@ const MyPage = () => {
   }, []);
 
   //현재 날짜와 예약 날짜 비교 함수
-
   const openToast = useToast();
   const navigate = useNavigate();
 
   const { data, error } = useGetReservationList('RESERVED');
-
-  console.log(data);
 
   useEffect(() => {
     if (error) {
