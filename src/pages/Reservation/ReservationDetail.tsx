@@ -10,7 +10,6 @@ import { changeformatDateForUi, lessThan10Add0 } from '@store/useSelectDateStore
 import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import {
   DividerStyle,
-  PCLayout,
   TypoBodyMdM,
   TypoBodyMdR,
   TypoBodySmM,
@@ -20,11 +19,10 @@ import {
   TypoTitleXsSb,
 } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import RatingReview from '@components/ReservationCard/RatingReview';
-import LocationModal from './components/LocationModal';
+import { useNavigate, useParams } from 'react-router-dom';
 import CancelModal from './components/CancelModal';
+import LocationModal from './components/LocationModal';
 
 interface IReservationData {
   studioId: string;
@@ -199,7 +197,7 @@ const ReservationDetail = () => {
             onClick={() => navigate(`/reservation/${_id}/review/write`)}
             style={{ cursor: 'pointer' }}
           >
-            <RatingReview customStyle={ratingReviewStyle} />
+            {/* <RatingReview customStyle={ratingReviewStyle} /> */}
           </div>
         )}
         <section css={sectionStyle}>
@@ -448,27 +446,27 @@ const pcAddressStyle = css`
   }
 `;
 
-const ratingReviewStyle = css`
-  border-top: none;
+// const ratingReviewStyle = css`
+//   border-top: none;
 
-  .ratingBox {
-    display: flex;
-    gap: 0.4rem;
+//   .ratingBox {
+//     display: flex;
+//     gap: 0.4rem;
 
-    img {
-      width: 2rem;
+//     img {
+//       width: 2rem;
 
-      ${mqMin(breakPoints.pc)} {
-        width: 2.4rem;
-      }
-    }
-  }
+//       ${mqMin(breakPoints.pc)} {
+//         width: 2.4rem;
+//       }
+//     }
+//   }
 
-  p {
-    ${variables.colors.gray600};
-    ${TypoBodyMdR}
-  }
-`;
+//   p {
+//     ${variables.colors.gray600};
+//     ${TypoBodyMdR}
+//   }
+// `;
 
 const buttonStyle = css`
   display: flex;
