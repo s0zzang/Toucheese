@@ -13,9 +13,11 @@ import StudioItem from './StudioItem';
 const StudioList = ({
   mode,
   searchParams,
+  onResultCount,
 }: {
   mode: 'filter' | 'search/result';
   searchParams: URLSearchParams;
+  onResultCount?: (count: number) => void;
 }) => {
   const params = decodeSearchParamsToString(searchParams);
   const [pageNum, setPageNum] = useState(0);
@@ -39,6 +41,10 @@ const StudioList = ({
       }
     }
   }, [data]);
+
+  useEffect(() => {
+    onResultCount?.(items.length);
+  }, [items, onResultCount]);
 
   const loadMore = () => {
     if (hasMore && !isLoading && !isFetching) {
