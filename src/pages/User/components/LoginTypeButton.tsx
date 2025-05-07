@@ -1,3 +1,6 @@
+/** @jsxImportSource @emotion/react */
+
+import { Hidden } from '@styles/Common';
 import variables from '@styles/Variables';
 
 interface LoginButtonProps {
@@ -34,25 +37,28 @@ const LoginTypeButton = ({ type, onClick }: LoginButtonProps) => {
   };
 
   return (
-    <button
-      onClick={onClick}
-      style={{
-        width: '100%',
-        height: '4.8rem',
-        fontSize: '1.6rem',
-        padding: '12 0px',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '8px',
-        ...buttonStyle[type],
-      }}
-    >
-      <img src={iconSrc[type]} alt="" style={{ width: '24px', height: '24px' }} />
-      {buttonText[type]}
-    </button>
+    <>
+      <h3 css={Hidden}>{buttonText[type]}</h3>
+      <button
+        onClick={onClick}
+        style={{
+          width: '100%',
+          height: '4.8rem',
+          fontSize: '1.6rem',
+          padding: '12 0px',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          ...buttonStyle[type],
+        }}
+      >
+        <img src={iconSrc[type]} alt="" style={{ width: '24px', height: '24px' }} />
+        {buttonText[type]}
+      </button>
+    </>
   );
 };
 

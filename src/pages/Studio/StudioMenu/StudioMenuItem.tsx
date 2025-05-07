@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdM, TypoBodyMdSb, TypoCapSmR } from '@styles/Common';
+import { TypoBodyMdM, TypoBodyMdSb, TypoBodySmR, TypoCapSmR } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 import { IMenuListRes } from 'types/types';
@@ -29,11 +29,11 @@ const StudioMenuItem = ({
         </div>
         <div css={MenuDescStyle}>
           <div css={MenuHeadStyle}>
-            <h2>{data?.name}</h2>
-            <p>{data?.description}</p>
+            <h3>{data?.name}</h3>
+            <h4>{data?.description}</h4>
           </div>
           <div css={MenuPriceReviewStyle}>
-            <p>{data?.price.toLocaleString('ko-KR')}원</p>
+            <h4>{data?.price.toLocaleString('ko-KR')}원</h4>
             <span>리뷰 {data?.reviewCount}개</span>
           </div>
         </div>
@@ -94,7 +94,7 @@ const MenuDescStyle = css`
 `;
 
 const MenuHeadStyle = css`
-  & h2 {
+  & h3 {
     ${TypoBodyMdM}
     display: flex;
     align-items: center;
@@ -118,7 +118,7 @@ const MenuHeadStyle = css`
     }
   }
 
-  & p {
+  & h4 {
     display: -webkit-box;
     ${TypoCapSmR}
     -webkit-box-orient: vertical;
@@ -127,13 +127,14 @@ const MenuHeadStyle = css`
     color: ${variables.colors.gray800};
 
     ${mqMin(breakPoints.pc)} {
+      ${TypoBodySmR}
       -webkit-line-clamp: 4;
     }
   }
 `;
 
 const MenuPriceReviewStyle = css`
-  & p {
+  & h4 {
     ${TypoBodyMdSb}
     margin-bottom:.4rem;
   }

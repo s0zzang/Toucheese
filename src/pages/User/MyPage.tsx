@@ -26,7 +26,6 @@ const MyPage = () => {
   }, []);
 
   //현재 날짜와 예약 날짜 비교 함수
-
   const openToast = useToast();
   const navigate = useNavigate();
 
@@ -210,10 +209,10 @@ const MyPageMenuStyle = css`
 `;
 
 const ReservationCardSwiperStyle = (data: boolean) => css`
-  width: 100vw;
+  width: calc(100% + calc(${variables.layoutPadding} * 2));
   margin-left: calc(-1 * ${variables.layoutPadding});
+
   ${mqMin(breakPoints.pc)} {
-    width: 100%;
     margin-left: 0;
     padding-left: 2.4rem;
     padding-right: 2.4rem;

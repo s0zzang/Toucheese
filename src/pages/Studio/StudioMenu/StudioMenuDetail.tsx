@@ -231,7 +231,7 @@ const TabMenuStyle = css`
   position: sticky;
   top: 5.5rem;
   left: 0;
-  z-index: 100;
+  z-index: 9;
   color: ${variables.colors.gray800};
   display: flex;
   text-align: center;

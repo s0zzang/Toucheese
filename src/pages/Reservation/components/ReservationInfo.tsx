@@ -42,14 +42,18 @@ const ReservationInfo = () => {
             <dd>
               <h3 css={TypoTitleXsM}>{menuName}</h3>
             </dd>
-            <dt css={marginTop}>추가 옵션</dt>
-            <dd>
-              <h3 css={textWrapperStyle}>
-                {options.map((option) => (
-                  <span key={option.option_id}>{option.optionName}</span>
-                ))}
-              </h3>
-            </dd>
+            {options.length > 0 && (
+              <>
+                <dt css={marginTop}>추가 옵션</dt>
+                <dd>
+                  <h3 css={textWrapperStyle}>
+                    {options.map((option) => (
+                      <span key={option.option_id}>{option.optionName}</span>
+                    ))}
+                  </h3>
+                </dd>
+              </>
+            )}
           </dl>
           <img src={menuImage} alt="포트폴리오 이미지" css={imgStyle} />
         </div>

@@ -63,7 +63,7 @@ const StudioReviewItem = ({
         />
         <ReviewContent content={review.content} isOpen={isOpen} setIsOpen={setIsOpen} />
         <NameAndDateWrapperStyle>
-          <span>{review.userName}</span>
+          <h4>{review.userName}</h4>
           <p>{formatTimeAgo(review.created_at)}</p>
         </NameAndDateWrapperStyle>
       </StudioReviewItemContainerStyle>
@@ -119,7 +119,7 @@ const MainTitle = styled.h3`
   }
 `;
 
-const SubTitle = styled.p`
+const SubTitle = styled.h4`
   font-size: 1.4rem;
   color: ${variables.colors.gray600};
 `;

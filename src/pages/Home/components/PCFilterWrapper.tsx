@@ -87,6 +87,7 @@ const PCFilterWrapper = () => {
   return (
     <div css={filterWrap}>
       <div className="filter-box">
+        <h2 css={Hidden}>스튜디오 정렬 및 필터링</h2>
         <FilterSort params={searchParams} />
         <FilterDividerStyle />
         <FilterChipsContainer>

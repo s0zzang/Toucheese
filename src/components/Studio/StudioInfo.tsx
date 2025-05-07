@@ -52,6 +52,7 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
         </div>
         <div css={SocialActionsStyle}>
           <ShareButton
+            modalId={100}
             title={data.name}
             description={data.description}
             imageUrl={data.portfolios[0]?.url}
@@ -60,7 +61,7 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
           <Bookmark
             id={Number(id)}
             count={data.bookmark_count}
-            isBookmarked={false}
+            isBookmarked={data.bookmarked}
             type="default"
           />
         </div>

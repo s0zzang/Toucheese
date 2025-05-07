@@ -7,7 +7,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useGetReservationList } from '@hooks/useGetReservationList';
 import useToast from '@hooks/useToast';
-import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import { bg100vw, PCLayout, TypoBodyMdM, TypoTitleMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
 import { sortReservations } from '@utils/sortReservations';
@@ -90,12 +90,16 @@ const ReservationList = () => {
         <title>예약 내역 - {resStatus.statusKor}</title>
         <meta property="og:title" content={`예약 내역 - ${resStatus.statusKor} `} />
       </Helmet>
-      <main>
+      <main
+        css={css`
+          margin-bottom: -3rem;
+        `}
+      >
         <MyPageHeaderContainerStyle>
           {isPc ? (
             <h1 className="pcLayout">예약내역</h1>
           ) : (
-            <Header title="예약내역" backTo="/user/mypage" />
+            <Header title="예약내역" backTo="/user/mypage" fixed={true} />
           )}
           <div
             css={css`
@@ -144,6 +148,12 @@ export const MyPageHeaderContainerStyle = styled.div`
     padding: 4rem 0 2rem;
   }
 
+  ${mqMax(breakPoints.moMax)} {
+    & > div {
+      padding-top: ${variables.headerHeight};
+    }
+  }
+
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
     ${bg100vw(variables.colors.white)}
@@ -161,16 +171,14 @@ export const MyPageHeaderContainerStyle = styled.div`
 export const MyPageSectionStyle = styled.section`
   ${bg100vw(variables.colors.gray100)}
   margin: 10rem calc(-1 * ${variables.layoutPadding}) calc(-1 * (4rem + ${variables.headerHeight}));
-  padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
+  padding: 0 0 3rem;
   min-height: calc(100vh - 10rem);
 
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
     min-height: calc(100vh - 21.8rem);
-    margin: unset;
-    padding-left: unset;
-    padding-right: unset;
-    margin-top: 13.8rem;
+    margin: 13.8rem 0 -3rem;
+    padding: 0 0 3rem;
     box-sizing: border-box;
   }
 `;

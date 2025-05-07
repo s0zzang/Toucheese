@@ -42,7 +42,7 @@ const FilterSort = ({ params }: FilterProps) => {
 
   return (
     <>
-      <h2
+      <h3
         css={css`
           ${TypoBodyMdSb}
           color: ${variables.colors.gray800};
@@ -50,7 +50,7 @@ const FilterSort = ({ params }: FilterProps) => {
         `}
       >
         스튜디오 정렬
-      </h2>
+      </h3>
 
       <Button
         type="button"
@@ -104,6 +104,7 @@ const DropdownWrapper = styled.div`
 
 const DropdownList = styled.ul`
   position: absolute;
+  margin-top: 0.6rem;
   top: -1px;
   width: 100%;
   background: white;

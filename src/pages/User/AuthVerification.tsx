@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
-import BackButton from '@components/BackButton/BackButton';
 import Button from '@components/Button/Button';
+import Header from '@components/Header/Header';
 import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import useSignupStore from '@store/useSignupStore';
-import { TypoTitleMdSb } from '@styles/Common';
+import { Hidden, TypoTitleMdSb } from '@styles/Common';
 import { useLayoutEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
@@ -112,19 +112,12 @@ const AuthVerification = () => {
         <meta property="og:description" content="사용자 본인인증" />
       </Helmet>
 
-      <BackButton />
-      <h1
-        css={css`
-          visibility: hidden;
-        `}
-      >
-        본인인증
-      </h1>
-      <h2 css={pageTitleStyle}>
-        이름과 휴대폰 번호를
-        <br />
+      <Header title="터치즈 회원 가입" />
+      <h2 css={Hidden}>본인인증</h2>
+      <h3 css={pageTitleStyle}>
+        이름과 휴대폰 번호를 <br />
         알려주세요
-      </h2>
+      </h3>
       <form noValidate onSubmit={handleSubmit(handleSave)} css={formStyle}>
         <div css={containerStyle}>
           {/* 이름 */}
