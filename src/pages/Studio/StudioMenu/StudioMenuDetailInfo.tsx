@@ -125,7 +125,7 @@ const MenuInfoStyle = css`
       }
 
       &.time {
-        background-image: url(/img/icon-clock.svg);
+        background-image: url(/img/icon-clock-gray800.svg);
       }
       &.camera {
         background-image: url(/img/icon-camera-roll.svg);
@@ -204,7 +204,7 @@ const AddOptionsListStyle = css`
   gap: 2.4rem;
 
   ${mqMin(breakPoints.pc)} {
-    padding-bottom: 10rem;
+    padding-bottom: 3rem;
   }
 
   & li {

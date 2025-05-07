@@ -23,11 +23,13 @@ const GlobalStyles = css`
     --layoutPadding: 1.6rem;
     --headerHeight: 5.6rem;
     --maxWidth: 100%;
+    --borderRadius: 0.6rem;
 
     @media (min-width: ${breakPoints.pc}) {
       --layoutPadding: 2.4rem;
       --headerHeight: 8rem;
       --maxWidth: 1280px;
+      --borderRadius: 0.8rem;
 
       overflow-x: clip;
       max-width: calc(var(--maxWidth) + calc(var(--layoutPadding) * 2));
@@ -241,7 +243,6 @@ const GlobalStyles = css`
     text-indent: 0.7em;
     border-radius: ${variables.borderRadius};
     border: 1px solid ${variables.colors.gray400};
-    outline: 1px solid transparent;
   }
 
   input[type='text']::placeholder,
@@ -255,12 +256,11 @@ const GlobalStyles = css`
   input:focus,
   input[type='email']:focus,
   input[type='password']:focus,
-  input[type='tel']:focus {
-  }
-
-  select:focus-visible {
-    border-color: ${variables.colors.primary};
-    outline: 1px solid ${variables.colors.primary};
+  input[type='tel']:focus,
+  :focus-visible {
+    border-color: transparent !important;
+    outline: 2px solid ${variables.colors.primary600} !important;
+    border-radius: 0.2em;
   }
 
   input[type='checkbox'],
@@ -303,7 +303,7 @@ const GlobalStyles = css`
   textarea {
     position: relative;
     border: 1px solid ${variables.colors.gray400};
-    border-radius: 0.6rem;
+    border-radius: ${variables.borderRadius};
     padding: 1rem 1.2rem 2.6rem;
     min-height: 7.6rem;
     ${TypoBodyMdR}

@@ -42,19 +42,6 @@ const ReservationFooter = ({
 
 export default ReservationFooter;
 
-export const reservationFooterWrStyle = css`
-  ${mqMin(breakPoints.pc)} {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: calc(100vh - ${variables.headerHeight});
-
-    .content-box {
-      overflow: hidden auto;
-    }
-  }
-`;
-
 const FixedBtnBoxStyle = css`
   display: flex;
   gap: 2rem;
@@ -65,8 +52,8 @@ const FixedBtnBoxStyle = css`
   bottom: 0;
   background-color: ${variables.colors.white};
   padding: 1.6rem;
-  border-top: 0.1rem solid ${variables.colors.gray300};
-  z-index: 300;
+  border-top: 1px solid ${variables.colors.gray300};
+  z-index: 9;
 
   .totalPrice {
     display: flex;
@@ -84,6 +71,7 @@ const FixedBtnBoxStyle = css`
     }
   }
   ${mqMin(breakPoints.pc)} {
-    position: inherit;
+    position: sticky;
+    bottom: 0;
   }
 `;

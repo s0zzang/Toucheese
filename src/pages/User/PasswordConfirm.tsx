@@ -3,20 +3,23 @@ import BackButton from '@components/BackButton/BackButton';
 import Button from '@components/Button/Button';
 import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
+import useToast from '@hooks/useToast';
 import { TypoTitleXsM, TypoTitleXsSb } from '@styles/Common';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
+import { loadUserFromStorage, useUserStore } from '@store/useUserStore';
 import { useNavigate } from 'react-router-dom';
 
 const PasswordConfirm = () => {
   const [isActive, setIsActive] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+  const openToast = useToast();
+  const { email } = useUserStore();
   const navigate = useNavigate();
 
   const {
     register,
-    handleSubmit,
     formState: { errors },
     watch,
   } = useForm();
@@ -28,26 +31,13 @@ const PasswordConfirm = () => {
     setIsDisabled(!password);
   }, [password]);
 
-  const loadSessionStorageData = (key: string) => {
-    /** key에 해당하는 데이터 호출 */
-    const localData = localStorage.getItem(key);
-    if (!localData) {
-      return null;
-    }
-
-    try {
-      const parsedData = JSON.parse(localData);
-      return parsedData;
-    } catch (error) {
-      console.error('JSON 파싱 오류', error);
-      return null;
-    }
-  };
+  useEffect(() => {
+    loadUserFromStorage();
+  }, []);
 
   const handleEditUser = async () => {
-    const userData = loadSessionStorageData('userState');
     const formData = {
-      email: userData?.state.email,
+      email,
       password,
     };
 
@@ -66,11 +56,8 @@ const PasswordConfirm = () => {
       navigate('/user/profile/passwordChange');
     } catch (error) {
       console.error('비밀번호 확인 중 오류 발생:', error);
+      openToast('비밀번호 확인 중 오류가 발생했습니다.');
     }
-  };
-
-  const onSubmit = (data: any) => {
-    console.log('onsubmit : 데이터 확인용', data);
   };
 
   return (
@@ -91,7 +78,7 @@ const PasswordConfirm = () => {
         <br />
         비밀번호를 다시 한 번 입력해주세요
       </h2>
-      <form noValidate css={formStyle} onSubmit={handleSubmit(onSubmit)}>
+      <form noValidate css={formStyle}>
         <div css={containerStyle}>
           {/* 비밀번호 */}
           <Input
@@ -115,7 +102,7 @@ const PasswordConfirm = () => {
         <div css={buttonStyle}>
           <Button
             onClick={handleEditUser}
-            type="submit"
+            type="button"
             text="다음"
             width="max"
             size="large"

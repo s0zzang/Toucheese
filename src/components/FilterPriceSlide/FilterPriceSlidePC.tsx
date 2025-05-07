@@ -31,65 +31,53 @@ const FilterPriceSlidePC = () => {
       >
         가격
       </h2>
-      <div
-        css={css`
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        `}
-      >
+      <div css={inputBox}>
         <Input
           labelName="최소가격"
           type="money"
           placeholder="10,000"
-          inputWidth="14rem"
           borderRadius=".8rem"
           value={minPrice ? minPrice.toLocaleString() : ''}
           onChange={handleMinPriceChange}
         />
-        <span
-          css={css`
-            ${TypoBodySmR}
-            min-width: 4.5rem;
-            margin-top: 2rem;
-            color: ${variables.colors.gray900};
-          `}
-        >
-          원 부터
-        </span>
+        <span className="inputText">원 부터</span>
       </div>
 
-      <div
-        css={css`
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        `}
-      >
+      <div css={inputBox}>
         <Input
           labelName="최대가격"
           type="money"
           placeholder="200,000"
-          inputWidth="14rem"
           borderRadius=".8rem"
           value={maxPrice ? maxPrice.toLocaleString() : ''}
           onChange={handleMaxPriceChange}
         />
-        <span
-          css={css`
-            ${TypoBodySmR}
-            min-width: 4.5rem;
-            margin-top: 2rem;
-            color: ${variables.colors.gray900};
-          `}
-        >
-          원 까지
-        </span>
+        <span className="inputText">원 까지</span>
       </div>
     </div>
   );
 };
 
 export default FilterPriceSlidePC;
+
+const inputBox = css`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+
+  input {
+    height: 4rem !important;
+  }
+  .inputText {
+    ${TypoBodySmR}
+    min-width: 4.5rem;
+    margin-top: 2rem;
+    color: ${variables.colors.gray900};
+  }
+
+  &:not(:first-of-type) {
+    margin-top: ${variables.borderRadius};
+  }
+`;

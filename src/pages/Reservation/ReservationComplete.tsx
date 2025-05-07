@@ -1,44 +1,31 @@
+import { useGetReservationData } from '@hooks/useGetReservationData';
+import useToast from '@hooks/useToast';
 import useReservationStore from '@store/useReservationStore';
-import {
-  changeformatDateForUi,
-  convertToDateFormat,
-  today,
-  useSelectDateStore,
-} from '@store/useSelectDateStore';
+import { convertToDateFormat, today, useSelectDateStore } from '@store/useSelectDateStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CompleteMessage from './components/CompleteMessage';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const ReservationComplete = () => {
-  const {
-    studioName: studio,
-    menuName: reservedMenu,
-    options,
-    clearReservationInfo,
-  } = useReservationStore();
-  const { date, setDate } = useSelectDateStore();
-  const { time, setTime } = useSelectTimeStore();
-
-  const [searchParams] = useSearchParams();
-  const reservationIdParam = searchParams.get('reservationId');
-  const reservationId = reservationIdParam ? Number(reservationIdParam) : 0;
-
-  const reservationData = {
-    id: reservationId,
-    studio,
-    reservedDateTime: changeformatDateForUi({ date, time }),
-    reservedMenu,
-    options,
-  };
-
+  const { clearReservationInfo } = useReservationStore();
+  const { setDate } = useSelectDateStore();
+  const { setTime } = useSelectTimeStore();
   const resetReservationInfo = () => {
     clearReservationInfo();
     setDate(convertToDateFormat(today));
     setTime('reset');
   };
 
+  const openToast = useToast();
+  const navigate = useNavigate();
   const location = useLocation();
+
+  const userState = JSON.parse(localStorage.getItem('userState') || '{}');
+  const accessToken = userState.state.accessToken;
+
   const query = new URLSearchParams(location.search);
+  const reservationId = query.get('reservationId');
   const resultCode = query.get('resultCode');
 
   if (resultCode === 'UserCancel') {
@@ -47,8 +34,29 @@ const ReservationComplete = () => {
     return null;
   }
 
+  if (!reservationId) {
+    throw new Error('예약 id가 없습니다!');
+  }
+
+  const { data, error } = useGetReservationData(reservationId, accessToken);
+
+  if (error) {
+    openToast('로그인 정보가 유효하지 않습니다! 다시 로그인해주세요!');
+    navigate('/user/auth');
+  }
+
   return (
-    <CompleteMessage type="reserved" data={reservationData} resetInfo={resetReservationInfo} />
+    <>
+      {data && (
+        <>
+          <Helmet>
+            <title>{data.studioName} - 예약 완료</title>
+            <meta property="og:title" content={'예약 내역 | 터치즈'} />
+          </Helmet>
+          <CompleteMessage type="reserved" data={data} resetInfo={resetReservationInfo} />
+        </>
+      )}
+    </>
   );
 };
 

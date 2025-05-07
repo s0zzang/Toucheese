@@ -3,28 +3,53 @@ import Header from '@components/Header/Header';
 import ReservationNavigator from '@components/Navigator/ReservationNavigator';
 import NoResult from '@components/NoResult/NoResult';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useGetReservationList } from '@hooks/useGetReservationList';
+import useToast from '@hooks/useToast';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdM } from '@styles/Common';
+import { bg100vw, PCLayout, TypoBodyMdM, TypoTitleMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
+import { sortReservations } from '@utils/sortReservations';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
 import { IResvItem } from 'types/types';
 
-export interface ResStatus {
+interface ResStatus {
   statusKor: '이용 예정' | '이용 완료' | '예약 취소';
   statusEng: 'DEFAULT' | 'COMPLETED' | 'CANCELED';
 }
 
 const ReservationList = () => {
+  const STATUS: ResStatus[] = [
+    { statusKor: '이용 예정', statusEng: 'DEFAULT' },
+    { statusKor: '이용 완료', statusEng: 'COMPLETED' },
+    { statusKor: '예약 취소', statusEng: 'CANCELED' },
+  ];
   const [resStatus, setResStatus] = useState<ResStatus>({
     statusKor: '이용 예정',
     statusEng: 'DEFAULT',
   });
   const [items, setItems] = useState<IResvItem[]>([]);
+  const isPc = useMediaQuery({ minWidth: breakPoints.pc });
+  const openToast = useToast();
+  const navigate = useNavigate();
 
   // resStatus 변경 시 api 호출
-  const { data } = useGetReservationList(resStatus.statusEng);
+  const { data, error } = useGetReservationList(resStatus.statusEng);
+
+  useEffect(() => {
+    if (error) {
+      if (error.message === '403') {
+        openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
+        navigate('/user/auth');
+      } else {
+        throw new Error(error.message);
+      }
+    }
+  }, [error]);
 
   // resStatus 변경 시 아이템 초기화
   useEffect(() => {
@@ -52,63 +77,119 @@ const ReservationList = () => {
       );
       break;
     case '이용 완료':
-      emptyMessage = <>방문하신 사진관이 없습니다.</>;
+      emptyMessage = <>방문한 사진관이 없습니다.</>;
       break;
     case '예약 취소':
-      emptyMessage = <>예약 취소하신 사진관이 없습니다.</>;
+      emptyMessage = <>예약 취소한 사진관이 없습니다.</>;
       break;
   }
 
   return (
     <>
-      <HeaderContainerStyle>
-        <Header title="예약내역" backTo="/user/mypage" />
-        <ReservationNavigator status={resStatus} setStatus={setResStatus} />
-      </HeaderContainerStyle>
+      <Helmet>
+        <title>예약 내역 - {resStatus.statusKor}</title>
+        <meta property="og:title" content={`예약 내역 - ${resStatus.statusKor} `} />
+      </Helmet>
+      <main>
+        <MyPageHeaderContainerStyle>
+          {isPc ? (
+            <h1 className="pcLayout">예약내역</h1>
+          ) : (
+            <Header title="예약내역" backTo="/user/mypage" />
+          )}
+          <div
+            css={css`
+              ${mqMin(breakPoints.pc)} {
+                width: 28.7rem;
+              }
+            `}
+          >
+            <ReservationNavigator<ResStatus>
+              STATUS={STATUS}
+              status={resStatus}
+              setStatus={setResStatus}
+            />
+          </div>
+        </MyPageHeaderContainerStyle>
 
-      <SectionStyle>
-        {items.length ? (
-          <ContentStyle>
-            <p css={TypoBodyMdM}>총 {items.length}건</p>
-            {items.map((item) => (
-              <ReservationCard key={item.reservationId} data={item} />
-            ))}
-          </ContentStyle>
-        ) : (
-          <NoResult message={emptyMessage} bg="gray100" />
-        )}
-      </SectionStyle>
+        <MyPageSectionStyle>
+          {items.length ? (
+            <MyPageContentStyle>
+              <h2 css={TypoBodyMdM}>총 {items.length}건</h2>
+              <div className="content-box">
+                {sortReservations<IResvItem>(items).map((item) => (
+                  <ReservationCard key={item.reservationId} data={item} />
+                ))}
+              </div>
+            </MyPageContentStyle>
+          ) : (
+            <NoResult message={emptyMessage} bg="gray100" />
+          )}
+        </MyPageSectionStyle>
+      </main>
     </>
   );
 };
 
-const HeaderContainerStyle = styled.div`
+export const MyPageHeaderContainerStyle = styled.div`
   background-color: ${variables.colors.white};
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-`;
+  z-index: 9;
 
-const SectionStyle = styled.section`
-  margin: 10rem calc(-1 * ${variables.layoutPadding}) calc(-1 * (4rem + ${variables.headerHeight}));
-  background-color: ${variables.colors.gray100};
-  padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
-  height: calc(100vh - 10rem);
-  overflow-y: auto;
+  .pcLayout {
+    ${TypoTitleMdSb}
+    padding: 4rem 0 2rem;
+  }
 
   ${mqMin(breakPoints.pc)} {
-    margin: unset;
-    padding: unset;
-    height: calc(100vh - 8rem);
+    ${PCLayout}
+    ${bg100vw(variables.colors.white)}
+    padding: 0 ${variables.layoutPadding};
+    box-shadow: inset 0 -1px ${variables.colors.gray300};
+    position: fixed;
+    top: 8rem;
+
+    &::before {
+      box-shadow: inset 0 -1px ${variables.colors.gray300};
+    }
   }
 `;
 
-const ContentStyle = styled.div`
-  padding-top: 1.6rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+export const MyPageSectionStyle = styled.section`
+  ${bg100vw(variables.colors.gray100)}
+  margin: 10rem calc(-1 * ${variables.layoutPadding}) calc(-1 * (4rem + ${variables.headerHeight}));
+  padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
+  min-height: calc(100vh - 10rem);
+
+  ${mqMin(breakPoints.pc)} {
+    ${PCLayout}
+    min-height: calc(100vh - 21.8rem);
+    margin: unset;
+    padding-left: unset;
+    padding-right: unset;
+    margin-top: 13.8rem;
+    box-sizing: border-box;
+  }
+`;
+
+export const MyPageContentStyle = styled.div`
+  padding-top: 2.4rem;
+
+  .content-box {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    ${mqMin(breakPoints.pc)} {
+      margin-top: 1.6rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    }
+  }
 `;
 
 export default ReservationList;

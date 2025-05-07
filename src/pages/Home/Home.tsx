@@ -52,6 +52,10 @@ const Home = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    if (!isPc) {
+      setIsFixed(false);
+    }
   }, [isPc]);
 
   useEffect(() => {
@@ -146,12 +150,18 @@ const Home = () => {
               ${bg100vw(variables.colors.black)}
               display: flex;
               align-items: center;
-              gap: 5.2rem;
+              gap: 1.6rem;
               padding: 0 ${variables.layoutPadding};
             }
           `}
         >
-          <BookingButton type="pc" />
+          <div
+            css={css`
+              width: 28rem;
+            `}
+          >
+            <BookingButton type="pc" />
+          </div>
           <ThemeNavigator />
         </div>
 
@@ -194,16 +204,14 @@ const Home = () => {
           css={css`
             ${mqMin(breakPoints.pc)} {
               display: flex;
-              gap: 1.6rem;
+              gap: 3.2rem;
               position: relative;
             }
           `}
         >
           {/* PC 필터 영역 */}
           <FilterSectionStyle className="pc" isFixed={isFixed}>
-            <div>
-              <PCFilterWrapper />
-            </div>
+            <PCFilterWrapper />
           </FilterSectionStyle>
           <ListStyle>
             <StudioList mode="filter" searchParams={searchParams} />
@@ -309,25 +317,11 @@ const FilterBoxStyle = styled.div`
 
 const FilterSectionStyle = styled.div<IFixedProps>`
   flex-shrink: 0;
-  padding-top: 3rem;
-  padding-bottom: 8.2rem;
   position: sticky;
   top: 13.8rem;
   left: 0;
-  width: 19.2rem;
+  width: 28rem;
   height: calc(100vh - 13.8rem);
-
-  overflow-y: auto;
-  /* 크롬, 사파리,*/
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* 엣지 */
-  -ms-overflow-style: none;
-
-  /* 파이어폭스 */
-  scrollbar-width: none;
 `;
 
 const ListStyle = styled.div`
@@ -336,6 +330,7 @@ const ListStyle = styled.div`
   ${mqMin(breakPoints.pc)} {
     padding: unset;
     padding-right: 1.6rem;
+    padding-bottom: 3rem;
     flex-grow: 1;
   }
 `;

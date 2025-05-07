@@ -36,7 +36,7 @@ const DivStyle = styled.div`
     height: 9.494rem;
     background: url('/img/icon-nopic-mo.svg') no-repeat center / contain;
     margin-top: auto;
-    margin-bottom: -0.255rem;
+    margin-bottom: -2.55px;
     margin-left: auto;
   }
 

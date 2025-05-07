@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-
 import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoTitleXsM } from '@styles/Common';
@@ -20,10 +19,13 @@ const NoResult = ({
 };
 
 const DivStyle = ({ bg }: { bg: 'white' | 'gray100' }) => css`
+  width: 100%;
   display: flex;
   color: ${variables.colors.gray700};
-  min-height: 60vh;
+  height: ${bg === 'white' ? 'calc(100vh - 19.6rem)' : 'calc(100vh - 10rem)'};
+  margin-bottom: -9.6rem;
   background-color: ${variables.colors[bg]};
+  margin-top: ${bg === 'white' && '0.6rem'};
 
   & p {
     flex-grow: 1;
@@ -43,7 +45,9 @@ const DivStyle = ({ bg }: { bg: 'white' | 'gray100' }) => css`
   }
 
   ${mqMin(breakPoints.pc)} {
-    height: ${bg === 'white' ? 'calc(100vh - 13.8rem)' : 'calc(100vh - 8rem)'};
+    height: ${bg === 'white' ? 'calc(100vh - 13.8rem)' : 'calc(100vh - 21.8rem)'};
+    margin-bottom: ${bg === 'gray100' && 'calc(-1 * 12rem)'};
+    margin-top: ${bg === 'white' && 'unset'};
 
     & p {
       &::before {

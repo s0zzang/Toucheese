@@ -11,6 +11,17 @@ import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { IMenus, IPortfolio, IStudioItem } from 'types/types';
 
+// 최저가 계산 함수
+export const getMinPrice = (menu: IMenus[]) => {
+  let minPrice = 1e9;
+
+  menu.forEach((item) => {
+    if (item.price < minPrice) minPrice = item.price;
+  });
+
+  return minPrice.toLocaleString('ko-KR');
+};
+
 const StudioItem = ({
   item,
   isFirst,
@@ -28,24 +39,13 @@ const StudioItem = ({
     navigate(`/studio/${item.id}`);
   };
 
-  // 최저가 계산 함수
-  const getMinPrice = (menu: IMenus[]) => {
-    let minPrice = 1e9;
-
-    menu.forEach((item) => {
-      if (item.price < minPrice) minPrice = item.price;
-    });
-
-    return minPrice.toLocaleString('ko-KR');
-  };
-
   // 이미지 5개 불러오기
   const getImages = (photos: IPortfolio[]) => {
     let images: string[] = [];
-    const portfolios = photos.slice(0, 5);
+    const portfolios = isPc ? photos.slice(0, 7) : photos.slice(0, 5);
 
     portfolios.forEach((photo: IPortfolio) => {
-      images.push(photo.url);
+      images.push(photo.url.replace(/\.jpeg$/, '.webp'));
     });
 
     return images;
@@ -61,15 +61,15 @@ const StudioItem = ({
                 width: 100%;
                 display: flex;
                 align-items: center;
-                gap: 0.2rem;
+                gap: 2px;
               `}
             >
               {getImages(item.portfolios).map((image, index) => (
                 <img
                   key={`${item.id}-image-${index}`}
                   css={css`
-                    width: 14rem;
-                    aspect-ratio: 140 / 176;
+                    width: calc((100% - 12px) / 7);
+                    aspect-ratio: 127 / 160;
                   `}
                   src={image}
                   alt={`이미지 ${index + 1}`}
@@ -85,7 +85,7 @@ const StudioItem = ({
                 object-fit: cover;
 
                 ${mqMin(breakPoints.pc)} {
-                  aspect-ratio: 140 / 176;
+                  aspect-ratio: 141 / 177;
                 }
               `}
             />
@@ -123,7 +123,12 @@ const StudioItem = ({
           </InfoContainerStyle>
         </ItemInfoStyle>
         <BookmarkStyle>
-          <Bookmark id={item.id} count={item.bookmark_count} isBookmarked={item.bookmark} />
+          <Bookmark
+            id={item.id}
+            count={item.bookmark_count}
+            isBookmarked={item.bookmark}
+            type="default"
+          />
         </BookmarkStyle>
       </ItemContentStyle>
     </DivStyle>
@@ -131,8 +136,9 @@ const StudioItem = ({
 };
 
 const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
+  width: 100%;
   padding: 1.6rem 0;
-  border-bottom: 0.1rem solid ${variables.colors.gray300};
+  border-bottom: 1px solid ${variables.colors.gray300};
 
   ${({ isLast }) =>
     isLast &&
@@ -145,8 +151,21 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
   }
 
   ${mqMin(breakPoints.pc)} {
-    padding: 3.4rem 0;
+    padding: unset;
+    padding-bottom: 3.4rem;
     border-bottom: unset;
+
+    ${({ isFirst }) =>
+      isFirst &&
+      `
+        padding-top: 3rem;
+    `}
+
+    ${({ isLast }) =>
+      isLast &&
+      `
+        padding-bottom: unset;
+    `}
   }
 `;
 
@@ -155,6 +174,7 @@ const ItemImageStyle = styled.div`
 
   ${mqMin(breakPoints.pc)} {
     margin-bottom: 1rem;
+    width: 100%;
   }
 `;
 
@@ -183,7 +203,7 @@ const InfoContainerStyle = styled.div`
   & > div {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 3px;
 
     & > img {
       flex-shrink: 0;

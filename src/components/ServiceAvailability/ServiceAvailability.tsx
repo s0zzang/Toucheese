@@ -35,7 +35,6 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
     if (isPc) {
       const selectedServices = selectedButtons.map((i) => getButtonTitle(i));
       setSelectedServices(selectedServices);
-      console.log('서비스 선택 변경:', selectedServices);
     }
   }, [selectedButtons, isPc, setSelectedServices]);
 
@@ -74,11 +73,11 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
           매장 정보·서비스
         </h2>
       )}
-      <ServiceAvailabilityContainerStyle isPc={isPc}>
+      <ServiceAvailabilityContainerStyle>
         <Button
           icon={<img src="img/icon-original-file.svg" alt="원본 파일 제공" />}
-          iconSizeWidth="2.4rem"
-          iconSizeHeight="2.4rem"
+          iconSizeWidth="1.8rem"
+          iconSizeHeight="1.8rem"
           iconPosition="left"
           size="medium"
           text={`원본파일 제공`}
@@ -90,8 +89,8 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
         />
         <Button
           icon={<img src="img/icon-photo-edit.svg" alt="1:1보정" />}
-          iconSizeWidth="2.4rem"
-          iconSizeHeight="2.4rem"
+          iconSizeWidth="1.8rem"
+          iconSizeHeight="1.8rem"
           iconPosition="left"
           size="medium"
           text={`1:1 보정`}
@@ -103,8 +102,8 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
         />
         <Button
           icon={<img src="img/icon-parking.svg" alt="주차" />}
-          iconSizeWidth="2.4rem"
-          iconSizeHeight="2.4rem"
+          iconSizeWidth="1.8rem"
+          iconSizeHeight="1.8rem"
           iconPosition="left"
           size="medium"
           text={`주차`}
@@ -116,8 +115,8 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
         />
         <Button
           icon={<img src="img/icon-room.svg" alt="탈의실" />}
-          iconSizeWidth="2.4rem"
-          iconSizeHeight="2.4rem"
+          iconSizeWidth="1.6rem"
+          iconSizeHeight="1.6rem"
           iconPosition="left"
           size="medium"
           text={`탈의실`}
@@ -125,6 +124,19 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
           variant="white"
           active={selectedButtons.includes(5)}
           onClick={() => handleButtonClick(5)}
+          type="button"
+        />
+        <Button
+          icon={<img src="img/icon-suit.svg" alt="정장대여" />}
+          iconSizeWidth="1.6rem"
+          iconSizeHeight="1.6rem"
+          iconPosition="left"
+          size="medium"
+          text={`정장 대여`}
+          width="fit"
+          variant="white"
+          active={selectedButtons.includes(4)}
+          onClick={() => handleButtonClick(4)}
           type="button"
         />
         <Button
@@ -138,19 +150,6 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
           variant="white"
           active={selectedButtons.includes(3)}
           onClick={() => handleButtonClick(3)}
-          type="button"
-        />
-        <Button
-          icon={<img src="img/icon-suit.svg" alt="정장대여" />}
-          iconSizeWidth="2.4rem"
-          iconSizeHeight="2.4rem"
-          iconPosition="left"
-          size="medium"
-          text={`정장 대여`}
-          width="fit"
-          variant="white"
-          active={selectedButtons.includes(4)}
-          onClick={() => handleButtonClick(4)}
           type="button"
         />
         <Button
@@ -194,28 +193,9 @@ const ServiceAvailabilityContainerStyle = styled.div`
   flex-wrap: wrap;
   gap: 0.8rem;
 
-  ${({ isPc }: { isPc?: boolean }) =>
-    isPc &&
-    css`
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.9rem;
-      max-width: none;
-
-      // 첫 번째, 두 번째, 다섯 번째, 여섯 번째 버튼은 한 줄 전체 차지
-      & > button:nth-of-type(1),
-      & > button:nth-of-type(2),
-      & > button:nth-of-type(5),
-      & > button:nth-of-type(6) {
-        grid-column: 1 / -1;
-      }
-
-      // 세 번째, 네 번째 버튼은 2열로 배치
-      & > button:nth-of-type(3),
-      & > button:nth-of-type(4) {
-        grid-column: auto;
-      }
-    `}
+  button {
+    font-size: 1.4rem;
+  }
 `;
 const ButtonWrapperStyle = styled.div`
   margin-top: 3.2rem;

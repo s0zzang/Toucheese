@@ -180,7 +180,7 @@ const Button = ({
   // ----------------------------- 버튼 기본 스타일 -----------------------------
   const styles = css`
     border: none;
-    border-radius: 0.6rem;
+    border-radius: ${variables.borderRadius};
     cursor: pointer;
     width: 100%;
     display: flex;
@@ -195,7 +195,7 @@ const Button = ({
     ${variant === 'primary' &&
     css`
       background-color: ${variables.colors.primary50};
-      border: 0.1rem solid ${variables.colors.primary};
+      border: 1px solid ${variables.colors.primary};
     `}
 
 // ----------------------------- 블랙 버튼 ----------------------------- 
@@ -242,21 +242,21 @@ const Button = ({
     ${variant === 'white' &&
     css`
       background-color: ${variables.colors.white};
-      border: 0.1rem solid ${variables.colors.gray400};
+      border: 1px solid ${variables.colors.gray400};
     `}
 
     ${variant === 'white' &&
     active &&
     css`
       background-color: ${variables.colors.primary50};
-      border: 0.1rem solid ${variables.colors.primary500};
+      border: 1px solid ${variables.colors.primary500};
     `}
 
  // ----------------------------- 외곽선 노란색 회색 버튼 -----------------------------
     ${variant === 'grayWithYellowOutline' &&
     css`
       background-color: ${variables.colors.gray300};
-      border: 0.1rem solid ${variables.colors.primary50};
+      border: 1px solid ${variables.colors.primary50};
     `}
 
   ${variant === 'grayWithYellowOutline' &&
@@ -272,7 +272,7 @@ const Button = ({
     ${variant === 'grayWithGrayOutline' &&
     css`
       background-color: ${variables.colors.gray100};
-      border: 0.1rem solid ${variables.colors.gray400};
+      border: 1px solid ${variables.colors.gray400};
       color: ${variables.colors.gray500};
     `}
 
@@ -280,7 +280,7 @@ const Button = ({
     active &&
     css`
       background-color: ${variables.colors.primary50};
-      border: 0.1rem solid ${variables.colors.primary500};
+      border: 1px solid ${variables.colors.primary500};
       color: ${variables.colors.gray900};
     `}
 

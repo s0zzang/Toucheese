@@ -36,4 +36,12 @@ const buttonStyle = css`
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+
+  & img {
+    width: 1.1rem;
+    height: 1.9rem;
+  }
 `;

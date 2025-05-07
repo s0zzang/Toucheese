@@ -145,6 +145,7 @@ const Calendar = ({ type = 'filter', disableDates }: CalendarProp) => {
                     type="button"
                     css={calendarRatio(type)}
                     onClick={() => handleDateClick(year, month, date)}
+                    disabled={isPrevToday}
                   >
                     {date}
                     <span css={Hidden}>일</span>
