@@ -198,6 +198,8 @@ export interface IResvItem {
   status: 'WAITING' | 'RESERVED' | 'COMPLETED' | 'CANCELED';
   date: string;
   startTime: string;
+  additionalOptionIds: number[];
+  additionalOptionNames: string[];
   // 임시
   review?: {
     rating: number;
