@@ -5,21 +5,24 @@ const GoogleCallback = () => {
   const accessToken = parsedHash.get('access_token');
 
   useEffect(() => {
-    if (accessToken) handleLogin(accessToken);
+    if (accessToken) {
+      console.log(accessToken);
+      handleLogin(accessToken);
+    }
   }, [accessToken]);
 
   const handleLogin = async (accessToken: string) => {
     // api 작업 중
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_TOUCHEESE_API}/oauth2/authorization/google`,
+        `${import.meta.env.VITE_TOUCHEESE_API}/user/auth/google/callback`,
         {
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            accessToken,
+            code: accessToken,
           }),
         },
       );
