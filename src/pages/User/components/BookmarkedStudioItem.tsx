@@ -124,6 +124,7 @@ const imgStyle = css`
 
   img {
     aspect-ratio: 94 / 118;
+    object-fit: cover;
 
     ${mqMin(breakPoints.pc)} {
       aspect-ratio: 141 / 177;
