@@ -189,6 +189,7 @@ const menuDetailLayout = css`
       top: ${variables.headerHeight};
       margin-left: calc(${variables.layoutPadding}*-1);
       width: calc(40% + ${variables.layoutPadding});
+      max-width: calc(50.4rem + ${variables.layoutPadding});
     }
     .swiper-pagination.swiper-pagination-horizontal {
       bottom: 3rem;
@@ -203,7 +204,7 @@ const MenuImgPCStyle = css`
   ${mqMin(breakPoints.pc)} {
     width: 100%;
     height: calc(100vh - ${variables.headerHeight});
-    max-height: 64rem;
+    max-height: 68rem;
   }
 `;
 
