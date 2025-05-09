@@ -106,7 +106,6 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
           <i>/</i>
           {data.length}
         </div>
-        <Swiper {...swiperOption}>{children}</Swiper>
         <div className="swiper-buttons">
           <button
             onClick={() => setLastSwipeDirection('prev')}
@@ -119,6 +118,7 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
             ref={nextBtnRef}
           ></button>
         </div>
+        <Swiper {...swiperOption}>{children}</Swiper>
       </div>
     )
   );
@@ -132,7 +132,6 @@ const dimSwiperBox = css`
 
     ${mqMin(breakPoints.pc)} {
       position: absolute;
-      z-index: 9;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
