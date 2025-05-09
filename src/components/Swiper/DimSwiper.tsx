@@ -84,11 +84,13 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
   };
 
   useEffect(() => {
+    if (!data) return;
+    setFirstSlide(data[0].id);
+    setLastSlide(data[data.length - 1].id);
+  }, []);
+
+  useLayoutEffect(() => {
     setIndexByPortfolioId();
-    if (data) {
-      setFirstSlide(data[0].id);
-      setLastSlide(data[data.length - 1].id);
-    }
   }, []);
 
   useLayoutEffect(() => {
