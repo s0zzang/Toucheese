@@ -15,7 +15,7 @@ const StudioInfoDock = ({ data }: { data: IStudioDetail }) => {
       css={css`
         ${mqMin(breakPoints.pc)} {
           width: 100%;
-          margin-right: calc(${variables.layoutPadding});
+          padding-right: ${variables.layoutPadding};
           background-color: ${variables.colors.white};
         }
       `}
