@@ -184,11 +184,15 @@ const StudioMenuDetail = () => {
 export default StudioMenuDetail;
 
 const menuDetailLayout = css`
+  margin-top: calc(-1 * ${variables.headerHeight});
+
   ${mqMin(breakPoints.pc)} {
+    margin-top: unset;
     .left-box {
       top: ${variables.headerHeight};
       margin-left: calc(${variables.layoutPadding}*-1);
       width: calc(40% + ${variables.layoutPadding});
+      max-width: calc(50.4rem + ${variables.layoutPadding});
     }
     .swiper-pagination.swiper-pagination-horizontal {
       bottom: 3rem;
@@ -203,7 +207,7 @@ const MenuImgPCStyle = css`
   ${mqMin(breakPoints.pc)} {
     width: 100%;
     height: calc(100vh - ${variables.headerHeight});
-    max-height: 64rem;
+    max-height: 68rem;
   }
 `;
 
@@ -242,9 +246,9 @@ const TabMenuStyle = css`
   box-sizing: border-box;
 
   ${mqMin(breakPoints.pc)} {
-    top: -5rem;
+    top: 8rem;
     width: calc(100% + (${variables.layoutPadding} * 2));
-    z-index: 1;
+    z-index: 10;
   }
 
   & li {

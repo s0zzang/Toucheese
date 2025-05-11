@@ -25,8 +25,6 @@ const BookmarkedStudios = () => {
 
   const { data, error, refetch } = useGetBookmarkList(activeTheme);
 
-  console.log(data);
-
   useEffect(() => {
     if (error) {
       if (error.message === '403') {
