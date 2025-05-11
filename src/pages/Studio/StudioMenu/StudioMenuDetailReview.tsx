@@ -14,7 +14,7 @@ const StudioMenuDetailReview = ({
     <StudioReviewItem
       key={item.id}
       review={item}
-      showMenuName={false}
+      showMenuName={true}
       isLast={i === reviewItem.length - 1}
     />
   ));
@@ -40,11 +40,11 @@ export default StudioMenuDetailReview;
 const ReviewrapperStyle = css`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1.8rem 0;
 `;
 
 const ReviewHead = css`
+  /* box-shadow: inset 0 0 10px saddlebrown; */
+  margin-top: 2.4rem;
   display: flex;
   align-items: center;
   gap: 0.8rem;

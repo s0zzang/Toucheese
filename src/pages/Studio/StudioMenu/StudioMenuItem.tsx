@@ -1,7 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdM, TypoBodyMdSb, TypoBodySmR, TypoCapSmR } from '@styles/Common';
+import {
+  TypoBodyMdM,
+  TypoBodyMdR,
+  TypoBodyMdSb,
+  TypoCapSmR,
+  TypoTitleXsM,
+  TypoTitleXsSb,
+} from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 import { IMenuListRes } from 'types/types';
@@ -88,7 +95,7 @@ const MenuDescStyle = css`
   justify-content: space-between;
 
   ${mqMin(breakPoints.pc)} {
-    max-width: 38.8rem;
+    max-width: 50.7rem;
     width: 100%;
   }
 `;
@@ -116,6 +123,10 @@ const MenuHeadStyle = css`
         height: 1.8rem;
       }
     }
+
+    ${mqMin(breakPoints.pc)} {
+      ${TypoTitleXsM}
+    }
   }
 
   & h4 {
@@ -127,7 +138,7 @@ const MenuHeadStyle = css`
     color: ${variables.colors.gray800};
 
     ${mqMin(breakPoints.pc)} {
-      ${TypoBodySmR}
+      ${TypoBodyMdR}
       -webkit-line-clamp: 4;
     }
   }
@@ -137,10 +148,17 @@ const MenuPriceReviewStyle = css`
   & h4 {
     ${TypoBodyMdSb}
     margin-bottom:.4rem;
+    ${mqMin(breakPoints.pc)} {
+      ${TypoTitleXsSb}
+    }
   }
 
   & span {
     ${TypoCapSmR}
     color: ${variables.colors.gray700};
+    ${mqMin(breakPoints.pc)} {
+      font-size: 1.4rem;
+      line-height: 1.6rem;
+    }
   }
 `;
