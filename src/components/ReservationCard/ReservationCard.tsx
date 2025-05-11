@@ -36,7 +36,7 @@ const ReservationCard = ({
   return (
     <>
       {data ? (
-        <article
+        <a
           css={CardStyle(isMyPage)}
           onClick={() => navigate(`/reservation/${data?.reservationId}`)}
         >
@@ -87,7 +87,7 @@ const ReservationCard = ({
               reservaionData={data && data}
             />
           )}
-        </article>
+        </a>
       ) : (
         <article css={EmptyCardStyle}>
           <p>

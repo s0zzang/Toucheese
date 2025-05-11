@@ -43,6 +43,7 @@ const Bookmark = ({
   // 북마크 설정/해제 api 호출
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    e.preventDefault();
 
     if (accessToken) {
       await handleBookmark(accessToken, id);
@@ -65,9 +66,12 @@ const Bookmark = ({
 
   const handleKeyDown = async (e: KeyboardEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+
     if (!isPc) return;
 
     if (e.code === 'Enter') {
+      e.preventDefault();
+
       if (accessToken) {
         await handleBookmark(accessToken, id);
         setBookmark((state) => ({

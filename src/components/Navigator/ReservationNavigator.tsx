@@ -21,14 +21,11 @@ const ReservationNavigator = <T extends { statusKor: string; statusEng: string }
           const length = STATUS.length;
 
           return (
-            <LiStyle
-              key={index}
-              className={isActive ? 'active' : ''}
-              onClick={() => setStatus(item)}
-              length={length}
-            >
-              <span css={TypoTitleXsM}>{item.statusKor}</span>
-            </LiStyle>
+            <ListStyle key={index} length={length}>
+              <ButtonStyle className={isActive ? 'active' : ''} onClick={() => setStatus(item)}>
+                <span css={TypoTitleXsM}>{item.statusKor}</span>
+              </ButtonStyle>
+            </ListStyle>
           );
         })}
       </UlStyle>
@@ -40,12 +37,16 @@ const UlStyle = styled.ul`
   display: flex;
 `;
 
-const LiStyle = styled.li<{ length: number }>`
-  cursor: pointer;
-  position: relative;
+const ListStyle = styled.li<{ length: number }>`
   width: calc(100% / length);
   flex-grow: 1;
   flex-shrink: 0;
+`;
+
+const ButtonStyle = styled.button`
+  cursor: pointer;
+  position: relative;
+  width: 100%;
 
   display: flex;
   justify-content: center;
