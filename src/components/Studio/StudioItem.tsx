@@ -101,7 +101,7 @@ const StudioItem = ({ item, isLast }: { item: IStudioItem; isLast: boolean }) =>
                   <img className="rating" src="/img/icon-rating.svg" alt="평점" />
                 </div>
                 <p>
-                  {item.rating}
+                  {item.rating.toFixed(1)}
                   <span>{` (${item.review_count}개의 평가)`}</span>
                 </p>
               </div>
@@ -201,7 +201,7 @@ const InfoContainerStyle = styled.div`
   & > div {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 2px;
 
     .icon-container {
       flex-shrink: 0;
