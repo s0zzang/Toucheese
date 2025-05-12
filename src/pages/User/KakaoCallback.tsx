@@ -1,3 +1,4 @@
+import useToast from '@hooks/useToast';
 import { useUserStore } from '@store/useUserStore';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -5,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const KakaoCallback = () => {
   const navigate = useNavigate();
   const setUser = useUserStore((state) => state.setUser);
+  const openToast = useToast();
 
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get('code');
@@ -30,6 +32,7 @@ const KakaoCallback = () => {
 
         if (result.accessToken) {
           setUser(result);
+          openToast('로그인 성공!');
           navigate('/', { replace: false });
         } else {
           navigate('/user/AuthVerification', {

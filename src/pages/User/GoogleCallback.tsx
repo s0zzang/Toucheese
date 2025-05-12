@@ -1,4 +1,5 @@
 import Loading from '@components/Loading/Loading';
+import useToast from '@hooks/useToast';
 import { useUserStore } from '@store/useUserStore';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +9,7 @@ const GoogleCallback = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const setUser = useUserStore((state) => state.setUser);
+  const openToast = useToast();
 
   useEffect(() => {
     const codeParams = new URLSearchParams(window.location.search).get('code');
@@ -42,6 +44,7 @@ const GoogleCallback = () => {
 
       if (data.accessToken) {
         setUser(data);
+        openToast('로그인 성공!');
         navigate('/', { replace: true });
       } else {
         navigate('/user/AuthVerification', {
