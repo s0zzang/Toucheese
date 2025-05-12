@@ -1,8 +1,10 @@
+import { useUserStore } from '@store/useUserStore';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const KakaoCallback = () => {
   const navigate = useNavigate();
+  const setUser = useUserStore((state) => state.setUser);
 
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get('code');
@@ -25,20 +27,19 @@ const KakaoCallback = () => {
         );
 
         const result = await response.json();
-        console.log('result: 필요함', result);
 
-        if (result.status.length > 1) {
-          navigate('/user/AuthVerification', {
-            state: {
-              status: result,
-            },
-          });
+        if (result.accessToken) {
+          setUser(result);
+          navigate('/', { replace: false });
         } else {
-          navigate('/');
+          navigate('/user/AuthVerification', {
+            replace: false,
+            state: result,
+          });
         }
       } catch (error) {
         console.error('카카오 로그인 에러:', error);
-        navigate('/login');
+        navigate('/user/auth');
       }
     };
 
