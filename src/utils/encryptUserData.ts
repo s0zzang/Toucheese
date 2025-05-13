@@ -33,12 +33,12 @@ export const decryptUserData = ({
   return {
     email: encryptedEmail
       ? CryptoJS.AES.decrypt(encryptedEmail, AES_SECRET_KEY).toString(CryptoJS.enc.Utf8)
-      : null,
+      : '',
     phone: encryptedPhone
       ? CryptoJS.AES.decrypt(encryptedPhone, AES_SECRET_KEY).toString(CryptoJS.enc.Utf8)
-      : null,
+      : '',
     username: encryptedUsername
       ? CryptoJS.AES.decrypt(encryptedUsername, AES_SECRET_KEY).toString(CryptoJS.enc.Utf8)
-      : null,
+      : '',
   };
 };
