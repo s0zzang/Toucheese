@@ -5,7 +5,9 @@ import Header from '@components/Header/Header';
 import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import useSignupStore from '@store/useSignupStore';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { Hidden, TypoTitleMdSb } from '@styles/Common';
+import variables from '@styles/Variables';
 import { useLayoutEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
@@ -188,11 +190,23 @@ const containerStyle = css`
 const buttonStyle = css`
   position: fixed;
   bottom: 3rem;
-  width: calc(100% - 3.2rem);
-  transform: translateX(-50%);
   left: 50%;
-`;
+  transform: translateX(-50%);
+  width: 100%;
+  padding: 0 ${variables.layoutPadding};
 
+  ${mqMin(breakPoints.pc)} {
+    left: calc(max((100vw - 1280px) / 2, 0px) + 32rem);
+    transform: none;
+    width: auto;
+
+    & > button {
+      min-width: 60rem;
+      max-width: 60rem;
+      width: 100%;
+    }
+  }
+`;
 const pageTitleStyle = css`
   ${TypoTitleMdSb}
   margin: 2.6rem 0 3rem 0;
