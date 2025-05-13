@@ -3,10 +3,10 @@ import { css } from '@emotion/react';
 import { convertToDateFormat, getDay } from '@store/useSelectDateStore';
 import { TypoBodyMdM, TypoBodySmR, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { IResvItem } from 'types/types';
 import RatingReview from './RatingReview';
 import StatusChip from './StatusChip';
-import { IResvItem } from 'types/types';
 
 type ReservationCardType = {
   isMyPage?: boolean;
@@ -19,7 +19,6 @@ const ReservationCard = ({
   isReviewWritePage = false,
   data,
 }: ReservationCardType) => {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   //방문 날짜 계산 함수
@@ -36,10 +35,7 @@ const ReservationCard = ({
   return (
     <>
       {data ? (
-        <a
-          css={CardStyle(isMyPage)}
-          onClick={() => navigate(`/reservation/${data?.reservationId}`)}
-        >
+        <a href={`/reservation/${data?.reservationId}`} css={CardStyle(isMyPage)}>
           {isMyPage && (
             <div css={CardTopStyle}>
               <img src="/img/icon-calendar-yellow.svg" alt="일정 d-day 아이콘" />
@@ -89,15 +85,13 @@ const ReservationCard = ({
           )}
         </a>
       ) : (
-        <article css={EmptyCardStyle}>
+        <div css={EmptyCardStyle}>
           <p>
             예약하신 사진관이 없습니다. <br />
             매장을 예약하고 인생 사진을 찍어보세요!
           </p>
-          <button type="button" onClick={() => navigate('/')}>
-            사진관 보러가기
-          </button>
-        </article>
+          <a href="/">사진관 보러가기</a>
+        </div>
       )}
     </>
   );
@@ -106,6 +100,7 @@ const ReservationCard = ({
 export default ReservationCard;
 
 const CardStyle = (isMyPage: boolean | undefined) => css`
+  display: block;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -198,7 +193,7 @@ const EmptyCardStyle = css`
     ${TypoBodyMdM}
   }
 
-  & button {
+  & a {
     display: flex;
     gap: 0.4rem;
     padding: 0.8rem 1rem;
