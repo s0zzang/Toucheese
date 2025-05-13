@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import Header from '@components/Header/Header';
 import { css } from '@emotion/react';
-import { DividerStyle, TypoTitleXsM } from '@styles/Common';
-import variables from '@styles/Variables';
+import { TypoTitleXsM } from '@styles/Common';
 import StarInput from './components/StarInput';
 import Button from '@components/Button/Button';
 import ImageUploadPreview from './components/ImageUploadPreview';
@@ -127,9 +126,19 @@ const StudioReviewWritePage = () => {
   };
 
   return (
-    <main>
+    <main
+      css={css`
+        width: 50%;
+        margin: 0 auto;
+        margin-bottom: 3rem;
+
+        @media (max-width: 768px) {
+          width: 100%;
+        }
+      `}
+    >
       <Header title="리뷰 작성하기" />
-      <div css={studioPaddingTop}>
+      <div>
         <section>
           <h2
             css={css`
@@ -143,8 +152,6 @@ const StudioReviewWritePage = () => {
 
           <StarInput onRatingChange={handleRatingChange} />
         </section>
-
-        <div css={DividerStyle}></div>
 
         <section>
           <h3
@@ -160,8 +167,6 @@ const StudioReviewWritePage = () => {
             <ImageUploadPreview maxImages={5} onImagesChange={handleImagesChange} />
           </div>
         </section>
-
-        <div css={DividerStyle}></div>
 
         <section>
           <h4
@@ -200,9 +205,5 @@ const StudioReviewWritePage = () => {
     </main>
   );
 };
-
-const studioPaddingTop = css`
-  padding-top: ${variables.headerHeight};
-`;
 
 export default StudioReviewWritePage;
