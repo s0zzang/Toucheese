@@ -2,6 +2,7 @@
 
 import Header from '@components/Header/Header';
 import ReservationNavigator from '@components/Navigator/ReservationNavigator';
+import NoResult from '@components/NoResult/NoResult';
 import ReservationCard from '@components/ReservationCard/ReservationCard';
 import { css } from '@emotion/react';
 import { useGetReservationList } from '@hooks/useGetReservationList';
@@ -21,20 +22,28 @@ import { IResvItem } from 'types/types';
 
 interface MyReviewStatus {
   statusKor: '리뷰 남기기' | '나의 리뷰';
-  statusEng: 'DEFAULT' | 'COMPLETED';
+  statusEng: 'INCOMPLETED' | 'COMPLETED';
 }
 
 const MyReviews = () => {
   const STATUS: MyReviewStatus[] = [
-    { statusKor: '리뷰 남기기', statusEng: 'COMPLETED' },
+    { statusKor: '리뷰 남기기', statusEng: 'INCOMPLETED' },
     { statusKor: '나의 리뷰', statusEng: 'COMPLETED' },
   ];
   const [resStatus, setResStatus] = useState<MyReviewStatus>(STATUS[0]);
-  const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
-  const { data, error } = useGetReservationList('COMPLETED');
+  const isPc = useMediaQuery({ minWidth: breakPoints.pc });
   const openToast = useToast();
   const navigate = useNavigate();
+
+  const { data, error } = useGetReservationList('COMPLETED');
+  const isReviewIncompleted = resStatus.statusEng === 'INCOMPLETED';
+  const getReviewGroups = data?.filter(({ review }) => (isReviewIncompleted ? !review : review));
+  const [currentReviews, setCurrentReview] = useState(getReviewGroups);
+
+  const emptyMessage = isReviewIncompleted
+    ? '작성해야 할 리뷰가 아직 없습니다.'
+    : '작성 완료된 리뷰가 없습니다.';
 
   useEffect(() => {
     if (error) {
@@ -47,13 +56,17 @@ const MyReviews = () => {
     }
   }, [error]);
 
+  useEffect(() => {
+    setCurrentReview(getReviewGroups);
+  }, [data, isReviewIncompleted]);
+
   return (
     <main>
       <MyPageHeaderContainerStyle>
         {isPc ? (
           <h1 className="pcLayout">내 리뷰</h1>
         ) : (
-          <Header title="내 리뷰" backTo="/user/mypage" />
+          <Header title="내 리뷰" backTo="/user/mypage" fixed={true} />
         )}
 
         <div
@@ -72,15 +85,17 @@ const MyReviews = () => {
       </MyPageHeaderContainerStyle>
 
       <MyPageSectionStyle>
-        {data && (
+        {currentReviews?.length ? (
           <MyPageContentStyle>
-            <h2 css={TypoBodyMdM}>총 {data.length}건</h2>
+            <h2 css={TypoBodyMdM}>총 {currentReviews.length}건</h2>
             <div className="content-box">
-              {sortReservations<IResvItem>(data).map((item) => (
+              {sortReservations<IResvItem>(currentReviews).map((item) => (
                 <ReservationCard key={item.reservationId} data={item} />
               ))}
             </div>
           </MyPageContentStyle>
+        ) : (
+          <NoResult message={emptyMessage} bg="gray100" />
         )}
       </MyPageSectionStyle>
     </main>

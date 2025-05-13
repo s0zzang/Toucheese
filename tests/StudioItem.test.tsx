@@ -148,7 +148,7 @@ const mockStudio: IStudioItem = {
 
 describe('StudioItem Component', () => {
   test('스튜디오 정보를 출력해야 합니다.', () => {
-    render(<StudioItem item={mockStudio} isFirst={false} isLast={false} />);
+    render(<StudioItem item={mockStudio} isLast={false} />);
 
     // 스튜디오 이름
     expect(screen.findByText('주 스튜디오'));
@@ -166,14 +166,14 @@ describe('StudioItem Component', () => {
   });
 
   test('메뉴 중 최저가를 계산해야 합니다.', () => {
-    render(<StudioItem item={mockStudio} isFirst={false} isLast={false} />);
+    render(<StudioItem item={mockStudio} isLast={false} />);
 
     // 스튜디오 최저가 계산
     expect(screen.findByText('31000원~'));
   });
 
   test('북마크 설정 여부를 렌더링해야 합니다.', () => {
-    render(<StudioItem item={mockStudio} isFirst={false} isLast={false} />);
+    render(<StudioItem item={mockStudio} isLast={false} />);
 
     // 북마크 버튼
     const bookmarkButton = screen.getByRole('button', { name: /북마크 해제하기/i });
@@ -184,7 +184,7 @@ describe('StudioItem Component', () => {
   });
 
   test('북마크 버튼 클릭 시 북마크 설정 여부를 변경해야 합니다.', () => {
-    render(<StudioItem item={mockStudio} isFirst={false} isLast={false} />);
+    render(<StudioItem item={mockStudio} isLast={false} />);
 
     // 북마크 버튼
     const bookmarkButton = screen.getByRole('button', { name: /북마크 해제하기/i });
@@ -201,7 +201,7 @@ describe('StudioItem Component', () => {
   });
 
   test('이미지 슬라이더에 이미지를 최대 5개 렌더링해야 합니다.', () => {
-    render(<StudioItem item={mockStudio} isFirst={false} isLast={false} />);
+    render(<StudioItem item={mockStudio} isLast={false} />);
 
     const images = screen.getAllByAltText(/이미지/i); // alt 속성을 이용한 이미지 찾기
     expect(images.length).toBeLessThanOrEqual(5);

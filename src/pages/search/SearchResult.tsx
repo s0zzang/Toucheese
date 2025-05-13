@@ -4,13 +4,16 @@ import { css } from '@emotion/react';
 import StudioList from '@components/Studio/StudioList';
 import BackButton from '@components/BackButton/BackButton';
 import { Helmet } from 'react-helmet-async';
-import { breakPoints } from '@styles/BreakPoint';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { useMediaQuery } from 'react-responsive';
 import SearchBar from '@components/Search/SearchBar';
+import { useState } from 'react';
+import { TypoTitleXsR } from '@styles/Common';
+import variables from '@styles/Variables';
 
 const SearchResults = () => {
   const location = useLocation();
-
+  const [resultCount, setResultCount] = useState<number>(0);
   const queryParams = new URLSearchParams(location.search);
   const searchTerm = queryParams.get('keyword') || '';
 
@@ -40,10 +43,11 @@ const SearchResults = () => {
           <SearchBar />
         </div>
       )}
-
+      {resultCount > 0 && <h2 css={resultTitleStyle}>스튜디오 검색 결과 ({resultCount})</h2>}
       <StudioList
         mode="search/result"
         searchParams={new URLSearchParams({ keyword: searchTerm })}
+        onResultCount={setResultCount}
       />
     </div>
   );
@@ -57,4 +61,14 @@ const searchHeaderStyle = css`
   gap: 1rem;
   margin-bottom: 1.6rem;
   padding-top: 2rem;
+`;
+
+const resultTitleStyle = css`
+  ${TypoTitleXsR};
+  color: ${variables.colors.gray800};
+
+  padding-top: 0.64rem;
+  ${mqMin(breakPoints.pc)} {
+    padding: 3rem 0 2.4rem;
+  }
 `;

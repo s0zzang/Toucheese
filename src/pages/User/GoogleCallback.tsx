@@ -1,37 +1,66 @@
-import { useEffect } from 'react';
+import Loading from '@components/Loading/Loading';
+import useToast from '@hooks/useToast';
+import { useUserStore } from '@store/useUserStore';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const GoogleCallback = () => {
-  const parsedHash = new URLSearchParams(window.location.hash.substring(1));
-  const accessToken = parsedHash.get('access_token');
+  const [code, setCode] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+  const setUser = useUserStore((state) => state.setUser);
+  const openToast = useToast();
 
   useEffect(() => {
-    if (accessToken) handleLogin(accessToken);
-  }, [accessToken]);
+    const codeParams = new URLSearchParams(window.location.search).get('code');
 
-  const handleLogin = async (accessToken: string) => {
-    // api 작업 중
+    if (codeParams) {
+      setCode(codeParams);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (code) {
+      handleLogin(code);
+    }
+  }, [code]);
+
+  const handleLogin = async (code: string) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_TOUCHEESE_API}/oauth2/authorization/google`,
+        `${import.meta.env.VITE_TOUCHEESE_API}/user/auth/google/callback`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            accessToken,
+            code,
           }),
         },
       );
 
       const data = await response.json();
-      console.log(data);
+
+      if (data.accessToken) {
+        setUser(data);
+        openToast('로그인 성공!');
+        navigate('/', { replace: true });
+      } else {
+        navigate('/user/AuthVerification', {
+          replace: true,
+          state: data,
+        });
+      }
+
+      setIsLoading(false);
     } catch (err) {
-      console.error(err);
+      console.error('구글 로그인 에러', err);
+      navigate('/user/auth');
     }
   };
 
-  return <div>로그인 중...</div>;
+  return <>{isLoading && <Loading size="big" phrase="로그인 중입니다..." />}</>;
 };
 
 export default GoogleCallback;

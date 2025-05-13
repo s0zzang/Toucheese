@@ -6,6 +6,7 @@ import StudioReviewWritePage from '@pages/Studio/StudioReview/StudioReviewWriteP
 import Auth from '@pages/User/Auth';
 import AuthVerification from '@pages/User/AuthVerification';
 import AuthRedirectHandler from '@pages/User/components/AuthRedirectHandler';
+import GoogleCallback from '@pages/User/GoogleCallback';
 import KakaoCallback from '@pages/User/KakaoCallback';
 import LoginWithEmailPage from '@pages/User/LoginWithEmailPage';
 import SignupSuccess from '@pages/User/signupSuccess';
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
           {
             path: 'auth/kakao/callback',
             element: <KakaoCallback />,
+          },
+          {
+            path: 'auth/google/callback',
+            element: <GoogleCallback />,
           },
           {
             path: 'AuthVerification',

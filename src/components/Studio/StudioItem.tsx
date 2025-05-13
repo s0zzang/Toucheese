@@ -27,13 +27,8 @@ const StudioItem = ({ item, isLast }: { item: IStudioItem; isLast: boolean }) =>
   const navigate = useNavigate();
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
-  // 스튜디오 클릭 시 navigate
-  const handleClick = () => {
-    navigate(`/studio/${item.id}`);
-  };
-
   // 탭 키 이동 후 Enter 시 navigate
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLAnchorElement>) => {
     if (!isPc) return;
 
     if (e.code === 'Enter') {
@@ -55,7 +50,13 @@ const StudioItem = ({ item, isLast }: { item: IStudioItem; isLast: boolean }) =>
 
   return (
     <DivStyle isLast={isLast}>
-      <div onClick={handleClick} onKeyDown={handleKeyDown} tabIndex={0}>
+      <a
+        css={css`
+          display: block;
+        `}
+        href={`/studio/${item.id}`}
+        onKeyDown={handleKeyDown}
+      >
         <ItemImageStyle>
           {isPc ? (
             <div
@@ -100,7 +101,7 @@ const StudioItem = ({ item, isLast }: { item: IStudioItem; isLast: boolean }) =>
                   <img className="rating" src="/img/icon-rating.svg" alt="평점" />
                 </div>
                 <p>
-                  {item.rating}
+                  {item.rating.toFixed(1)}
                   <span>{` (${item.review_count}개의 평가)`}</span>
                 </p>
               </div>
@@ -135,7 +136,7 @@ const StudioItem = ({ item, isLast }: { item: IStudioItem; isLast: boolean }) =>
             />
           </BookmarkStyle>
         </ItemContentStyle>
-      </div>
+      </a>
     </DivStyle>
   );
 };
@@ -200,7 +201,7 @@ const InfoContainerStyle = styled.div`
   & > div {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 2px;
 
     .icon-container {
       flex-shrink: 0;

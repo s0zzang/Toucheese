@@ -169,20 +169,16 @@ export const MyPageHeaderContainerStyle = styled.div`
 `;
 
 export const MyPageSectionStyle = styled.section`
-  box-shadow: inset 0 0 20px blue;
-
   ${bg100vw(variables.colors.gray100)}
   margin: 10rem calc(-1 * ${variables.layoutPadding}) calc(-1 * (4rem + ${variables.headerHeight}));
-  padding: 0 ${variables.layoutPadding} calc(4rem + ${variables.headerHeight});
+  padding: 0 ${variables.layoutPadding} ${variables.headerHeight};
   min-height: calc(100vh - 10rem);
 
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
     min-height: calc(100vh - 21.8rem);
-    margin: unset;
-    padding-left: unset;
-    padding-right: unset;
-    margin-top: 13.8rem;
+    margin: 13.8rem 0 -3rem;
+    padding: 0 0 3rem;
     box-sizing: border-box;
   }
 `;
