@@ -1,13 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
 import Button from '@components/Button/Button';
+import { SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
 import useModal from '@hooks/useModal';
+import useTabFocus from '@hooks/useTabFocus';
 import { useModalStore } from '@store/useModalStore';
 import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import { Hidden, TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ModalProp {
   type: 'default' | 'dimmed' | 'fullscreen';
@@ -23,7 +26,9 @@ interface ModalProp {
     active?: boolean;
     width?: 'max' | 'fit';
     type?: 'button' | 'submit';
+    dataTab?: string;
   }[];
+  additionalStyle?: SerializedStyles;
 }
 
 interface IModalStyle {
@@ -35,11 +40,12 @@ interface ITitleStyle {
 }
 
 interface ICloseBtnStyle {
-  mode: 'dimmed' | 'fullscreen';
+  mode: 'default' | 'dimmed' | 'fullscreen';
 }
 
 interface IContentStyle {
   type: 'default' | 'dimmed' | 'fullscreen';
+  isButton: boolean;
 }
 
 /**
@@ -58,12 +64,16 @@ const Modal = ({
   children,
   withBtn = true,
   buttons = [],
+  additionalStyle,
 }: ModalProp) => {
+  const modalPortal = document.getElementById('modal-portal') as HTMLElement;
   const modals = useModalStore((state) => state.modals);
   const isOpen = modals[modalId];
   const isModalOpen = Object.values(modals).filter((boolean) => boolean).length;
   const { close } = useModal(modalId);
   const handleClose = () => close();
+
+  const { focusRef } = useTabFocus(close);
 
   const handleDimClick = (e: React.MouseEvent) => {
     const eventTarget = e.target as HTMLElement;
@@ -78,42 +88,40 @@ const Modal = ({
     else htmlStyle.overflowY = 'auto';
   }, [isOpen]);
 
-  return (
+  return createPortal(
     isOpen && (
-      <ModalStyle type={type} className="modal-box" onClick={(e) => handleDimClick(e)}>
-        <ModalInner type={type}>
+      <ModalStyle
+        type={type}
+        className="modal-box"
+        onClick={(e) => handleDimClick(e)}
+        role="dialog"
+        aria-modal="true"
+        data-id={modalId}
+        ref={focusRef}
+      >
+        <ModalInner type={type} className="modal-inner" css={additionalStyle}>
           {/* default 모달 헤더 */}
           {type === 'default' && <TitleStyleDefault>{title}</TitleStyleDefault>}
 
           {/* FullScreen 모달 헤더 */}
           {type === 'fullscreen' && (
-            <TitleStyle type="fullscreen">
+            <TitleStyle type="fullscreen" className="modal-title">
               {isOpen}
-              {isCloseBtn ? (
-                <CloseXBtnStyle type="button" onClick={handleClose}>
-                  <span css={Hidden}>모달 닫기</span>
-                </CloseXBtnStyle>
-              ) : (
-                <CloseBtnStyle type="button" mode="fullscreen" onClick={handleClose}>
-                  <span css={Hidden}>모달 닫기</span>
-                </CloseBtnStyle>
-              )}
               {title && <h2 css={TypoTitleSmS}>{title}</h2>}
             </TitleStyle>
           )}
 
           {/* Dim 처리 모달 헤더 */}
           {type === 'dimmed' && (
-            <TitleStyle type="dimmed">
+            <TitleStyle type="dimmed" className="modal-title">
               {title && <h2 css={TypoBodyMdR}>{title}</h2>}
-              <CloseBtnStyle type="button" mode="dimmed" onClick={handleClose}>
-                <span css={Hidden}>모달 닫기</span>
-              </CloseBtnStyle>
             </TitleStyle>
           )}
 
           {/* Content */}
-          <ContentsStyle type={type}>{children}</ContentsStyle>
+          <ContentsStyle type={type} isButton={buttons.length > 0} className="modal-content">
+            {children}
+          </ContentsStyle>
 
           {/* Buttons */}
           {withBtn && (
@@ -126,6 +134,7 @@ const Modal = ({
                   width = 'max',
                   active = true,
                   type = 'button',
+                  dataTab,
                 }) => (
                   <Button
                     key={text}
@@ -136,14 +145,27 @@ const Modal = ({
                     active={active}
                     width={width}
                     type={type}
+                    data-tab={dataTab}
                   />
                 ),
               )}
             </ButtonBoxStyle>
           )}
+
+          {/* close button */}
+          {isCloseBtn ? (
+            <CloseXBtnStyle type="button" onClick={handleClose}>
+              <span css={Hidden}>모달 닫기</span>
+            </CloseXBtnStyle>
+          ) : (
+            <CloseBtnStyle type="button" mode={type} onClick={handleClose}>
+              <span css={Hidden}>모달 닫기</span>
+            </CloseBtnStyle>
+          )}
         </ModalInner>
       </ModalStyle>
-    )
+    ),
+    modalPortal,
   );
 };
 
@@ -159,6 +181,7 @@ const ModalStyle = styled.section<IModalStyle>`
     background: ${(props) =>
       props.type === 'fullscreen' ? variables.colors.white : ' rgba(0, 0, 0, 0.85)'};
     padding: 0 ${variables.layoutPadding} 10rem;
+    padding: ${(props) => props.type === 'fullscreen' && 0};
     padding-top: ${(props) => props.type === 'dimmed' && variables.headerHeight};
     padding-bottom: ${(props) => props.type === 'dimmed' && '3rem'};
     overflow: ${(props) => props.type === 'dimmed' && 'visible'};
@@ -200,6 +223,8 @@ const ModalInner = styled.div<IModalStyle>`
     height: ${(props) => props.type !== 'default' && '100%'};
     padding: ${(props) => props.type === 'default' && '3rem 2rem 2rem'};
     gap: ${(props) => props.type === 'default' && '.6rem'};
+    display: flex;
+    flex-direction: column;
   }
 
   ${mqMin(breakPoints.pc)} {
@@ -253,22 +278,26 @@ const TitleStyleDefault = styled.h2`
 `;
 
 const CloseBtnStyle = styled.button<ICloseBtnStyle>`
+  display: ${({ mode }) => mode === 'default' && 'none'};
   width: 2.4rem;
   aspect-ratio: 1/1;
   position: absolute;
   z-index: 9;
 
   ${mqMax(breakPoints.moMax)} {
-    background: ${(props) =>
-      props.mode === 'fullscreen'
+    background: ${({ mode }) =>
+      mode === 'fullscreen'
         ? 'url(/img/icon-arrowback.svg) no-repeat center / 1.1rem 1.9rem'
         : 'url(/img/icon-close-white.svg) no-repeat center / 1.2rem'};
-    left: ${(props) => props.mode === 'fullscreen' && 0};
-    right: ${(props) => props.mode === 'dimmed' && 0};
+    top: 1.4rem;
+    left: ${({ mode }) => mode === 'fullscreen' && '2rem'};
+    right: ${({ mode }) => mode === 'dimmed' && '2rem'};
   }
 
   ${mqMin(breakPoints.pc)} {
     background: url(/img/icon-close-gray800.svg) no-repeat center / 1.6rem;
+    ${({ mode }) => mode === 'dimmed' && `background-image: url(/img/icon-close-white.svg);`}
+    top: 2.5rem;
     right: ${variables.layoutPadding};
   }
 `;
@@ -279,22 +308,26 @@ const CloseXBtnStyle = styled.button`
   background: url(/img/icon-close-gray800.svg) no-repeat center / 1.6rem;
   position: absolute;
   z-index: 9;
-
-  ${mqMax(breakPoints.moMax)} {
-    right: 0;
-  }
+  top: 1.4rem;
+  right: ${variables.layoutPadding};
 
   ${mqMin(breakPoints.pc)} {
-    right: ${variables.layoutPadding};
+    top: 2rem;
   }
 `;
 
 const ContentsStyle = styled.div<IContentStyle>`
-  padding: ${(props) => props.type === 'fullscreen' && '1rem 0'};
+  padding: ${(props) => props.type === 'fullscreen' && `1rem ${variables.layoutPadding} 4rem`};
   flex-grow: 1;
 
   ${(props) => props.type === 'default' && TypoBodyMdR}
   ${(props) => props.type === 'default' && `color: ${variables.colors.gray800}`}
+  ${({ type, isButton }) =>
+    type === 'fullscreen' &&
+    `
+    max-height: ${isButton ? 'calc(100svh - 5.2rem - 4.8rem - 5rem);' : 'calc(100svh - 5.2rem);'}; 
+    overflow-y: auto;
+  `}
 
   ${mqMin(breakPoints.pc)} {
     padding: ${variables.layoutPadding};
@@ -319,7 +352,7 @@ const ButtonBoxStyle = styled.div<IModalStyle>`
       `
       padding: 2rem 1.6rem 3rem;
       justify-content: space-between;
-      gap: 1.4rem;
+      gap: .8rem;
       position: fixed;
       bottom: 0;
       left: 0;

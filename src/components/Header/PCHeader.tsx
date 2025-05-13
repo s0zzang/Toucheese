@@ -3,7 +3,7 @@ import SearchBar from '@components/Search/SearchBar';
 import UserButton from '@components/UserButton/UserButton';
 import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { Hidden, PCLayout } from '@styles/Common';
+import { bg100vw, Hidden, PCLayout } from '@styles/Common';
 import variables from '@styles/Variables';
 import { Link } from 'react-router-dom';
 
@@ -38,31 +38,35 @@ export default PCHeader;
 
 const HeaderStyle = css`
   ${mqMin(breakPoints.pc)} {
+    ${PCLayout}
+    ${bg100vw(variables.colors.white)}
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 99;
+    z-index: 10;
     background-color: ${variables.colors.white};
     box-shadow: inset 0 -1px ${variables.colors.gray300};
     box-sizing: border-box;
+
+    &::before {
+      box-shadow: inset 0 -1px ${variables.colors.gray300};
+    }
   }
 `;
 
 const HeaderContentsStyle = css`
   ${mqMin(breakPoints.pc)} {
-    ${PCLayout}
-
     display: flex;
-    gap: 1.6rem;
+    gap: 3.2rem;
     align-items: center;
     padding: 1rem ${variables.layoutPadding};
   }
 `;
 
 const logoContainerStyle = css`
+  width: 28rem;
   flex-shrink: 0;
-  flex-grow: 1;
 `;
 
 const homeLogoStyle = css`
@@ -77,7 +81,8 @@ const homeLogoStyle = css`
 `;
 
 const inputContainerStyle = css`
-  flex-grow: 2;
+  flex-grow: 1;
+  max-width: 60.8rem;
   display: flex;
   align-items: center;
 `;
@@ -88,7 +93,7 @@ const inputStyle = css`
 `;
 
 const buttonContainerStyle = css`
-  flex-grow: 1;
+  margin-left: auto;
   flex-shrink: 0;
   display: flex;
 `;

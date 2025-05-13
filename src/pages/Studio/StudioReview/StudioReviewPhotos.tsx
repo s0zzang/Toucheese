@@ -74,6 +74,7 @@ const StudioReviewPhotos = () => {
         </Helmet>
       )}
 
+
       <Header title="리뷰 사진 모아보기" />
       <StudioReviewPhotosContainerStyle>
         <ButtonWrapperStyle>
@@ -86,6 +87,12 @@ const StudioReviewPhotos = () => {
             onClick={() => setSelectedMenuId(null)}
           />
           {reviewImages.menuNameList.map((menu, index) => (
+=======
+      <Header title="리뷰 사진 모아보기" fixed={true} />
+      <div css={studioPaddingTop}>
+        <StudioReviewPhotosContainerStyle>
+          <ButtonWrapperStyle>
+
             <Button
               key={menu}
               text={menu}
@@ -98,6 +105,7 @@ const StudioReviewPhotos = () => {
           ))}
         </ButtonWrapperStyle>
 
+
         <MasonryList>
           {reviewImages.imageDtos.map(({ id, url }) => (
             <div key={id} onClick={() => handleClick(id)}>
@@ -108,6 +116,24 @@ const StudioReviewPhotos = () => {
             </div>
           ))}
         </MasonryList>
+
+          <MasonryList>
+            {reviewImages.imageDtos.map(({ id, url }) => (
+              <div
+                key={id}
+                onClick={() => handleClick(id)}
+                onKeyDown={(e) => e.key === 'Enter' && handleClick(id)}
+                tabIndex={0}
+                data-tab="focus"
+              >
+                <picture>
+                  <source srcSet={url.replace(/\.(jpg|jpeg|png)$/, '.webp')} type="image/webp" />
+                  <img src={url} alt={`리뷰 이미지 ${id}`} />
+                </picture>
+              </div>
+            ))}
+          </MasonryList>
+
 
         <DimmedModal>
           <ReviewSwiper data={reviewImages.imageDtos} />

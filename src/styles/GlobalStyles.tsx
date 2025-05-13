@@ -47,7 +47,7 @@ const GlobalStyles = css`
 
     @media (min-width: ${breakPoints.pc}) {
       padding-top: ${variables.headerHeight};
-      padding-bottom: 0;
+      padding-bottom: 3rem;
     }
   }
 
@@ -243,7 +243,6 @@ const GlobalStyles = css`
     text-indent: 0.7em;
     border-radius: ${variables.borderRadius};
     border: 1px solid ${variables.colors.gray400};
-    outline: 1px solid transparent;
   }
 
   input[type='text']::placeholder,
@@ -257,12 +256,17 @@ const GlobalStyles = css`
   input:focus,
   input[type='email']:focus,
   input[type='password']:focus,
-  input[type='tel']:focus {
+  input[type='tel']:focus,
+  :focus-visible {
+    border-color: transparent !important;
+    outline: 2px solid ${variables.colors.primary600} !important;
+    border-radius: 0.2em;
   }
 
-  select:focus-visible {
-    border-color: ${variables.colors.primary};
-    outline: 1px solid ${variables.colors.primary};
+  input[type='checkbox']:focus,
+  input[type='radio']:focus {
+    outline: none !important;
+    border-color: ${variables.colors.primary800} !important;
   }
 
   input[type='checkbox'],

@@ -43,13 +43,7 @@ export const useGetStudios = (
 
   return useQuery<IStudioRes<IStudioItem>>({
     queryKey: ['studios', { params, mode, pageNum, accessToken }],
-    queryFn: () => {
-      if (accessToken) {
-        return fetchStudios(pageNum, mode, params, accessToken);
-      } else {
-        return fetchStudios(pageNum, mode, params, accessToken);
-      }
-    },
+    queryFn: () => fetchStudios(pageNum, mode, params, accessToken),
     staleTime: 1000 * 60 * 1,
     refetchOnWindowFocus: false,
     throwOnError: true,

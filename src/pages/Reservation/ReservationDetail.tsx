@@ -10,7 +10,6 @@ import { changeformatDateForUi, lessThan10Add0 } from '@store/useSelectDateStore
 import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import {
   DividerStyle,
-  PCLayout,
   TypoBodyMdM,
   TypoBodyMdR,
   TypoBodySmM,
@@ -20,11 +19,10 @@ import {
   TypoTitleXsSb,
 } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import RatingReview from '@components/ReservationCard/RatingReview';
-import LocationModal from './components/LocationModal';
+import { useNavigate, useParams } from 'react-router-dom';
 import CancelModal from './components/CancelModal';
+import LocationModal from './components/LocationModal';
 
 interface IReservationData {
   studioId: string;
@@ -138,10 +136,10 @@ const ReservationDetail = () => {
 
   return (
     <>
-      <Header title="예약상세" />
+      <Header title="예약상세" fixed={true} />
 
       <div css={containerStyle}>
-        <section css={DividerStyle}>
+        <section css={[DividerStyle, fullWidthOverride]}>
           <div css={studioInfoStyle}>
             <div css={studioInfoTextStyle}>
               <StatusChip state={status} />
@@ -165,7 +163,7 @@ const ReservationDetail = () => {
                   />
                   <p css={TypoBodySmR}>전화</p>
                 </a>
-                <p css={[pcPhoneTextStyle, TypoBodyMdR]}>{studioDetail?.phone}</p>
+                <p css={pcPhoneTextStyle}>{studioDetail?.phone}</p>
               </div>
 
               <div css={addressLocationContainerStyle}>
@@ -179,6 +177,7 @@ const ReservationDetail = () => {
                   onClick={() => {
                     locationModal.open();
                   }}
+                  data-tab="focus"
                 >
                   <img
                     src="/img/icon-location.svg"
@@ -198,7 +197,7 @@ const ReservationDetail = () => {
             onClick={() => navigate(`/reservation/${_id}/review/write`)}
             style={{ cursor: 'pointer' }}
           >
-            <RatingReview customStyle={ratingReviewStyle} />
+            {/* <RatingReview customStyle={ratingReviewStyle} /> */}
           </div>
         )}
         <section css={sectionStyle}>
@@ -276,8 +275,16 @@ const ReservationDetail = () => {
             {status === 'CANCELED' ? '환불정보' : '결제정보'}
           </h2>
           <div>
-            <div css={itemStyle}>
-              <span>{status === 'CANCELED' ? '환불예상금액' : '총 결제금액'}</span>
+            <div css={itemStyleForTotalPrice}>
+              <span
+                css={css`
+                  ${TypoBodyMdM};
+                  color: ${variables.colors.black};
+                `}
+                data-override-font
+              >
+                {status === 'CANCELED' ? '환불예상금액' : '총 결제금액'}
+              </span>
               <span>{totalPrice.toLocaleString()}원</span>
             </div>
             <div css={itemStyle}>
@@ -331,18 +338,21 @@ const ReservationDetail = () => {
           </section>
         )}
         <div css={[cancelStyle, TypoTitleXsM]}>
-          <Button
-            type="button"
-            text={status === 'COMPLETED' || status === 'CANCELED' ? '다시 예약하기' : '예약 취소'}
-            disabled={status === 'COMPLETED' || status === 'CANCELED' ? false : isDisabled}
-            variant="black"
-            size="large"
-            onClick={
-              status === 'COMPLETED' || status === 'CANCELED'
-                ? () => navigate(`/studio/${studioId}`)
-                : () => cancelModal.open()
-            }
-          />
+          <div css={cancelInnerStyle}>
+            <Button
+              type="button"
+              text={status === 'COMPLETED' || status === 'CANCELED' ? '다시 예약하기' : '예약 취소'}
+              disabled={status === 'COMPLETED' || status === 'CANCELED' ? false : isDisabled}
+              variant="black"
+              size="large"
+              data-tab="focus"
+              onClick={
+                status === 'COMPLETED' || status === 'CANCELED'
+                  ? () => navigate(`/studio/${studioId}`)
+                  : () => cancelModal.open()
+              }
+            />
+          </div>
         </div>
         <CancelModal reservationId={_id!} modalId={4} />
         <BottomSheet />
@@ -358,10 +368,19 @@ const containerStyle = css`
   padding-top: ${variables.headerHeight};
 
   ${mqMin(breakPoints.pc)} {
-    ${PCLayout}
     padding: 0 32.8rem;
     margin-top: 3rem;
-    margin-bottom: 9rem;
+    margin-bottom: 10rem;
+  }
+`;
+
+const fullWidthOverride = css`
+  ${mqMin(breakPoints.pc)} {
+    &::after {
+      width: 100vw !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
   }
 `;
 
@@ -399,6 +418,9 @@ const mobilePhoneTextStyle = css`
 `;
 
 const pcPhoneTextStyle = css`
+  ${TypoBodyMdR};
+  color: ${variables.colors.gray800};
+
   ${mqMax(breakPoints.pc)} {
     display: none;
   }
@@ -416,32 +438,35 @@ const addressLocationContainerStyle = css`
 `;
 
 const pcAddressStyle = css`
+  ${TypoBodyMdR};
+  color: ${variables.colors.gray800};
+
   ${mqMax(breakPoints.pc)} {
     display: none;
   }
 `;
 
-const ratingReviewStyle = css`
-  border-top: none;
+// const ratingReviewStyle = css`
+//   border-top: none;
 
-  .ratingBox {
-    display: flex;
-    gap: 0.4rem;
+//   .ratingBox {
+//     display: flex;
+//     gap: 0.4rem;
 
-    img {
-      width: 2rem;
+//     img {
+//       width: 2rem;
 
-      ${mqMin(breakPoints.pc)} {
-        width: 2.4rem;
-      }
-    }
-  }
+//       ${mqMin(breakPoints.pc)} {
+//         width: 2.4rem;
+//       }
+//     }
+//   }
 
-  p {
-    ${variables.colors.gray600};
-    ${TypoBodyMdR}
-  }
-`;
+//   p {
+//     ${variables.colors.gray600};
+//     ${TypoBodyMdR}
+//   }
+// `;
 
 const buttonStyle = css`
   display: flex;
@@ -482,14 +507,38 @@ const addTitleStyle = css`
 `;
 
 const itemStyle = css`
+  ${TypoBodyMdR};
+
   display: flex;
   justify-content: space-between;
   padding: 0.4rem 0;
   font-size: 1.2rem;
 
   & > span:first-of-type {
-    ${TypoBodySmR};
     color: ${variables.colors.gray800};
+  }
+
+  & > span:nth-of-type(2) {
+    flex: 1;
+    margin-left: 1.6rem;
+  }
+
+  & > span:last-of-type {
+    text-align: right;
+  }
+`;
+
+const itemStyleForTotalPrice = css`
+  ${TypoBodyMdR};
+
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  font-size: 1.2rem;
+
+  & > span:first-of-type {
+    ${TypoBodyMdM};
+    color: ${variables.colors.black};
   }
 
   & > span:nth-of-type(2) {
@@ -534,21 +583,27 @@ const redTextStyle = css`
 `;
 
 const cancelStyle = css`
+  border-top: 1px solid ${variables.colors.gray300};
   background-color: ${variables.colors.white};
-  padding: 1.8rem 1.6rem 3rem 1.6rem;
+  padding: 1.8rem 0 3rem;
   position: fixed;
   bottom: 0;
   width: 100%;
   left: 0;
+  right: 0;
   z-index: 9;
+`;
+
+const cancelInnerStyle = css`
   ${mqMin(breakPoints.pc)} {
-    border: 1px solid ${variables.colors.gray300};
+    max-width: ${variables.maxWidth};
+    margin: 0 auto;
+    padding: 0 32.8rem;
   }
 
   & > button {
-    ${mqMin(breakPoints.pc)} {
-      width: calc(100% - 65.2rem);
-    }
+    width: 100%;
+    box-sizing: border-box;
   }
 `;
 export default ReservationDetail;

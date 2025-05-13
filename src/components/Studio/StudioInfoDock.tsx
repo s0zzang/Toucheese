@@ -6,31 +6,22 @@ import { useParams } from 'react-router-dom';
 import StudioInfo from './StudioInfo';
 import { IStudioDetail } from 'types/types';
 
-const StudioInfoDock = () => {
+const StudioInfoDock = ({ data }: { data: IStudioDetail }) => {
   const { _id } = useParams();
-  const studioData = sessionStorage.getItem('studio-storage');
-  const parsedData = studioData ? JSON.parse(studioData) : null;
-  const data: IStudioDetail = parsedData?.state.studioDetail[Number(_id)];
 
   return (
-    <aside
+    <div
       className="pc"
       css={css`
         ${mqMin(breakPoints.pc)} {
-          margin-left: auto;
-          margin-right: calc(-1 * ${variables.layoutPadding});
-          width: 42.4rem;
-          flex-shrink: 0;
+          width: 100%;
+          padding-right: ${variables.layoutPadding};
           background-color: ${variables.colors.white};
-          box-shadow: inset 1px 0 ${variables.colors.gray300};
-          padding: 5.8rem ${variables.layoutPadding};
-          box-sizing: border-box;
-          z-index: 9;
         }
       `}
     >
-      {data && <StudioInfo data={data} id={_id} />}
-    </aside>
+      <StudioInfo data={data} id={_id} />
+    </div>
   );
 };
 

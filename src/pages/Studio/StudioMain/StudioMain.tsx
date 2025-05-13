@@ -2,18 +2,17 @@
 import Button from '@components/Button/Button';
 import Header from '@components/Header/Header';
 import KakaoMap from '@components/Kakao/KakaoMap';
-import Loading from '@components/Loading/Loading';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
 import StudioInfo from '@components/Studio/StudioInfo';
 import StudioOptions from '@components/Studio/StudioOptions';
 import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdM, TypoBodyMdR, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
+import { Hidden, TypoBodyMdM, TypoBodyMdR, TypoCapSmM, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
 import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useMediaQuery } from 'react-responsive';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { IStudioDetail } from 'types/types';
 
 const StudioMain = () => {
@@ -26,14 +25,7 @@ const StudioMain = () => {
   const handleClick = () => navigate(`/studio/${_id}/menu`);
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
-  const [studioData, setStudioData] = useState<IStudioDetail>();
-
-  useEffect(() => {
-    const sessionData = sessionStorage.getItem('studio-storage');
-    if (sessionData) {
-      setStudioData(JSON.parse(sessionData).state.studioDetail[`${_id}`]);
-    }
-  }, [_id]);
+  const studioData = useOutletContext<IStudioDetail>();
 
   const descRef = useRef<HTMLParagraphElement>(null);
   const [hasMore, setHasMore] = useState(false);
@@ -91,10 +83,6 @@ const StudioMain = () => {
         () => false,
       );
   };
-
-  if (!studioData) {
-    return <Loading size="big" phrase="스튜디오를 불러오고 있습니다." />;
-  }
 
   /** 이미지 5개 이하일 때 대체할 이미지 */
   const placeHolderImageList = [
@@ -181,10 +169,10 @@ const StudioMain = () => {
       </div>
       {/* 홈 기본 정보  - 매장소개 */}
       <div css={descriptionStyle(isOpened, hasMore)}>
-        <p className="descriptionTitle">매장 소개</p>
-        <p ref={descRef} className="textDisplay">
+        <h3 className="descriptionTitle">매장 소개</h3>
+        <h4 ref={descRef} className="textDisplay">
           {studioData?.description}
-        </p>
+        </h4>
         {hasMore && (
           <span className="textMore" onClick={() => setIsOpened(!isOpened)}>
             {isOpened ? '접기' : '더보기'}
@@ -195,7 +183,7 @@ const StudioMain = () => {
         <>
           {/* 홈 기본 정보  - 영업 정보 */}
           <div css={openingHoursStyle}>
-            <p className="openingHoursTitle">영업 정보</p>
+            <h3 className="openingHoursTitle">영업 정보</h3>
             {studioData.openingHours.length === 0 ? (
               <p>수집중</p>
             ) : (
@@ -252,12 +240,15 @@ const StudioMain = () => {
 
           {/* 홈 기본정보 - 위치 정보 */}
           <div css={mapStyle}>
-            <p>위치 정보</p>
+            <h3>위치 정보</h3>
             <KakaoMap
               addressSi={studioData.addressSi}
               addressGu={studioData.addressGu}
               address={studioData.address}
             />
+            <h4 css={Hidden}>
+              {studioData.addressSi} {studioData.addressGu} {studioData.address}
+            </h4>
           </div>
 
           {/* 홈 기본정보 - 매장 정보 */}
@@ -333,7 +324,7 @@ const portfolioPreviewStyle = css`
   grid-template-columns: 2fr 1fr 1fr;
   grid-template-rows: repeat(2, 1fr);
   width: calc(100% + 3.2rem);
-  margin-left: -1.6rem;
+  margin-left: -${variables.layoutPadding};
   margin-bottom: 2rem;
 
   & > img {
@@ -398,7 +389,7 @@ const descriptionStyle = (isOpened: boolean, hasMore: boolean | undefined) => cs
     color: ${variables.colors.black};
   }
 
-  & > p {
+  & > h4 {
     padding-top: 1rem;
     color: ${variables.colors.gray800};
     ${TypoBodyMdR};
@@ -485,7 +476,7 @@ const mapStyle = css`
   padding: 2rem 0;
   border-bottom: 1px solid ${variables.colors.gray300};
 
-  & > p {
+  & > h3 {
     ${TypoTitleXsM};
     margin-bottom: 1rem;
   }

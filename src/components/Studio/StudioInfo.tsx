@@ -46,12 +46,13 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
               <img src="/img/icon-rating.svg" alt="리뷰 평점" />
             </div>
 
-            <p>{`${data.rating}`}</p>
+            <p>{`${data.rating.toFixed(1)}`}</p>
             <p>{`(${data.review_count}개의 리뷰)`}</p>
           </div>
         </div>
         <div css={SocialActionsStyle}>
           <ShareButton
+            modalId={100}
             title={data.name}
             description={data.description}
             imageUrl={data.portfolios[0]?.url}
@@ -60,7 +61,7 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
           <Bookmark
             id={Number(id)}
             count={data.bookmark_count}
-            isBookmarked={false}
+            isBookmarked={data.bookmarked}
             type="default"
           />
         </div>

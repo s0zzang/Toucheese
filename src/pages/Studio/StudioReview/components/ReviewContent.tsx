@@ -42,7 +42,7 @@ const ReviewContentWrapper = styled.div`
   margin-top: 0.8rem;
 `;
 
-const ContentText = styled.p<{ isExpanded: boolean }>`
+const ContentText = styled.h4<{ isExpanded: boolean }>`
   font-size: 1.6rem;
   line-height: 1.6;
   display: -webkit-box;

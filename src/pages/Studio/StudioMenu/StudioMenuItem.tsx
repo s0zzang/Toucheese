@@ -1,7 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoBodyMdM, TypoBodyMdSb, TypoCapSmR } from '@styles/Common';
+import {
+  TypoBodyMdM,
+  TypoBodyMdR,
+  TypoBodyMdSb,
+  TypoCapSmR,
+  TypoTitleXsM,
+  TypoTitleXsSb,
+} from '@styles/Common';
 import variables from '@styles/Variables';
 import { useNavigate } from 'react-router-dom';
 import { IMenuListRes } from 'types/types';
@@ -29,11 +36,11 @@ const StudioMenuItem = ({
         </div>
         <div css={MenuDescStyle}>
           <div css={MenuHeadStyle}>
-            <h2>{data?.name}</h2>
-            <p>{data?.description}</p>
+            <h3>{data?.name}</h3>
+            <h4>{data?.description}</h4>
           </div>
           <div css={MenuPriceReviewStyle}>
-            <p>{data?.price.toLocaleString('ko-KR')}원</p>
+            <h4>{data?.price.toLocaleString('ko-KR')}원</h4>
             <span>리뷰 {data?.reviewCount}개</span>
           </div>
         </div>
@@ -88,13 +95,13 @@ const MenuDescStyle = css`
   justify-content: space-between;
 
   ${mqMin(breakPoints.pc)} {
-    max-width: 38.8rem;
+    max-width: 50.7rem;
     width: 100%;
   }
 `;
 
 const MenuHeadStyle = css`
-  & h2 {
+  & h3 {
     ${TypoBodyMdM}
     display: flex;
     align-items: center;
@@ -116,9 +123,13 @@ const MenuHeadStyle = css`
         height: 1.8rem;
       }
     }
+
+    ${mqMin(breakPoints.pc)} {
+      ${TypoTitleXsM}
+    }
   }
 
-  & p {
+  & h4 {
     display: -webkit-box;
     ${TypoCapSmR}
     -webkit-box-orient: vertical;
@@ -127,19 +138,27 @@ const MenuHeadStyle = css`
     color: ${variables.colors.gray800};
 
     ${mqMin(breakPoints.pc)} {
+      ${TypoBodyMdR}
       -webkit-line-clamp: 4;
     }
   }
 `;
 
 const MenuPriceReviewStyle = css`
-  & p {
+  & h4 {
     ${TypoBodyMdSb}
     margin-bottom:.4rem;
+    ${mqMin(breakPoints.pc)} {
+      ${TypoTitleXsSb}
+    }
   }
 
   & span {
     ${TypoCapSmR}
     color: ${variables.colors.gray700};
+    ${mqMin(breakPoints.pc)} {
+      font-size: 1.4rem;
+      line-height: 1.6rem;
+    }
   }
 `;

@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import Modal from '@components/Modal/Modal';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdM, TypoBodySmM, TypoBodySmR, TypoTitleXsSb } from '@styles/Common';
@@ -9,7 +10,11 @@ import variables from '@styles/Variables';
 const PolicyModal = () => {
   return (
     <Modal type="fullscreen" title="개인정보 수집, 제공 동의" withBtn={false}>
-      <section>
+      <section
+        css={css`
+          margin-bottom: 9.6rem;
+        `}
+      >
         <ContentStyle>
           <h2>개인정보 수집 및 이용 동의</h2>
           <div>

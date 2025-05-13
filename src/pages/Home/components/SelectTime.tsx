@@ -89,9 +89,8 @@ const SelectTime = ({ type, availableTimeWithDates }: ITimeProp) => {
                       width="max"
                       active={!!selectedTime.length && selectedTime.includes(time)}
                       onClick={() => handleTImeClick(time)}
-                      style={available && isLowerThanCurrentTime(time) ? {} : disabledStyle}
+                      disabled={available && isLowerThanCurrentTime(time) ? false : true}
                     />
-                    <h4 css={Hidden}>{time}</h4>
                   </li>
                 ))}
               </ul>
@@ -112,9 +111,8 @@ const SelectTime = ({ type, availableTimeWithDates }: ITimeProp) => {
                       width="max"
                       active={!!selectedTime.length && selectedTime.includes(time)}
                       onClick={() => handleTImeClick(time)}
-                      style={available && isLowerThanCurrentTime(time) ? {} : disabledStyle}
+                      disabled={available && isLowerThanCurrentTime(time) ? false : true}
                     />
-                    <h4 css={Hidden}>{time}</h4>
                   </li>
                 ))}
               </ul>
@@ -178,6 +176,12 @@ const articleBox = css`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  button:disabled {
+    color: ${variables.colors.gray500};
+    border: 1px solid ${variables.colors.gray400};
+    background-color: #fff;
+  }
 `;
 
 const infoText = css`
@@ -189,12 +193,6 @@ const infoText = css`
   &:first-of-type {
     margin-top: 2rem;
   }
-`;
-
-const disabledStyle = css`
-  color: ${variables.colors.gray500};
-  border-color: ${variables.colors.gray400};
-  pointer-events: none;
 `;
 
 const emptyMessageBox = css`

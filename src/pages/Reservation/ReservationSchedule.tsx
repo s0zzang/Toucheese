@@ -32,7 +32,7 @@ const ReservationSchedule = () => {
         <meta property="og:description" content="터치즈 - 예약하기" />
       </Helmet>
 
-      <Header title="예약하기" />
+      <Header title="예약하기" fixed={true} />
 
       <div css={[pcFlexLayout, scheduleLayout]}>
         <div className="left-box">
@@ -49,7 +49,13 @@ const ReservationSchedule = () => {
 export default ReservationSchedule;
 
 export const pcFlexLayout = css`
+  ${mqMax(breakPoints.moMax)} {
+    padding-top: ${variables.headerHeight};
+    padding-bottom: 5rem;
+  }
+
   ${mqMin(breakPoints.pc)} {
+    margin-bottom: -3rem;
     display: flex;
     gap: 3.5rem;
     align-content: flex-start;

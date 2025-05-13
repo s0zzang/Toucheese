@@ -5,8 +5,9 @@ import ImageSwiper from '@components/Swiper/ImageSwiper';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { TypoTitleSmS } from '@styles/Common';
+import { TypoBodyMdR, TypoTitleSmS } from '@styles/Common';
 import variables from '@styles/Variables';
+import { KeyboardEvent } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { IMenus, IPortfolio, IStudioItem } from 'types/types';
@@ -22,59 +23,63 @@ export const getMinPrice = (menu: IMenus[]) => {
   return minPrice.toLocaleString('ko-KR');
 };
 
-const StudioItem = ({
-  item,
-  isFirst,
-  isLast,
-}: {
-  item: IStudioItem;
-  isFirst: boolean;
-  isLast: boolean;
-}) => {
+const StudioItem = ({ item, isLast }: { item: IStudioItem; isLast: boolean }) => {
   const navigate = useNavigate();
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
 
-  // 스튜디오 클릭 시 navigate
-  const handleClick = () => {
-    navigate(`/studio/${item.id}`);
+  // 탭 키 이동 후 Enter 시 navigate
+  const handleKeyDown = (e: KeyboardEvent<HTMLAnchorElement>) => {
+    if (!isPc) return;
+
+    if (e.code === 'Enter') {
+      navigate(`/studio/${item.id}`);
+    }
   };
 
-  // 이미지 5개 불러오기
+  // 이미지 불러오기
   const getImages = (photos: IPortfolio[]) => {
     let images: string[] = [];
     const portfolios = isPc ? photos.slice(0, 7) : photos.slice(0, 5);
 
     portfolios.forEach((photo: IPortfolio) => {
-      images.push(photo.url);
+      images.push(photo.url.replace(/\.jpeg$/, '.webp'));
     });
 
     return images;
   };
 
   return (
-    <DivStyle isFirst={isFirst} isLast={isLast} onClick={handleClick}>
-      <ItemImageStyle>
-        {item.portfolios.length >= 4 ? (
-          isPc ? (
+    <DivStyle isLast={isLast}>
+      <a
+        css={css`
+          display: block;
+        `}
+        href={`/studio/${item.id}`}
+        onKeyDown={handleKeyDown}
+      >
+        <ItemImageStyle>
+          {isPc ? (
             <div
               css={css`
                 width: 100%;
                 display: flex;
                 align-items: center;
-                gap: 0.2rem;
+                gap: 2px;
               `}
             >
               {getImages(item.portfolios).map((image, index) => (
                 <img
                   key={`${item.id}-image-${index}`}
                   css={css`
-                    width: 14rem;
-                    aspect-ratio: 140 / 176;
+                    width: calc((100% - 12px) / 7);
+                    aspect-ratio: 127 / 160;
+                    object-fit: cover;
                   `}
                   src={image}
                   alt={`이미지 ${index + 1}`}
                 />
               ))}
+              {item.portfolios.length < 7 && <NoPic type={7 - item.portfolios.length} />}
             </div>
           ) : (
             <ImageSwiper
@@ -83,61 +88,64 @@ const StudioItem = ({
                 width: 100%;
                 aspect-ratio: 94 / 118;
                 object-fit: cover;
-
-                ${mqMin(breakPoints.pc)} {
-                  aspect-ratio: 140 / 176;
-                }
               `}
             />
-          )
-        ) : (
-          <NoPic />
-        )}
-      </ItemImageStyle>
-
-      <ItemContentStyle>
-        <ItemInfoStyle>
-          <TitleStyle css={TypoTitleSmS}>{`${item.name}`}</TitleStyle>
-          <InfoContainerStyle>
-            <div>
-              <img src="/img/icon-rating.svg" alt="평점" />
-              <p>
-                {item.rating}
-                <span>{` (${item.review_count}개의 평가)`}</span>
-              </p>
-            </div>
-            <div>
-              <img className="price" src="/img/icon-price.svg" alt="가격" />
-              <p>{`${getMinPrice(item.menus)}원~`}</p>
-            </div>
-          </InfoContainerStyle>
-          <InfoContainerStyle>
-            <div>
-              <img className="location" src="/img/icon-location.svg" alt="주소" />
-              <p className="location">{`${item.addressGu} ${item.address}`}</p>
-            </div>
-            <div>
-              <img src="/img/icon-clock.svg" alt="영업 시간" />
-              <p>{`${item.open_time.slice(0, -3)} - ${item.close_time.slice(0, -3)}`}</p>
-            </div>
-          </InfoContainerStyle>
-        </ItemInfoStyle>
-        <BookmarkStyle>
-          <Bookmark
-            id={item.id}
-            count={item.bookmark_count}
-            isBookmarked={item.bookmark}
-            type="default"
-          />
-        </BookmarkStyle>
-      </ItemContentStyle>
+          )}
+        </ItemImageStyle>
+        <ItemContentStyle>
+          <ItemInfoStyle>
+            <TitleStyle css={TypoTitleSmS}>{item.name}</TitleStyle>
+            <InfoContainerStyle>
+              <div>
+                <div className="icon-container">
+                  <img className="rating" src="/img/icon-rating.svg" alt="평점" />
+                </div>
+                <p>
+                  {item.rating.toFixed(1)}
+                  <span>{` (${item.review_count}개의 평가)`}</span>
+                </p>
+              </div>
+              <div>
+                <div className="icon-container">
+                  <img className="price" src="/img/icon-price.svg" alt="가격" />
+                </div>
+                <p>{`${getMinPrice(item.menus)}원~`}</p>
+              </div>
+            </InfoContainerStyle>
+            <InfoContainerStyle>
+              <div>
+                <div className="icon-container">
+                  <img className="location" src="/img/icon-location.svg" alt="주소" />
+                </div>
+                <p className="location">{`${item.addressGu} ${item.address}`}</p>
+              </div>
+              <div>
+                <div className="icon-container">
+                  <img className="time" src="/img/icon-clock.svg" alt="영업 시간" />
+                </div>
+                <p>{`${item.open_time.slice(0, -3)} - ${item.close_time.slice(0, -3)}`}</p>
+              </div>
+            </InfoContainerStyle>
+          </ItemInfoStyle>
+          <BookmarkStyle>
+            <Bookmark
+              id={item.id}
+              count={item.bookmark_count}
+              isBookmarked={item.bookmark}
+              type="default"
+            />
+          </BookmarkStyle>
+        </ItemContentStyle>
+      </a>
     </DivStyle>
   );
 };
 
-const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
+const DivStyle = styled.div<{ isLast: boolean }>`
+  width: 100%;
   padding: 1.6rem 0;
   border-bottom: 1px solid ${variables.colors.gray300};
+  cursor: pointer;
 
   ${({ isLast }) =>
     isLast &&
@@ -145,13 +153,16 @@ const DivStyle = styled.div<{ isFirst: boolean; isLast: boolean }>`
       border-bottom: unset;
   `}
 
-  &:hover {
-    cursor: pointer;
-  }
-
   ${mqMin(breakPoints.pc)} {
-    padding: 3.4rem 0;
+    padding: unset;
+    padding-bottom: 3.4rem;
     border-bottom: unset;
+
+    ${({ isLast }) =>
+      isLast &&
+      `
+      padding-bottom: unset;
+  `}
   }
 `;
 
@@ -160,6 +171,7 @@ const ItemImageStyle = styled.div`
 
   ${mqMin(breakPoints.pc)} {
     margin-bottom: 1rem;
+    width: 100%;
   }
 `;
 
@@ -174,7 +186,7 @@ const ItemInfoStyle = styled.div`
   flex-grow: 1;
 `;
 
-const TitleStyle = styled.p`
+const TitleStyle = styled.h3`
   margin-bottom: 0.5rem;
 `;
 
@@ -184,31 +196,72 @@ const InfoContainerStyle = styled.div`
   align-items: center;
   gap: 1rem;
   margin-bottom: 0.4rem;
+  ${TypoBodyMdR}
 
   & > div {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 2px;
 
-    & > img {
+    .icon-container {
       flex-shrink: 0;
-      width: 1.3rem;
-      height: 1.3rem;
+      width: 1.6rem;
+      height: 1.6rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-      &.price {
-        width: 1.3rem;
-        height: 1.1rem;
+      & > img {
+        &.rating {
+          width: 1.2rem;
+          height: 1.2rem;
+        }
+
+        &.price {
+          width: 1.3rem;
+          height: 1.1rem;
+        }
+
+        &.location {
+          width: 1.1rem;
+          height: 1.3rem;
+        }
+
+        &.time {
+          width: 1.3rem;
+          height: 1.3rem;
+        }
       }
 
-      &.location {
-        width: 1.1rem;
-        height: 1.3rem;
+      ${mqMin(breakPoints.pc)} {
+        width: 1.8rem;
+        height: 1.8rem;
+
+        & > img {
+          &.rating {
+            width: 1.4rem;
+            height: 1.4rem;
+          }
+
+          &.price {
+            width: 1.5rem;
+            height: 1.2rem;
+          }
+
+          &.location {
+            width: 1.2rem;
+            height: 1.5rem;
+          }
+
+          &.time {
+            width: 1.5rem;
+            height: 1.5rem;
+          }
+        }
       }
     }
 
     & > p {
-      line-height: 2rem;
-
       & > span {
         color: ${variables.colors.gray800};
       }

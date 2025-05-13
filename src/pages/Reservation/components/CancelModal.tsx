@@ -52,6 +52,7 @@ const CancelModal = ({ reservationId, modalId }: { reservationId: string; modalI
       event: () => {
         cancelConfirmModal.open();
       },
+      dataTab: 'focus',
     },
   ];
 
@@ -110,10 +111,7 @@ const CancelModal = ({ reservationId, modalId }: { reservationId: string; modalI
                   name="cancelReason"
                   id="useAnotherStudio"
                   value="다른 사진관 이용"
-                  onChange={(e) => {
-                    console.log('xxx');
-                    setSelectedReason(e.target.value);
-                  }}
+                  onChange={(e) => setSelectedReason(e.target.value)}
                 />
                 <label htmlFor="useAnotherStudio">다른 사진관 이용</label>
               </li>

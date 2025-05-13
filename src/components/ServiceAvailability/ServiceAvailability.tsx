@@ -35,7 +35,6 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
     if (isPc) {
       const selectedServices = selectedButtons.map((i) => getButtonTitle(i));
       setSelectedServices(selectedServices);
-      console.log('서비스 선택 변경:', selectedServices);
     }
   }, [selectedButtons, isPc, setSelectedServices]);
 
@@ -64,7 +63,7 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
   return (
     <>
       {isPc && (
-        <h2
+        <h3
           css={css`
             ${TypoBodyMdSb}
             color: ${variables.colors.gray800};
@@ -72,7 +71,7 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
           `}
         >
           매장 정보·서비스
-        </h2>
+        </h3>
       )}
       <ServiceAvailabilityContainerStyle>
         <Button

@@ -5,6 +5,7 @@ import { convertToDateFormat, today, useSelectDateStore } from '@store/useSelect
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CompleteMessage from './components/CompleteMessage';
+import { Helmet } from 'react-helmet-async';
 
 const ReservationComplete = () => {
   const { clearReservationInfo } = useReservationStore();
@@ -45,7 +46,17 @@ const ReservationComplete = () => {
   }
 
   return (
-    <>{data && <CompleteMessage type="reserved" data={data} resetInfo={resetReservationInfo} />}</>
+    <>
+      {data && (
+        <>
+          <Helmet>
+            <title>{data.studioName} - 예약 완료</title>
+            <meta property="og:title" content={'예약 내역 | 터치즈'} />
+          </Helmet>
+          <CompleteMessage type="reserved" data={data} resetInfo={resetReservationInfo} />
+        </>
+      )}
+    </>
   );
 };
 

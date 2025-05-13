@@ -104,6 +104,7 @@ export interface IStudioDetail extends IStudioInfo {
   openingHours: IOpeningHours[];
   holidays: IHolidays[];
   open: boolean;
+  bookmarked: boolean;
 }
 
 export interface IStudioRes<T> {
@@ -197,6 +198,8 @@ export interface IResvItem {
   status: 'WAITING' | 'RESERVED' | 'COMPLETED' | 'CANCELED';
   date: string;
   startTime: string;
+  additionalOptionIds: number[];
+  additionalOptionNames: string[];
   // 임시
   review?: {
     rating: number;

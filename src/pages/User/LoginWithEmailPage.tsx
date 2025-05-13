@@ -77,7 +77,7 @@ const LoginWithEmailPage = () => {
           </div>
 
           <div css={LoginPageDesStyle}>
-            <h1>터치즈에서 간편하게</h1>
+            <h2>터치즈에서 간편하게</h2>
             <p>내 인생 사진관 찾고 예약까지!</p>
           </div>
 
@@ -184,7 +184,7 @@ const HeaderWrapperStyle = css`
 `;
 
 const LoginPageDesStyle = css`
-  h1 {
+  h2 {
     ${TypoTitleSmS}
   }
   p {

@@ -1,25 +1,36 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const GoogleCallback = () => {
-  const parsedHash = new URLSearchParams(window.location.hash.substring(1));
-  const accessToken = parsedHash.get('access_token');
+  const [code, setCode] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (accessToken) handleLogin(accessToken);
-  }, [accessToken]);
+    const codeParams = new URLSearchParams(window.location.search).get('code');
 
-  const handleLogin = async (accessToken: string) => {
-    // api 작업 중
+    if (codeParams) {
+      setCode(codeParams);
+    }
+
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (code) {
+      handleLogin(code);
+    }
+  }, [code]);
+
+  const handleLogin = async (code: string) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_TOUCHEESE_API}/oauth2/authorization/google`,
+        `${import.meta.env.VITE_TOUCHEESE_API}/user/auth/google/callback`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            accessToken,
+            code,
           }),
         },
       );
@@ -31,7 +42,11 @@ const GoogleCallback = () => {
     }
   };
 
-  return <div>로그인 중...</div>;
+  if (loading) {
+    return <div>로그인 중...</div>;
+  }
+
+  return <div>로그인 완료</div>;
 };
 
 export default GoogleCallback;

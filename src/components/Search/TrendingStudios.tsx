@@ -32,7 +32,7 @@ const TrendingStudios = () => {
 
   return (
     <div css={wrapperStyle}>
-      <h2 css={[TypoTitleXsB, titleStyle]}>관심 급상승 사진관</h2>
+      <h3 css={[TypoTitleXsB, titleStyle]}>관심 급상승 사진관</h3>
       <div css={[containerStyle]}>
         {trending.length > 0 ? (
           <>

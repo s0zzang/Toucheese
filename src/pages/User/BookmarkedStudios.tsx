@@ -7,10 +7,13 @@ import useToast from '@hooks/useToast';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { bg100vw, Hidden, PCLayout, TypoTitleMdSb } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import BookmarkedStudioList from './components/BookmarkedStudioList';
+import { Helmet } from 'react-helmet-async';
+import NoResult from '@components/NoResult/NoResult';
+import Loading from '@components/Loading/Loading';
 
 export type Theme = '전체' | '몽환' | '내추럴' | '러블리' | '시크' | '청순' | '상큼';
 
@@ -22,14 +25,16 @@ const BookmarkedStudios = () => {
 
   const { data, error, refetch } = useGetBookmarkList(activeTheme);
 
-  if (error) {
-    if (error.message === '403') {
-      openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
-      navigate('/user/auth');
-    } else {
-      throw new Error(error.message);
+  useEffect(() => {
+    if (error) {
+      if (error.message === '403') {
+        openToast('로그인 세션이 만료되었습니다. 다시 로그인 해주세요!');
+        navigate('/user/auth');
+      } else {
+        throw new Error(error.message);
+      }
     }
-  }
+  }, [error]);
 
   // 선택한 테마의 탭 UI를 활성화하고, 북마크 목록을 갱신
   const handleTheme = (theme: Theme) => {
@@ -37,41 +42,65 @@ const BookmarkedStudios = () => {
   };
 
   return (
-    <main
-      css={css`
-        ${mqMin(breakPoints.pc)} {
-          ${PCLayout}
-        }
-      `}
-    >
-      <section css={headerStyle} className="bookmarked-header">
-        <Header title="찜한 사진관" backTo="/user/mypage" fixed={true} />
-        {isPc && (
-          <h1
-            css={css`
-              padding: 4rem 0 2rem;
-              ${TypoTitleMdSb}
-            `}
-          >
-            찜한 내역
-          </h1>
-        )}
-        <BookmarkNavigator theme={activeTheme} handleTheme={handleTheme} />
-      </section>
-      <section
+    <>
+      <Helmet>
+        <title>찜한 사진관 {activeTheme === '전체' ? '| 터치즈' : `- ${activeTheme}`}</title>
+        <meta
+          property="og:title"
+          content={`찜한 사진관 ${activeTheme === '전체' ? '| 터치즈' : `- ${activeTheme}`}`}
+        />
+      </Helmet>
+      <main
         css={css`
-          margin-top: 10rem;
-          padding-bottom: 3rem;
-
           ${mqMin(breakPoints.pc)} {
-            margin-top: 13.85rem;
+            ${PCLayout}
           }
         `}
       >
-        <h2 css={Hidden}>총 {data ? data.length : 0}건</h2>
-        {data && <BookmarkedStudioList data={data} handleUnbookmark={refetch} />}
-      </section>
-    </main>
+        <section css={headerStyle} className="bookmarked-header">
+          <Header title="찜한 사진관" backTo="/user/mypage" fixed={true} />
+          {isPc && (
+            <h1
+              css={css`
+                padding: 4rem 0 2rem;
+                ${TypoTitleMdSb}
+              `}
+            >
+              찜한 내역
+            </h1>
+          )}
+          <BookmarkNavigator theme={activeTheme} handleTheme={handleTheme} />
+        </section>
+        <section
+          css={css`
+            margin-top: 10rem;
+
+            ${mqMin(breakPoints.pc)} {
+              margin-top: 13.85rem;
+            }
+          `}
+        >
+          {data ? (
+            data.length > 0 ? (
+              <>
+                <h2 css={Hidden}>총 {data ? data.length : 0}건</h2>
+                <BookmarkedStudioList data={data} handleUnbookmark={refetch} />
+              </>
+            ) : (
+              <div
+                css={css`
+                  ${bg100vw(variables.colors.gray100)}
+                `}
+              >
+                <NoResult message="찜한 사진관이 없습니다!" bg="gray100" />
+              </div>
+            )
+          ) : (
+            <Loading size="small" phrase="찜한 사진관을 불러오는 중입니다!" />
+          )}
+        </section>
+      </main>
+    </>
   );
 };
 
@@ -88,7 +117,11 @@ const headerStyle = css`
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
     ${bg100vw(variables.colors.white)}
+    padding: 0 ${variables.layoutPadding};
     box-shadow: inset 0 -1px ${variables.colors.gray300};
+    position: fixed;
+    top: 8rem;
+    z-index: 9;
 
     &::before {
       box-shadow: inset 0 -1px ${variables.colors.gray300};

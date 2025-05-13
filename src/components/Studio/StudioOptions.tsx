@@ -29,7 +29,7 @@ const StudioOptions = ({ data }: { data: IStudioDetail }) => {
 
   return (
     <div css={optionsStyle}>
-      <p>매장 정보·서비스</p>
+      <h3>매장 정보·서비스</h3>
       <div>
         {data.options.length === 0
           ? '수집중'
@@ -54,7 +54,7 @@ const optionsStyle = css`
   padding: 2rem 0;
   margin-bottom: 5rem;
 
-  & > p {
+  & > h3 {
     ${TypoTitleXsM};
     margin-bottom: 1rem;
     color: ${variables.colors.black};

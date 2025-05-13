@@ -23,10 +23,10 @@ const ReservationFooter = ({
 
   return (
     <div css={FixedBtnBoxStyle}>
-      <h2 className="totalPrice">
-        <span>총 결제금액</span>
-        <p>{totalPrice?.toLocaleString('ko-KR')}원</p>
-      </h2>
+      <div className="totalPrice">
+        <h2>총 결제금액</h2>
+        <h3>{totalPrice?.toLocaleString('ko-KR')}원</h3>
+      </div>
 
       <Button
         text={text}
@@ -51,22 +51,22 @@ const FixedBtnBoxStyle = css`
   left: 0;
   bottom: 0;
   background-color: ${variables.colors.white};
-  padding: 1.6rem;
+  padding: 1.8rem ${variables.layoutPadding} 3rem;
   border-top: 1px solid ${variables.colors.gray300};
-  z-index: 300;
+  z-index: 9;
 
   .totalPrice {
     display: flex;
     flex-direction: column;
     min-width: 10rem;
 
-    & span {
+    & h2 {
       ${TypoCapSmR}
       color:  ${variables.colors.gray600};
       margin-bottom: 0.2rem;
     }
 
-    & p {
+    & h3 {
       ${TypoTitleSmS}
     }
   }

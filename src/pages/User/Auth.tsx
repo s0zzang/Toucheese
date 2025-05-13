@@ -21,7 +21,7 @@ const Auth = () => {
   const handleGoogleLogin = () => {
     const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     const GOOGLE_REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
   };
 
   return (
@@ -49,7 +49,7 @@ const Auth = () => {
           </div>
 
           <div css={LoginPageDesStyle}>
-            <h1>터치즈에서 간편하게</h1>
+            <h2>터치즈에서 간편하게</h2>
             <p>내 인생 사진관 찾고 예약까지!</p>
           </div>
 
@@ -69,13 +69,13 @@ const Auth = () => {
               >
                 이미 가입하셨나요?
               </span>
-              <span
+              <h3
                 css={css`
                   color: ${variables.colors.black};
                 `}
               >
                 로그인 하기
-              </span>
+              </h3>
             </div>
           </Link>
         </div>
@@ -136,7 +136,7 @@ const HeaderWrapperStyle = css`
 `;
 
 const LoginPageDesStyle = css`
-  h1 {
+  h2 {
     font-size: 2.2rem;
     font-weight: 700;
     opacity: 0;
