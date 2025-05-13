@@ -5,15 +5,15 @@ import Button from '@components/Button/Button';
 import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import useToast from '@hooks/useToast';
-import useSignupStore from '@store/useSignupStore';
+import { useTempStore } from '@store/useTempStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { PCLayout, TypoTitleMdSb, TypoTitleXsM, TypoTitleXsSb } from '@styles/Common';
 import variables from '@styles/Variables';
 import { encryptUserData } from '@utils/encryptUserData';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthVerificationType {
   success: boolean;
@@ -28,37 +28,13 @@ interface AuthVerificationType {
 const ChangeProfile = () => {
   const IMPCode = import.meta.env.VITE_AUTH_IMP_CODE;
   const channelKey = import.meta.env.VITE_AUTH_CHANNEL_KEY;
-  const AuthRedirectURI = import.meta.env.VITE_AUTH_EDIT_REDIRECT_URI;
+  const AuthRedirectURI = import.meta.env.VITE_AUTH_REDIRECT_EDITPRORILE_URI;
 
-  /** zustand 스토어에 데이터 저장 */
-  const { setSignupData } = useSignupStore();
-  const [searchParams] = useSearchParams();
   const [isActive, setIsActive] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-
-  const storedData = localStorage.getItem('userState');
-  const parsedData = storedData ? JSON.parse(storedData) : null;
-  const storageName = parsedData?.state?.username || '';
-  const storagePhone = parsedData?.state?.phone || '';
-
-  const [username] = useState('');
-  const [phone] = useState('');
+  const [isVerified, setIsVerified] = useState(false);
   const openToast = useToast();
-
-  const handleEditProfile = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/user/mypage/changeph`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, phone }),
-      });
-      if (!response.ok) throw new Error('업데이트 실패');
-      openToast('회원 정보 수정이 완료 되었습니다.');
-    } catch (error) {
-      console.error('회원정보 수정 오류:', error);
-      openToast('알수없는 오류가 발생했습니다.');
-    }
-  };
+  const navigate = useNavigate();
 
   const {
     register,
@@ -66,69 +42,98 @@ const ChangeProfile = () => {
     setValue,
     reset,
     formState: { errors },
-  } = useForm({
-    // form 초기값을 sessionStorage 데이터로 설정
-    defaultValues: {
-      username: storageName,
-      phone: storagePhone,
-    },
-  });
+    getValues,
+  } = useForm();
 
-  /** 페이지가 처음 로드될 때 zustand 상태를 react-hook-form에 반영 */
-  /** 본인인증 페이지 이동 */
-  const usernameRef = useRef(storageName);
-  const phoneRef = useRef(storagePhone);
+  const { tempUsername, tempUserPhone } = useTempStore();
 
-  // 페이지가 처음 로드될 때 zustand 상태를 react-hook-form에 반영
-  useLayoutEffect(() => {
-    if (searchParams.get('success')) {
-      setIsActive(true);
-      setIsDisabled(false);
-      setSignupData({ username: storageName, phone: storagePhone });
-      reset();
+  const formValues = getValues();
+  const formUserName = formValues.username;
+  const formUserPhone = formValues.phone;
+
+  const handleEditProfile = async () => {
+    if (!isVerified && !tempUsername) {
+      openToast('본인인증을 먼저 진행해주세요.');
+      return;
     }
-  }, [searchParams, storageName, storagePhone, setSignupData]);
 
-  useEffect(() => {
-    if (storageName && storagePhone) {
-      // form에 값 설정
-      setValue('username', storageName);
-      setValue('phone', storagePhone);
-    }
-  }, [storageName, storagePhone, setValue]);
+    const loadLocalStorageData = (key: string) => {
+      try {
+        return JSON.parse(localStorage.getItem(key) || '');
+      } catch (error) {
+        console.error('JSON 파싱 오류', error);
+        openToast('데이터를 불러오는 데 문제가 발생했습니다.');
+        return null;
+      }
+    };
+    const userData = loadLocalStorageData('userState');
+    const accessToken = userData.state.accessToken;
 
-  const handleSave = (data: any) => {
-    // 기존 localStorage 데이터 가져오기
-    const storedData = localStorage.getItem('userState');
-    const parsedData = storedData ? JSON.parse(storedData) : '';
-
-    const { encryptedPhone, encryptedUsername } = parsedData.state || '';
-
-    // 변경된 값이 있을 경우 암호화
-    const { encryptedPhone: newEncryptedPhone, encryptedUsername: newEncryptedUsername } =
-      encryptUserData({
-        phone: data.phone || null,
-        username: data.username || null,
+    try {
+      const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/user/mypage/changeph`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({
+          newName: formUserName,
+          newPhone: formUserPhone,
+        }),
       });
 
-    const updatedState = {
-      ...parsedData.state,
-      encryptedPhone: data.phone ? newEncryptedPhone : encryptedPhone,
-      encryptedUsername: data.username ? newEncryptedUsername : encryptedUsername,
-    };
+      if (!response.ok) throw new Error('업데이트 실패');
 
-    const updatedData = {
-      ...parsedData,
-      state: updatedState,
-    };
+      const { encryptedPhone, encryptedUsername } = encryptUserData({
+        phone: tempUserPhone || '',
+        username: tempUsername || '',
+      });
 
-    localStorage.setItem('userState', JSON.stringify(updatedData));
+      // 기존 userState 데이터에서 필요한 정보 업데이트
+      const updatedState = {
+        ...userData.state,
+        encryptedPhone,
+        encryptedUsername,
+        newName: tempUsername,
+        newPhone: tempUserPhone,
+      };
+
+      const updatedData = {
+        ...userData,
+        state: updatedState,
+      };
+
+      localStorage.setItem('userState', JSON.stringify(updatedData));
+      navigate('/user/profile', {
+        state: { showSuccessProfileModal: true },
+      });
+    } catch (error) {
+      console.error('회원정보 수정 오류:', error);
+      openToast('알수없는 오류가 발생했습니다.');
+    }
   };
+
+  useLayoutEffect(() => {
+    if (tempUsername && tempUserPhone) {
+      setIsActive(true);
+      setIsDisabled(false);
+      reset();
+    }
+  }, []);
 
   /** 간편 본인인증 실행 함수 */
   const handleAuth = () => {
     const { IMP } = window;
     IMP.init(IMPCode);
+    const setTempData = useTempStore.getState().setTempData;
+    const formValues = getValues();
+
+    const encryptedData = encryptUserData({
+      username: formValues.username,
+      phone: formValues.phone,
+    });
+
+    // 모바일 환경일 경우에만 localStorage에 저장
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      localStorage.setItem('temp-user-data', JSON.stringify(encryptedData));
+    }
 
     IMP.certification(
       {
@@ -138,25 +143,41 @@ const ChangeProfile = () => {
       },
       async (res: AuthVerificationType) => {
         try {
-          /** PC - 본인인증 팝업 */
           if (res.success) {
-            // 상태 업데이트가 이루어진 후 비동기적으로 reset 호출
+            setIsVerified(true);
+            const formValues = getValues();
+
+            if (!formValues.username || !formValues.phone) {
+              console.warn('유효하지 않은 값이 있습니다:', formValues);
+              openToast('이름과 전화번호를 입력해주세요.');
+              return;
+            }
+
+            setTempData({
+              username: formValues.username,
+              phone: formValues.phone,
+            });
+
+            // 인증 후 바로 화면 초기화
             setIsActive(true);
             setIsDisabled(false);
-            setSignupData({ username: storageName, phone: storagePhone });
 
-            // 비동기적으로 reset 호출 (setState 후 화면이 렌더링된 후 reset)
+            // reset을 비동기적으로 호출
             setTimeout(() => {
               reset({
-                username: storageName,
-                phone: storagePhone,
+                username: formValues.username,
+                phone: formValues.phone,
               });
-            }, 0); // setState 후 화면 리렌더링을 보장하기 위해 0ms 후 실행
+            }, 0); // 화면 리렌더링 후 reset을 비동기적으로 호출
+          } else {
+            console.warn('본인인증 실패:', res);
+            openToast('본인인증에 실패했습니다.');
           }
         } catch (err) {
-          console.error(err);
+          console.error('본인인증 오류:', err);
           setIsActive(false);
           setIsDisabled(true);
+          openToast('본인인증 중 오류가 발생했습니다.');
         }
       },
     );
@@ -170,7 +191,6 @@ const ChangeProfile = () => {
         <meta property="og:url" content={`${window.location.href}`} />
         <meta property="og:description" content="사용자 개인정보 변경" />
       </Helmet>
-
       <div css={changeProfileWrapper}>
         <div css={MOheaderStyle}>
           <BackButton />
@@ -181,18 +201,25 @@ const ChangeProfile = () => {
         </div>
 
         <h2 css={pageTitleStyle}>개인정보</h2>
-        <form noValidate onSubmit={handleSubmit(handleSave)} css={formStyle}>
+        <form
+          noValidate
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(() => {
+              handleEditProfile();
+            })();
+          }}
+          css={formStyle}
+        >
           <div css={containerStyle}>
             {/* 이름 */}
             <Input
               labelName="이름"
               type="name"
               onChange={(e) => {
-                usernameRef.current = e.target.value;
-                setSignupData({ username: e.target.value });
                 setValue('username', e.target.value);
               }}
-              defaultValue={storageName}
+              defaultValue={tempUsername ?? ''}
               placeholder="실명을 입력하세요."
               register={register('username', {
                 required: '이름은 필수입니다',
@@ -209,11 +236,9 @@ const ChangeProfile = () => {
               type="phone"
               labelName="휴대폰"
               onChange={(e) => {
-                phoneRef.current = e.target.value;
-                setSignupData({ phone: e.target.value });
                 setValue('phone', e.target.value);
               }}
-              defaultValue={storagePhone}
+              defaultValue={tempUserPhone ?? ''}
               placeholder="‘-’구분없이 입력하세요"
               hasCheckButton
               onCheck={handleAuth}
@@ -231,7 +256,6 @@ const ChangeProfile = () => {
 
           <div css={buttonStyle}>
             <Button
-              onClick={handleEditProfile}
               type="submit"
               text="변경하기"
               size="large"
@@ -306,15 +330,19 @@ const buttonStyle = css`
   bottom: 3rem;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - ${variables.layoutPadding}*2);
-  padding: 0;
+  width: 100%;
+  padding: 0 ${variables.layoutPadding};
 
   ${mqMin(breakPoints.pc)} {
-    left: 34rem;
+    left: calc(max((100vw - 1280px) / 2, 0px) + 32rem);
     transform: none;
-    width: calc(100vw - 32rem);
-    max-width: 60.8rem;
-    min-width: 60.8rem;
+    width: auto;
+
+    & > button {
+      min-width: 60rem;
+      max-width: 60rem;
+      width: 100%;
+    }
   }
 `;
 
