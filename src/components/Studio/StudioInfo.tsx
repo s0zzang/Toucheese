@@ -46,7 +46,7 @@ const StudioInfo = ({ data, id }: IStudioInfo) => {
               <img src="/img/icon-rating.svg" alt="리뷰 평점" />
             </div>
 
-            <p>{`${data.rating}`}</p>
+            <p>{`${data.rating.toFixed(1)}`}</p>
             <p>{`(${data.review_count}개의 리뷰)`}</p>
           </div>
         </div>
