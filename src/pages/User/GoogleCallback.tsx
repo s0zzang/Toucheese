@@ -1,8 +1,15 @@
+import Loading from '@components/Loading/Loading';
+import useToast from '@hooks/useToast';
+import { useUserStore } from '@store/useUserStore';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const GoogleCallback = () => {
   const [code, setCode] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+  const setUser = useUserStore((state) => state.setUser);
+  const openToast = useToast();
 
   useEffect(() => {
     const codeParams = new URLSearchParams(window.location.search).get('code');
@@ -10,8 +17,6 @@ const GoogleCallback = () => {
     if (codeParams) {
       setCode(codeParams);
     }
-
-    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -36,17 +41,26 @@ const GoogleCallback = () => {
       );
 
       const data = await response.json();
-      console.log(data);
+
+      if (data.accessToken) {
+        setUser(data);
+        openToast('로그인 성공!');
+        navigate('/', { replace: true });
+      } else {
+        navigate('/user/AuthVerification', {
+          replace: true,
+          state: data,
+        });
+      }
+
+      setIsLoading(false);
     } catch (err) {
-      console.error(err);
+      console.error('구글 로그인 에러', err);
+      navigate('/user/auth');
     }
   };
 
-  if (loading) {
-    return <div>로그인 중...</div>;
-  }
-
-  return <div>로그인 완료</div>;
+  return <>{isLoading && <Loading size="big" phrase="로그인 중입니다..." />}</>;
 };
 
 export default GoogleCallback;

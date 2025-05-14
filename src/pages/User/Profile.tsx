@@ -2,25 +2,50 @@
 import BackButton from '@components/BackButton/BackButton';
 import Button from '@components/Button/Button';
 import { css } from '@emotion/react';
-import useToast from '@hooks/useToast';
-import { loadUserFromStorage, useUserStore } from '@store/useUserStore';
+import useModal from '@hooks/useModal';
+import { useUserStore } from '@store/useUserStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { PCLayout, TypoBodyMdR, TypoTitleMdSb, TypoTitleXsB, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useEffect, useRef } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import PasswordChangeSuccessModal from './components/PasswordChangeSuccessModal';
+import UserProfileChangeSuccessModal from './components/userDataChangeSuccessModal';
+import { decryptUserData } from '@utils/encryptUserData';
 
 const Profile = () => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const openToast = useToast();
-  const hasShownToastRef = useRef(false);
   const logout = useUserStore((state) => state.resetUser);
-  const { email, phone, username, registration } = useUserStore();
+  const { registration } = useUserStore();
+  const modal = useModal(5);
+  const profileModal = useModal(6);
+  const location = useLocation();
 
   // 암호화 된 유저 정보 복호화
+  const [decryptedUser, setDecryptedUser] = useState({
+    email: '',
+    phone: '',
+    username: '',
+  });
+
   useEffect(() => {
-    loadUserFromStorage();
+    try {
+      const stored = localStorage.getItem('userState');
+      if (!stored) return;
+
+      const parsed = JSON.parse(stored);
+      const { encryptedEmail, encryptedPhone, encryptedUsername } = parsed.state;
+
+      const decrypted = decryptUserData({
+        encryptedEmail,
+        encryptedPhone,
+        encryptedUsername,
+      });
+
+      setDecryptedUser(decrypted);
+    } catch (error) {
+      console.error('복호화 중 오류 발생:', error);
+    }
   }, []);
 
   const handleProfileEditPage = () => {
@@ -37,110 +62,125 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    if (searchParams.get('success') === 'true' && !hasShownToastRef.current) {
-      openToast('개인정보 변경에 성공했습니다.');
-      hasShownToastRef.current = true;
+    if (location.state?.showSuccessModal) {
+      modal.open();
+    } else if (location.state?.showSuccessProfileModal) {
+      profileModal.open();
     }
-  }, [searchParams]);
+  }, [location.state]);
 
   return (
-    <div css={profileWrapper}>
-      <div css={MOheaderStyle}>
-        <BackButton />
-        <h1>내정보 관리</h1>
-      </div>
-      <div css={PCheaderStyle}>
-        <h1>내정보 관리</h1>
-      </div>
-      <div
-        css={css`
-          display: flex;
-          flex-direction: column;
-          gap: 4rem;
-        `}
-      >
-        {/* 개인정보 */}
-        <div>
-          <div css={infoTitleStyle}>
-            <p>개인정보</p>
-            <Button
-              text="변경하기"
-              size="small"
-              width="fit"
-              variant="white"
-              onClick={handleProfileEditPage}
-              type="button"
-            />
+    <>
+      {/* 비밀번호 변경 모달 */}
+      <PasswordChangeSuccessModal />
+      {/* 유저 정보 변경 모달 */}
+      <UserProfileChangeSuccessModal />
+      {/* queryparmas 삭제 */}
+      {/* <RemoveQueryParams /> */}
+      <div css={profileWrapper}>
+        <div
+          css={css`
+            flex: 1;
+          `}
+        >
+          <div css={MOheaderStyle}>
+            <BackButton />
+            <h1>내정보 관리</h1>
           </div>
-
-          <hr
+          <div css={PCheaderStyle}>
+            <h1>내정보 관리</h1>
+          </div>
+          <div
             css={css`
-              border: none;
-              border-bottom: 1px solid ${variables.colors.gray300};
-              margin: 0.4rem;
+              display: flex;
+              flex-direction: column;
+              gap: 4rem;
             `}
-          />
-
-          <dl css={infoDataBoxStyle}>
+          >
+            {/* 개인정보 */}
             <div>
-              <dt>이름</dt>
-              <dd>{username || '이름 없음'}</dd>
-            </div>
-            <div>
-              <dt>휴대폰 번호</dt>
-              <dd>{phone || '연락처 없음'}</dd>
-            </div>
-          </dl>
-        </div>
+              <div css={infoTitleStyle}>
+                <p>개인정보</p>
+                <Button
+                  text="변경하기"
+                  size="small"
+                  width="fit"
+                  variant="white"
+                  onClick={handleProfileEditPage}
+                  type="button"
+                />
+              </div>
 
-        <div>
-          <div css={infoTitleStyle}>
-            <p>계정정보</p>
-            {/* 이메일 회원에게만 버튼 노출 */}
-
-            {registration === 'EMAIL' ? (
-              <Button
-                type="button"
-                text="비밀번호 변경하기"
-                size="small"
-                width="fit"
-                variant="white"
-                onClick={handlePasswordEditPage}
+              <hr
+                css={css`
+                  border: none;
+                  border-bottom: 1px solid ${variables.colors.gray300};
+                  margin: 0.4rem;
+                `}
               />
-            ) : (
-              ''
-            )}
+
+              <dl css={infoDataBoxStyle}>
+                <div>
+                  <dt>이름</dt>
+                  <dd>{decryptedUser.username || '이름 없음'}</dd>
+                </div>
+                <div>
+                  <dt>휴대폰 번호</dt>
+                  <dd>{decryptedUser.phone || '연락처 없음'}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div>
+              <div css={infoTitleStyle}>
+                <p>계정정보</p>
+                {/* 이메일 회원에게만 버튼 노출 */}
+
+                {registration === 'EMAIL' ? (
+                  <Button
+                    type="button"
+                    text="비밀번호 변경하기"
+                    size="small"
+                    width="fit"
+                    variant="white"
+                    onClick={handlePasswordEditPage}
+                  />
+                ) : (
+                  ''
+                )}
+              </div>
+
+              <hr
+                css={css`
+                  border: none;
+                  border-bottom: 1px solid ${variables.colors.gray300};
+                  margin: 0.4rem;
+                `}
+              />
+
+              <dl css={infoDataBoxStyle}>
+                <div>
+                  <dt>아이디(이메일)</dt>
+                  <dd>{decryptedUser.email || '이메일(아이디) 없음'}</dd>
+                </div>
+                <div>
+                  <dt>로그인 방식</dt>
+                  <dd>{registration === 'EMAIL' ? 'Email' : registration}</dd>
+                </div>
+              </dl>
+            </div>
           </div>
+        </div>
 
-          <hr
-            css={css`
-              border: none;
-              border-bottom: 1px solid ${variables.colors.gray300};
-              margin: 0.4rem;
-            `}
-          />
-
-          <dl css={infoDataBoxStyle}>
-            <div>
-              <dt>아이디(이메일)</dt>
-              <dd>{email || '이메일(아이디) 없음'}</dd>
-            </div>
-            <div>
-              <dt>로그인 방식</dt>
-              <dd>{registration === 'EMAIL' ? 'Email' : registration}</dd>
-            </div>
-          </dl>
+        <div css={accoutStyle}>
+          <button type="button" onClick={handleLogout}>
+            로그아웃
+          </button>
+          <li>|</li>
+          <button type="button">회원 탈퇴</button>
         </div>
       </div>
-
-      <div css={accoutStyle}>
-        <button type="button" onClick={handleLogout}>
-          로그아웃
-        </button>
-        <li>|</li>
-        <button type="button">회원 탈퇴</button>
-      </div>
-    </div>
+    </>
   );
 };
 
@@ -149,6 +189,7 @@ const profileWrapper = css`
   flex-direction: column;
   gap: 1rem;
   padding-top: ${variables.headerHeight};
+  min-height: 90vh;
 
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
@@ -216,21 +257,16 @@ const infoDataBoxStyle = css`
 `;
 
 const accoutStyle = css`
+  margin-top: auto;
+  margin-bottom: 6rem;
+
   display: flex;
   gap: 1rem;
   justify-content: center;
   text-align: center;
+
   ${TypoBodyMdR}
   color: ${variables.colors.gray600};
-  position: absolute;
-  bottom: 4rem;
-  left: 50%;
-  transform: translateX(-50%);
-
-  ${mqMin(breakPoints.pc)} {
-    left: 0;
-    margin-left: 64rem;
-  }
 `;
 
 export default Profile;

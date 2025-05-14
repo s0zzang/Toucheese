@@ -149,10 +149,19 @@ const filterBoxStyle = css`
   display: flex;
   gap: 0.6rem;
   margin: 1.2rem 0;
+
+  ${mqMin(breakPoints.pc)} {
+    margin: 0 0 1.6rem;
+  }
 `;
 
 const listStyle = css`
   min-height: 50vh;
+  margin-top: -2px;
+
+  ${mqMin(breakPoints.pc)} {
+    margin-top: 3px;
+  }
 `;
 
 const studioPaddingTop = css`

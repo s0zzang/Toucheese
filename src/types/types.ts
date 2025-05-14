@@ -235,3 +235,11 @@ export interface IReservationData {
   paymentMethod: string;
   menuImageUrl: string;
 }
+
+export interface ISocialData {
+  r_email: string;
+  r_password: string;
+  r_registration: string;
+  r_username: string | null;
+  status: string;
+}

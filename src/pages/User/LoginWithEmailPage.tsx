@@ -2,16 +2,16 @@
 import Header from '@components/Header/Header';
 import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
-import { TypoTitleSmS } from '@styles/Common';
-import variables from '@styles/Variables';
-import { useForm } from 'react-hook-form';
-import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
+import useLoginMutation from '@hooks/useLoginMutation';
 import useToast from '@hooks/useToast';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { bg100vw, PCLayout } from '@styles/Common';
+import { TypoTitleSmS } from '@styles/Common';
+import variables from '@styles/Variables';
+import { Helmet } from 'react-helmet-async';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { createEmailRegex, createPasswordRegex } from 'wj-password-validator';
-import useLoginMutation from '@hooks/useLoginMutation';
+import { AuthContainerStyle, LeftImageStyle, RightContentStyle } from './Auth';
 
 interface loginType {
   email: string;
@@ -32,7 +32,6 @@ const LoginWithEmailPage = () => {
   // validation 설정 부분
   const passwordPattern = createPasswordRegex({
     minLength: 8,
-    // uppercase: true,
     lowercase: true,
     digits: true,
     specialChar: true,
@@ -67,9 +66,7 @@ const LoginWithEmailPage = () => {
 
       <div css={AuthContainerStyle}>
         {/* PC 레이아웃일 때만 보이는 왼쪽 이미지 영역 */}
-        <div css={LeftImageStyle}>
-          <img src="/img/img-pc_AuthPage.svg" alt="터치즈 소개 이미지" />
-        </div>
+        <div css={LeftImageStyle}></div>
 
         {/* 오른쪽 컨텐츠 영역 */}
         <div css={RightContentStyle}>
@@ -133,45 +130,6 @@ const LoginWithEmailPage = () => {
     </>
   );
 };
-
-const AuthContainerStyle = css`
-  ${mqMin(breakPoints.pc)} {
-    ${PCLayout}
-    ${bg100vw(variables.colors.white)}
-    display: flex;
-    min-height: 100vh;
-  }
-`;
-
-const LeftImageStyle = css`
-  display: none;
-
-  ${mqMin(breakPoints.pc)} {
-    display: block;
-    width: 50%;
-    height: 100vh;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-`;
-
-const RightContentStyle = css`
-  width: 100%;
-  padding: 0 2rem;
-
-  ${mqMin(breakPoints.pc)} {
-    width: 50%;
-    padding: 0 8rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: ${variables.colors.white};
-  }
-`;
 
 const HeaderWrapperStyle = css`
   margin-bottom: 4rem;

@@ -151,12 +151,10 @@ const boxLayoutStyle = css`
     flex-direction: row;
     gap: 2rem;
     padding: 0 ${variables.layoutPadding};
-    max-width: 1440px;
     margin: 0 auto;
 
     & > div:first-of-type {
-      width: 70%;
-      max-width: 70%;
+      width: 100%;
       box-sizing: border-box;
     }
 

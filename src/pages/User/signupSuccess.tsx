@@ -10,7 +10,7 @@ const SignupSuccess = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    navigate('/login');
+    navigate('/user/auth');
   };
 
   return (
