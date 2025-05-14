@@ -90,9 +90,7 @@ const AuthContainerStyle = css`
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
     display: flex;
-    width: ${bg100vw(variables.colors.white)};
-
-    min-height: 100vh;
+    width: 100%;
   }
 `;
 
@@ -101,8 +99,10 @@ const LeftImageStyle = css`
 
   ${mqMin(breakPoints.pc)} {
     display: block;
-    width: 50%;
+    width: 70%;
     height: 100vh;
+    position: relative;
+    transform: translateX(-10rem);
 
     img {
       width: 100%;

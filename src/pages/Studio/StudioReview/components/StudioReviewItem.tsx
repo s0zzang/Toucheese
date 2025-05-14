@@ -48,7 +48,6 @@ const StudioReviewItem = ({
 
         <ImageSwiper
           imageStyle={css`
-            width: 100%;
             aspect-ratio: 1 / 1;
             object-fit: cover;
           `}

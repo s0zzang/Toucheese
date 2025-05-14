@@ -32,7 +32,6 @@ const LoginWithEmailPage = () => {
   // validation 설정 부분
   const passwordPattern = createPasswordRegex({
     minLength: 8,
-    // uppercase: true,
     lowercase: true,
     digits: true,
     specialChar: true,
@@ -148,8 +147,10 @@ const LeftImageStyle = css`
 
   ${mqMin(breakPoints.pc)} {
     display: block;
-    width: 50%;
+    width: 70%;
     height: 100vh;
+    position: relative;
+    transform: translateX(-10rem);
 
     img {
       width: 100%;

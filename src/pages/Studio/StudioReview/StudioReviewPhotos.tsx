@@ -74,30 +74,48 @@ const StudioReviewPhotos = () => {
         </Helmet>
       )}
 
+
+      <Header title="리뷰 사진 모아보기" />
+      <StudioReviewPhotosContainerStyle>
+        <ButtonWrapperStyle>
+          <Button
+            text="전체"
+            variant="white"
+            active={selectedMenuId === null}
+            size="small"
+            width="fit"
+            onClick={() => setSelectedMenuId(null)}
+          />
+          {reviewImages.menuNameList.map((menu, index) => (
+=======
       <Header title="리뷰 사진 모아보기" fixed={true} />
       <div css={studioPaddingTop}>
         <StudioReviewPhotosContainerStyle>
           <ButtonWrapperStyle>
+
             <Button
-              text="전체"
+              key={menu}
+              text={menu}
               variant="white"
-              active={selectedMenuId === null}
+              active={selectedMenuId === reviewImages.menuIdList[index]}
               size="small"
               width="fit"
-              onClick={() => setSelectedMenuId(null)}
+              onClick={() => setSelectedMenuId(reviewImages.menuIdList[index])}
             />
-            {reviewImages.menuNameList.map((menu, index) => (
-              <Button
-                key={menu}
-                text={menu}
-                variant="white"
-                active={selectedMenuId === reviewImages.menuIdList[index]}
-                size="small"
-                width="fit"
-                onClick={() => setSelectedMenuId(reviewImages.menuIdList[index])}
-              />
-            ))}
-          </ButtonWrapperStyle>
+          ))}
+        </ButtonWrapperStyle>
+
+
+        <MasonryList>
+          {reviewImages.imageDtos.map(({ id, url }) => (
+            <div key={id} onClick={() => handleClick(id)}>
+              <picture>
+                <source srcSet={url.replace(/\.(jpg|jpeg|png)$/, '.webp')} type="image/webp" />
+                <img src={url} alt={`리뷰 이미지 ${id}`} />
+              </picture>
+            </div>
+          ))}
+        </MasonryList>
 
           <MasonryList>
             {reviewImages.imageDtos.map(({ id, url }) => (
@@ -116,11 +134,11 @@ const StudioReviewPhotos = () => {
             ))}
           </MasonryList>
 
-          <DimmedModal>
-            <ReviewSwiper data={reviewImages.imageDtos} />
-          </DimmedModal>
-        </StudioReviewPhotosContainerStyle>
-      </div>
+
+        <DimmedModal>
+          <ReviewSwiper data={reviewImages.imageDtos} />
+        </DimmedModal>
+      </StudioReviewPhotosContainerStyle>
     </>
   );
 };
@@ -135,7 +153,4 @@ const ButtonWrapperStyle = styled.div`
   gap: 0.8rem;
   padding: 1.2rem 0;
   width: 100%;
-`;
-const studioPaddingTop = css`
-  padding-top: ${variables.headerHeight};
 `;
