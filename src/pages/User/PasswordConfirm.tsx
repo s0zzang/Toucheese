@@ -12,6 +12,7 @@ import { loadUserFromStorage, useUserStore } from '@store/useUserStore';
 import { useNavigate } from 'react-router-dom';
 import variables from '@styles/Variables';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
+import useModal from '@hooks/useModal';
 
 const PasswordConfirm = () => {
   const [isActive, setIsActive] = useState(false);
@@ -19,6 +20,7 @@ const PasswordConfirm = () => {
   const openToast = useToast();
   const { email } = useUserStore();
   const navigate = useNavigate();
+  const modal = useModal(5);
 
   const {
     register,
@@ -55,6 +57,7 @@ const PasswordConfirm = () => {
       if (!response.ok) {
         throw new Error(`서버 오류: ${response.status}`);
       }
+      modal.close();
       navigate('/user/profile/passwordChange');
     } catch (error) {
       console.error('비밀번호 확인 중 오류 발생:', error);
@@ -83,7 +86,14 @@ const PasswordConfirm = () => {
           <br />
           비밀번호를 다시 한 번 입력해주세요
         </h2>
-        <form noValidate css={formStyle}>
+        <form
+          noValidate
+          css={formStyle}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleEditUser();
+          }}
+        >
           <div css={containerStyle}>
             {/* 비밀번호 */}
             <Input
@@ -103,20 +113,20 @@ const PasswordConfirm = () => {
               error={errors.password?.message?.toString()}
             />
           </div>
-
-          <div css={buttonStyle}>
-            <Button
-              onClick={handleEditUser}
-              type="button"
-              text="다음"
-              width="max"
-              size="large"
-              variant="gray"
-              disabled={isDisabled}
-              active={isActive}
-            />
-          </div>
         </form>
+
+        <div css={buttonStyle}>
+          <Button
+            onClick={handleEditUser}
+            type="submit"
+            text="다음"
+            width="max"
+            size="large"
+            variant="gray"
+            disabled={isDisabled}
+            active={isActive}
+          />
+        </div>
       </div>
     </>
   );
@@ -128,6 +138,7 @@ const passwordConfirmWrapper = css`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  gap: 1.2rem;
   padding-top: ${variables.headerHeight};
 
   ${mqMin(breakPoints.pc)} {
@@ -175,7 +186,6 @@ const containerStyle = css`
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
-  gap: 1.2rem;
 `;
 
 const buttonStyle = css`
@@ -183,15 +193,19 @@ const buttonStyle = css`
   bottom: 3rem;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - ${variables.layoutPadding}*2);
-  padding: 0;
+  width: 100%;
+  padding: 0 ${variables.layoutPadding};
 
   ${mqMin(breakPoints.pc)} {
-    left: 34rem;
+    left: calc(max((100vw - 1280px) / 2, 0px) + 32rem);
     transform: none;
-    width: calc(100vw - 32rem);
-    max-width: 60.8rem;
-    min-width: 60.8rem;
+    width: auto;
+
+    & > button {
+      min-width: 60rem;
+      max-width: 60rem;
+      width: 100%;
+    }
   }
 `;
 

@@ -4,6 +4,7 @@ import BackButton from '@components/BackButton/BackButton';
 import Button from '@components/Button/Button';
 import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
+import useModal from '@hooks/useModal';
 import useToast from '@hooks/useToast';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { PCLayout, TypoTitleMdSb, TypoTitleXsM } from '@styles/Common';
@@ -11,13 +12,14 @@ import variables from '@styles/Variables';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ChangePassword = () => {
   const {
     register,
     formState: { errors },
     watch,
+    handleSubmit,
   } = useForm();
 
   const [isActive, setIsActive] = useState(false);
@@ -28,6 +30,13 @@ const ChangePassword = () => {
   const email = watch('email');
   const newPassword = watch('newPassword');
   const passwordConfirm = watch('passwordConfirm');
+  const location = useLocation();
+  const modal = useModal(5); // 모달 ID
+  useEffect(() => {
+    if (location.state?.showSuccessModal) {
+      modal.open();
+    }
+  }, [location.state]);
 
   useEffect(() => {
     // 모든 조건이 만족하면 활성화
@@ -75,12 +84,17 @@ const ChangePassword = () => {
       if (!response.ok) {
         throw new Error(`서버 오류: ${response.status}`);
       }
-      navigate('/');
-      openToast('비밀번호 변경을 완료했습니다.');
+      navigate('/user/profile', {
+        state: { showSuccessModal: true },
+      });
     } catch (error) {
       console.error('비밀번호 변경 중 오류 발생:', error);
       openToast('비밀번호 변경 중 오류가 발생했습니다');
     }
+  };
+
+  const onsubmit = () => {
+    handleVerifyComplete();
   };
 
   /** local storage에 저장된 계정 정보 불러오기 */
@@ -118,7 +132,7 @@ const ChangePassword = () => {
         <div css={PCheaderStyle}>
           <h1>비밀번호 변경</h1>
         </div>
-        <form noValidate css={formStyle}>
+        <form noValidate onSubmit={handleSubmit(onsubmit)} css={formStyle}>
           <div css={containerStyle}>
             {/* 비밀번호 */}
             <Input
@@ -167,7 +181,7 @@ const ChangePassword = () => {
           <div css={buttonStyle}>
             <Button
               onClick={handleVerifyComplete}
-              type="button"
+              type="submit"
               text="변경하기"
               size="large"
               variant="gray"
@@ -241,15 +255,19 @@ const buttonStyle = css`
   bottom: 3rem;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - ${variables.layoutPadding}*2);
-  padding: 0;
+  width: 100%;
+  padding: 0 ${variables.layoutPadding};
 
   ${mqMin(breakPoints.pc)} {
-    left: 34rem;
+    left: calc(max((100vw - 1280px) / 2, 0px) + 32rem);
     transform: none;
-    width: calc(100vw - 32rem);
-    max-width: 60.8rem;
-    min-width: 60.8rem;
+    width: auto;
+
+    & > button {
+      min-width: 60rem;
+      max-width: 60rem;
+      width: 100%;
+    }
   }
 `;
 
