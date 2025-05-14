@@ -12,8 +12,8 @@ import { Helmet } from 'react-helmet-async';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { IReviewImages } from 'types/types';
 import ReviewSwiper from './components/ReviewSwiper';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import variables from '@styles/Variables';
-import { css } from '@emotion/react';
 
 interface IReviewImagesResponse {
   totalElements: number;
@@ -74,8 +74,7 @@ const StudioReviewPhotos = () => {
         </Helmet>
       )}
 
-
-      <Header title="리뷰 사진 모아보기" />
+      <Header title="리뷰 사진 모아보기" fixed={true} />
       <StudioReviewPhotosContainerStyle>
         <ButtonWrapperStyle>
           <Button
@@ -87,12 +86,6 @@ const StudioReviewPhotos = () => {
             onClick={() => setSelectedMenuId(null)}
           />
           {reviewImages.menuNameList.map((menu, index) => (
-=======
-      <Header title="리뷰 사진 모아보기" fixed={true} />
-      <div css={studioPaddingTop}>
-        <StudioReviewPhotosContainerStyle>
-          <ButtonWrapperStyle>
-
             <Button
               key={menu}
               text={menu}
@@ -105,10 +98,15 @@ const StudioReviewPhotos = () => {
           ))}
         </ButtonWrapperStyle>
 
-
         <MasonryList>
           {reviewImages.imageDtos.map(({ id, url }) => (
-            <div key={id} onClick={() => handleClick(id)}>
+            <div
+              key={id}
+              onClick={() => handleClick(id)}
+              onKeyDown={(e) => e.key === 'Enter' && handleClick(id)}
+              tabIndex={0}
+              data-tab="focus"
+            >
               <picture>
                 <source srcSet={url.replace(/\.(jpg|jpeg|png)$/, '.webp')} type="image/webp" />
                 <img src={url} alt={`리뷰 이미지 ${id}`} />
@@ -116,24 +114,6 @@ const StudioReviewPhotos = () => {
             </div>
           ))}
         </MasonryList>
-
-          <MasonryList>
-            {reviewImages.imageDtos.map(({ id, url }) => (
-              <div
-                key={id}
-                onClick={() => handleClick(id)}
-                onKeyDown={(e) => e.key === 'Enter' && handleClick(id)}
-                tabIndex={0}
-                data-tab="focus"
-              >
-                <picture>
-                  <source srcSet={url.replace(/\.(jpg|jpeg|png)$/, '.webp')} type="image/webp" />
-                  <img src={url} alt={`리뷰 이미지 ${id}`} />
-                </picture>
-              </div>
-            ))}
-          </MasonryList>
-
 
         <DimmedModal>
           <ReviewSwiper data={reviewImages.imageDtos} />
@@ -147,10 +127,21 @@ export default StudioReviewPhotos;
 
 const StudioReviewPhotosContainerStyle = styled.div`
   width: 100%;
+  padding-top: ${variables.headerHeight};
+
+  ${mqMin(breakPoints.pc)} {
+    padding-top: unset;
+  }
 `;
 const ButtonWrapperStyle = styled.div`
   display: flex;
-  gap: 0.8rem;
+  gap: 0.6rem;
   padding: 1.2rem 0;
   width: 100%;
+  margin-bottom: -2px;
+
+  ${mqMin(breakPoints.pc)} {
+    padding: 3rem 0 1.6rem;
+    margin-bottom: 3px;
+  }
 `;
