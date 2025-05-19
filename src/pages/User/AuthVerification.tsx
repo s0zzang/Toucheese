@@ -35,6 +35,7 @@ const AuthVerification = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
 
   const storedData = sessionStorage.getItem('signup-storage');
   const parsedData = storedData ? JSON.parse(storedData) : null;
@@ -75,6 +76,10 @@ const AuthVerification = () => {
       setSignupData(data);
       navigate('/user/signup');
     } else {
+      if (!isVerified) {
+        return;
+      }
+
       // 소셜 회원가입인 경우 인증 후 회원가입 api 호출!
       const formData = {
         userName: storageName,
@@ -96,7 +101,10 @@ const AuthVerification = () => {
         if (!response.ok) {
           throw new Error(`서버 오류: ${response.status}`);
         }
-        navigate('/user/signupSuccess');
+
+        if (response.ok) {
+          navigate('/user/signupSuccess');
+        }
       } catch (error) {
         console.error('회원가입 중 오류 발생:', error);
       }
@@ -122,6 +130,7 @@ const AuthVerification = () => {
             setIsActive(true);
             setIsDisabled(false);
             setSignupData({ username: storageName, phone: storagePhone });
+            setIsVerified(true);
 
             // 비동기적으로 reset 호출 (setState 후 화면이 렌더링된 후 reset)
             setTimeout(() => {
