@@ -71,15 +71,15 @@ const AuthVerification = () => {
   }, []);
 
   const handleSave = async (data: any) => {
+    if (!isVerified) {
+      return;
+    }
+
     if (!socialData) {
       // 이메일 회원가입인 경우 인증 후 가입 페이지로 이동
       setSignupData(data);
       navigate('/user/signup');
     } else {
-      if (!isVerified) {
-        return;
-      }
-
       // 소셜 회원가입인 경우 인증 후 회원가입 api 호출!
       const formData = {
         userName: storageName,
