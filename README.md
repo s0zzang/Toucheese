@@ -194,25 +194,25 @@ pw : 1q2w3e4r1!
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/9fccd30d-1d54-438a-b783-029477a70033" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/61e54482-e514-4782-b80c-766774f48d35" />| <img width="200" src="https://github.com/user-attachments/assets/9fccd30d-1d54-438a-b783-029477a70033" /> |
 
 #### 2) 결제
 
 | PC  |           모바일           |
 | :-: | :------------------------: |
-|     | <img width="200" src="" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/28688ceb-954a-4f4b-b29c-6cfdadfd0d0b" />| <img width="200" src="" /> |
 
 #### 3) 예약 상세
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/b81cc580-a545-4f8f-8e46-ad1e052d9073" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/66540d9c-0fe9-47ab-bc26-4a02e9f5e5d8" />| <img width="200" src="https://github.com/user-attachments/assets/b81cc580-a545-4f8f-8e46-ad1e052d9073" /> |
 
 #### 4) 예약 취소
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/cbed39ac-7bb4-44bb-beaf-5a562b0a9315" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/b3d2de98-9a04-4515-ad1d-f9dc1bf0d705" />| <img width="200" src="https://github.com/user-attachments/assets/cbed39ac-7bb4-44bb-beaf-5a562b0a9315" /> |
 
 ### 5. 로그인 및 회원가입
 
@@ -220,25 +220,25 @@ pw : 1q2w3e4r1!
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/b81cc580-a545-4f8f-8e46-ad1e052d9073" /> |
+|<img width="500" alt="image" src="" />| <img width="200" src="https://github.com/user-attachments/assets/b81cc580-a545-4f8f-8e46-ad1e052d9073" /> |
 
 #### 2) 이메일 로그인
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/afb8805a-1a7d-45e9-92b8-cd0bed75f327" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/0ca3ebc4-5e4c-431a-9b49-7679ec25345d" />| <img width="200" src="https://github.com/user-attachments/assets/afb8805a-1a7d-45e9-92b8-cd0bed75f327" /> |
 
 #### 3) 카카오 로그인
 
 | PC  |           모바일           |
 | :-: | :------------------------: |
-|     | <img width="200" src="" /> |
+|<img width="500" alt="image" src="" />| <img width="200" src="https://github.com/user-attachments/assets/6a3e7fc0-a983-4925-b3d4-69e06c6d36be" /> |
 
 #### 4) 구글 로그인
 
 | PC  |           모바일           |
 | :-: | :------------------------: |
-|     | <img width="200" src="" /> |
+|<img width="500" alt="image" src="" />| <img width="200" src="https://github.com/user-attachments/assets/b3297812-23a8-4697-8fc1-1830c491c4c2" /> |
 
 ### 6. 마이페이지
 
@@ -246,37 +246,37 @@ pw : 1q2w3e4r1!
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/8002d394-8a24-4854-bd06-9aa6d8bd266f" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/2c08bb5e-4e96-4c5e-8f11-db353755350d" />| <img width="200" src="https://github.com/user-attachments/assets/8002d394-8a24-4854-bd06-9aa6d8bd266f" /> |
 
 #### 2) 예약 내역
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/6b0f19ec-4627-4c6f-ab06-9d27c50ae03e" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/a9f51cb1-26e3-47d8-afd8-704458a16f8d" />| <img width="200" src="https://github.com/user-attachments/assets/6b0f19ec-4627-4c6f-ab06-9d27c50ae03e" /> |
 
 #### 3) 내 리뷰
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/a2da6a67-3e70-4996-85e9-c6a4193ed406" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/8c7abcba-df79-414f-90d8-a8c73e41eb23" />| <img width="200" src="https://github.com/user-attachments/assets/a2da6a67-3e70-4996-85e9-c6a4193ed406" /> |
 
 #### 4) 리뷰 작성
 
 | PC  |           모바일           |
 | :-: | :------------------------: |
-|     | <img width="200" src="" /> |
+|<img width="500" alt="image" src="" />| <img width="200" src="" /> |
 
 #### 5) 찜한 사진관
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/b580b1fd-b181-4186-90ce-449d51f95aa9" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/a85fdc8e-367d-4679-a5e7-0d1d524cea04" />| <img width="200" src="https://github.com/user-attachments/assets/b580b1fd-b181-4186-90ce-449d51f95aa9" /> |
 
 #### 6) 내 정보 관리
 
 | PC  |           모바일           |
 | :-: | :------------------------: |
-|     | <img width="200" src="" /> |
+|<img width="500" alt="image" src="" />| <img width="200" src="" /> |
 
 <br />
 
