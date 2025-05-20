@@ -129,25 +129,38 @@ pw : 1q2w3e4r1!
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/3608fbca-2bf0-4294-a3b6-13f5f4fd1a9e" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/b998a6e2-17a5-40fa-8669-43cf16d11f23" />|<img width="200" src="https://github.com/user-attachments/assets/3608fbca-2bf0-4294-a3b6-13f5f4fd1a9e" /> |
 
 #### 2) 지역/날짜 필터링
 
-| PC  |                                                  모바일                                                   |
-| :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/9ebf5f83-0b19-45fc-8cb8-befde20a39c0" /> |
+<table>
+  <tr>
+    <th align="center" colspan="2">PC</th>
+    <th align="center">모바일</th>
+  </tr>
+  <tr>
+    <td align="center">지역 선택</td>
+    <td align="center">날짜 선택</td>
+    <td align="center"rowspan="2"><img width="160" src="https://github.com/user-attachments/assets/9ebf5f83-0b19-45fc-8cb8-befde20a39c0" /></td>
+  </tr>
+  <tr>
+    <td align="center"><img width="400" alt="image" src="https://github.com/user-attachments/assets/f9b5a976-406e-4e98-92e4-5060b914a002" /></td>
+    <td align="center"><img width="400" alt="image" src="https://github.com/user-attachments/assets/29f71b82-441d-4762-9c23-025fc271b10a" /></td>
+  </tr>
+</table>
 
 #### 3) 정렬 및 가격/매장옵션 필터링
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/99efcf7d-73c2-43e0-94b4-e513dc7df9ab" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/a83e63f9-30e1-4da0-a284-70f7be7a46ca" />| <img width="200" src="https://github.com/user-attachments/assets/99efcf7d-73c2-43e0-94b4-e513dc7df9ab" /> |
+
 
 ### 2. 스튜디오 검색
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/d2d84e1b-6229-4bc1-ae8a-a0405c9f57bf" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/9d09f748-cf58-49e6-a4e9-a1cb1200378e" />| <img width="200" src="https://github.com/user-attachments/assets/d2d84e1b-6229-4bc1-ae8a-a0405c9f57bf" /> |
 
 ### 3. 스튜디오 상세
 
@@ -155,25 +168,25 @@ pw : 1q2w3e4r1!
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/a2b4ecaa-b910-4986-8948-03cce0399655" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/dc13657c-f287-4328-b93b-baaf39a03387" />| <img width="200" src="https://github.com/user-attachments/assets/a2b4ecaa-b910-4986-8948-03cce0399655" /> |
 
 #### 2) 메뉴 및 메뉴 상세
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/c34c66fb-10d8-4700-a0e1-80326d63139a" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/ad491350-7616-4d15-aa29-36941d0958d0" />| <img width="200" src="https://github.com/user-attachments/assets/c34c66fb-10d8-4700-a0e1-80326d63139a" /> |
 
 #### 3) 포트폴리오
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/88fd287a-18b4-415b-92f4-34f21a812273" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/a0149d59-e4bf-4557-8b52-66754879284c" />| <img width="200" src="https://github.com/user-attachments/assets/88fd287a-18b4-415b-92f4-34f21a812273" /> |
 
 #### 4) 리뷰 및 리뷰 모아보기
 
 | PC  |                                                  모바일                                                   |
 | :-: | :-------------------------------------------------------------------------------------------------------: |
-|     | <img width="200" src="https://github.com/user-attachments/assets/d4a6be6e-fa46-4796-b8a7-954bab4ce63d" /> |
+|<img width="500" alt="image" src="https://github.com/user-attachments/assets/fccf7935-bbe6-4dcd-adbe-c3965127fe3a" />| <img width="200" src="https://github.com/user-attachments/assets/d4a6be6e-fa46-4796-b8a7-954bab4ce63d" /> |
 
 ### 4. 스튜디오 예약
 
