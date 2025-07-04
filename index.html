@@ -37,9 +37,39 @@
     <link rel="dns-prefetch" href="https://www.toucheeseapi.shop" />
     <!-- 포트원 JavaScript SDK 추가 -->
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+
+    <!-- 사용성 테스트 코드 스니펫 추가 -->
+    <script>
+      (function (m, a, z, e) {
+        var s, t;
+        try {
+          t = m.sessionStorage.getItem('maze-us');
+        } catch (err) {}
+
+        if (!t) {
+          t = new Date().getTime();
+          try {
+            m.sessionStorage.setItem('maze-us', t);
+          } catch (err) {}
+        }
+
+        s = a.createElement('script');
+        s.src = z + '?apiKey=' + e;
+        s.async = true;
+        a.getElementsByTagName('head')[0].appendChild(s);
+        m.mazeUniversalSnippetApiKey = e;
+      })(
+        window,
+        document,
+        'https://snippet.maze.co/maze-universal-loader.js',
+        'b49d06b0-01f7-4f8c-ad33-6904f25efdc1',
+      );
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <!-- 모달을 위한 포탈 박스 -->
+    <div id="modal-portal"></div>
     <!-- 토스트를 위한 포탈 박스 -->
     <div id="toast-portal"></div>
     <script type="module" src="/src/main.tsx"></script>

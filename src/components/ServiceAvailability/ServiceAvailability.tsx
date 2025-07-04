@@ -63,7 +63,7 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
   return (
     <>
       {isPc && (
-        <h2
+        <h3
           css={css`
             ${TypoBodyMdSb}
             color: ${variables.colors.gray800};
@@ -71,7 +71,7 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
           `}
         >
           매장 정보·서비스
-        </h2>
+        </h3>
       )}
       <ServiceAvailabilityContainerStyle>
         <Button
@@ -154,8 +154,8 @@ const ServiceAvailability = ({ isPc = false }: ServiceAvailabilityProps) => {
         />
         <Button
           icon={<img src="img/icon-powder.svg" alt="파우더룸" />}
-          iconSizeWidth="1.4rem"
-          iconSizeHeight="1.4rem"
+          iconSizeWidth="1.6rem"
+          iconSizeHeight="1.6rem"
           iconPosition="left"
           size="medium"
           text={`파우더룸`}

@@ -1,15 +1,18 @@
 /** @jsxImportSource @emotion/react */
 
-import BackButton from '@components/BackButton/BackButton';
 import Button from '@components/Button/Button';
+import Header from '@components/Header/Header';
 import Input from '@components/Input/Input';
 import { css } from '@emotion/react';
 import useSignupStore from '@store/useSignupStore';
-import { TypoTitleMdSb } from '@styles/Common';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { Hidden, TypoTitleMdSb } from '@styles/Common';
+import variables from '@styles/Variables';
 import { useLayoutEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { ISocialData } from 'types/types';
 
 interface AuthVerificationType {
   success: boolean;
@@ -32,11 +35,16 @@ const AuthVerification = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
 
   const storedData = sessionStorage.getItem('signup-storage');
   const parsedData = storedData ? JSON.parse(storedData) : null;
   const storageName = parsedData?.state?.username || '';
   const storagePhone = parsedData?.state?.phone || '';
+
+  // 소셜 로그인 데이터
+  const location = useLocation();
+  const socialData: ISocialData = location.state;
 
   const {
     register,
@@ -62,8 +70,45 @@ const AuthVerification = () => {
     }
   }, []);
 
-  const handleSave = (data: any) => {
-    setSignupData(data);
+  const handleSave = async (data: any) => {
+    if (!isVerified) {
+      return;
+    }
+
+    if (!socialData) {
+      // 이메일 회원가입인 경우 인증 후 가입 페이지로 이동
+      setSignupData(data);
+      navigate('/user/signup');
+    } else {
+      // 소셜 회원가입인 경우 인증 후 회원가입 api 호출!
+      const formData = {
+        userName: storageName,
+        email: socialData.r_email,
+        password: socialData.r_password,
+        phone: storagePhone,
+        registration: socialData.r_registration,
+      };
+
+      try {
+        const response = await fetch(`${import.meta.env.VITE_TOUCHEESE_API}/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+          throw new Error(`서버 오류: ${response.status}`);
+        }
+
+        if (response.ok) {
+          navigate('/user/signupSuccess');
+        }
+      } catch (error) {
+        console.error('회원가입 중 오류 발생:', error);
+      }
+    }
   };
 
   /** 간편 본인인증 실행 함수 */
@@ -85,6 +130,7 @@ const AuthVerification = () => {
             setIsActive(true);
             setIsDisabled(false);
             setSignupData({ username: storageName, phone: storagePhone });
+            setIsVerified(true);
 
             // 비동기적으로 reset 호출 (setState 후 화면이 렌더링된 후 reset)
             setTimeout(() => {
@@ -112,19 +158,12 @@ const AuthVerification = () => {
         <meta property="og:description" content="사용자 본인인증" />
       </Helmet>
 
-      <BackButton />
-      <h1
-        css={css`
-          visibility: hidden;
-        `}
-      >
-        본인인증
-      </h1>
-      <h2 css={pageTitleStyle}>
-        이름과 휴대폰 번호를
-        <br />
+      <Header title="터치즈 회원 가입" />
+      <h2 css={Hidden}>본인인증</h2>
+      <h3 css={pageTitleStyle}>
+        이름과 휴대폰 번호를 <br />
         알려주세요
-      </h2>
+      </h3>
       <form noValidate onSubmit={handleSubmit(handleSave)} css={formStyle}>
         <div css={containerStyle}>
           {/* 이름 */}
@@ -169,7 +208,6 @@ const AuthVerification = () => {
 
         <div css={buttonStyle}>
           <Button
-            onClick={() => navigate('/user/signup')}
             type="submit"
             width="max"
             text="다음"
@@ -195,11 +233,23 @@ const containerStyle = css`
 const buttonStyle = css`
   position: fixed;
   bottom: 3rem;
-  width: calc(100% - 3.2rem);
-  transform: translateX(-50%);
   left: 50%;
-`;
+  transform: translateX(-50%);
+  width: 100%;
+  padding: 0 ${variables.layoutPadding};
 
+  ${mqMin(breakPoints.pc)} {
+    left: calc(max((100vw - 1280px) / 2, 0px) + 32rem);
+    transform: none;
+    width: auto;
+
+    & > button {
+      min-width: 60rem;
+      max-width: 60rem;
+      width: 100%;
+    }
+  }
+`;
 const pageTitleStyle = css`
   ${TypoTitleMdSb}
   margin: 2.6rem 0 3rem 0;

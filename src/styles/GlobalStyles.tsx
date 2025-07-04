@@ -47,7 +47,7 @@ const GlobalStyles = css`
 
     @media (min-width: ${breakPoints.pc}) {
       padding-top: ${variables.headerHeight};
-      padding-bottom: 0;
+      padding-bottom: 3rem;
     }
   }
 
@@ -261,6 +261,12 @@ const GlobalStyles = css`
     border-color: transparent !important;
     outline: 2px solid ${variables.colors.primary600} !important;
     border-radius: 0.2em;
+  }
+
+  input[type='checkbox']:focus,
+  input[type='radio']:focus {
+    outline: none !important;
+    border-color: ${variables.colors.primary800} !important;
   }
 
   input[type='checkbox'],

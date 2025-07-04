@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { Helmet } from 'react-helmet-async';
 import Header from '@components/Header/Header';
 import { css } from '@emotion/react';
-import LoginTypeButton from './components/LoginTypeButton';
-import { Link, useNavigate } from 'react-router-dom';
-import variables from '@styles/Variables';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { bg100vw, PCLayout } from '@styles/Common';
+import variables from '@styles/Variables';
+import { Helmet } from 'react-helmet-async';
+import { Link, useNavigate } from 'react-router-dom';
+import LoginTypeButton from './components/LoginTypeButton';
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Auth = () => {
   const handleGoogleLogin = () => {
     const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     const GOOGLE_REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
   };
 
   return (
@@ -38,9 +38,7 @@ const Auth = () => {
 
       <div css={AuthContainerStyle}>
         {/* PC 레이아웃일 때만 보이는 왼쪽 이미지 영역 */}
-        <div css={LeftImageStyle}>
-          <img src="/img/img-pc_AuthPage.svg" alt="터치즈 소개 이미지" />
-        </div>
+        <div css={LeftImageStyle}></div>
 
         {/* 오른쪽 컨텐츠 영역 */}
         <div css={RightContentStyle}>
@@ -49,7 +47,7 @@ const Auth = () => {
           </div>
 
           <div css={LoginPageDesStyle}>
-            <h1>터치즈에서 간편하게</h1>
+            <h2>터치즈에서 간편하게</h2>
             <p>내 인생 사진관 찾고 예약까지!</p>
           </div>
 
@@ -69,13 +67,13 @@ const Auth = () => {
               >
                 이미 가입하셨나요?
               </span>
-              <span
+              <h3
                 css={css`
                   color: ${variables.colors.black};
                 `}
               >
                 로그인 하기
-              </span>
+              </h3>
             </div>
           </Link>
         </div>
@@ -86,23 +84,26 @@ const Auth = () => {
 
 export default Auth;
 
-const AuthContainerStyle = css`
+export const AuthContainerStyle = css`
   ${mqMin(breakPoints.pc)} {
     ${PCLayout}
+    // ${bg100vw(variables.colors.white)}
+    margin-bottom: -3rem;
     display: flex;
-    width: ${bg100vw(variables.colors.white)};
-
-    min-height: 100vh;
+    gap: 1.6rem;
+    height: calc(100vh - ${variables.headerHeight});
   }
 `;
 
-const LeftImageStyle = css`
+export const LeftImageStyle = css`
   display: none;
 
   ${mqMin(breakPoints.pc)} {
     display: block;
-    width: 50%;
+    width: 70%;
     height: 100vh;
+    position: relative;
+    transform: translateX(-8rem);
 
     img {
       width: 100%;
@@ -110,15 +111,39 @@ const LeftImageStyle = css`
       object-fit: cover;
     }
   }
+
+  ${mqMin(breakPoints.pc)} {
+    display: unset;
+    width: 70%;
+    flex-grow: 1;
+    margin-left: calc(-1 * ${variables.layoutPadding});
+    background-color: ${variables.colors.primary50};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 42.4rem;
+      height: 32.8rem;
+      margin-left: 2.5rem;
+      margin-top: 3.5px;
+      background: url('/img/img-auth.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+  }
 `;
 
-const RightContentStyle = css`
+export const RightContentStyle = css`
   width: 100%;
   padding: 0 2rem;
 
   ${mqMin(breakPoints.pc)} {
+    flex-grow: 1;
     width: 50%;
-    padding: 0 8rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -136,7 +161,7 @@ const HeaderWrapperStyle = css`
 `;
 
 const LoginPageDesStyle = css`
-  h1 {
+  h2 {
     font-size: 2.2rem;
     font-weight: 700;
     opacity: 0;
@@ -173,8 +198,10 @@ const LoginTypeButtonWrapper = css`
   margin-top: 40%;
 
   ${mqMin(breakPoints.pc)} {
-    margin-top: 0;
     gap: 2rem;
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 auto;
   }
 `;
 

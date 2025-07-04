@@ -84,11 +84,13 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
   };
 
   useEffect(() => {
+    if (!data) return;
+    setFirstSlide(data[0].id);
+    setLastSlide(data[data.length - 1].id);
+  }, []);
+
+  useLayoutEffect(() => {
     setIndexByPortfolioId();
-    if (data) {
-      setFirstSlide(data[0].id);
-      setLastSlide(data[data.length - 1].id);
-    }
   }, []);
 
   useLayoutEffect(() => {
@@ -99,14 +101,13 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
   return (
     firstSlide && (
       <div css={dimSwiperBox}>
-        <p css={[TypoBodyMdR, TitleStyle]}>
+        <div css={[TypoBodyMdR, TitleStyle]}>
           <h3>
             {activeIndex} <span css={Hidden}>번째</span>{' '}
           </h3>
           <i>/</i>
           {data.length}
-        </p>
-        <Swiper {...swiperOption}>{children}</Swiper>
+        </div>
         <div className="swiper-buttons">
           <button
             onClick={() => setLastSwipeDirection('prev')}
@@ -119,6 +120,7 @@ const DimSwiper = <T extends { id: number }>({ children, data, setSlideSet }: ID
             ref={nextBtnRef}
           ></button>
         </div>
+        <Swiper {...swiperOption}>{children}</Swiper>
       </div>
     )
   );
@@ -132,7 +134,6 @@ const dimSwiperBox = css`
 
     ${mqMin(breakPoints.pc)} {
       position: absolute;
-      z-index: 9;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);

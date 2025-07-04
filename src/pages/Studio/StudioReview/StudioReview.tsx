@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
-import { TypoCapSmR, TypoTitleXsM } from '@styles/Common';
+import { Hidden, TypoCapSmR, TypoTitleXsM } from '@styles/Common';
 import { useParams, useSearchParams } from 'react-router-dom';
 import StudioReviewImageList from './components/StudioReviewImageList';
 import StudioNavigator from '@components/Navigator/StudioNavigator';
@@ -91,20 +91,21 @@ const StudioReview = () => {
         </Helmet>
       )}
 
-      <Header title="리뷰" fixed={true} />
+      <Header title={studioDetailData?.name} fixed={true} />
       <StudioNavigator _id={_id || ''} />
 
       <div css={boxLayoutStyle}>
         <div css={studioPaddingTop}>
           <ReviewPhotosWrapperStyle>
             <ReviewTitleWrapperStyle>
-              <h1 css={TypoTitleXsM}>리뷰 사진 모아보기</h1>
+              <h2 css={TypoTitleXsM}>리뷰 사진 모아보기</h2>
               <p css={TypoCapSmR}>{totalImageNum}개</p>
             </ReviewTitleWrapperStyle>
             {/* 리뷰 이미지 모아보기 컴포넌트 */}
             <StudioReviewImageList pageId={_id} samplePhotoList={samplePhotoList} />
           </ReviewPhotosWrapperStyle>
 
+          <h2 css={Hidden}>리뷰 목록</h2>
           {/* 스튜디오 리뷰 카테고리 */}
           <StudioReviewCategories
             avgRating={Number(processedAvgRating)}
@@ -150,12 +151,10 @@ const boxLayoutStyle = css`
     flex-direction: row;
     gap: 2rem;
     padding: 0 ${variables.layoutPadding};
-    max-width: 1440px;
     margin: 0 auto;
 
     & > div:first-of-type {
-      width: 70%;
-      max-width: 70%;
+      width: 100%;
       box-sizing: border-box;
     }
 

@@ -14,16 +14,17 @@ import {
   TypoTitleXsSb,
 } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Payment from './components/Payment';
 import useReservationStore from '@store/useReservationStore';
 import { useSelectTimeStore } from '@store/useSelectTimeStore';
 import { useSelectDateStore } from '@store/useSelectDateStore';
-import { useUserStore } from '@store/useUserStore';
+import { useUserStore, loadUserFromStorage } from '@store/useUserStore';
 import ReservationInfo from './components/ReservationInfo';
 import { breakPoints, mqMax, mqMin } from '@styles/BreakPoint';
 import { pcFlexLayout } from './ReservationSchedule';
+import { useNavigate } from 'react-router-dom';
 
 interface FormValues {
   visitorName: string;
@@ -33,6 +34,12 @@ interface FormValues {
 }
 
 const ReservationCheck = () => {
+  // 암호화 된 유저 정보 복호화
+  useEffect(() => {
+    loadUserFromStorage();
+  }, []);
+
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState('카카오페이');
   const [isAgreed, setIsAgreed] = useState(false);
 
@@ -118,7 +125,7 @@ const ReservationCheck = () => {
 
   return (
     <>
-      <Header title="결제하기" />
+      <Header title="결제하기" fixed={true} />
 
       <div css={pcFlexLayout}>
         <div className="left-box">
@@ -134,7 +141,11 @@ const ReservationCheck = () => {
               <h2 css={reservationTitleAlignStyle}>예약자정보</h2>
               <div css={userInfoWrapperStyle}>
                 <p css={[TypoTitleXsM]}>{username}</p>
-                <button type="button" css={[infoChangeBtnStyle, TypoCapSmM]}>
+                <button
+                  type="button"
+                  css={[infoChangeBtnStyle, TypoCapSmM]}
+                  onClick={() => navigate('/user/profile/edit')}
+                >
                   변경하기
                 </button>
               </div>
@@ -642,6 +653,18 @@ const radioLabelStyle = css`
   display: flex;
   align-items: center;
   cursor: pointer;
+
+  input {
+    margin: 0 0.8rem 0 0;
+    flex-shrink: 0;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    margin: 0;
+  }
 `;
 
 const payIconStyle = css`

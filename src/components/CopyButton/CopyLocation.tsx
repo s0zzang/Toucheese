@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import useToast from '@hooks/useToast';
+import { breakPoints, mqMin } from '@styles/BreakPoint';
 import { TypoBodyMdR, TypoBodySmR } from '@styles/Common';
 import variables from '@styles/Variables';
 
@@ -43,8 +44,8 @@ const containerStyle = css`
   flex-direction: column;
   justify-content: center;
 
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 1.4rem;
+  margin-top: 1.4rem;
 `;
 
 const contentRowStyle = css`
@@ -69,8 +70,13 @@ const buttonStyle = css`
   cursor: pointer;
   width: 7.4rem;
   height: 3rem;
+
+  ${mqMin(breakPoints.pc)} {
+    padding: 0.2rem;
+  }
 `;
 
 const buttonTextStyle = css`
   margin-top: 0.2rem;
+  padding-right: 0.3rem;
 `;

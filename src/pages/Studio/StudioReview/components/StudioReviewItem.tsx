@@ -48,7 +48,6 @@ const StudioReviewItem = ({
 
         <ImageSwiper
           imageStyle={css`
-            width: 100%;
             aspect-ratio: 1 / 1;
             object-fit: cover;
           `}
@@ -63,7 +62,7 @@ const StudioReviewItem = ({
         />
         <ReviewContent content={review.content} isOpen={isOpen} setIsOpen={setIsOpen} />
         <NameAndDateWrapperStyle>
-          <span>{review.userName}</span>
+          <h4>{review.userName}</h4>
           <p>{formatTimeAgo(review.created_at)}</p>
         </NameAndDateWrapperStyle>
       </StudioReviewItemContainerStyle>
@@ -105,21 +104,9 @@ const MainTitle = styled.h3`
   display: flex;
   align-items: center;
   margin-bottom: 0.6rem;
-
-  &::after {
-    content: '';
-    display: block;
-    width: 1.6rem;
-    height: 1.6rem;
-    box-sizing: border-box;
-    background-image: url('/img/icon-chevronright.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 0.6rem 1.1rem;
-  }
 `;
 
-const SubTitle = styled.p`
+const SubTitle = styled.h4`
   font-size: 1.4rem;
   color: ${variables.colors.gray600};
 `;

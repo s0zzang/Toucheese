@@ -3,18 +3,23 @@ import { css } from '@emotion/react';
 import { convertToDateFormat, getDay } from '@store/useSelectDateStore';
 import { TypoBodyMdM, TypoBodySmR, TypoTitleXsM } from '@styles/Common';
 import variables from '@styles/Variables';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { IResvItem } from 'types/types';
 import RatingReview from './RatingReview';
 import StatusChip from './StatusChip';
-import { IResvItem } from 'types/types';
 
 type ReservationCardType = {
   isMyPage?: boolean;
+  isReviewWritePage?: boolean;
   data: IResvItem | null;
 };
 
-const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
-  const navigate = useNavigate();
+const ReservationCard = ({
+  isMyPage = false,
+  isReviewWritePage = false,
+  data,
+}: ReservationCardType) => {
+  const { pathname } = useLocation();
 
   //방문 날짜 계산 함수
   const getDaysDifference = (ResDay: string) => {
@@ -30,43 +35,63 @@ const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
   return (
     <>
       {data ? (
-        <article
-          css={CardStyle(isMyPage)}
-          onClick={() => navigate(`/reservation/${data?.reservationId}`)}
-        >
+        <a href={`/reservation/${data?.reservationId}`} css={CardStyle(isMyPage)}>
           {isMyPage && (
-            <div css={AlarmStyle}>
+            <div css={CardTopStyle}>
               <img src="/img/icon-calendar-yellow.svg" alt="일정 d-day 아이콘" />
               <p>방문 {getDaysDifference(data?.date)}일전</p>
             </div>
           )}
+          {isReviewWritePage && (
+            <div css={CardTopStyle}>
+              <p className="studioName"> {data.studioName}</p>
+            </div>
+          )}
           <div css={ReservationInfoStyle}>
-            <div className="cardInfo">
-              <StatusChip state={data.status} />
-              <div className="cardName">
-                <h3>{data.studioName}</h3> <span>|</span> <h4>{data.menuName}</h4>
-              </div>
-              <h4 className="cardDate">{`${convertToDateFormat(new Date(data.date))} (${getDay(new Date(data.date))}) ${data.startTime.split(':').slice(0, 2).join(':')}`}</h4>
+            <div className="infoTop">
+              {isReviewWritePage ? (
+                <p css={TypoTitleXsM}>{data.menuName}</p>
+              ) : (
+                <StatusChip state={data.status} />
+              )}
+              <p className="infoMiddle">
+                {isReviewWritePage && data.additionalOptionNames ? (
+                  data.additionalOptionNames.join(' | ')
+                ) : (
+                  <>
+                    {data.studioName} <span>|</span> {data.menuName}
+                  </>
+                )}
+              </p>
+              {isReviewWritePage || (
+                <p className="infoBottom">
+                  {`${convertToDateFormat(new Date(data.date))} (${getDay(new Date(data.date))}) ${data.startTime
+                    .split(':')
+                    .slice(0, 2)
+                    .join(':')}`}
+                </p>
+              )}
             </div>
 
             <div className="cardCover">
               <img src={data.menuImgUrl} alt="메뉴 사진" />
             </div>
           </div>
-          {data.status === 'COMPLETED' && (
-            <RatingReview ratingValue={data.review && data.review.rating} />
+          {data.status === 'COMPLETED' && !pathname.includes('/review/write') && (
+            <RatingReview
+              ratingValue={data.review && data.review.rating}
+              reservaionData={data && data}
+            />
           )}
-        </article>
+        </a>
       ) : (
-        <article css={EmptyCardStyle}>
+        <div css={EmptyCardStyle}>
           <p>
             예약하신 사진관이 없습니다. <br />
             매장을 예약하고 인생 사진을 찍어보세요!
           </p>
-          <button type="button" onClick={() => navigate('/')}>
-            사진관 보러가기
-          </button>
-        </article>
+          <a href="/">사진관 보러가기</a>
+        </div>
       )}
     </>
   );
@@ -75,6 +100,7 @@ const ReservationCard = ({ isMyPage = false, data }: ReservationCardType) => {
 export default ReservationCard;
 
 const CardStyle = (isMyPage: boolean | undefined) => css`
+  display: block;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -93,14 +119,14 @@ const ReservationInfoStyle = css`
   justify-content: space-between;
   align-items: center;
 
-  .cardInfo {
+  .infoTop {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.4rem;
     flex-grow: 1;
 
-    .cardName {
+    .infoMiddle {
       ${TypoBodySmR}
       display: flex;
       gap: 0.6rem;
@@ -111,7 +137,7 @@ const ReservationInfoStyle = css`
       }
     }
 
-    .cardDate {
+    .infoBottom {
       ${TypoTitleXsM}
     }
   }
@@ -129,7 +155,7 @@ const ReservationInfoStyle = css`
   }
 `;
 
-const AlarmStyle = css`
+const CardTopStyle = css`
   display: flex;
   gap: 0.4rem;
   align-items: center;
@@ -143,6 +169,11 @@ const AlarmStyle = css`
   & img {
     width: 2rem;
     height: 2rem;
+  }
+
+  .studioName {
+    ${TypoBodySmR}
+    color:${variables.colors.gray800};
   }
 `;
 
@@ -162,7 +193,7 @@ const EmptyCardStyle = css`
     ${TypoBodyMdM}
   }
 
-  & button {
+  & a {
     display: flex;
     gap: 0.4rem;
     padding: 0.8rem 1rem;

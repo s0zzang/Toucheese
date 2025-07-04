@@ -15,7 +15,7 @@ import styled from '@emotion/styled';
 import useGetWindowWidth from '@hooks/useGetWindowWidth';
 import useBottomSheetState from '@store/useBottomSheetStateStore';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
-import { bg100vw, PCLayout } from '@styles/Common';
+import { bg100vw, Hidden, PCLayout } from '@styles/Common';
 import variables from '@styles/Variables';
 import { decodeSearchParamsToString } from '@utils/decodeSearchParams';
 import { remToPx } from '@utils/remToPx';
@@ -26,6 +26,8 @@ import { SortBy } from 'types/types';
 import LocalDateSelectionModal from './components/LocalDateSelectionModal';
 import PCFilterWrapper from './components/PCFilterWrapper';
 import { useMediaQuery } from 'react-responsive';
+import useModal from '@hooks/useModal';
+import Modal from '@components/Modal/Modal';
 
 interface IFixedProps {
   isFixed: boolean;
@@ -49,6 +51,7 @@ const Home = () => {
   const navigate = useNavigate();
   const windowWidth = useGetWindowWidth();
   const isPc = useMediaQuery({ minWidth: breakPoints.pc });
+  const isReservationData = useModal(4);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -58,14 +61,34 @@ const Home = () => {
     }
   }, [isPc]);
 
-  useEffect(() => {
-    // 로그인 완료 후 예약페이지로 돌아가기
-    const lastPage = window.sessionStorage.getItem('lastPage');
+  //예약하기전 비로그인일때 로그인 후 예약 페이지로 돌아가는 함수
+  const backtoLastPageConfirmButton = [
+    {
+      text: '아니요',
+      event: () => {
+        window.sessionStorage.removeItem('lastPage');
+        isReservationData.close();
+      },
+      variant: 'gray' as 'gray',
+      active: false,
+    },
+    {
+      text: '예',
+      event: () => {
+        const lastPage = window.sessionStorage.getItem('lastPage');
 
-    if (lastPage) {
-      navigate(lastPage);
-      window.sessionStorage.removeItem('lastPage');
-    }
+        if (lastPage) {
+          navigate(`${lastPage}`);
+          window.sessionStorage.removeItem('lastPage');
+          isReservationData.close();
+        }
+      },
+    },
+  ];
+
+  useEffect(() => {
+    const lastPage = window.sessionStorage.getItem('lastPage');
+    if (lastPage) isReservationData.open();
   }, []);
 
   // 스크롤에 따라 Navigator 고정
@@ -142,13 +165,14 @@ const Home = () => {
         <meta property="og:description" content="터치즈에서 원하는 스튜디오를 검색해보세요!" />
       </Helmet>
 
+      <h1 css={Hidden}>스튜디오 고르기</h1>
       <NavigatorStyle isFixed={isFixed}>
         <div
           css={css`
             ${mqMin(breakPoints.pc)} {
               ${PCLayout}
               ${bg100vw(variables.colors.black)}
-              display: flex;
+                display: flex;
               align-items: center;
               gap: 1.6rem;
               padding: 0 ${variables.layoutPadding};
@@ -220,6 +244,14 @@ const Home = () => {
       </SectionStyle>
       <BottomSheet />
       <LocalDateSelectionModal modalId={1} />
+      <Modal
+        modalId={4}
+        type="default"
+        title="이전 예약 페이지로 돌아가시겠습니까?"
+        buttons={backtoLastPageConfirmButton}
+      >
+        아니오를 선택할 경우, 현재 예약 데이터는 삭제됩니다.
+      </Modal>
     </>
   );
 };
@@ -322,6 +354,7 @@ const FilterSectionStyle = styled.div<IFixedProps>`
   left: 0;
   width: 28rem;
   height: calc(100vh - 13.8rem);
+  margin-bottom: -3rem;
 `;
 
 const ListStyle = styled.div`
@@ -329,8 +362,8 @@ const ListStyle = styled.div`
 
   ${mqMin(breakPoints.pc)} {
     padding: unset;
+    padding-top: 3rem;
     padding-right: 1.6rem;
-    padding-bottom: 3rem;
     flex-grow: 1;
   }
 `;

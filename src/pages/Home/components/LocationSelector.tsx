@@ -26,7 +26,12 @@ const LocationSelector = ({ selectedIndex, onChange }: Props) => {
   return (
     <LocationBox>
       {locationList.map((v, i) => (
-        <ListItem onClick={() => onChange(v)} isSelected={selectedIndex === v} key={i}>
+        <ListItem
+          type="button"
+          onClick={() => onChange(v)}
+          isSelected={selectedIndex === v}
+          key={i}
+        >
           {v}
         </ListItem>
       ))}

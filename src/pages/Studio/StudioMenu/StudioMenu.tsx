@@ -8,6 +8,7 @@ import { IMenuListRes } from 'types/types';
 import Header from '@components/Header/Header';
 import { Helmet } from 'react-helmet-async';
 import { breakPoints, mqMin } from '@styles/BreakPoint';
+import { Hidden } from '@styles/Common';
 
 const StudioMenu = () => {
   const { _id } = useParams();
@@ -53,6 +54,8 @@ const StudioMenu = () => {
       <div css={MenuPCStyle}>
         <Header title={`${data ? data[0].studioName : ''}`} backTo="/" />
       </div>
+
+      <h2 css={Hidden}>스튜디오 메뉴</h2>
       <StudioNavigator _id={_id || ''} />
       <div css={ItemLIstStyle}>{StudioMenuList}</div>
     </>
